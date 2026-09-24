@@ -205,6 +205,36 @@
   "note": "Spontaneous needle-EMG activity at the trigger-point nidus."
  },
  {
+  "id": "kelly2016",
+  "authors": "Kelly S, Beardsley C",
+  "year": 2016,
+  "title": "Specific and cross-over effects of foam rolling on ankle dorsiflexion range of motion",
+  "venue": "Int J Sports Phys Ther 11:544-551",
+  "url": "https://pubmed.ncbi.nlm.nih.gov/27525179/",
+  "pmid": "27525179",
+  "kind": "paper",
+  "tags": [
+   "fascia",
+   "mind"
+  ],
+  "note": "Foam rolling the calf of one leg increased ankle range of motion in that leg for at least 20 minutes, and in the other, untouched leg for up to 10 — a cross-over effect, perhaps through greater stretch tolerance."
+ },
+ {
+  "id": "konrad2023",
+  "authors": "Konrad A, Nakamura M, Warneke K et al.",
+  "year": 2023,
+  "title": "The contralateral effects of foam rolling on range of motion and muscle performance",
+  "venue": "Eur J Appl Physiol 123:1167-1178",
+  "url": "https://doi.org/10.1007/s00421-023-05142-2",
+  "pmid": "36694004",
+  "kind": "paper",
+  "tags": [
+   "fascia",
+   "mind"
+  ],
+  "note": "A scoping review: one bout of foam rolling on one limb increases range of motion in the other, untreated limb, most likely through reduced perception of pain. A single bout leaves the other side’s maximal strength unchanged."
+ },
+ {
   "id": "langevin2002",
   "authors": "Langevin HM, Yandow JA",
   "year": 2002,
