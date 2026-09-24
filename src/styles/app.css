@@ -36,11 +36,6 @@
   -webkit-user-select: none;
   user-select: none;
 }
-@media (pointer: coarse) {
-  .canvas-container canvas {
-    touch-action: pan-y;
-  }
-}
 
 /* Overlays on the canvas: small mono labels, like OM's chart furniture. */
 .overlay {
@@ -639,21 +634,22 @@
 }
 @media (max-width: 900px) {
   .visualization {
-    min-height: 72vh;
+    flex: 0 0 auto;
+    height: 50vh;
+    height: 50dvh;
+    min-height: 0;
   }
   .notes-panel {
+    flex: 1 1 auto;
+    min-height: 0;
     width: auto;
     min-width: 0;
     max-width: none;
-    max-height: 70vh;
   }
+  /* One slim row under the figure: the age, then the settings. */
   .player-controls {
-    flex-wrap: wrap;
-    padding: 10px;
-    gap: 8px;
-  }
-  .timeline-container {
-    order: 5;
-    flex-basis: 100%;
+    padding: 4px 10px 2px;
+    gap: 10px;
+    min-height: 0;
   }
 }

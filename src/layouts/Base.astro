@@ -124,15 +124,13 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     background: var(--bg);
     padding: 6px 12px;
   }
+  /* Phones: the screen splits — the figure pinned above (it turns every way),
+     the panel below scrolling on its own — so turning and scrolling never compete. */
   @media (max-width: 900px) {
-    body.app {
-      height: auto;
-      overflow: auto;
-    }
     .app-main {
       flex-direction: column;
-      padding: 10px;
-      gap: 10px;
+      padding: 8px;
+      gap: 8px;
     }
   }
 </style>
