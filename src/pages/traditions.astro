@@ -1,6 +1,5 @@
 ---
-import Base from '../layouts/Base.astro';
-import PageHead from '../components/PageHead.astro';
+import Doc from '../layouts/Doc.astro';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const CORRESPONDENCES = [
   ['Ashi points, acupoints', 'China', 'Stuck perforators — the staples', 'Heine: ~80% of points at fascial perforations; Langevin: 80% on connective-tissue planes; Maurer: bundles at only a few points'],
@@ -15,29 +14,44 @@ const CORRESPONDENCES = [
   ['Saṅkhāras as solidified sensations', 'Buddhist', 'Stored holds that dissolve under equanimous attention and breath', 'Proposed'],
   ['Cupping and gua sha', 'China', 'Tools for the sheet: lift and shear the superficial plane', 'Mechanically plausible'],
 ];
+const toc = [
+  { id: 'reading', label: 'A note on reading' },
+  { id: 'china', label: `Points, channels, and the knots of the sinews`, sub: `China · Huangdi Neijing and after` },
+  { id: 'daoist', label: `The orbit and its three gates`, sub: `Daoist internal alchemy` },
+  { id: 'india', label: `Nāḍīs, cakras, and the three knots`, sub: `Yoga and tantra` },
+  { id: 'tibet', label: `Channels, winds, drops — and knots`, sub: `Tibet · tsa lung and Dzogchen` },
+  { id: 'buddhist', label: `Saṅkhāras, and the serpent over the head`, sub: `Buddhist practice and iconography` },
+  { id: 'kriya', label: `Where the life-force enters`, sub: `The medulla` },
+  { id: 'japan', label: `Kori`, sub: `Japan` },
+  { id: 'table', label: 'Proposed correspondences' },
+];
 ---
-<Base title="Traditions" current="traditions" description="Maps of the inner body from Chinese medicine, Daoist alchemy, yoga and tantra, Tibetan tsa lung and Dzogchen, and Buddhist practice — read beside the anatomy of perforators and fascia.">
-  <PageHead kicker="Traditions" title="Maps of the inner body" glyph="経">
-    Nearly every tradition that mapped the inner body arrived at the same three claims: there are knots, breath is the tool, and
-    untying them changes consciousness.
-  </PageHead>
-
-  <article class="trad">
-    <section>
-      <p class="eyebrow">A note on reading</p>
-      <p>
+<Doc
+  title="Maps of the inner body"
+  kicker="Traditions"
+  current="traditions"
+  lede="Nearly every tradition that mapped the inner body arrived at the same three claims: there are knots, breath is the tool, and untying them changes consciousness."
+  description="Maps of the inner body from Chinese medicine, Daoist alchemy, yoga and tantra, Tibetan tsa lung and Dzogchen, and Buddhist practice — read beside the anatomy of perforators and fascia."
+  toc={toc}
+>
+  <section id="reading" class="trad">
+    <h2>A note on reading</h2>
+    <div class="prose"><p>
         These maps were drawn from the inside, in their own vocabularies, over two thousand years. They are not anatomy, and this page
         does not claim they were secretly describing it. What the essay proposes is narrower: where the traditions and modern reports
         converge on a <em>location</em>, the location is often a real convergence in the anatomy — and a correspondence specific enough to
         be coded blind and tested. Correspondence found after the fact is the weakest kind of evidence. Each map will be drawn on the same
         body in the <a href={`${base}/atlas/`}>atlas</a> so they can be compared, point by point.
-      </p>
-    </section>
+      </p></div>
+  </section>
 
-    <section id="china">
-      <span class="t-glyph cjk" aria-hidden="true">経絡</span>
-      <p class="eyebrow">China · Huangdi Neijing and after</p>
+  <section id="china" class="trad">
+    <div class="trad-head">
       <h2>Points, channels, and the knots of the sinews</h2>
+      <span class="cjk glyph" aria-hidden="true">経絡</span>
+    </div>
+    <p class="label">China · Huangdi Neijing and after</p>
+    <div class="prose">
       <p>
         Chinese medicine keeps <strong>two families</strong> of technique, and — read beside the perforator hypothesis — two families of
         structure. The first are points. The tender <em>ashi</em> points, named by Sun Simiao for the patient’s cry, are treated by the rule
@@ -63,12 +77,16 @@ const CORRESPONDENCES = [
         or tingling that travels along the meridian at roughly one to ten centimetres a second, halted by pressure or cold — the profile, the
         essay notes, of conducted vasodilation climbing a tree.
       </p>
-    </section>
+    </div>
+  </section>
 
-    <section id="daoist">
-      <span class="t-glyph cjk" aria-hidden="true">玉枕</span>
-      <p class="eyebrow">Daoist internal alchemy</p>
+  <section id="daoist" class="trad">
+    <div class="trad-head">
       <h2>The orbit and its three gates</h2>
+      <span class="cjk glyph" aria-hidden="true">玉枕</span>
+    </div>
+    <p class="label">Daoist internal alchemy</p>
+    <div class="prose">
       <p>
         In <em>neidan</em>, internal alchemy, the practitioner circulates the breath-energy in the <em>microcosmic orbit</em>: up the Governor
         vessel along the spine and over the head, down the Conception vessel in front. Three gates block the way up the back —
@@ -77,12 +95,16 @@ const CORRESPONDENCES = [
         the navel, at the heart, between the brows — are the fields in which the work is done.
       </p>
       <p>This essay’s gate at the ridge is the Jade Pillow.</p>
-    </section>
+    </div>
+  </section>
 
-    <section id="india">
-      <span class="t-glyph cjk" aria-hidden="true">नाडी</span>
-      <p class="eyebrow">Yoga and tantra</p>
+  <section id="india" class="trad">
+    <div class="trad-head">
       <h2>Nāḍīs, cakras, and the three knots</h2>
+      <span class="cjk glyph" aria-hidden="true">नाडी</span>
+    </div>
+    <p class="label">Yoga and tantra</p>
+    <div class="prose">
       <p>
         The yogic body is a network of <em>nāḍīs</em> — seventy-two thousand of them in the Haṭha Yoga Pradīpikā, three hundred and fifty
         thousand in the Śiva Saṃhitā — of which three matter most: <em>suṣumṇā</em> in the centre, <em>iḍā</em> and <em>piṅgalā</em> winding
@@ -95,15 +117,19 @@ const CORRESPONDENCES = [
         rising is described as heat, current and involuntary movement — the <em>kriyās</em> — and sometimes as a crisis that takes years to
         settle. The number is a curiosity worth holding lightly: seventy-two thousand channels; about a hundred thousand small perforators.
       </p>
-    </section>
+    </div>
+  </section>
 
-    <section id="tibet">
-      <span class="t-glyph cjk" aria-hidden="true">རྩ་རླུང་</span>
-      <p class="eyebrow">Tibet · tsa lung and Dzogchen</p>
+  <section id="tibet" class="trad">
+    <div class="trad-head">
       <h2>Channels, winds, drops — and knots</h2>
+      <span class="cjk glyph" aria-hidden="true">རྩ་རླུང་</span>
+    </div>
+    <p class="label">Tibet · tsa lung and Dzogchen</p>
+    <div class="prose">
       <p>
         Tibetan practice works with <em>tsa</em> (channels), <em>lung</em> (winds) and <em>tigle</em> (drops). A central channel runs from the
-        crown to below the navel; right and left channels run beside it and, at the channel-wheels, coil around it, forming
+        crown to below the navel; right and left channels run beside it and, at the channel-wheels, coil around it, forming{' '}
         <strong>channel-knots</strong> — <em>rtsa mdud</em>. Those at the heart are the tightest. The Six Yogas and the tsa lung exercises
         untie them by working the winds with breath, held and released; the traditions warn against untying them too fast.
       </p>
@@ -113,12 +139,16 @@ const CORRESPONDENCES = [
         practitioner is said to shrink at death and dissolve into light, leaving hair and nails. The essay’s own endpoint is humbler and
         measurable: a body with all its perforators and none of its knots.
       </p>
-    </section>
+    </div>
+  </section>
 
-    <section id="buddhist">
-      <span class="t-glyph cjk" aria-hidden="true">龍</span>
-      <p class="eyebrow">Buddhist practice and iconography</p>
+  <section id="buddhist" class="trad">
+    <div class="trad-head">
       <h2>Saṅkhāras, and the serpent over the head</h2>
+      <span class="cjk glyph" aria-hidden="true">龍</span>
+    </div>
+    <p class="label">Buddhist practice and iconography</p>
+    <div class="prose">
       <p>
         In the Vipassana taught by S. N. Goenka, gross, solidified bodily sensations are <em>saṅkhāras</em> — congealed reactions — that
         dissolve under equanimous attention and breath. The original essay noticed that this is, nearly word for word, the foam-rolling
@@ -130,138 +160,135 @@ const CORRESPONDENCES = [
         Beneath it sits the <em>uṣṇīṣa</em>, the rise at the top of the Buddha’s head. It is imagery, not evidence — but it rhymes with one of
         the strangest reports in the essay: a layer at the back of the head that peels, and spreads forward over the face.
       </p>
-    </section>
+    </div>
+  </section>
 
-    <section id="kriya">
-      <span class="t-glyph cjk" aria-hidden="true">延髄</span>
-      <p class="eyebrow">The medulla</p>
+  <section id="kriya" class="trad">
+    <div class="trad-head">
       <h2>Where the life-force enters</h2>
+      <span class="cjk glyph" aria-hidden="true">延髄</span>
+    </div>
+    <p class="label">The medulla</p>
+    <div class="prose">
       <p>
         The Kriya lineage places the entry of the life-force at the medulla, at the base of the skull — the same place accounts of awakening,
         across traditions, locate the decisive release: low, at the back, felt inside the head. The anatomy there is a ring of attachments
         around the foramen magnum — nuchal ligament behind, pharyngeal raphe in front, the myodural bridge between — which is why the essay
         calls it the master tether, and why it is also the one place no one should press hard.
       </p>
-    </section>
+    </div>
+  </section>
 
-    <section id="japan">
-      <span class="t-glyph cjk" aria-hidden="true">凝り</span>
-      <p class="eyebrow">Japan</p>
+  <section id="japan" class="trad">
+    <div class="trad-head">
       <h2>Kori</h2>
+      <span class="cjk glyph" aria-hidden="true">凝り</span>
+    </div>
+    <p class="label">Japan</p>
+    <div class="prose">
       <p>
         Japanese has an everyday word for a knot: <em>kori</em> (凝り), congealing — and <em>katakori</em>, shoulder stiffness, is among the most
-        commonly reported complaints in the country. Shiatsu presses <em>tsubo</em>, points; Zen training gathers the breath into the
+        commonly reported complaints in the country. Shiatsu presses <em>tsubo</em>, points; Zen training gathers the breath into the{' '}
         <em>hara</em>, below the navel.
       </p>
-    </section>
+    </div>
+  </section>
 
-    <section id="table" class="wide">
-      <p class="eyebrow">Proposed correspondences</p>
-      <h2>Read beside the anatomy</h2>
-      <div class="table-wrap">
-        <table>
-          <thead>
-            <tr><th>Traditional structure</th><th>Tradition</th><th>Proposed correlate (the essay)</th><th>Status</th></tr>
-          </thead>
-          <tbody>
-            {CORRESPONDENCES.map((r) => (
-              <tr>{r.map((c) => <td>{c}</td>)}</tr>
-            ))}
-          </tbody>
-        </table>
-      </div>
-      <p class="fine">
-        The essay lists the blind coding of these correspondences as a project (VASO-R006): that the classical points are perforators, the
-        sinew-channel knots are attachment lines, and the channels are the trees and planes between them.
-      </p>
-    </section>
-  </article>
-</Base>
+  <section id="table" class="trad">
+    <h2>Proposed correspondences</h2>
+    <p class="label">Read beside the anatomy</p>
+    <div class="table-wrap">
+      <table>
+        <thead>
+          <tr><th>Traditional structure</th><th>Tradition</th><th>Proposed correlate (the essay)</th><th>Status</th></tr>
+        </thead>
+        <tbody>
+          {CORRESPONDENCES.map((r) => (
+            <tr>{r.map((c) => <td>{c}</td>)}</tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <p class="fine prose">
+      The essay lists the blind coding of these correspondences as a project (VASO-R006): that the classical points are perforators, the
+      sinew-channel knots are attachment lines, and the channels are the trees and planes between them.
+    </p>
+  </section>
+</Doc>
 
 <style>
   .trad {
-    max-width: 68rem;
-    margin: 0 auto;
-    padding: 0 var(--gutter);
+    padding: 20px 0 16px;
+    border-bottom: 1px solid var(--border);
+    scroll-margin-top: 12px;
+    max-width: 760px;
   }
-  .trad section {
-    position: relative;
-    max-width: 42rem;
-    padding: 4.5rem 0 1rem;
-    border-top: 1px solid var(--hair);
-    scroll-margin-top: 5rem;
-  }
-  .trad section:first-child {
-    border-top: 0;
+  .trad:first-child {
     padding-top: 0;
   }
-  .trad section.wide {
+  .trad#table {
     max-width: none;
+    border-bottom: 0;
+  }
+  .trad-head {
+    display: flex;
+    align-items: baseline;
+    gap: 12px;
   }
   .trad h2 {
-    font-size: clamp(2rem, 3.6vw, 2.9rem);
-    margin: 0.8rem 0 1.6rem;
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+    margin-bottom: 2px;
   }
-  .trad p {
-    color: var(--ink-2);
+  .glyph {
+    margin-left: auto;
+    font-size: 18px;
+    color: var(--faint);
   }
-  .trad strong,
-  .trad em {
-    color: var(--ink);
-  }
-  .trad strong {
-    font-weight: 500;
-  }
-  .t-glyph {
-    position: absolute;
-    right: -24rem;
-    top: 4.2rem;
-    font-size: 3rem;
-    color: var(--ink-4);
-    opacity: 0.6;
-    writing-mode: vertical-rl;
-    line-height: 1.1;
+  .trad .label {
+    font-size: 9.5px;
+    margin-bottom: 10px;
   }
   .table-wrap {
     overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: 8px;
   }
   table {
     border-collapse: collapse;
     width: 100%;
-    min-width: 50rem;
-    font-size: 0.95rem;
+    min-width: 720px;
+    font-size: 11.5px;
   }
   th,
   td {
     text-align: left;
     vertical-align: top;
-    padding: 0.9rem 1.2rem 0.9rem 0;
-    border-bottom: 1px solid var(--hair);
-    color: var(--ink-2);
+    padding: 8px 10px;
+    border-bottom: 1px solid var(--border);
     line-height: 1.45;
   }
   th {
     font-family: var(--font-mono);
     font-weight: 400;
-    font-size: 0.62rem;
-    letter-spacing: 0.14em;
+    font-size: 9px;
+    letter-spacing: 0.5px;
     text-transform: uppercase;
-    color: var(--ink-3);
+    color: var(--muted);
+    background: var(--frame-bg);
+  }
+  td {
+    font-family: var(--font-serif);
   }
   td:first-child {
-    color: var(--ink);
-    font-family: var(--font-display);
-    font-size: 1.1rem;
+    font-weight: 700;
+    font-family: var(--font-sans);
+    font-size: 11.5px;
   }
   .fine {
-    font-size: 0.95rem;
-    color: var(--ink-3) !important;
-    margin-top: 1.4rem;
-    max-width: 44rem;
-  }
-  @media (max-width: 1100px) {
-    .t-glyph {
-      display: none;
-    }
+    margin-top: 12px;
+    font-size: 12px;
+    color: var(--muted);
   }
 </style>

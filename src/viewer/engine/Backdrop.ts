@@ -168,12 +168,12 @@ export class Backdrop {
     u.uBg.value.copy(t.background);
     u.uPaper.value = t.glow ? 0 : 1;
     if (t.glow) {
-      u.uHalo.value.copy(new Color('#d9cdb4'));
+      u.uHalo.value.copy(t.halo);
       u.uHaloStrength.value = 0.075;
       u.uGrain.value = 0.011;
       u.uVignette.value = 0.5;
     } else {
-      u.uHalo.value.copy(new Color('#ffffff'));
+      u.uHalo.value.copy(t.halo);
       u.uHaloStrength.value = 0.05;
       u.uGrain.value = 0.012;
       u.uVignette.value = 0.12;

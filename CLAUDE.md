@@ -5,8 +5,9 @@ Owner: Eugene Jhong. Source essays: `docs/source/*.md` (the Substack posts are c
 
 ## Principles
 
-- **Sacred art, not a demo.** Night-first (ink and moonlight); paper theme as the alternate (washi and sumi). One accent — shu
-  vermilion — belongs to knots; gold belongs to release. Restraint, negative space, slow motion. See `docs/DESIGN.md`.
+- **Look and feel of The OM Project** (ejhong.github.io/om): rice paper, ink-stone panels, small system type (sans, Georgia,
+  SF Mono), earth palette — terracotta for knots, sage for release. The figure itself is sacred art: light in an ink-stone card.
+  See `docs/DESIGN.md`.
 - **Anatomical honesty.** Counts and clusters come from the literature (Taylor & Palmer 1987; Saint-Cyr 2009). Anything representative
   is labelled as such. The simulation illustrates a hypothesis; it is not a measurement. Keep the safety cautions (the base of the skull
   is anatomy, not a target).
@@ -34,7 +35,8 @@ Owner: Eugene Jhong. Source essays: `docs/source/*.md` (the Substack posts are c
 - Figure axes: +x is the figure's **left**, +y up, +z front; metres; feet on y = 0.
 - Place anything on the body with a `Locator` (see `anchors/locate.ts`), resolved on `REFERENCE_SHAPE`; never hard-code coordinates.
 - `MeshBVH` must be built with `{ indirect: true }` — anchors depend on triangle order and `body.triangles` is shared.
-- Colours: 3D in `engine/theme.ts`, CSS in `src/styles/tokens.css`; keep them in step.
+- Colours: 3D in `engine/theme.ts`, CSS in `src/styles/tokens.css` (+ `app.css` for the instrument layout); keep them in step.
+- Astro trims a line break before an inline tag: end such lines with `{' '}`.
 - Before pushing: `npm run check && npm test && npm run build`, and screenshot any visual change.
 
 ## Workflow

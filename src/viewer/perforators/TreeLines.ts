@@ -104,7 +104,7 @@ export class TreeLines {
 
   applyTheme(t: SceneTheme) {
     this.material.uniforms.uColor.value.copy(t.tree);
-    this.material.uniforms.uPulseColor.value.copy(t.star);
+    this.material.uniforms.uPulseColor.value.copy(t.pulse);
     this.material.uniforms.uGlowMode.value = t.glow;
     this.material.blending = t.glow ? AdditiveBlending : NormalBlending;
     this.material.needsUpdate = true;

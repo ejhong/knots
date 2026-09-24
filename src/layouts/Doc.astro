@@ -1,0 +1,115 @@
+---
+import Base from './Base.astro';
+
+/**
+ * Reading pages: a rice-paper card of Georgia prose beside an ink-stone
+ * contents panel — the OM arrangement, for text.
+ */
+interface Props {
+  title: string;
+  kicker: string;
+  lede?: string;
+  current: string;
+  description?: string;
+  toc: { id: string; label: string; sub?: string }[];
+  wide?: boolean;
+}
+const { title, kicker, lede, current, description, toc, wide = false } = Astro.props;
+---
+<Base title={title} current={current} description={description}>
+  <div class:list={['doc', { wide }]}>
+    <article class="doc-card card">
+      <header class="doc-head">
+        <p class="label">{kicker}</p>
+        <h1>{title}</h1>
+        {lede && <p class="lede quote">{lede}</p>}
+      </header>
+      <div class="doc-body">
+        <slot />
+      </div>
+    </article>
+    <aside class="doc-toc panel" aria-label="Contents">
+      <div class="panel-head">Contents</div>
+      <nav class="panel-body">
+        {
+          toc.map((t) => (
+            <a class="toc-item" href={`#${t.id}`}>
+              <span>{t.label}</span>
+              {t.sub && <span class="sub">{t.sub}</span>}
+            </a>
+          ))
+        }
+      </nav>
+    </aside>
+  </div>
+</Base>
+
+<style>
+  .doc {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 250px;
+    gap: 16px;
+    padding: 16px;
+    align-items: start;
+    max-width: 1180px;
+    margin: 0 auto;
+  }
+  .doc.wide {
+    max-width: 1480px;
+  }
+  .doc-card {
+    padding: 28px 36px 36px;
+    min-width: 0;
+  }
+  .doc-head {
+    border-bottom: 1px solid var(--border);
+    padding-bottom: 18px;
+    margin-bottom: 22px;
+  }
+  .doc-head h1 {
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    margin: 6px 0 6px;
+  }
+  .lede {
+    font-size: 12.5px;
+    line-height: 1.55;
+    max-width: 640px;
+  }
+  .doc-toc {
+    position: sticky;
+    top: 16px;
+    max-height: calc(100vh - 32px);
+  }
+  .toc-item {
+    display: grid;
+    gap: 1px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: #ddd4c7;
+    text-decoration: none;
+    padding: 5px 14px;
+    line-height: 1.4;
+  }
+  .toc-item:hover {
+    background: rgba(255, 255, 255, 0.04);
+    color: #fff;
+  }
+  .toc-item .sub {
+    font-size: 9px;
+    color: var(--panel-faint);
+  }
+  @media (max-width: 900px) {
+    .doc {
+      grid-template-columns: 1fr;
+      padding: 10px;
+    }
+    .doc-toc {
+      display: none;
+    }
+    .doc-card {
+      padding: 20px 18px 26px;
+    }
+  }
+</style>

@@ -1,31 +1,41 @@
 ---
-import Base from '../layouts/Base.astro';
-import PageHead from '../components/PageHead.astro';
+import Doc from '../layouts/Doc.astro';
 import { REFERENCES, TAG_LABELS, type Tag } from '../data/references';
 import { TIMELINE } from '../data/timeline';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const tagCounts = new Map<Tag, number>();
 for (const r of REFERENCES) for (const t of r.tags) tagCounts.set(t, (tagCounts.get(t) ?? 0) + 1);
 const tags = [...tagCounts.entries()].sort((a, b) => b[1] - a[1]).map(([t]) => t);
-const KIND: Record<string, string> = { paper: 'Paper', book: 'Book', text: 'Text', web: 'Web', essay: 'Essay' };
+const KIND: Record<string, string> = { paper: 'paper', book: 'book', text: 'text', web: 'web', essay: 'essay' };
 const yearLabel = (y: number) => (y < 0 ? `c. ${-y} BCE` : String(y));
+const KIND_COLOR: Record<string, string> = { tradition: 'var(--plum)', essay: 'var(--terracotta)', anatomy: 'var(--stone)', medicine: 'var(--accent-dark)' };
+const toc = [
+  { id: 'history', label: 'A short history of knots', sub: `${TIMELINE.length} moments` },
+  { id: 'sources', label: 'Sources', sub: `${REFERENCES.length} papers, books, texts` },
+  ...tags.slice(0, 12).map((t) => ({ id: `sources`, label: `· ${TAG_LABELS[t]}`, sub: `${tagCounts.get(t)}` })),
+];
 ---
-<Base title="Library" current="library" description="The research on knots — trigger points, fascia, perforators, vessels — alongside the classical texts of Chinese medicine, yoga, Daoist alchemy and Tibetan practice, and a short history of how they met.">
-  <PageHead kicker="Library" title="What has been measured, argued and handed down" glyph="典">
-    The papers behind each link in the chain, the critiques, and the texts in which the traditions mapped the same ground.
-  </PageHead>
-
-  <section class="history">
-    <p class="eyebrow">A short history of knots</p>
+<Doc
+  title="What has been measured, argued and handed down"
+  kicker="Library"
+  current="library"
+  lede="The papers behind each link in the chain, the critiques, and the texts in which the traditions mapped the same ground. Papers are verified against PubMed."
+  description="The research on knots — trigger points, fascia, perforators, vessels — alongside the classical texts of Chinese medicine, yoga, Daoist alchemy and Tibetan practice, and a short history of how they met."
+  toc={toc}
+>
+  <section id="history" class="block">
+    <h2>A short history of knots</h2>
     <ol class="timeline">
       {
         TIMELINE.map((m) => (
-          <li class:list={[m.kind]}>
-            <span class="year num">{m.year}</span>
+          <li>
+            <span class="year mono" style={`color:${KIND_COLOR[m.kind ?? 'medicine']}`}>
+              {m.year}
+            </span>
             <span class="text">
               {m.text}
               {m.ref && (
-                <a class="mono lower cite" href={`#${m.ref}`}>
+                <a class="cite mono" href={`#${m.ref}`}>
                   ↓
                 </a>
               )}
@@ -36,24 +46,21 @@ const yearLabel = (y: number) => (y < 0 ? `c. ${-y} BCE` : String(y));
     </ol>
   </section>
 
-  <section class="refs" data-library>
+  <section id="sources" class="block" data-library>
+    <h2>Sources</h2>
     <div class="controls">
-      <p class="eyebrow">{REFERENCES.length} sources</p>
       <div class="filters" role="group" aria-label="Filter by theme">
-        <button class="chip is-active" type="button" data-tag="all">All</button>
-        {tags.map((t) => <button class="chip" type="button" data-tag={t}>{TAG_LABELS[t]}</button>)}
+        <button class="seg is-active" type="button" data-tag="all">all</button>
+        {tags.map((t) => <button class="seg" type="button" data-tag={t}>{TAG_LABELS[t].toLowerCase()}</button>)}
       </div>
-      <label class="search">
-        <span class="visually-hidden">Search the library</span>
-        <input type="search" placeholder="Search authors, titles, notes" data-search />
-      </label>
+      <input class="search" type="search" placeholder="search authors, titles, notes" data-search aria-label="Search the library" />
     </div>
     <ol class="entries">
       {
         REFERENCES.map((r) => (
           <li id={r.id} data-tags={r.tags.join(' ')} data-text={`${r.authors} ${r.title} ${r.venue} ${r.note}`.toLowerCase()}>
-            <span class="year num">{yearLabel(r.year)}</span>
-            <div class="body">
+            <span class="year mono">{yearLabel(r.year)}</span>
+            <div>
               <p class="title">
                 {r.url ? (
                   <a href={r.url} rel="noopener">
@@ -64,29 +71,26 @@ const yearLabel = (y: number) => (y < 0 ? `c. ${-y} BCE` : String(y));
                 )}
               </p>
               <p class="by">
-                {r.authors} · <span class="venue">{r.venue}</span>
+                {r.authors} · <i>{r.venue}</i>
               </p>
               <p class="note">{r.note}</p>
-              <p class="mono lower kind">
+              <p class="kind mono">
                 {KIND[r.kind]}
-                {r.tags.map((t) => ` · ${TAG_LABELS[t]}`)}
+                {r.tags.map((t) => ` · ${TAG_LABELS[t].toLowerCase()}`)}
               </p>
             </div>
           </li>
         ))
       }
     </ol>
-    <p class="empty mono lower" hidden data-empty>Nothing matches.</p>
-  </section>
-
-  <section class="contribute">
-    <p>
+    <p class="empty mono" hidden data-empty>nothing matches.</p>
+    <p class="contribute">
       Missing something? The library is a data file —
       <a href="https://github.com/ejhong/knots/blob/main/src/data/references.ts">src/data/references.ts</a> — and papers are
-      verified against PubMed before they are added. See <a href={`${base}/about/`}>About</a> for how to contribute.
+      verified against PubMed before they are added. See <a href={`${base}/about/`}>About</a>.
     </p>
   </section>
-</Base>
+</Doc>
 
 <script>
   const root = document.querySelector<HTMLElement>('[data-library]')!;
@@ -117,167 +121,155 @@ const yearLabel = (y: number) => (y < 0 ? `c. ${-y} BCE` : String(y));
 </script>
 
 <style>
-  .history,
-  .refs,
-  .contribute {
-    max-width: 68rem;
-    margin: 0 auto;
-    padding: 0 var(--gutter);
+  .block {
+    scroll-margin-top: 12px;
+  }
+  .block + .block {
+    margin-top: 28px;
+    padding-top: 22px;
+    border-top: 1px solid var(--border);
+  }
+  h2 {
+    font-size: 15px;
+    font-weight: 700;
+    margin-bottom: 12px;
   }
   .timeline {
     list-style: none;
-    margin: 1.4rem 0 0;
-    padding: 0;
-    border-top: 1px solid var(--hair);
   }
   .timeline li {
     display: grid;
-    grid-template-columns: 7.5rem minmax(0, 1fr);
-    gap: 1.5rem;
-    padding: 0.95rem 0;
-    border-bottom: 1px solid var(--hair);
-    color: var(--ink-2);
-    font-size: 1.02rem;
+    grid-template-columns: 78px minmax(0, 1fr);
+    gap: 12px;
+    padding: 6px 0;
+    border-bottom: 1px dotted var(--border);
+    font-family: var(--font-serif);
+    font-size: 12.5px;
     line-height: 1.5;
   }
   .timeline .year {
-    font-size: 0.78rem;
-    color: var(--ink-3);
-    padding-top: 0.2rem;
-  }
-  .timeline li.tradition .year {
-    color: var(--fuji);
-  }
-  .timeline li.essay .year {
-    color: var(--shu);
-  }
-  .timeline li.anatomy .year {
-    color: var(--silver);
+    font-size: 10px;
+    padding-top: 2px;
   }
   .cite {
-    margin-left: 0.4rem;
+    margin-left: 6px;
+    font-size: 10px;
+    color: var(--muted);
     text-decoration: none;
-    color: var(--ink-3);
-  }
-  .refs {
-    margin-top: 6rem;
   }
   .controls {
     display: grid;
-    gap: 1rem;
-    padding-bottom: 1.4rem;
-    border-bottom: 1px solid var(--hair-2);
+    gap: 8px;
+    margin-bottom: 10px;
     position: sticky;
-    top: 3.6rem;
-    z-index: 5;
-    background: color-mix(in srgb, var(--bg) 92%, transparent);
-    backdrop-filter: blur(10px);
-    -webkit-backdrop-filter: blur(10px);
-    padding-top: 1rem;
+    top: 0;
+    background: var(--bg);
+    padding: 6px 0 10px;
+    z-index: 2;
+    border-bottom: 1px solid var(--border);
   }
   .filters {
     display: flex;
     flex-wrap: wrap;
-    gap: 0.2rem;
+    gap: 2px;
   }
-  .chip {
-    appearance: none;
+  .seg {
     font-family: var(--font-mono);
-    font-size: 0.62rem;
-    letter-spacing: 0.12em;
-    text-transform: uppercase;
-    color: var(--ink-3);
+    font-size: 10px;
+    color: var(--muted);
     background: transparent;
     border: 1px solid transparent;
-    border-radius: 999px;
-    padding: 0.4em 0.8em;
+    border-radius: 4px;
+    padding: 3px 7px;
     cursor: pointer;
   }
-  .chip:hover {
-    color: var(--ink);
+  .seg:hover {
+    color: var(--text);
+    background: var(--border);
   }
-  .chip.is-active {
-    color: var(--ink);
-    border-color: var(--hair-2);
+  .seg.is-active {
+    color: var(--text);
+    background: var(--frame-bg);
+    border-color: var(--frame-border);
   }
-  .search input {
-    width: min(26rem, 100%);
-    background: transparent;
-    border: 0;
-    border-bottom: 1px solid var(--hair-2);
-    color: var(--ink);
-    font-family: var(--font-text);
-    font-size: 1.05rem;
-    padding: 0.4rem 0;
-  }
-  .search input:focus {
+  .search {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    padding: 5px 9px;
+    border: 1px solid var(--border);
+    border-radius: 4px;
+    background: var(--bg);
+    color: var(--text);
+    width: min(320px, 100%);
     outline: none;
-    border-bottom-color: var(--ink-2);
+  }
+  .search:focus {
+    border-color: var(--frame-border);
   }
   .entries {
     list-style: none;
-    margin: 0;
-    padding: 0;
   }
   .entries li {
     display: grid;
-    grid-template-columns: 7.5rem minmax(0, 1fr);
-    gap: 1.5rem;
-    padding: 1.6rem 0;
-    border-bottom: 1px solid var(--hair);
-    scroll-margin-top: 14rem;
+    grid-template-columns: 78px minmax(0, 1fr);
+    gap: 12px;
+    padding: 11px 0;
+    border-bottom: 1px solid var(--border);
+    scroll-margin-top: 110px;
   }
   .entries li:target {
-    background: linear-gradient(90deg, color-mix(in srgb, var(--shu) 8%, transparent), transparent 60%);
+    background: linear-gradient(90deg, rgba(200, 120, 104, 0.1), transparent 70%);
   }
   .entries .year {
-    font-size: 0.8rem;
-    color: var(--ink-3);
-    padding-top: 0.25rem;
+    font-size: 10px;
+    color: var(--muted);
+    padding-top: 2px;
   }
   .title {
-    font-family: var(--font-display);
-    font-size: 1.32rem;
-    line-height: 1.25;
-    margin: 0 0 0.35rem;
-    color: var(--ink);
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.35;
+    margin-bottom: 2px;
   }
   .title a {
-    text-decoration-color: var(--hair-2);
+    text-decoration: none;
+  }
+  .title a:hover {
+    text-decoration: underline;
   }
   .by {
-    margin: 0 0 0.5rem;
-    color: var(--ink-2);
-    font-size: 0.98rem;
-  }
-  .venue {
-    font-style: italic;
+    font-family: var(--font-serif);
+    font-size: 11.5px;
+    color: var(--muted);
+    margin-bottom: 4px;
   }
   .note {
-    margin: 0 0 0.5rem;
-    color: var(--ink-2);
-    font-size: 1rem;
-    max-width: 44rem;
+    font-family: var(--font-serif);
+    font-size: 12.5px;
+    line-height: 1.5;
+    margin-bottom: 3px;
+    max-width: 760px;
   }
   .kind {
-    margin: 0;
-    font-size: 0.66rem;
-    color: var(--ink-4);
+    font-size: 9px;
+    color: var(--faint);
   }
   .empty {
-    padding: 2rem 0;
-    color: var(--ink-3);
+    padding: 14px 0;
+    font-size: 11px;
+    color: var(--muted);
   }
   .contribute {
-    margin-top: 4rem;
-    color: var(--ink-3);
-    font-size: 0.98rem;
+    margin-top: 18px;
+    font-family: var(--font-serif);
+    font-size: 12px;
+    color: var(--muted);
   }
   @media (max-width: 700px) {
     .timeline li,
     .entries li {
       grid-template-columns: 1fr;
-      gap: 0.3rem;
+      gap: 2px;
     }
     .controls {
       position: static;

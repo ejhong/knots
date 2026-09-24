@@ -1,4 +1,4 @@
-# Knots 結
+# Knots of Existence 結
 
 **An atlas of the body’s held places.** A three-dimensional, open, long-running visualisation of what a “knot” might be — built
 around the perforator-and-sheet hypothesis in Eugene Jhong’s essay
@@ -7,7 +7,7 @@ maps the contemplative traditions drew of the same ground.
 
 **Live:** <https://ejhong.github.io/knots/>
 
-- **Introduction** — the hypothesis, told in twelve short chapters.
+- **Introduction** — a guided tour in twelve chapters: press ▶ and the figure illustrates each one.
 - **Atlas** — the body drawn as ~100,000 perforators; knots as stuck ones. Press a knot and breathe out; drag age from 1 to 90; aggravate a
   back ache; watch release climb the vessel trees toward their roots.
 - **Hypotheses** — seven answers, each at its strongest, with a comparison table.
@@ -15,6 +15,8 @@ maps the contemplative traditions drew of the same ground.
 - **Library** — verified references and a short history of knots.
 
 > A hypothesis drawn carefully; not medical advice. Perforator positions are representative, not a map of any one person.
+
+The look follows [The OM Project](https://ejhong.github.io/om/): rice paper, ink-stone panels, small system type.
 
 ## Develop
 

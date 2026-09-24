@@ -1,136 +1,142 @@
 ---
-import Base from '../layouts/Base.astro';
-import PageHead from '../components/PageHead.astro';
-const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+import Doc from '../layouts/Doc.astro';
+const toc = [
+  { id: 'what', label: 'What this is' },
+  { id: 'measured', label: 'Measured and representative' },
+  { id: 'caution', label: 'A caution' },
+  { id: 'open', label: 'Open source' },
+];
 ---
-<Base title="About" current="about" description="What this atlas is, how it was made, what is measured and what is representative, and how to contribute.">
-  <PageHead kicker="About" title="How this atlas was made" glyph="作">
-    A hypothesis drawn carefully: what is measured, what is representative, and what is imagined.
-  </PageHead>
+<Doc
+  title="How this atlas was made"
+  kicker="About"
+  current="about"
+  lede="A hypothesis drawn carefully: what is measured, what is representative, and what is imagined."
+  description="What this atlas is, how it was made, what is measured and what is representative, and how to contribute."
+  toc={toc}
+>
+  <section id="what" class="prose block">
+    <h2>What this is</h2>
+    <p>
+      <em>Knots of Existence</em> is a long-running, open visualisation of a question: what, physically, is the thing a foam roller finds
+      and a slow exhale releases? It is built around the essay{' '}
+      <a href="https://ejhong.substack.com/p/knots-of-existence-hypotheses">Knots of Existence Hypotheses</a> (Eugene Jhong, 2026), its
+      predecessor <a href="https://ejhong.substack.com/p/knots-of-existence-and-vasocomputation">Knots of Existence and Vasocomputation</a>,
+      and the rival answers the literature and the traditions offer. It is not medical advice, and nothing here is a protocol.
+    </p>
+  </section>
 
-  <article class="about">
-    <section>
-      <h2>What this is</h2>
-      <p>
-        <em>Knots</em> is a long-running, open visualisation of a question: what, physically, is the thing a foam roller finds and a slow
-        exhale releases? It is built around the essay
-        <a href="https://ejhong.substack.com/p/knots-of-existence-hypotheses">Knots of Existence Hypotheses</a> (Eugene Jhong, 2026), its
-        predecessor <a href="https://ejhong.substack.com/p/knots-of-existence-and-vasocomputation">Knots of Existence and Vasocomputation</a>,
-        and the rival answers the literature and the traditions offer. It is not medical advice, and nothing here is a protocol.
-      </p>
-    </section>
+  <section id="measured" class="block">
+    <h2>What is measured, and what is representative</h2>
+    <dl class="kv">
+      <dt>Body</dt>
+      <dd>
+        The MakeHuman base mesh and age targets (CC0), averaged across its ethnic targets and blended between female and male, from infancy
+        to ninety; smoothed by one level of Catmull–Clark subdivision at runtime.
+      </dd>
+      <dt>Perforators</dt>
+      <dd>
+        Counts come from the literature: an average of 374 major perforators (≥ 0.5 mm) per body in about forty source-artery territories
+        (Taylor &amp; Palmer, 1987), and on the order of a hundred thousand small perforators at 4–5 mm spacing (the essay’s estimate from
+        skin area). Major perforators are placed more densely where surgeons find them clustered — the paraspinal and parasternal rows, the
+        periumbilical field, the anterolateral thigh, near joints — and the rest by blue-noise sampling. <strong>Positions are
+        representative, not a map of any one person</strong>: real perforators vary by centimetres between people and between sides.
+      </dd>
+      <dt>Fascia</dt>
+      <dd>
+        The floor (deep fascia) sits at typical subcutaneous depths for each region — thin over the scalp, face, hands and feet; thickest over
+        the abdomen and buttocks. Lifting the sheet exaggerates the interstitial plane so the staples show.
+      </dd>
+      <dt>Trees</dt>
+      <dd>
+        Each perforator joins its nearest larger vessel, and each major perforator its root, by shortest paths along the skin. Real source
+        vessels run beneath the deep fascia; the trees are drawn on the surface for legibility.
+      </dd>
+      <dt>Knots</dt>
+      <dd>
+        The simulation illustrates the hypothesis; it is not a measurement. Each site carries a vessel tone, a collar gel and a nerve state,
+        coupled as the essay describes, with timescales compressed so a release can be watched. Where knots gather with age follows the
+        essays’ predicted census — the census nobody has taken.
+      </dd>
+      <dt>Maps</dt>
+      <dd>
+        Traditional maps are drawn from standard sources (for acupoints, the WHO Western Pacific standard) and placed by anatomical landmarks
+        on this body. They are approximate and for comparison, not for needling.
+      </dd>
+    </dl>
+  </section>
 
-    <section>
-      <h2>What is measured, and what is representative</h2>
-      <dl>
-        <dt>The body</dt>
-        <dd>
-          The figure is the MakeHuman base mesh with its age targets (CC0), averaged across its ethnic targets and blended between female and
-          male, from infancy to ninety. One level of Catmull–Clark subdivision smooths it at runtime.
-        </dd>
-        <dt>Perforators</dt>
-        <dd>
-          The counts are from the literature: an average of 374 major perforators (≥ 0.5 mm) per body (Taylor &amp; Palmer, 1987), organised
-          in about forty source-artery territories, and on the order of a hundred thousand small perforators at 4–5 mm spacing (the essay’s
-          estimate from skin area). Major perforators are placed more densely where surgeons find them clustered — the paraspinal and parasternal
-          rows, the periumbilical field, the anterolateral thigh, near joints — and the rest by blue-noise sampling. <strong>Positions are
-          representative, not a map of any one person</strong>: real perforators vary by centimetres between people and between sides.
-        </dd>
-        <dt>Trees</dt>
-        <dd>
-          Each perforator is joined to its nearest larger vessel and each major perforator to its root by shortest paths along the skin. Real
-          source vessels run beneath the deep fascia; the trees here are drawn on the surface for legibility.
-        </dd>
-        <dt>Knots</dt>
-        <dd>
-          The simulation is a model of the hypothesis, not a measurement. Each site carries a vessel tone, a collar gel and a nerve state, coupled
-          as the essay describes; timescales are compressed so that a release you can watch takes seconds. Where knots gather with age follows the
-          essays’ predicted census — the junctions, the brace muscles, the roots at the ridges — which has never been measured.
-        </dd>
-        <dt>Maps</dt>
-        <dd>
-          Traditional maps are drawn from standard sources (for acupoints, the WHO Western Pacific standard) and placed by anatomical
-          landmarks on this body. They are approximate and for comparison, not for needling.
-        </dd>
-      </dl>
-    </section>
+  <section id="caution" class="prose block">
+    <h2>A caution</h2>
+    <p>
+      The base of the skull is anatomy, not a target: the suboccipital triangle sits over the vertebral artery, and deep pressure there is a
+      known stroke risk. Forceful blowing, breath-holds and straining can drive air into the tissues of the face and chest. Intensive
+      practice can destabilise for months or years. If something is happening to you, see a physician — electrolytes, creatine kinase,
+      hydration, sleep — and slow down. For meditation-related difficulty, <a href="https://www.cheetahhouse.org">Cheetah House</a> is a place
+      to start.
+    </p>
+  </section>
 
-    <section>
-      <h2>A caution</h2>
-      <p>
-        The base of the skull is anatomy, not a target: the suboccipital triangle sits over the vertebral artery, and deep pressure there is a
-        known stroke risk. Forceful blowing, breath-holds and straining can drive air into the tissues of the face and chest. Intensive practice
-        can destabilise for months or years. If something is happening to you, see a physician — electrolytes, creatine kinase, hydration,
-        sleep — and slow down. For meditation-related difficulty, <a href="https://www.cheetahhouse.org">Cheetah House</a> is a place to start.
-      </p>
-    </section>
-
-    <section>
-      <h2>Open source</h2>
-      <p>
-        The code is MIT-licensed and the writing and data are CC BY 4.0, at
-        <a href="https://github.com/ejhong/knots">github.com/ejhong/knots</a>. Hypotheses, maps and references are plain data files; each has a
-        documented format, and new maps are placed by anatomical landmarks rather than coordinates. Corrections from anatomists, surgeons,
-        clinicians and practitioners of the traditions are especially welcome.
-      </p>
-      <p class="mono lower faint">
-        Built with Three.js and Astro. Type: Cormorant Garamond, EB Garamond, IBM Plex Mono, Shippori Mincho. Body: MakeHuman (CC0).
-      </p>
-    </section>
-  </article>
-</Base>
+  <section id="open" class="prose block">
+    <h2>Open source</h2>
+    <p>
+      The code is MIT-licensed and the writing and data are CC BY 4.0, at{' '}
+      <a href="https://github.com/ejhong/knots">github.com/ejhong/knots</a>. Hypotheses, maps and references are plain data files; new maps are
+      placed by anatomical landmarks rather than coordinates. Corrections from anatomists, surgeons, clinicians and practitioners of the
+      traditions are especially welcome. The look follows <a href="https://ejhong.github.io/om/">The OM Project</a>.
+    </p>
+    <p class="mono small">Three.js · Astro · MakeHuman (CC0) · system type: Georgia, SF Mono</p>
+  </section>
+</Doc>
 
 <style>
-  .about {
-    max-width: 68rem;
-    margin: 0 auto;
-    padding: 0 var(--gutter);
+  .block {
+    padding: 18px 0;
+    border-bottom: 1px solid var(--border);
+    scroll-margin-top: 12px;
+    max-width: 760px;
   }
-  section {
-    max-width: 44rem;
-    padding: 3.5rem 0 1rem;
-    border-top: 1px solid var(--hair);
+  .block:first-child {
+    padding-top: 0;
+  }
+  .block:last-child {
+    border-bottom: 0;
   }
   h2 {
-    font-size: clamp(1.8rem, 3vw, 2.4rem);
-    margin-bottom: 1.4rem;
+    font-family: var(--font-sans);
+    font-size: 15px;
+    font-weight: 700;
+    margin: 0 0 10px;
   }
-  p,
-  dd {
-    color: var(--ink-2);
-  }
-  em,
-  strong {
-    color: var(--ink);
-  }
-  strong {
-    font-weight: 500;
-  }
-  dl {
+  .kv {
     display: grid;
-    grid-template-columns: 8rem minmax(0, 1fr);
-    gap: 1.2rem 1.6rem;
-    margin: 0;
+    grid-template-columns: 86px minmax(0, 1fr);
+    gap: 10px 14px;
   }
-  dt {
+  .kv dt {
     font-family: var(--font-mono);
-    font-size: 0.64rem;
-    letter-spacing: 0.14em;
+    font-size: 9px;
     text-transform: uppercase;
-    color: var(--ink-3);
-    padding-top: 0.4rem;
+    letter-spacing: 0.5px;
+    color: var(--muted);
+    padding-top: 3px;
   }
-  dd {
-    margin: 0;
-    line-height: 1.6;
+  .kv dd {
+    font-family: var(--font-serif);
+    font-size: 13px;
+    line-height: 1.62;
+  }
+  .small {
+    font-size: 10px;
+    color: var(--muted);
   }
   @media (max-width: 700px) {
-    dl {
+    .kv {
       grid-template-columns: 1fr;
-      gap: 0.3rem;
+      gap: 2px;
     }
-    dd {
-      margin-bottom: 1rem;
+    .kv dd {
+      margin-bottom: 10px;
     }
   }
 </style>

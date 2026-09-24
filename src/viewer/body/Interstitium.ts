@@ -146,8 +146,8 @@ export class Interstitium {
 
   applyTheme(t: SceneTheme) {
     const u = this.material.uniforms;
-    u.uColor.value.copy(t.glow ? new Color('#9fb6cf') : new Color('#5d7690'));
-    u.uGel.value.copy(t.glow ? new Color('#e8f1ff') : new Color('#2f4b6e'));
+    u.uColor.value.copy(t.mist);
+    u.uGel.value.copy(t.gel);
     u.uGlowMode.value = t.glow;
     this.material.blending = t.glow ? AdditiveBlending : NormalBlending;
     this.material.needsUpdate = true;

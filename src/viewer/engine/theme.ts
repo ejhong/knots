@@ -24,52 +24,84 @@ export interface SceneTheme {
   knot: Color;
   knotCore: Color;
   star: Color;
+  /** Light climbing a tree after a release. */
+  pulse: Color;
   gold: Color;
-  /** 0 for paper (ink on light), 1 for night (light on ink). */
+  halo: Color;
+  /** The interstitial mist, and its gel around a stuck staple. */
+  mist: Color;
+  gel: Color;
+  /** 0 for paper (ink on light), 1 for ink stone (light on dark). */
   glow: number;
 }
 
 const c = (hex: string) => new Color(hex);
 
+/**
+ * Earth / wabi-sabi, as in The OM Project: "night" is ink stone — the
+ * viewing card in which the figure is made of light; "paper" is rice paper,
+ * where the same figure is an ink stipple.
+ */
 export const THEMES: Record<ThemeName, SceneTheme> = {
   paper: {
     name: 'paper',
-    background: c('#f3f1ec'),
-    bodyLight: c('#fbfaf7'),
-    bodyShadow: c('#d9d4ca'),
-    line: c('#1c1c20'),
-    rim: c('#26262b'),
-    floor: c('#e6e0d6'),
-    floorLine: c('#8d8579'),
-    tree: c('#3b3b42'),
-    point: c('#2a2a30'),
-    knot: c('#c8412b'),
-    knotCore: c('#9e2a18'),
-    star: c('#c98f2b'),
-    gold: c('#b8893a'),
+    background: c('#faf7f2'),
+    bodyLight: c('#fcfaf6'),
+    bodyShadow: c('#e0dbd4'),
+    line: c('#3a3632'),
+    rim: c('#6b5d4d'),
+    floor: c('#eee8df'),
+    floorLine: c('#a89f94'),
+    tree: c('#7f878d'),
+    point: c('#3a3632'),
+    knot: c('#c87868'),
+    knotCore: c('#9d5746'),
+    star: c('#b8903f'),
+    pulse: c('#5f935f'),
+    gold: c('#9a8a78'),
+    halo: c('#ffffff'),
+    mist: c('#a482ac'),
+    gel: c('#6b4a73'),
     glow: 0,
   },
   night: {
     name: 'night',
-    background: c('#0e0f12'),
-    bodyLight: c('#2c2d33'),
-    bodyShadow: c('#121316'),
-    line: c('#d6d0c4'),
-    rim: c('#efe9dc'),
-    floor: c('#1b1c21'),
-    floorLine: c('#6d6a63'),
-    tree: c('#b9b3a6'),
-    point: c('#e8e2d4'),
-    knot: c('#ff5b3d'),
-    knotCore: c('#ffd2b8'),
-    star: c('#ffe2a6'),
-    gold: c('#e0b566'),
+    background: c('#262422'),
+    bodyLight: c('#3a3733'),
+    bodyShadow: c('#1d1b19'),
+    line: c('#c4b8a8'),
+    rim: c('#e6ded2'),
+    floor: c('#2c2926'),
+    floorLine: c('#6f665c'),
+    tree: c('#9aa2a8'),
+    point: c('#e6dccd'),
+    knot: c('#d9826d'),
+    knotCore: c('#f6cdb8'),
+    star: c('#ecd6a4'),
+    pulse: c('#9dcc9a'),
+    gold: c('#c9a45f'),
+    halo: c('#c4b8a8'),
+    mist: c('#b59bbd'),
+    gel: c('#f0e2f4'),
     glow: 1,
   },
 };
 
+/** The viewer's ground, remembered per browser; ink stone by default. */
 export function preferredTheme(): ThemeName {
-  const attr = document.documentElement.dataset.theme;
-  if (attr === 'paper' || attr === 'night') return attr;
-  return window.matchMedia?.('(prefers-color-scheme: dark)').matches ? 'night' : 'paper';
+  try {
+    const t = localStorage.getItem('knots-ground');
+    if (t === 'paper' || t === 'night') return t;
+  } catch {
+    /* storage unavailable */
+  }
+  return 'night';
+}
+
+export function rememberTheme(t: ThemeName) {
+  try {
+    localStorage.setItem('knots-ground', t);
+  } catch {
+    /* storage unavailable */
+  }
 }

@@ -1,0 +1,126 @@
+---
+/**
+ * The top band, as in The OM Project: a title, a line of scripture in
+ * Georgia italic, and — here — the navigation.
+ */
+interface Props {
+  current?: string;
+}
+const { current = '' } = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const links = [
+  { id: 'intro', href: `${base}/`, label: 'Introduction' },
+  { id: 'atlas', href: `${base}/atlas/`, label: 'Atlas' },
+  { id: 'hypotheses', href: `${base}/hypotheses/`, label: 'Hypotheses' },
+  { id: 'traditions', href: `${base}/traditions/`, label: 'Traditions' },
+  { id: 'library', href: `${base}/library/`, label: 'Library' },
+  { id: 'about', href: `${base}/about/`, label: 'About' },
+];
+---
+<header class="top-bar">
+  <div class="titles">
+    <a class="title" href={`${base}/`}><span class="seal cjk" aria-hidden="true">結</span>Knots of Existence</a>
+    <p class="subtitle-quote">
+      “When all the knots of the heart are cut, here in this life, the mortal becomes immortal. This much is the
+      teaching.” <span class="attribution">— Kaṭha Upaniṣad 2.3.15</span>
+    </p>
+  </div>
+  <nav aria-label="Primary">
+    {
+      links.map((l) => (
+        <a href={l.href} aria-current={current === l.id ? 'page' : undefined}>
+          {l.label}
+        </a>
+      ))
+    }
+  </nav>
+</header>
+
+<style>
+  .top-bar {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 12px 24px;
+    background: var(--border);
+    border-bottom: 1px solid var(--border);
+    flex-shrink: 0;
+  }
+  .title {
+    display: inline-flex;
+    align-items: center;
+    gap: 9px;
+    font-size: 20px;
+    font-weight: 700;
+    letter-spacing: 0.5px;
+    color: var(--text);
+    text-decoration: none;
+  }
+  .title:hover {
+    color: var(--text);
+  }
+  .seal {
+    display: inline-grid;
+    place-items: center;
+    width: 20px;
+    height: 20px;
+    border-radius: 3px;
+    background: #b5614f;
+    color: #faf7f2;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1;
+  }
+  .subtitle-quote {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 10px;
+    color: var(--muted);
+    margin-top: 4px;
+    line-height: 1.5;
+    max-width: 600px;
+  }
+  .attribution {
+    font-style: normal;
+    font-size: 9px;
+    opacity: 0.7;
+  }
+  nav {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+    gap: 4px 18px;
+    padding-top: 6px;
+  }
+  nav a {
+    font-size: 12px;
+    color: var(--muted);
+    text-decoration: none;
+    padding-bottom: 2px;
+    border-bottom: 1px solid transparent;
+  }
+  nav a:hover {
+    color: var(--text);
+  }
+  nav a[aria-current='page'] {
+    color: var(--text);
+    font-weight: 600;
+    border-bottom-color: var(--accent);
+  }
+  @media (max-width: 760px) {
+    .top-bar {
+      flex-direction: column;
+      gap: 8px;
+      padding: 10px 14px;
+    }
+    nav {
+      justify-content: flex-start;
+      gap: 4px 14px;
+      padding-top: 0;
+    }
+    .subtitle-quote {
+      display: none;
+    }
+  }
+</style>

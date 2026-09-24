@@ -1,72 +1,48 @@
 /*
- * Design tokens. Night (ink and moonlight) is the default; paper (washi
- * and sumi) is the alternate. One accent — shu 朱, the vermilion of a seal —
- * belongs to knots. Gold belongs to release.
+ * Earth / wabi-sabi — the palette and type of The OM Project
+ * (ejhong.github.io/om), extended for Knots. Rice paper and ink stone;
+ * bronze for the hand; terracotta for knots; sage for release.
  */
 :root {
-  --font-display: 'Cormorant Garamond', 'Cormorant', 'EB Garamond', Garamond, 'Times New Roman', serif;
-  --font-text: 'EB Garamond Variable', 'EB Garamond', Garamond, 'Times New Roman', serif;
-  --font-mono: 'IBM Plex Mono', ui-monospace, 'SF Mono', Menlo, monospace;
-  --font-cjk: 'Shippori Mincho', 'Hiragino Mincho ProN', 'Yu Mincho', 'Noto Serif CJK JP', serif;
+  --bg: #faf7f2; /* warm rice paper */
+  --frame-bg: #f0ebe4; /* slightly darker paper */
+  --border: #e0dbd4; /* warm grey border (also the top band) */
+  --frame-border: #c4bbb0; /* stone border */
+  --frame-accent: #a89f94; /* stone accent */
 
-  --bg: #0e0f12;
-  --bg-2: #15161b;
-  --bg-3: #1c1d23;
-  --ink: #e9e4d8;
-  --ink-2: #b6b1a6;
-  --ink-3: #7c786f;
-  --ink-4: #4d4b46;
-  --hair: rgba(233, 228, 216, 0.1);
-  --hair-2: rgba(233, 228, 216, 0.2);
-  --glass: rgba(16, 17, 21, 0.62);
-  --glass-strong: rgba(16, 17, 21, 0.86);
-  --shu: #ff5b3d;
-  --shu-deep: #c8412b;
-  --gold: #e3bb6c;
-  --silver: #b9c1cf;
-  --focus: #e3bb6c;
-  --shadow: 0 1px 0 rgba(255, 255, 255, 0.02), 0 20px 60px rgba(0, 0, 0, 0.45);
+  --text: #3a3632; /* warm dark */
+  --muted: #8a7d6d; /* muted bronze */
+  --faint: #b3a899;
+  --accent: #9a8a78; /* warm bronze */
+  --accent-dark: #6b5d4d; /* deep bronze */
 
-  /* Traditional colours for maps (see src/viewer/maps/palette.ts). */
-  --ai: #6f8fc2; /* 藍 indigo */
-  --moegi: #a9b86a; /* 萌黄 sprout green */
-  --yamabuki: #e0ac4f; /* 山吹 kerria gold */
-  --fuji: #a595cf; /* 藤 wisteria */
-  --toki: #e6a8a0; /* 鴇 ibis pink */
-  --sabi: #6fa7a2; /* 錆 patina */
+  --panel-bg: #2a2826; /* ink stone charcoal */
+  --panel-head: #232220;
+  --panel-body: #3d3a36;
+  --panel-line: #3a3836;
+  --panel-text: #e6ded2;
+  --panel-muted: #c4b8a8; /* warm sand */
+  --panel-faint: #8f857a;
 
-  --measure: 38rem;
-  --radius: 2px;
+  /* Voices (from OM) and their roles here */
+  --stone: #90989e; /* trees, structure */
+  --terracotta: #c87868; /* knots */
+  --sage: #7ca67c; /* release */
+  --plum: #a482ac; /* the interstitium; traditions */
+  --sand: #c4b8a8;
+  --ochre: #c9a45f; /* stars */
+  --indigo: #7189a8; /* channels */
+
+  --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+  --font-serif: Georgia, 'Times New Roman', serif;
+  --font-mono: 'SF Mono', 'Monaco', 'Inconsolata', 'Fira Code', 'Menlo', monospace;
+  --font-cjk: 'Hiragino Mincho ProN', 'Yu Mincho', 'YuMincho', 'Noto Serif CJK JP', 'Songti SC', 'SimSun', serif;
+
+  --radius: 12px;
+  --radius-sm: 6px;
+  --gap: 16px;
   --ease: cubic-bezier(0.22, 0.61, 0.36, 1);
-  --slow: 900ms;
-  --gutter: clamp(1rem, 3vw, 2.5rem);
+  --topbar-h: 76px;
 
-  color-scheme: dark;
-}
-
-:root[data-theme='paper'] {
-  --bg: #f3f1ec;
-  --bg-2: #ebe8e1;
-  --bg-3: #e2ded5;
-  --ink: #1c1c20;
-  --ink-2: #4b4a4f;
-  --ink-3: #85827c;
-  --ink-4: #b3afa7;
-  --hair: rgba(28, 28, 32, 0.1);
-  --hair-2: rgba(28, 28, 32, 0.2);
-  --glass: rgba(243, 241, 236, 0.72);
-  --glass-strong: rgba(243, 241, 236, 0.92);
-  --shu: #c8412b;
-  --shu-deep: #9e2a18;
-  --gold: #a87a2c;
-  --silver: #56606f;
-  --focus: #c8412b;
-  --shadow: 0 1px 0 rgba(255, 255, 255, 0.5), 0 18px 50px rgba(60, 50, 30, 0.12);
-  --ai: #2f4b6e;
-  --moegi: #6b7a2f;
-  --yamabuki: #b9862b;
-  --fuji: #6c5a9c;
-  --toki: #b8625a;
-  --sabi: #3f6f6b;
   color-scheme: light;
 }
