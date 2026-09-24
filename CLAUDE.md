@@ -14,7 +14,7 @@ Owner: Eugene Jhong. Source essays: `docs/source/*.md` (the Substack posts are c
 - **Describe, never prescribe.** Nothing is a protocol. Keep the moderation guidance (Varieties of Contemplative Experience, Cheetah
   House) and keep the narrative general; check with the author before adding anything about technique or intensity.
 - **Words.** Say *fascia* (not “sheet”) and *knots* or *perforators* (not “staples”). State things directly: the essays are credited in
-  About and at the top of the Library, not narrated (“the essay says”).
+  About and listed in the Library (sources run newest first), not narrated (“the essay says”).
 - **Fair to every theory.** Each gets its strongest form, its best evidence and its sharpest test (`src/data/hypotheses.ts`); the
   atlas menu uses its one- or two-word `label`.
 - **Verified references only.** Add papers to `src/data/papers.json` from PubMed E-utilities output (title/authors/venue/DOI), never
