@@ -25,12 +25,8 @@ export function mountTour(viz: HTMLElement, panel: HTMLElement) {
   const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
   const theme = preferredTheme();
   stage.classList.toggle('paper', theme === 'paper');
-  const small = window.matchMedia('(max-width: 900px)').matches;
-  const scene = new AtlasScene(canvas, {
-    theme,
-    modelBase: `${base}models/`,
-    ladder: small ? { total: 50_000, medium: 2_600 } : {},
-  });
+  // The perforators' placement is precomputed, so phones get the full set too.
+  const scene = new AtlasScene(canvas, { theme, modelBase: `${base}models/` });
   (window as unknown as { atlas: AtlasScene }).atlas = scene;
 
   const label = viz.querySelector<HTMLElement>('[data-chapter-label]')!;

@@ -227,7 +227,27 @@ function nearestVertex(tris: Uint32Array, s: { tri: number; u: number; v: number
   return s.u >= s.v ? tris[t + 1] : tris[t + 2];
 }
 
+/**
+ * Where the perforators are: a triangle and barycentric coordinates each,
+ * ordered majors, mediums, smalls. This is the expensive part (blue noise
+ * over 100,000 points), so it is computed once when the site is built and
+ * shipped as a file (see placementFile.ts); the trees are completed on load.
+ */
+export interface LadderPlacement {
+  tri: Uint32Array;
+  uv: Float32Array;
+  nMaj: number;
+  nMed: number;
+}
+
+/** Bump whenever placeLadder's output would change for the same inputs. */
+export const PLACEMENT_VERSION = 1;
+
 export function buildLadder(input: LadderInput, params: LadderParams = DEFAULT_LADDER): Ladder {
+  return completeLadder(input, placeLadder(input, params));
+}
+
+export function placeLadder(input: Pick<LadderInput, 'positions' | 'triangles' | 'majorDensity'>, params: LadderParams = DEFAULT_LADDER): LadderPlacement {
   const rng = mulberry32(params.seed);
   const { positions, triangles } = input;
   const { total: area } = triangleAreas(positions, triangles);
@@ -260,20 +280,27 @@ export function buildLadder(input: LadderInput, params: LadderParams = DEFAULT_L
   // Order: majors, mediums, smalls — so levels are contiguous ranges.
   const smalls = all.filter((s) => !majorSet.has(s) && !mediumSet.has(s));
   const ordered = [...majors, ...mediums, ...smalls];
-  const N = ordered.length;
-  const tri = new Uint32Array(N);
-  const uv = new Float32Array(N * 2);
-  const level = new Uint8Array(N);
-  const vertex = new Int32Array(N);
+  const tri = new Uint32Array(ordered.length);
+  const uv = new Float32Array(ordered.length * 2);
   ordered.forEach((s, i) => {
     tri[i] = s.tri;
     uv[i * 2] = s.u;
     uv[i * 2 + 1] = s.v;
-    level[i] = i < majors.length ? 2 : i < majors.length + mediums.length ? 1 : 0;
-    vertex[i] = nearestVertex(triangles, s);
   });
-  const nMaj = majors.length;
-  const nMed = mediums.length;
+  return { tri, uv, nMaj: majors.length, nMed: mediums.length };
+}
+
+/** The rest of the ladder from a placement: levels, nearest vertices, and the trees along the skin (cheap). */
+export function completeLadder(input: LadderInput, placement: LadderPlacement): Ladder {
+  const { positions, triangles } = input;
+  const { tri, uv, nMaj, nMed } = placement;
+  const N = tri.length;
+  const level = new Uint8Array(N);
+  const vertex = new Int32Array(N);
+  for (let i = 0; i < N; i++) {
+    level[i] = i < nMaj ? 2 : i < nMaj + nMed ? 1 : 0;
+    vertex[i] = nearestVertex(triangles, { tri: tri[i], u: uv[i * 2], v: uv[i * 2 + 1] });
+  }
 
   // 3. Trees along the skin. Quad diagonals make the graph 8-connected so
   //    the branches run straighter.

@@ -7,6 +7,11 @@ import {
   type Subdivision,
 } from './subdivide';
 
+import { bodySourceKey } from '../perforators/placementFile';
+
+/** The reference figure all placement is resolved against. */
+export const REFERENCE_SHAPE: Shape = { age: 30, sex: 1, stoop: 0 };
+
 export interface BodyMeta {
   version: number;
   source: string;
@@ -106,17 +111,22 @@ export class BodyModel {
     this.setShape(DEFAULT_SHAPE);
   }
 
-  /** For tests and workers: build from already-loaded data. */
-  static fromBuffers(meta: BodyMeta, buf: ArrayBuffer): BodyModel {
-    return new BodyModel(meta, buf);
+  /** A fingerprint of the files this body was built from (for precomputed data). */
+  sourceKey = 0;
+
+  /** For tests, workers and build scripts: build from already-loaded data. */
+  static fromBuffers(meta: BodyMeta, buf: ArrayBuffer, jsonText?: string): BodyModel {
+    const body = new BodyModel(meta, buf);
+    if (jsonText !== undefined) body.sourceKey = bodySourceKey(jsonText, buf);
+    return body;
   }
 
   static async load(baseUrl: string): Promise<BodyModel> {
-    const [meta, buf] = await Promise.all([
-      fetch(`${baseUrl}body.json`).then((r) => r.json() as Promise<BodyMeta>),
+    const [text, buf] = await Promise.all([
+      fetch(`${baseUrl}body.json`).then((r) => r.text()),
       fetch(`${baseUrl}body.bin`).then((r) => r.arrayBuffer()),
     ]);
-    return new BodyModel(meta, buf);
+    return BodyModel.fromBuffers(JSON.parse(text) as BodyMeta, buf, text);
   }
 
   /** Weight of each stored state for a shape (same order as meta.states). */

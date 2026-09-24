@@ -11,7 +11,8 @@
   },
   "scripts": {
     "dev": "astro dev",
-    "build": "astro build",
+    "build": "npm run ladder && astro build",
+    "ladder": "tsx scripts/ladder/build-ladder.ts",
     "preview": "astro preview",
     "check": "astro check",
     "test": "vitest run",

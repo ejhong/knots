@@ -3,13 +3,14 @@ import { Locator3D, mirrorLocator, type Locator, type Vec3 } from './anchors/loc
 import type { Anchor } from './anchors/anchors';
 import { anchorVertex } from './anchors/anchors';
 import { BodyLayers } from './body/BodyLayers';
-import { BodyModel, type Shape } from './body/BodyModel';
+import { BodyModel, REFERENCE_SHAPE, type Shape } from './body/BodyModel';
 import { Backdrop } from './engine/Backdrop';
 import { Engine } from './engine/Engine';
 import type { ThemeName } from './engine/theme';
 import { majorDensity } from './data/perforatorDensity';
 import { ROOTS, type RootDef } from './data/roots';
-import { buildLadder, DEFAULT_LADDER, withDiagonals, type Ladder, type LadderParams } from './perforators/generate';
+import { buildLadder, completeLadder, DEFAULT_LADDER, withDiagonals, type Ladder, type LadderParams } from './perforators/generate';
+import { decodePlacement, placementKey } from './perforators/placementFile';
 import { buildMeshGraph, dijkstra, makePathfinder, tracePath, type MeshGraph } from './lib/graph';
 import { Channels, type ChannelInstance } from './body/Channels';
 import { CHANNELS } from './data/channels';
@@ -65,8 +66,7 @@ export interface RootInstance {
   vertex: number;
 }
 
-/** The reference figure all placement is resolved against. */
-export const REFERENCE_SHAPE: Shape = { age: 30, sex: 1, stoop: 0 };
+export { REFERENCE_SHAPE };
 
 /**
  * Assembles the atlas: engine, figure, fascial layers, the perforator
@@ -163,7 +163,13 @@ export class AtlasScene {
   }
 
   private async init(modelBase: string, ladderParams: LadderParams) {
-    const body = await BodyModel.load(modelBase);
+    // The perforators' placement is precomputed when the site is built; fetch it alongside the body.
+    const [body, placementBuf] = await Promise.all([
+      BodyModel.load(modelBase),
+      fetch(`${modelBase}ladder.bin`)
+        .then((r) => (r.ok ? r.arrayBuffer() : null))
+        .catch(() => null),
+    ]);
     this.body = body;
     body.setShape(REFERENCE_SHAPE);
 
@@ -211,18 +217,18 @@ export class AtlasScene {
     }
 
     const t0 = performance.now();
-    this.ladder = buildLadder(
-      {
-        positions: body.positions,
-        normals: body.normals,
-        triangles: body.triangles,
-        fineQuads: body.subdivision.fineQuads,
-        rootVertices: Int32Array.from(this.roots.map((r) => r.vertex)),
-        majorDensity: majorDensity((n) => body.joint(n) as Vec3),
-      },
-      ladderParams,
-    );
-    console.info(`ladder: ${this.ladder.count} perforators in ${(performance.now() - t0).toFixed(0)} ms`);
+    const ladderInput = {
+      positions: body.positions,
+      normals: body.normals,
+      triangles: body.triangles,
+      fineQuads: body.subdivision.fineQuads,
+      rootVertices: Int32Array.from(this.roots.map((r) => r.vertex)),
+      majorDensity: majorDensity((n) => body.joint(n) as Vec3),
+    };
+    const placement = placementBuf ? decodePlacement(placementBuf, placementKey(ladderParams, body.sourceKey)) : null;
+    if (placementBuf && !placement) console.warn('ladder.bin does not match this body and these parameters; computing the placement');
+    this.ladder = placement ? completeLadder(ladderInput, placement) : buildLadder(ladderInput, ladderParams);
+    console.info(`ladder: ${this.ladder.count} perforators in ${(performance.now() - t0).toFixed(0)} ms (${placement ? 'precomputed' : 'computed'})`);
 
     // Reference positions for fields defined in placement space.
     this.refPositions = new Float32Array(this.ladder.count * 3);
