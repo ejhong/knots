@@ -15,10 +15,12 @@ const html = (s: string) => s.replaceAll('href="HYP"', `href="${base}/hypotheses
         <span class="chapter-label" data-chapter-label>01 · Observations</span>
       </div>
       <div class="overlay tr legend">
-        <span><i class="sw sw-perforator"></i>perforator</span>
-        <span><i class="sw sw-knot"></i>knot</span>
-        <span><i class="sw sw-release"></i>release</span>
-        <span><i class="sw sw-vessel"></i>vessel</span>
+        <span data-legend="anatomy"><i class="sw sw-perforator"></i>perforator</span>
+        <span data-legend="anatomy"><i class="sw sw-knot"></i>knot</span>
+        <span data-legend="anatomy"><i class="sw sw-release"></i>release</span>
+        <span data-legend="anatomy"><i class="sw sw-vessel"></i>vessel</span>
+        <span data-legend="channels" hidden><i class="sw sw-channel"></i>deep channel</span>
+        <span data-legend="map" hidden><i class="sw sw-map"></i>acupuncture channel</span>
       </div>
       <div class="big-number" data-big hidden></div>
       <svg class="plate-callout" data-callout aria-hidden="true"><line class="under" data-callout-line /><line data-callout-line /><circle class="under" data-callout-ring r="11" /><circle data-callout-ring r="11" /></svg>

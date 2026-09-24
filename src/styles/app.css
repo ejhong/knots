@@ -105,11 +105,13 @@
 .legend .sw-release { background: #8fd6b9; }
 .legend .sw-vessel { background: #b3c4d2; }
 .legend .sw-channel { background: #d8b775; }
+.legend .sw-map { background: #c3a1d4; }
 .paper .legend .sw-perforator { background: #2f2b28; }
 .paper .legend .sw-knot { background: #c4452f; }
 .paper .legend .sw-release { background: #3f8f73; }
 .paper .legend .sw-vessel { background: #3f5b78; }
 .paper .legend .sw-channel { background: #a2792f; }
+.paper .legend .sw-map { background: #7a5588; }
 
 /* Corner frame marks, as on OM's chart. */
 .frame-marks::before,

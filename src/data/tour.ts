@@ -19,6 +19,8 @@ export interface TourScene {
   layers?: boolean;
   /** Show the deep channels on the deep fascia. */
   channels?: boolean;
+  /** The fascia alone: no perforators, knots or vessels. */
+  fasciaOnly?: boolean;
   /** Show a traditional map (the anatomy steps back), and bring layers forward to compare. */
   map?: 'meridians' | 'sinew';
   compare?: Array<'knots' | 'perforators' | 'vessels' | 'channels'>;
@@ -99,7 +101,7 @@ export const CHAPTERS: Chapter[] = [
     html: `<p>The superficial fascia runs unbroken from scalp to sole — the galea over the skull, the SMAS of the face, the platysma of the neck, the membranous layers of the trunk and limbs — and glides over the deep fascia on a plane of loose, hyaluronan-rich tissue. It is not free everywhere: it is anchored to bone along particular lines, and tethered by fibrous strands and by the perforators that pass through it. Deeper down, the fascia is built more like channels — walls between the muscles, and sleeves around the vessels and nerves, drawn here in gold.</p>
 <p>The reports about the fascia seem to belong to this layer: layers that peel apart along lines, places left feeling hollow, and a filling-in felt as re-stitching. Separated layers are known to close again, the way two wet surfaces meet and hold when pressed together, and then to bond for good — fibrin bridging the gap, then collagen.</p>`,
     refs: ['gray2020', 'benias2018', 'guimberteau2015', 'langevin2011'],
-    scene: { pose: { p: [1.07, 0.66, -1.05], t: [0.05, 0.61, -0.02] }, age: 46, layers: true, lift: 1, channels: true },
+    scene: { pose: { p: [1.07, 0.66, -1.05], t: [0.05, 0.61, -0.02] }, age: 46, layers: true, lift: 1, channels: true, fasciaOnly: true },
   },
   {
     id: 'ladder',

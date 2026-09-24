@@ -7,7 +7,7 @@ import { crossSectionSVG } from '../../lib/crossSection';
 import { REGIONS } from '../body/skeleton';
 import { mapById } from '../../data/mapIndex';
 import type { MapId } from '../AtlasScene';
-import type { SkinMap } from '../maps/SkinMap';
+import type { AtlasMap } from '../maps/SkinMap';
 
 const REGION_LABEL: Record<string, string> = {
   head: 'scalp',
@@ -488,8 +488,10 @@ function mapCard(panel: HTMLElement): MapCard {
 const len = (d: number) => (!isFinite(d) ? 'over 6 cm' : d < 0.01 ? `${Math.round(d * 1000)} mm` : `${(d * 100).toFixed(1)} cm`);
 
 /** A place on a map: its names, where it is, and the anatomy nearest it on this figure. */
-function describePlace(scene: AtlasScene, map: SkinMap, i: number): CardText {
+function describePlace(scene: AtlasScene, map: AtlasMap, i: number): CardText {
   const p = map.data.points[i];
+  // The subtle body is not anatomy: no perforators or channels beneath it.
+  if (map.data.inner) return { kicker: p.kicker, title: p.title, sub: p.sub, note: p.where };
   const x = map.pointPos[i * 3];
   const y = map.pointPos[i * 3 + 1];
   const z = map.pointPos[i * 3 + 2];
@@ -526,7 +528,7 @@ function describePlace(scene: AtlasScene, map: SkinMap, i: number): CardText {
 }
 
 /** A group of a map: a channel, a region. */
-function describeGroup(map: SkinMap, g: number): CardText {
+function describeGroup(map: AtlasMap, g: number): CardText {
   const m = map.data.groups[g];
   return {
     kicker: `${map.data.title} · ${m.chip}`,
@@ -587,11 +589,20 @@ function bindMaps(panel: HTMLElement, scene: AtlasScene, card: MapCard) {
     chip(-1, 'all');
     map.data.groups.forEach((g, i) => chip(i, g.chip, g.cjk));
   };
-  panel.querySelectorAll<HTMLInputElement>('input[name="map"]').forEach((r) =>
+  const radios = panel.querySelectorAll<HTMLInputElement>('input[name="map"]');
+  radios.forEach((r) =>
     r.addEventListener('change', () => {
       if (r.checked) show((r.value || null) as MapId | null);
     }),
   );
+  // ?map=<id> opens the atlas on a map (the Traditions page links here).
+  const asked = new URLSearchParams(location.search).get('map');
+  const radio = [...radios].find((r) => r.value && r.value === asked);
+  if (radio) {
+    radio.checked = true;
+    panel.querySelector<HTMLButtonElement>('[data-tab="maps"]')?.click();
+    show(radio.value as MapId);
+  }
   panel.querySelectorAll<HTMLButtonElement>('[data-compare]').forEach((b) =>
     b.addEventListener('click', () => {
       const on = !b.classList.contains('is-active');

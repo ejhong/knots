@@ -1,7 +1,8 @@
 /**
  * The maps offered in the atlas, grouped by tradition. Ready maps are drawn
- * by the viewer (see AtlasScene.ensureMap); the rest are listed as to come.
- * Only one map is shown at a time.
+ * by the viewer (see AtlasScene.ensureMap): on the skin, or — the subtle body
+ * of the contemplative traditions — inside it. The rest are listed as to
+ * come. Only one map is shown at a time.
  */
 export interface MapEntry {
   id: string;
@@ -41,6 +42,42 @@ export const MAP_GROUPS: MapGroup[] = [
     ],
   },
   {
+    tradition: 'Daoist alchemy',
+    maps: [
+      {
+        id: 'orbit',
+        name: 'Microcosmic orbit · dantian',
+        ready: true,
+        intro:
+          'The microcosmic orbit (小周天) of Daoist internal alchemy — up the spine and over the head, down the front — and the three dantian, the fields in which the work is done. A map from the inside, drawn within the figure; not anatomy.',
+      },
+    ],
+  },
+  {
+    tradition: 'Yoga · tantra',
+    maps: [
+      {
+        id: 'chakras',
+        name: 'Cakras · nāḍīs · granthis',
+        ready: true,
+        intro:
+          'After the Ṣaṭ-cakra-nirūpaṇa: suṣumṇā within the spine, iḍā and piṅgalā beside it, the seven lotuses with their petals, and the three granthis — the knots. A map from the inside, drawn within the figure; not anatomy.',
+      },
+    ],
+  },
+  {
+    tradition: 'Tibetan',
+    maps: [
+      {
+        id: 'tsalung',
+        name: 'Tsa lung — channels, wheels, knots',
+        ready: true,
+        intro:
+          'After the Six Yogas of Nāropa: the central channel with the right and left beside it, the four wheels, and the channel-knots where the side channels coil around it; with the kati channel of Dzogchen. A map from the inside; not anatomy.',
+      },
+    ],
+  },
+  {
     tradition: 'Medicine',
     maps: [
       {
@@ -68,28 +105,6 @@ export const MAP_GROUPS: MapGroup[] = [
     maps: [
       { id: 'attachments', name: 'Attachment lines', ready: false },
       { id: 'fasciae', name: 'Named fasciae', ready: false },
-    ],
-  },
-  {
-    tradition: 'Daoist alchemy',
-    maps: [
-      { id: 'orbit', name: 'Microcosmic orbit', ready: false },
-      { id: 'dantian', name: 'Three dantian', ready: false },
-    ],
-  },
-  {
-    tradition: 'Yoga · tantra',
-    maps: [
-      { id: 'chakras', name: 'Cakras · nāḍīs', ready: false },
-      { id: 'granthis', name: 'Granthis — the three knots', ready: false },
-      { id: 'kundalini', name: 'Kuṇḍalinī', ready: false },
-    ],
-  },
-  {
-    tradition: 'Tibetan',
-    maps: [
-      { id: 'tsalung', name: 'Tsa lung — channels & knots', ready: false },
-      { id: 'kati', name: 'Kati channel (Dzogchen)', ready: false },
     ],
   },
 ];

@@ -40,9 +40,9 @@ const index = [
         These maps were drawn from the inside, in their own vocabularies, over two thousand years. They are not anatomy, and nothing here
         claims they were secretly describing it. The claim is narrower: where the traditions and modern reports agree on a <em>place</em> in
         the body, there is often a real structure there — a correspondence specific enough to be checked blind. Correspondence found after
-        the fact is the weakest kind of evidence. The channels and points of Chinese medicine, and its sinew channels with their knots, are drawn on the
-        same body in the <a href={`${base}/atlas/`}>atlas</a> (Maps), beside its perforators, knots and deep channels; the other maps will
-        follow.
+        the fact is the weakest kind of evidence. Five of these maps are drawn on one body in the <a href={`${base}/atlas/`}>atlas</a> (Maps),
+        beside its perforators, knots and deep channels: the channels and points of Chinese medicine and its sinew channels on the skin, and
+        the Daoist orbit, the yogic cakras and the Tibetan channels and wheels inside the figure, where the traditions place them.
       </p>
     </div>
   </section>
@@ -69,6 +69,7 @@ const index = [
         profile of a dilation travelling along a tree of vessels.
       </p>
     </div>
+    <p class="in-atlas"><a class="btn" href={`${base}/atlas/?map=meridians`}>channels and points in the atlas →</a> <a class="btn" href={`${base}/atlas/?map=sinew`}>sinew channels →</a></p>
   </section>
 
   <section id="daoist" class="sec" data-glyph="周天">
@@ -82,6 +83,7 @@ const index = [
         the work is done. The manuals counsel patience: the orbit opens over years, and is not to be forced.
       </p>
     </div>
+    <p class="in-atlas"><a class="btn" href={`${base}/atlas/?map=orbit`}>the orbit in the atlas →</a></p>
   </section>
 
   <section id="india" class="sec" data-glyph="輪">
@@ -101,6 +103,7 @@ const index = [
         settle. One number is worth holding lightly: seventy-two thousand channels, and about a hundred thousand small perforators.
       </p>
     </div>
+    <p class="in-atlas"><a class="btn" href={`${base}/atlas/?map=chakras`}>cakras and nāḍīs in the atlas →</a></p>
   </section>
 
   <section id="tibet" class="sec" data-glyph="脈風">
@@ -120,6 +123,7 @@ const index = [
         a body with all its perforators open and none of its knots.
       </p>
     </div>
+    <p class="in-atlas"><a class="btn" href={`${base}/atlas/?map=tsalung`}>channels and wheels in the atlas →</a></p>
   </section>
 
   <section id="buddhist" class="sec" data-glyph="龍">
@@ -177,6 +181,16 @@ const index = [
 </Doc>
 
 <style>
+  .in-atlas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 14px 0 0;
+  }
+  .in-atlas .btn {
+    font-size: 11px;
+    padding: 3px 9px;
+  }
   .table-wrap {
     overflow-x: auto;
     border: 1px solid var(--border);

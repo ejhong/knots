@@ -53,10 +53,12 @@ const SITE_STYLES: Record<string, SiteStyle> = {
   nerve: { size: 0.0095 },
   central: { size: 0.011, twinkle: true },
 };
-import { SkinMap, type MapData, type MapLine, type MapPoint } from './maps/SkinMap';
+import { SkinMap, type AtlasMap, type MapData, type MapLine, type MapPoint } from './maps/SkinMap';
+import { InnerMap, type InnerMapData } from './maps/InnerMap';
+import { daoistMap, tibetanMap, yogaMap } from './data/subtle';
 
-/** The maps the atlas can draw, one at a time. */
-export type MapId = 'meridians' | 'sinew' | 'trigger-points' | 'tender-points';
+/** The maps the atlas can draw, one at a time: on the skin, or (the subtle body) inside it. */
+export type MapId = 'meridians' | 'sinew' | 'trigger-points' | 'tender-points' | 'chakras' | 'tsalung' | 'orbit';
 import { TreeLines } from './perforators/TreeLines';
 
 export interface RootInstance {
@@ -108,7 +110,7 @@ export class AtlasScene {
   /** Knots of the site theories (trigger points, densification, nerves, perception), built when first chosen. */
   theories: Partial<Record<string, SiteKnots>> = {};
   /** Traditional (and clinical) maps, each built the first time it is shown. */
-  maps: Partial<Record<MapId, SkinMap>> = {};
+  maps: Partial<Record<MapId, AtlasMap>> = {};
   activeMapId: MapId | null = null;
   /** Skin positions of the reference figure (where every locator is resolved). */
   private refSkin!: Float32Array;
@@ -851,7 +853,7 @@ export class AtlasScene {
   }
 
   /** The map on show, if any. */
-  get activeMap(): SkinMap | null {
+  get activeMap(): AtlasMap | null {
     return this.activeMapId ? (this.maps[this.activeMapId] ?? null) : null;
   }
 
@@ -864,12 +866,21 @@ export class AtlasScene {
     this.applyQuiet();
   }
 
-  ensureMap(id: MapId): SkinMap {
+  ensureMap(id: MapId): AtlasMap {
     const built = this.maps[id];
     if (built) return built;
-    const data =
-      id === 'meridians' ? this.meridianData() : id === 'sinew' ? this.sinewData() : id === 'tender-points' ? this.tenderData() : this.triggerMapData();
-    const map = new SkinMap(data, this.body.triangles, this.liftWeight);
+    const map: AtlasMap =
+      id === 'chakras'
+        ? new InnerMap(yogaMap(), this.body)
+        : id === 'tsalung'
+          ? new InnerMap(tibetanMap(), this.body)
+          : id === 'orbit'
+            ? new InnerMap(this.orbitData(), this.body)
+            : new SkinMap(
+                id === 'meridians' ? this.meridianData() : id === 'sinew' ? this.sinewData() : id === 'tender-points' ? this.tenderData() : this.triggerMapData(),
+                this.body.triangles,
+                this.liftWeight,
+              );
     map.refresh(this.body);
     map.applyTheme(this.engine.theme);
     this.engine.scene.add(...map.objects);
@@ -1081,6 +1092,26 @@ export class AtlasScene {
       points,
       lines: [],
     };
+  }
+
+  /** The Daoist orbit, just inside the skin along the Governor and Conception vessels, and the three dantian. */
+  private orbitData(): InnerMapData {
+    const vessel = (code: string, order: number[]): Vec3[] => {
+      const m = MERIDIANS.find((x) => x.code === code)!;
+      const out: Vec3[] = [];
+      for (const n of order) {
+        const def = m.points.find((q) => q.n === n);
+        const a = def && this.place(def.at, 'm');
+        if (!a) continue;
+        const { p, n: nrm } = this.refPoint(a);
+        // Surface normals face outward: step 8 mm in.
+        out.push([p.x - nrm.x * 0.008, p.y - nrm.y * 0.008, p.z - nrm.z * 0.008]);
+      }
+      return out;
+    };
+    const up = Array.from({ length: 28 }, (_, i) => i + 1);
+    const down = Array.from({ length: 24 }, (_, i) => 24 - i);
+    return daoistMap(vessel('GV', up), vessel('CV', down));
   }
 
   /** Brings one anatomical layer back to full strength while a map is on. */

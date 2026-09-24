@@ -172,14 +172,23 @@ export function mountTour(viz: HTMLElement, panel: HTMLElement) {
     // The fascial layers and the perforators' stalks appear only in the
     // chapters about them; elsewhere the figure is its skin of perforators.
     const layers = !!s.layers;
+    // The fascia chapter shows the layers alone.
+    const anatomy = !s.fasciaOnly;
+    scene.setVisible('perforators', anatomy);
+    scene.setVisible('knots', anatomy);
+    scene.setVisible('vessels', anatomy);
+    // The legend names what the scene shows.
+    viz.querySelectorAll<HTMLElement>('[data-legend="anatomy"]').forEach((el) => (el.hidden = !anatomy));
+    viz.querySelectorAll<HTMLElement>('[data-legend="channels"]').forEach((el) => (el.hidden = !s.channels));
+    viz.querySelectorAll<HTMLElement>('[data-legend="map"]').forEach((el) => (el.hidden = !s.map));
     scene.setVisible('fascia', layers);
     scene.setVisible('channels', !!s.channels);
     scene.setHypothesis('perforator');
     scene.setMap(s.map ?? null);
     for (const layer of ['knots', 'perforators', 'vessels', 'channels'] as const) scene.setCompare(layer, !!s.compare?.includes(layer));
     if (!!s.plate !== plateOn) showPlate(!!s.plate);
-    scene.stalks.lines.visible = layers;
-    scene.stalks.collars.visible = layers;
+    scene.stalks.lines.visible = layers && anatomy;
+    scene.stalks.collars.visible = layers && anatomy;
     scene.setWindowOn(!!s.window);
     liftTarget = layers ? (s.lift ?? 1) : 0;
     if (s.section === 'sagittal') scene.setClip({ normal: [1, 0, 0], d: 0 });

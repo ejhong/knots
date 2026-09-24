@@ -1,5 +1,6 @@
 import type { Vec3 } from '../anchors/locate';
 import { mulberry32 } from '../lib/random';
+import { bindPoint } from './bind';
 
 /**
  * Where else, inside the body, smooth muscle wraps a tube and could latch —
@@ -23,48 +24,9 @@ export interface InteriorSite {
   kind: number;
 }
 
-/** Reference joint positions (see public/models/body.json), for binding. */
-const REF: Record<string, Vec3> = {
-  pelvis: [0, 0.924, 0.003],
-  'spine-4': [0, 1.011, -0.029],
-  'spine-3': [0, 1.081, -0.02],
-  'spine-2': [0, 1.14, -0.03],
-  'spine-1': [0, 1.275, -0.051],
-  neck: [0, 1.482, 0.011],
-  head: [0, 1.578, 0.046],
-  'l-shoulder': [0.186, 1.378, 0.017],
-  'l-elbow': [0.351, 1.189, 0.016],
-  'l-hand': [0.484, 1.062, 0.206],
-  'l-upper-leg': [0.109, 0.917, -0.008],
-  'l-knee': [0.151, 0.506, 0.027],
-  'l-ankle': [0.196, 0.071, 0.014],
-  'l-foot-1': [0.2, 0.008, 0.139],
-};
-const CHAINS: Record<string, string[]> = {
-  trunk: ['pelvis', 'spine-4', 'spine-3', 'spine-2', 'spine-1', 'neck', 'head'],
-  arm: ['l-shoulder', 'l-elbow', 'l-hand'],
-  leg: ['l-upper-leg', 'l-knee', 'l-ankle', 'l-foot-1'],
-};
-
 /** Binds a reference point to the nearest segment of a chain of joints. */
 function bind(p: Vec3, chain: string, kind: number): InteriorSite {
-  const js = CHAINS[chain];
-  let best: InteriorSite | null = null;
-  let bestD = Infinity;
-  for (let i = 0; i < js.length - 1; i++) {
-    const A = REF[js[i]];
-    const B = REF[js[i + 1]];
-    const ab: Vec3 = [B[0] - A[0], B[1] - A[1], B[2] - A[2]];
-    const L2 = ab[0] ** 2 + ab[1] ** 2 + ab[2] ** 2;
-    const t = Math.max(0, Math.min(1, ((p[0] - A[0]) * ab[0] + (p[1] - A[1]) * ab[1] + (p[2] - A[2]) * ab[2]) / L2));
-    const q: Vec3 = [A[0] + ab[0] * t, A[1] + ab[1] * t, A[2] + ab[2] * t];
-    const d = Math.hypot(p[0] - q[0], p[1] - q[1], p[2] - q[2]);
-    if (d < bestD) {
-      bestD = d;
-      best = { a: js[i], b: js[i + 1], t, o: [p[0] - q[0], p[1] - q[1], p[2] - q[2]], kind };
-    }
-  }
-  return best!;
+  return { ...bindPoint(p, chain), kind };
 }
 
 const mirror = (s: InteriorSite): InteriorSite => ({

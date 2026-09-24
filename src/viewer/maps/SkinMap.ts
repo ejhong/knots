@@ -28,16 +28,20 @@ export interface MapGroup {
   course: string;
 }
 
-export interface MapPoint {
+/** A place on a map, as its hover card describes it. */
+export interface MapPlace {
   group: number;
   side: 'l' | 'r' | 'm';
-  anchor: Anchor;
   kicker: string;
   title: string;
   sub: string;
   where: string;
-  /** 0 a ring (a point), 1 a diamond (a knot of the sinews). */
-  shape: 0 | 1;
+  /** 0 a ring (a point), 1 a diamond (a knot), 2 a soft glow (a field). */
+  shape: 0 | 1 | 2;
+}
+
+export interface MapPoint extends MapPlace {
+  anchor: Anchor;
 }
 
 export interface MapLine {
@@ -47,12 +51,14 @@ export interface MapLine {
   anchors: Anchor[];
 }
 
-export interface MapData {
+export interface MapData<P extends MapPlace = MapPoint, L extends { group: number; side: 'l' | 'r' | 'm' } = MapLine> {
   id: string;
   title: string;
   groups: MapGroup[];
-  points: MapPoint[];
-  lines: MapLine[];
+  points: P[];
+  lines: L[];
+  /** Drawn inside the body (the traditions' inner maps), not on the skin. */
+  inner?: boolean;
   /** Draw lines as broad soft bands (sinews) rather than threads (channels). */
   band?: boolean;
   /** Marker size (1 = acupoint): a sparse map draws its few places larger. */
@@ -68,7 +74,7 @@ const smoothCount = (n: number) => (n < 3 ? n : 4 * n - 6);
  * exploded view and is cut away inside the dissection window. One group can
  * be shown alone (solo), and the hovered place or group brightens.
  */
-export class SkinMap {
+export class SkinMap implements AtlasMap {
   readonly points: Points;
   readonly lines: LineSegments;
   readonly bands?: Points;
@@ -549,4 +555,18 @@ function pointMaterial() {
       }
     `,
   });
+}
+
+/** What the atlas needs of any map, on the skin or inside the body. */
+export interface AtlasMap {
+  readonly data: MapData<MapPlace, { group: number; side: 'l' | 'r' | 'm' }>;
+  readonly pointPos: Float32Array;
+  readonly materials: ShaderMaterial[];
+  readonly objects: Array<Points | LineSegments>;
+  refresh(body: BodyModel): void;
+  pick(camera: PerspectiveCamera, width: number, height: number, sx: number, sy: number, maxDist: number, reachPx?: number): { point: number; line: number };
+  highlight(point: number, group: number): void;
+  solo(group: number): void;
+  setVisible(on: boolean): void;
+  applyTheme(t: SceneTheme): void;
 }

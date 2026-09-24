@@ -51,10 +51,8 @@ A living list. Checked items are live.
 - [x] Tender points (1990): the eighteen of the fibromyalgia criteria, placed by definition
 - [x] Phones: split screen (figure above, panel scrolling below); tap inspects, double-tap releases, drag turns; nav fits one line
 - [x] First-visit hint for release; sharing image regenerated in the current look
-- [ ] Microcosmic orbit; three dantian
-- [ ] Cakras, nāḍīs, granthis, kuṇḍalinī
-- [ ] Tsa lung: three channels, wheels, channel-knots; kati channel
-- [ ] Trigger points (Travell & Simons) and referred zones; 1990 tender points; dermatomes; myofascial lines
+- [x] Inner maps, drawn inside the figure and bound to the skeleton (`maps/InnerMap.ts`, `data/subtle.ts`): the microcosmic orbit and three dantian; cakras, nāḍīs and granthis (with where the texts differ); tsa lung — three channels, four wheels as umbrellas, channel-knots, kati. The Traditions page links each section to its map (`/atlas/?map=…`)
+- [ ] Dermatomes; myofascial lines
 - [ ] Mucalinda's hood and the uṣṇīṣa (iconography layer)
 
 ## Site
