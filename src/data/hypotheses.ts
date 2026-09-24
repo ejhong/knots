@@ -86,7 +86,7 @@ export const HYPOTHESES: Hypothesis[] = [
     breath: 'Indirect: through autonomic state and attention rather than a specific reflex.',
     travel: 'Tension patterns are distributed; release follows the loosening of the predictions they hold.',
     age: 'Latches accumulate from early childhood as we settle on predictions; each makes the system simpler and less alive.',
-    count: 'No count is given. Any small artery or hollow organ could latch — millions of sites in principle; the atlas draws a sample.',
+    count: 'No count is given. Any small artery could latch — the skin’s included, so micro-knots too — and any hollow organ: millions of sites in principle, placed anywhere along the vessels. The atlas draws a sample.',
     test: 'Image vascular tension directly as it forms and dissolves; the model predicts that vasomotion nearly stops during deep meditative cessations.',
     status: 'An integrative theory. In pressurised skeletal-muscle arterioles the latch looks more like sustained activation than an economical hold; the claims about the brain are open.',
     body: [
