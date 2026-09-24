@@ -54,7 +54,7 @@ export const CHAPTERS: Chapter[] = [
 <li><b>Sparks.</b> A knot goes with a small pop, sometimes a star of tingling across a patch of skin.</li>
 <li><b>Euphoria.</b> A release can bring a wave of well-being — at times a euphoria some compare to MDMA.</li>
 <li><b>Migration.</b> When one knot lets go, others move in to fill the gap and settle into new places, as if the body were evening itself out.</li>
-<li><b>Fascia.</b> Other reports involve the fascia beneath the skin: layers that seem to peel apart along lines.</li>
+<li><b>Fascia.</b> Other reports involve the fascia beneath the skin: layers that seem to peel apart along lines, and places that feel hollow.</li>
 <li><b>Filling.</b> Then a filling-in, felt as re-stitching, that can move like a snake along a limb, up the body, or up into the head.</li>
 </ul>
 <p>The contemplative traditions describe much of this in their own words.</p>`,
