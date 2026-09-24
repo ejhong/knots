@@ -25,9 +25,15 @@ A living list. Checked items are live.
 - [ ] Exclude cavities (inside the mouth, eye sockets, nostrils, ear canals) from perforator sampling — ray-test each vertex outward
 - [ ] Tame additive glare where stalks are seen edge-on at silhouettes and section edges
 - [x] Sheet lift, stalks, collars, interstitium (hyaluronan gel around stuck staples); region-specific depths; section cuts
+- [x] Layered anatomy by default (exploded): skin · superficial fat · superficial fascia · gliding plane · deep fascia · muscle
+- [x] Perforators at true depths (major through deep fascia, small through superficial fascia); knots at the collar
+- [x] Dissection window (double-click to move)
+- [x] Deep channels layer: septa, raphes, neurovascular sheaths (22 structures)
+- [x] Manipulation tools removed for now (look-only atlas); to be redesigned later
 
 ## Hypotheses in the atlas
-- [ ] Vascular latch (Johnson): latched arterioles inside muscle; attention/heat/cold release; tension field
+- [x] Vascular latch (Johnson): latched arterioles inside muscle (same zones/age curve as perforator knots)
+- [x] True-scale cross-section showing where each hypothesis puts the knot (atlas + Hypotheses page)
 - [ ] Integrated trigger point: taut bands at endplate zones; referred-pain zones; local twitch
 - [ ] Fascial densification (Stecco): patches in the loose layer; friction and heat
 - [ ] Peripheral nerve: sensitised trunks and entrapment sites
