@@ -109,7 +109,8 @@ export class PerforatorCloud {
     u.uStar.value.copy(t.star);
     u.uGlowMode.value = t.glow;
     // Light on ink stone can afford a faint dust; ink on paper needs more.
-    u.uLevelTone.value.set(t.glow ? 0.34 : 0.62, t.glow ? 0.8 : 0.9, 1);
+    // Knots are the brightest thing on the body: the major perforators stay below them.
+    u.uLevelTone.value.set(t.glow ? 0.34 : 0.62, t.glow ? 0.72 : 0.9, t.glow ? 0.66 : 1);
     this.material.blending = t.glow ? AdditiveBlending : NormalBlending;
     this.material.needsUpdate = true;
   }
@@ -267,9 +268,9 @@ export function createCloudMaterial() {
           // Night: luminous dust; knots as embers; releases as stars.
           vec3 dust = uPoint * light * uBrightness;
           float big = vLevel / 2.0;
-          vec3 warm = uKnot * (0.6 + 0.45 * light);
-          col = mix(dust, warm, uPlain > 0.5 ? clamp(vKnot * 1.1, 0.0, 1.0) : 1.0) * core;
-          col += uKnot * halo * vKnot * 0.3;
+          vec3 warm = uKnot * (0.75 + 0.5 * light);
+          col = mix(dust, warm, uPlain > 0.5 ? clamp(vKnot * 1.2, 0.0, 1.0) : 1.0) * core;
+          col += uKnot * halo * vKnot * 0.4;
           col += uStar * (star + halo * vFlash * 1.2 + core * vFlash);
           col += uPoint * halo * vGlow * 0.8;
           alpha = vAlpha;

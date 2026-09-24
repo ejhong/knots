@@ -5,10 +5,10 @@ Owner: Eugene Jhong. Source essays: `docs/source/*.md` (the Substack posts are c
 
 ## Principles
 
-- **Look and feel of The OM Project** (ejhong.github.io/om): rice paper, ink-stone panels, small system type (sans, Georgia,
-  SF Mono), earth palette — terracotta for knots and nothing else (the same in every theory), sage for release; perforators are one
-  neutral colour, told apart by size, brightness and a ring for the major ones. The figure itself is sacred art: light in an
-  ink-stone card. See `docs/DESIGN.md`.
+- **Look and feel of The OM Project** (ejhong.github.io/om), cooled: warm rice paper, cool ink (slate-indigo) panels and night
+  view, small system type (sans, Georgia, SF Mono) — terracotta for knots and nothing else (the same in every theory, the brightest
+  thing on the body), jade for release and the characters, an indigo seal; perforators are one neutral colour, told apart by size
+  and brightness. The figure itself is sacred art: light in an ink-stone card. See `docs/DESIGN.md`.
 - **Anatomical honesty.** Counts and clusters come from the literature (Taylor & Palmer 1987; Saint-Cyr 2009). Anything representative
   is labelled as such. The simulation illustrates a hypothesis; it is not a measurement.
 - **Describe, never prescribe.** Nothing is a protocol. Keep the moderation guidance (Varieties of Contemplative Experience, Cheetah

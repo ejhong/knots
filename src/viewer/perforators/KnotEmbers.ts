@@ -82,7 +82,7 @@ export class KnotEmbers {
           float base = aLevel > 1.5 ? 0.012 : 0.0056;
           float breathe = 1.0 + 0.05 * sin(uTime * 0.9 + position.x * 40.0);
           // A young knot is a small ember; an old one swells.
-          float px = base * (0.35 + 0.95 * aKnot) * breathe * uProjScale / max(0.05, -mv.z);
+          float px = base * 1.12 * (0.35 + 0.95 * aKnot) * breathe * uProjScale / max(0.05, -mv.z);
           gl_PointSize = clamp(px, 2.2 * uPixelRatio, 80.0 * uPixelRatio);
         }
       `,
@@ -103,8 +103,9 @@ export class KnotEmbers {
           float core = 1.0 - smoothstep(0.22, 0.4, r);
           float halo = exp(-r * r * 4.5);
           float big = vLevel / 2.0;
-          vec3 col = mix(uKnot, uKnotCore, core * (0.3 + 0.5 * big));
-          float a = (core * 0.9 + halo * (0.35 + 0.35 * big)) * clamp(vKnot * 1.3, 0.0, 1.0) * (vLevel > 1.5 ? 1.0 : 0.82) * uDim;
+          // Bright, but still terracotta at the heart: only a touch of the pale core.
+          vec3 col = mix(uKnot, uKnotCore, core * (0.22 + 0.3 * big));
+          float a = (core * 1.0 + halo * (0.42 + 0.34 * big)) * clamp(vKnot * 1.35, 0.0, 1.0) * (vLevel > 1.5 ? 1.0 : 0.85) * uDim;
           if (uGlowMode > 0.5) gl_FragColor = vec4(col * a, 1.0);
           else {
             if (a < 0.02) discard;

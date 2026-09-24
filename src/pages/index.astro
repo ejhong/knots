@@ -97,7 +97,7 @@ const html = (s: string) => s.replaceAll('href="HYP"', `href="${base}/hypotheses
     margin-left: auto;
     font-size: 15px;
     font-weight: 400;
-    color: #8f857a;
+    color: var(--jade-light);
     letter-spacing: 0;
     text-transform: none;
   }
@@ -160,7 +160,7 @@ const html = (s: string) => s.replaceAll('href="HYP"', `href="${base}/hypotheses
   }
   .chapter-label {
     font-size: 11px;
-    color: #d8cec1;
+    color: #d6d9d3;
     letter-spacing: 0.3px;
   }
   :global(.paper) .chapter-label {
@@ -169,16 +169,16 @@ const html = (s: string) => s.replaceAll('href="HYP"', `href="${base}/hypotheses
   .enter {
     font-family: var(--font-mono);
     font-size: 10px;
-    color: #d8cec1;
+    color: #d6d9d3;
     text-decoration: none;
-    border: 1px solid #4a4640;
+    border: 1px solid #465054;
     border-radius: 4px;
     padding: 3px 8px;
-    background: rgba(42, 40, 38, 0.7);
+    background: rgba(33, 39, 42, 0.7);
   }
   .enter:hover {
     color: #fff;
-    border-color: #6f665c;
+    border-color: #6b777a;
   }
   /* The magnified plate of one perforator, and the line to where it is on the body. */
   .plate-host {
@@ -188,8 +188,8 @@ const html = (s: string) => s.replaceAll('href="HYP"', `href="${base}/hypotheses
     z-index: 6;
     width: min(360px, 46%);
     padding: 8px 10px 6px;
-    background: rgba(29, 27, 25, 0.84);
-    border: 1px solid #3a3836;
+    background: rgba(23, 28, 31, 0.84);
+    border: 1px solid #384043;
     border-radius: 8px;
     box-shadow: 0 6px 28px rgba(0, 0, 0, 0.3);
     pointer-events: none;
@@ -233,7 +233,7 @@ const html = (s: string) => s.replaceAll('href="HYP"', `href="${base}/hypotheses
     stroke-dasharray: 5 4;
   }
   .plate-callout .under {
-    stroke: #1d1b19;
+    stroke: #171b1e;
     stroke-opacity: 0.55;
     stroke-width: 3.2;
     stroke-dasharray: none;
@@ -260,7 +260,7 @@ const html = (s: string) => s.replaceAll('href="HYP"', `href="${base}/hypotheses
     top: 44px;
     z-index: 5;
     font-family: var(--font-mono);
-    color: #e6ded2;
+    color: #e5e3dc;
     pointer-events: none;
   }
   .big-number :global(.v) {
@@ -273,7 +273,7 @@ const html = (s: string) => s.replaceAll('href="HYP"', `href="${base}/hypotheses
   .big-number :global(.k) {
     display: block;
     font-size: 10px;
-    color: #b9ae9f;
+    color: #aeb8b5;
     margin-top: 2px;
   }
   @media (max-width: 900px) {

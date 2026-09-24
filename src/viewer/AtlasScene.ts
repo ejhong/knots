@@ -97,6 +97,12 @@ export class AtlasScene {
   /** Planned moves, by departure time (scene clock, s). */
   private moves: { from: number; to: number; at: number; level: number }[] = [];
   private clock = 0;
+  /** Knots as drawn, easing toward the simulation's (see stepKnotFade). */
+  private knotShown?: Float32Array;
+  private knotsMoving = false;
+  private knotSlowUntil = 0;
+  /** A newly chosen theory's knots fade in (0 → 1). */
+  private theoryFade = 1;
   private lastPlan = -1;
   private pendingPlan: { p: Vector3; r: number } | null = null;
   /** Knots of the site theories (trigger points, densification, nerves, perception), built when first chosen. */
@@ -293,6 +299,11 @@ export class AtlasScene {
       this.stepSim(dt);
       this.pulses.update(dt);
       this.updateMigration(dt);
+      this.stepKnotFade(dt);
+      if (this.theoryFade < 1) {
+        this.theoryFade = Math.min(1, this.theoryFade + dt / 0.6);
+        this.applyQuiet();
+      }
       this.frame(time);
     });
     // A dissection window on the upper back, between the shoulder blades.
@@ -380,6 +391,8 @@ export class AtlasScene {
 
   /** Sets the history for an age and shows it. */
   settle(age: number) {
+    // A new age (or a reset) eases in; releases stay quick.
+    this.knotSlowUntil = this.clock + 0.8;
     this.moves.length = 0;
     this.pendingPlan = null;
     this.migrants.clear();
@@ -391,6 +404,7 @@ export class AtlasScene {
 
   /** Chooses whose knots are drawn: a theory's id (see src/data/hypotheses.ts). */
   setHypothesis(id: string) {
+    if (id !== this.hypothesis) this.theoryFade = 0;
     this.hypothesis = id;
     if (SITE_STYLES[id]) this.ensureTheory(id);
     this.applyKnotVisibility();
@@ -523,7 +537,7 @@ export class AtlasScene {
     // Stalks and collars show the perforator knots only in that view, and
     // only while knots are shown: otherwise every perforator is plain.
     if (!this.zeroKnots) this.zeroKnots = new Float32Array(this.ladder.count);
-    this.stalks.setKnots(this.knotsOn && perf ? this.sim.knot : this.zeroKnots);
+    this.stalks.setKnots(this.knotsOn && perf ? this.shownKnots() : this.zeroKnots);
     this.cloud.material.uniforms.uKnotScale.value = this.knotsOn && perf ? 1 : 0;
     // Small knots are drawn by the cloud, so it stays up for them even when
     // the perforators themselves are hidden.
@@ -538,17 +552,44 @@ export class AtlasScene {
 
   /** Pushes the simulation's knot state to every layer that draws it. */
   syncKnots() {
-    this.cloud.knot.set(this.sim.knot);
+    // Knots ease toward the simulation (stepKnotFade); stars show at once.
+    this.knotsMoving = true;
     this.cloud.flash.set(this.sim.flash);
-    this.cloud.markKnotsDirty();
     this.cloud.markFlashDirty();
-    this.embers.setKnots(this.sim.knot);
-    const perf = this.hypothesis === 'perforator';
-    if (!this.zeroKnots) this.zeroKnots = new Float32Array(this.ladder.count);
-    this.stalks.setKnots(this.knotsOn && perf ? this.sim.knot : this.zeroKnots);
     this.rootMarkers.knot.set(this.sim.rootKnot);
     this.rootMarkers.flash.set(this.sim.rootFlash);
     this.rootMarkers.update();
+  }
+
+  /** The knots as currently drawn (they ease toward the simulation's). */
+  private shownKnots(): Float32Array {
+    if (!this.knotShown) this.knotShown = new Float32Array(this.ladder.count);
+    return this.knotShown;
+  }
+
+  /** Eases the drawn knots toward the simulation: slowly after a new age, quickly otherwise. */
+  private stepKnotFade(dt: number) {
+    if (!this.knotsMoving) return;
+    const T = this.sim.knot;
+    const S = this.shownKnots();
+    const k = 1 - Math.exp(-dt * (this.clock < this.knotSlowUntil ? 4.5 : 18));
+    let left = 0;
+    for (let i = 0; i < T.length; i++) {
+      const d = T[i] - S[i];
+      if (d === 0) continue;
+      if (Math.abs(d) < 0.004) S[i] = T[i];
+      else {
+        S[i] += d * k;
+        left++;
+      }
+    }
+    this.cloud.knot.set(S);
+    this.cloud.markKnotsDirty();
+    this.embers.setKnots(S);
+    const perf = this.hypothesis === 'perforator';
+    if (!this.zeroKnots) this.zeroKnots = new Float32Array(this.ladder.count);
+    this.stalks.setKnots(this.knotsOn && perf ? S : this.zeroKnots);
+    if (!left) this.knotsMoving = false;
   }
 
   private createSim(): KnotSim {
@@ -730,7 +771,7 @@ export class AtlasScene {
         break;
       case 'fascia':
         this.layers.sheet.visible = on;
-        this.layers.floorMaterial.uniforms.uLineAlpha.value = on ? 0.45 : 0.12;
+        this.layers.floorMaterial.uniforms.uLineAlpha.value = on ? 0.22 : 0.08;
         break;
       case 'vessels':
         this.trees.lines.visible = on;
@@ -1046,7 +1087,8 @@ export class AtlasScene {
   private applyQuiet() {
     const d = (layer: string, q: number) => (!this.quiet || this.compare.has(layer) ? 1 : q);
     const perforators = d('perforators', 0.3);
-    const knots = d('knots', 0.28);
+    const f = this.theoryFade;
+    const knots = d('knots', 0.28) * f * f * (3 - 2 * f);
     const vessels = d('vessels', 0.12);
     const channels = d('channels', 0.14);
     const u = (m: { uniforms: Record<string, { value: unknown }> }, v: number) => (m.uniforms.uDim.value = v);

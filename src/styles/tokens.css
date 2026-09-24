@@ -1,7 +1,9 @@
 /*
  * Earth / wabi-sabi — the palette and type of The OM Project
- * (ejhong.github.io/om), extended for Knots. Rice paper and ink stone;
- * bronze for the hand; terracotta for knots; sage for release.
+ * (ejhong.github.io/om), extended for Knots: warm rice paper, and a cool ink
+ * (slate with a breath of indigo) for panels and the night view. Bronze for
+ * the hand; terracotta for knots and nothing else; jade for release and the
+ * characters; an indigo seal.
  */
 :root {
   --bg: #faf7f2; /* warm rice paper */
@@ -16,21 +18,25 @@
   --accent: #9a8a78; /* warm bronze */
   --accent-dark: #6b5d4d; /* deep bronze */
 
-  --panel-bg: #2a2826; /* ink stone charcoal */
-  --panel-head: #232220;
-  --panel-body: #3d3a36;
-  --panel-line: #3a3836;
-  --panel-text: #e6ded2;
-  --panel-muted: #c4b8a8; /* warm sand */
-  --panel-faint: #8f857a;
+  --panel-bg: #23282b; /* cool ink stone */
+  --panel-head: #1c2023;
+  --panel-body: #2e3437;
+  --panel-line: #384043;
+  --panel-text: #e5e3dc;
+  --panel-muted: #b7c1bd; /* celadon grey */
+  --panel-faint: #7f8b89;
 
   /* Voices (from OM) and their roles here */
   --stone: #90989e; /* trees, structure */
   --terracotta: #c87868; /* knots */
-  --sage: #7ca67c; /* release */
+  --sage: #5aa58a; /* release (jade) */
+  --jade: #4f8f7a; /* the characters, on paper */
+  --jade-light: #8fc4b0; /* the characters, on ink */
+  --celadon: #bdd3c9; /* large ornaments, on paper */
+  --seal: #34557a; /* the indigo seal */
   --plum: #a482ac; /* traditions */
-  --sand: #c4b8a8;
-  --ochre: #c9a45f; /* stars */
+  --sand: #b7c1bd;
+  --ochre: #c9a45f; /* warm accent */
   --indigo: #7189a8; /* channels */
 
   --font-sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;

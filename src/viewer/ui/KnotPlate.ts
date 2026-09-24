@@ -17,8 +17,8 @@ type Tone = 'dark' | 'light';
 
 const PAL: Record<Tone, Record<string, string>> = {
   dark: {
-    text: '#d8cfc2',
-    faint: '#8f857a',
+    text: '#d6d9d3',
+    faint: '#7f8b89',
     skin: '#5c5049',
     dermis: '#7b6d62',
     fat: '#3a332d',
@@ -40,7 +40,7 @@ const PAL: Record<Tone, Record<string, string>> = {
     knot: '#e27b61',
     knotEdge: '#f2b39f',
     calm: '#e6dccd',
-    spark: '#f1dca8',
+    spark: '#a8e6cd',
     flow: '#efe7da',
   },
   light: {
@@ -67,7 +67,7 @@ const PAL: Record<Tone, Record<string, string>> = {
     knot: '#c4452f',
     knotEdge: '#93301f',
     calm: '#3a3632',
-    spark: '#b8903f',
+    spark: '#3f8f73',
     flow: '#6b5d4d',
   },
 };

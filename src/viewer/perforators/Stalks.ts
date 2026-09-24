@@ -204,6 +204,12 @@ function createStalkMaterial() {
         vClipPos = p;
         gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0);
         vA = aLevel < 0.5 ? uAlpha.x : (aLevel < 1.5 ? uAlpha.y : uAlpha.z);
+        // Where the body turns edge-on the stalks would bristle into a fringe
+        // around the outline: they fade there, leaving a clean edge of light.
+        vec3 wn = normalize(mat3(modelMatrix) * n);
+        vec3 wp = (modelMatrix * vec4(p, 1.0)).xyz;
+        float facing = abs(dot(wn, normalize(cameraPosition - wp)));
+        vA *= smoothstep(0.18, 0.5, facing);
         // Small knots tint their stalk only a little: there are so many.
         vKnot = aLevel < 0.5 ? aKnot * 0.35 : aKnot;
         vEnd = aEnd;

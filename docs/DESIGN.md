@@ -8,11 +8,14 @@ more than a magazine — carrying a body drawn as sacred art: a figure made of l
   contents, with small SF Mono text.
 - **Type (system only, no web fonts):** `-apple-system…` sans for UI and headings (title 20px/700, section 15px/700);
   Georgia for prose (13.5px on paper, 12.5px in panels); SF Mono for labels, data and annotations (9–11px).
-- **Colour roles:** terracotta `#c87868` (night `#e27b61`) = knots, and only knots — drawn the same way whatever the theory;
-  sage `#7ca67c` = release; moonlit silver-blue `#b3c4d2` (paper `#5d7284`) = vessels; gold = the deep channels; stone
-  `#90989e` = structure on the page; plum `#a482ac` = the traditions;
-  bronze `#9a8a78`/`#6b5d4d` = the hand (controls). Perforators are one neutral colour (ivory on ink stone, ink on paper): small
-  ones a faint dust, medium ones clear dots, major ones a dot in a ring. Stronger blues are unassigned, kept for later.
+- **Temperature:** warm rice paper for the page; a cool ink — slate with a breath of indigo (`#1d2226` night view,
+  `#23282b` panels) — for the panels and the night view, so the warm knots glow against cool ground.
+- **Colour roles:** terracotta `#c87868` (night `#e27b61`) = knots, and only knots — drawn the same way whatever the theory,
+  the brightest thing on the body; jade = release (a spark, night `#a8e6cd`) and the characters (glyphs `#8fc4b0` on ink,
+  `#4f8f7a`/celadon `#bdd3c9` on paper); indigo `#34557a` = the seal; moonlit silver-blue `#b3c4d2` (paper `#5d7284`) =
+  vessels; gold = the deep channels (off by default in the atlas); violet = the traditional maps; bronze = the hand (controls).
+  Perforators are one neutral colour (ivory on ink, ink on paper): small ones a faint dust, medium ones clear dots, major ones
+  toned below the knots. The superficial fascia is a pearly membrane drawn by its rim, with no engraved lines.
 - **Layout:** the instrument — an ink-stone panel on the left beside a visualization card — for the introduction (nine chapters;
   scrolling the panel sets each scene) and the atlas (theory menu, layers, an age slider; hover details in a fixed box at the
   lower left). Reading pages are a paper card with a quiet index.

@@ -22,8 +22,8 @@ export interface SectionInput {
 
 const PAL = {
   dark: {
-    text: '#cfc5b8',
-    faint: '#8f857a',
+    text: '#cdd1cc',
+    faint: '#7f8b89',
     skin: '#6d5f55',
     fat: '#4a4338',
     sup: '#e6ded2',

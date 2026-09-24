@@ -38,9 +38,10 @@ export interface SceneTheme {
 const c = (hex: string) => new Color(hex);
 
 /**
- * Earth / wabi-sabi, as in The OM Project: "night" is ink stone — the
- * viewing card in which the figure is made of light; "paper" is rice paper,
- * where the same figure is an ink stipple.
+ * Earth / wabi-sabi, as in The OM Project: "night" is a cool ink stone — the
+ * viewing card in which the figure is made of light, under a moonlit halo;
+ * "paper" is rice paper, where the same figure is an ink stipple. Release is
+ * jade in both.
  */
 export const THEMES: Record<ThemeName, SceneTheme> = {
   paper: {
@@ -56,8 +57,8 @@ export const THEMES: Record<ThemeName, SceneTheme> = {
     point: c('#2f2b28'),
     knot: c('#c4452f'),
     knotCore: c('#93301f'),
-    star: c('#b8903f'),
-    pulse: c('#5f935f'),
+    star: c('#3f8f73'),
+    pulse: c('#3f8f73'),
     gold: c('#9a8a78'),
     halo: c('#eadcc0'),
     map: c('#7a5588'),
@@ -66,21 +67,21 @@ export const THEMES: Record<ThemeName, SceneTheme> = {
   },
   night: {
     name: 'night',
-    background: c('#262422'),
-    bodyLight: c('#3a3733'),
-    bodyShadow: c('#1d1b19'),
-    line: c('#c4b8a8'),
-    rim: c('#e6ded2'),
-    floor: c('#2c2926'),
-    floorLine: c('#6f665c'),
+    background: c('#1d2226'),
+    bodyLight: c('#343b3e'),
+    bodyShadow: c('#171b1e'),
+    line: c('#b7c1bd'),
+    rim: c('#dfe5e1'),
+    floor: c('#262c2f'),
+    floorLine: c('#66737a'),
     tree: c('#b3c4d2'),
     point: c('#e6dccd'),
     knot: c('#e27b61'),
     knotCore: c('#ffd9c8'),
-    star: c('#ecd6a4'),
-    pulse: c('#9dcc9a'),
+    star: c('#a8e6cd'),
+    pulse: c('#8fd6b9'),
     gold: c('#c9a45f'),
-    halo: c('#c4b8a8'),
+    halo: c('#b4cdcc'),
     map: c('#c3a1d4'),
     mapPoint: c('#f0e2f7'),
     glow: 1,

@@ -91,7 +91,9 @@ export function mountAtlas(viz: HTMLElement, panel: HTMLElement) {
     scene.simRunning = false;
     scene.interaction.tool = 'release';
     canvas.style.cursor = ringCursor(theme === 'paper');
-    scene.settle(34);
+    scene.setShape({ age: 46 });
+    scene.settle(46);
+    scene.setVisible('channels', false);
     scene.setWindowOn(false);
     engine.setPose({ position: [-1.02, 1.42, -1.95], target: [0.03, 1.16, -0.02], fov: 30 });
     engine.autoRotate = true;
@@ -137,6 +139,9 @@ function bindLayers(panel: HTMLElement, scene: AtlasScene) {
       const layer = el.dataset.layer as Parameters<AtlasScene['setVisible']>[0];
       if (layer === 'territories' && el.checked) ensureTerritoryColors(scene);
       scene.setVisible(layer, el.checked);
+      // The legend lists what is on show.
+      const item = document.querySelector<HTMLElement>(`[data-legend="${layer}"]`);
+      if (item) item.hidden = !el.checked;
     });
   });
   const count = (k: string, n: number) => {
@@ -237,7 +242,7 @@ function fitCamera(scene: AtlasScene, previousHeight: number) {
  */
 function ringCursor(paper: boolean) {
   const stroke = paper ? '#3a3632' : '#efe7da';
-  const halo = paper ? '#faf7f2' : '#1d1b19';
+  const halo = paper ? '#faf7f2' : '#171b1e';
   const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='68' height='68'><circle cx='34' cy='34' r='32' fill='none' stroke='${halo}' stroke-opacity='0.5' stroke-width='2.5'/><circle cx='34' cy='34' r='32' fill='none' stroke='${stroke}' stroke-opacity='0.75' stroke-width='1'/><circle cx='34' cy='34' r='1.2' fill='${stroke}'/></svg>`;
   return `url("data:image/svg+xml,${encodeURIComponent(svg)}") 34 34, crosshair`;
 }

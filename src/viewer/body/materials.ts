@@ -242,8 +242,9 @@ export function applySheetTheme(m: ShaderMaterial, t: SceneTheme) {
   m.uniforms.uLine.value.copy(t.line);
   m.uniforms.uRim.value.copy(t.rim);
   m.uniforms.uGlow.value = t.glow;
-  m.uniforms.uLineAlpha.value = t.glow ? 0.34 : 0.5;
-  m.uniforms.uRimAlpha.value = t.glow ? 0.5 : 0.75;
+  // No engraving: a pearly membrane, drawn by its rim of light.
+  m.uniforms.uLineAlpha.value = 0;
+  m.uniforms.uRimAlpha.value = t.glow ? 0.62 : 0.75;
 }
 
 export function applyFloorTheme(m: ShaderMaterial, t: SceneTheme) {

@@ -18,10 +18,10 @@ const pct = (a: number) => ((a - 1) / 89) * 100;
         </select>
       </div>
       <div class="overlay tr legend">
-        <span><i class="sw sw-perforator"></i>perforator</span>
-        <span><i class="sw sw-knot"></i>knot</span>
-        <span><i class="sw sw-vessel"></i>vessel</span>
-        <span><i class="sw sw-channel"></i>channel</span>
+        <span data-legend="perforators"><i class="sw sw-perforator"></i>perforator</span>
+        <span data-legend="knots"><i class="sw sw-knot"></i>knot</span>
+        <span data-legend="vessels"><i class="sw sw-vessel"></i>vessel</span>
+        <span data-legend="channels" hidden><i class="sw sw-channel"></i>channel</span>
       </div>
       <div class="overlay bl" data-hint>drag to turn · click to select · double-click or hold to release knots · shift-click for a window</div>
       <div class="overlay br">© 2026 Eugene Jhong</div>
@@ -39,9 +39,9 @@ const pct = (a: number) => ((a - 1) / 89) * 100;
           <div class="markers" aria-hidden="true">
             {AGES.map((a) => <span style={`left:${pct(a)}%`}>{a}</span>)}
           </div>
-          <input class="timeline" type="range" min="1" max="90" step="0.5" value="34" data-age aria-label="Age in years" />
+          <input class="timeline" type="range" min="1" max="90" step="0.5" value="46" data-age aria-label="Age in years" />
         </div>
-        <span class="time" data-age-out>34 y</span>
+        <span class="time" data-age-out>46 y</span>
       </div>
       <div class="settings-container">
         <button class="settings-btn" type="button" data-settings aria-label="Settings" aria-expanded="false">
@@ -107,7 +107,7 @@ const pct = (a: number) => ((a - 1) / 89) * 100;
         <p class="sub">superficial fascia · gliding plane · deep fascia</p>
         <label class="row"><input type="checkbox" data-layer="vessels" checked /> source vessels <span class="n" data-count="roots"></span></label>
         <p class="sub">the arteries feeding each tree, and their branches</p>
-        <label class="row"><input type="checkbox" data-layer="channels" checked /> deep channels <span class="n" data-count="channels"></span></label>
+        <label class="row"><input type="checkbox" data-layer="channels" /> deep channels <span class="n" data-count="channels"></span></label>
         <p class="sub">septa, raphes and neurovascular sheaths of the deep fascia — candidates for the acupuncture channels</p>
         <label class="row"><input type="checkbox" data-window /> dissection window</label>
         <p class="sub">skin cut back, superficial fascia removed — or shift-click the body to open one there</p>
@@ -176,8 +176,8 @@ const pct = (a: number) => ((a - 1) / 89) * 100;
     transform: translateX(-50%);
     z-index: 7;
     padding: 7px 14px;
-    background: rgba(29, 27, 25, 0.86);
-    border: 1px solid #4a4640;
+    background: rgba(23, 28, 31, 0.86);
+    border: 1px solid #465054;
     border-radius: 999px;
     font-family: var(--font-mono);
     font-size: 11px;
@@ -238,7 +238,7 @@ const pct = (a: number) => ((a - 1) / 89) * 100;
   }
   .restore:hover {
     color: #f2ebe0;
-    border-color: #6f665c;
+    border-color: #6b777a;
   }
   .census-note {
     padding: 2px 14px 10px !important;
@@ -257,7 +257,7 @@ const pct = (a: number) => ((a - 1) / 89) * 100;
     padding: 10px 12px 11px;
     border: 1px solid var(--panel-line);
     border-radius: 8px;
-    background: #2f2c29;
+    background: #2a3033;
     height: 184px;
     overflow: hidden;
   }
@@ -273,7 +273,7 @@ const pct = (a: number) => ((a - 1) / 89) * 100;
     font-size: 9px;
     letter-spacing: 0.4px;
     text-transform: uppercase;
-    color: #b9a2c6;
+    color: var(--jade-light);
   }
   .mc-title {
     font-size: 13.5px;
@@ -292,7 +292,7 @@ const pct = (a: number) => ((a - 1) / 89) * 100;
     font-family: var(--font-serif);
     font-size: 11.5px;
     line-height: 1.5;
-    color: #d8cfc2;
+    color: #d6d9d3;
     margin-top: 6px;
   }
   .mc-note :global(.anat) {
@@ -314,7 +314,7 @@ const pct = (a: number) => ((a - 1) / 89) * 100;
   .chipset.channels :global(.cjk) {
     font-family: var(--font-cjk);
     font-size: 10px;
-    color: var(--panel-faint);
+    color: var(--jade-light);
   }
   .soon-list {
     list-style: none;

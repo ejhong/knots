@@ -182,7 +182,7 @@ button {
   background: var(--panel-body);
   padding: 8px 0;
   scrollbar-width: thin;
-  scrollbar-color: #5a554f transparent;
+  scrollbar-color: #535d61 transparent;
 }
 .panel .segment {
   font-family: var(--font-mono);
