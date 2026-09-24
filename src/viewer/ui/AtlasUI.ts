@@ -9,17 +9,6 @@ const fmt = new Intl.NumberFormat('en-US');
 const LEVEL_NAME = ['small perforator', 'medium perforator', 'major perforator', 'root'];
 const LEVEL_COLOR = ['#cdb9a7', '#e0a58f', '#f08f73', '#ffb199'];
 
-/** Stages of a life, noted while "a life" plays. */
-const LIFE_NOTES: [number, string][] = [
-  [1, 'Infancy. Perforators open; the young pandiculate constantly. Almost nothing to find.'],
-  [9, 'Childhood. A few micro-knots where the body first learns to brace.'],
-  [20, 'Early adulthood. The base of the skull, the neck, the low back begin to hold.'],
-  [34, 'Midlife approaches. Knots gather at the junctions and the brace muscles; the roots at the ridges start to stick.'],
-  [50, 'Midlife. Cutaneous vessels respond less; resting sympathetic tone climbs. The ladder fills from the roots down.'],
-  [70, 'Late life. Knots across the back and hips; many roots held.'],
-  [88, 'Old age. The original essay wonders whether stuck tone converts to diffuse stiffness here — fewer points, more hold.'],
-];
-
 const SECTIONS: Record<string, { normal: [number, number, number]; d: (s: AtlasScene) => number; pose: (s: AtlasScene) => [number[], number[]] } | null> = {
   none: null,
   sagittal: {
@@ -68,7 +57,7 @@ export function mountAtlas(viz: HTMLElement, panel: HTMLElement) {
 
   scene.ready.then(() => {
     const engine = scene.engine;
-    engine.setPose({ position: [-1.2, 1.28, -2.45], target: [0, 0.9, 0], fov: 30 });
+    engine.setPose({ position: [-1.55, 1.3, -3.2], target: [0, 0.9, 0], fov: 30 });
     engine.autoRotate = true;
     engine.start();
     requestAnimationFrame(() => {
@@ -79,7 +68,7 @@ export function mountAtlas(viz: HTMLElement, panel: HTMLElement) {
     bindLayers(panel, scene);
     bindTools(viz, scene);
     bindBreath(viz, scene);
-    bindAge(viz, panel, scene);
+    bindAge(viz, scene);
     bindScenarios(panel, scene);
     bindCensus(panel, scene);
     bindLog(panel, scene);
@@ -216,13 +205,9 @@ function bindBreath(viz: HTMLElement, scene: AtlasScene) {
   });
 }
 
-function bindAge(viz: HTMLElement, panel: HTMLElement, scene: AtlasScene) {
+function bindAge(viz: HTMLElement, scene: AtlasScene) {
   const input = viz.querySelector<HTMLInputElement>('[data-age]')!;
   const out = viz.querySelector<HTMLElement>('[data-age-out]')!;
-  const lifeBtn = viz.querySelector<HTMLButtonElement>('[data-life]')!;
-  const icon = lifeBtn.querySelector('path')!;
-  const PLAY = 'M8 5v14l11-7z';
-  const PAUSE = 'M6 19h4V5H6v14zm8-14v14h4V5h-4z';
   let pending: number | null = null;
   let lastFit = scene.body.height();
 
@@ -234,55 +219,12 @@ function bindAge(viz: HTMLElement, panel: HTMLElement, scene: AtlasScene) {
     lastFit = scene.body.height();
   };
   input.addEventListener('input', () => {
-    const v = Number(input.value);
     if (pending === null)
       requestAnimationFrame(() => {
         apply(pending!);
         pending = null;
       });
-    pending = v;
-    stopLife();
-  });
-
-  let playing = false;
-  let t = 0;
-  const duration = 42;
-  let unsub: (() => void) | null = null;
-  const stopLife = () => {
-    if (!playing) return;
-    playing = false;
-    unsub?.();
-    icon.setAttribute('d', PLAY);
-    showHypothesis(panel, 'perforator');
-  };
-  lifeBtn.addEventListener('click', () => {
-    if (playing) return stopLife();
-    playing = true;
-    t = 0;
-    icon.setAttribute('d', PAUSE);
-    let lastNote = -1;
-    let acc = 0;
-    unsub = scene.engine.onFrame(({ dt }) => {
-      t += dt;
-      const k = Math.min(1, t / duration);
-      const eased = k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
-      const age = 1 + 89 * eased;
-      acc += dt;
-      if (acc > 1 / 20) {
-        acc = 0;
-        input.value = String(age);
-        apply(age);
-      }
-      let idx = -1;
-      LIFE_NOTES.forEach(([a], i) => {
-        if (age >= a) idx = i;
-      });
-      if (idx !== lastNote && idx >= 0) {
-        lastNote = idx;
-        setCard(panel, `A life · ${LIFE_NOTES[idx][0]} y`, `<p>${LIFE_NOTES[idx][1]}</p>`);
-      }
-      if (k >= 1) stopLife();
-    }) as () => void;
+    pending = Number(input.value);
   });
 }
 
