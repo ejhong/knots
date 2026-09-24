@@ -96,6 +96,9 @@ export class Engine {
       this.idleTime = 0;
       this.flight = undefined;
     });
+    // On touch screens a swipe up or down scrolls the page, as it does
+    // everywhere else; a sideways swipe turns the figure, two fingers zoom.
+    if (typeof window !== 'undefined' && window.matchMedia?.('(pointer: coarse)').matches) canvas.style.touchAction = 'pan-y';
 
     const target = new WebGLRenderTarget(1, 1, { type: HalfFloatType, samples: 4 });
     this.composer = new EffectComposer(this.renderer, target);
