@@ -1,5 +1,20 @@
 [
  {
+  "id": "ahmadzadeh2007",
+  "authors": "Ahmadzadeh R, Bergeron L, Tang M et al.",
+  "year": 2007,
+  "title": "The superior and inferior gluteal artery perforator flaps",
+  "venue": "Plast Reconstr Surg 120:1551-1556",
+  "url": "https://doi.org/10.1097/01.prs.0000282098.61498.ee",
+  "pmid": "18040187",
+  "kind": "paper",
+  "tags": [
+   "perforators",
+   "anatomy"
+  ],
+  "note": "About 5 superior and 8 inferior gluteal perforators of at least 0.5 mm on each side, along two lines across the buttock."
+ },
+ {
   "id": "alvarezprats2019",
   "authors": "Álvarez-Prats D, Carvajal-Fernández O, Valera Garrido F et al.",
   "year": 2019,
@@ -560,6 +575,21 @@
   "note": "The loose-connective-tissue sublayers of neck fascia are thicker in chronic neck pain and thin with treatment."
  },
  {
+  "id": "tang2009",
+  "authors": "Tang M, Mao Y, Almutairi K et al.",
+  "year": 2009,
+  "title": "Three-dimensional analysis of perforators of the posterior leg",
+  "venue": "Plast Reconstr Surg 123:1729-1738",
+  "url": "https://doi.org/10.1097/PRS.0b013e3181a3f376",
+  "pmid": "19483572",
+  "kind": "paper",
+  "tags": [
+   "perforators",
+   "anatomy"
+  ],
+  "note": "Thirteen perforators of at least 0.5 mm in the back of each leg, each supplying about 38 cm²; lower down, septocutaneous perforators arranged lengthwise in one or two parallel chains."
+ },
+ {
   "id": "taylor1987",
   "authors": "Taylor GI, Palmer JH",
   "year": 1987,
@@ -573,6 +603,22 @@
    "anatomy"
   ],
   "note": "The arterial road map of the body: ~40 source-artery territories and an average of 374 major perforators per subject. “Arteries follow closely the connective tissue framework of the body.”"
+ },
+ {
+  "id": "taylor1992",
+  "authors": "Taylor GI, Minabe T",
+  "year": 1992,
+  "title": "The angiosomes of the mammals and other vertebrates",
+  "venue": "Plast Reconstr Surg 89:181-215",
+  "url": "https://doi.org/10.1097/00006534-199202000-00001",
+  "pmid": "1732886",
+  "kind": "paper",
+  "tags": [
+   "perforators",
+   "anatomy",
+   "animals"
+  ],
+  "note": "Across mammals and in humans, the size and density of the cutaneous perforators follow the skin’s mobility: large and sparse where it is mobile, smaller and more densely grouped where it is tethered or fixed."
  },
  {
   "id": "taylor2011",
@@ -618,6 +664,21 @@
    "history"
   ],
   "note": "The first maps of myofascial referred-pain patterns."
+ },
+ {
+  "id": "whetzel1992",
+  "authors": "Whetzel TP, Mathes SJ",
+  "year": 1992,
+  "title": "Arterial anatomy of the face: an analysis of vascular territories and perforating cutaneous vessels",
+  "venue": "Plast Reconstr Surg 89:591-603",
+  "url": "https://pubmed.ncbi.nlm.nih.gov/1546070/",
+  "pmid": "1546070",
+  "kind": "paper",
+  "tags": [
+   "perforators",
+   "anatomy"
+  ],
+  "note": "Small, densely populated perforators supply the front of the face and the scalp; large, sparse ones in predictable places supply the sides of the face."
  },
  {
   "id": "willard2012",

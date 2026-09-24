@@ -1,3 +1,5 @@
+import type { PerforatorDensity } from '../data/perforatorDensity';
+import { stepCost, type AxisField } from './axial';
 import { buildMeshGraph, dijkstra, type MeshGraph } from '../lib/graph';
 import { mulberry32, type Rng } from '../lib/random';
 
@@ -28,8 +30,14 @@ export interface LadderInput {
   fineQuads: Uint32Array;
   /** Fine vertex of each root, in root order. */
   rootVertices: Int32Array;
-  /** Relative density of major perforators at a point (1 = average). */
-  majorDensity?: (x: number, y: number, z: number) => number;
+  /** Where perforators crowd, by size (see data/perforatorDensity.ts); built only when placing. */
+  density?: () => PerforatorDensity;
+  /**
+   * Which way the linking vessels run (see perforators/axial.ts): steps
+   * along a limb or across the trunk cost less, so trees and territories
+   * grow into ovals along that axis.
+   */
+  axis?: AxisField;
 }
 
 export interface Ladder {
@@ -44,7 +52,7 @@ export interface Ladder {
   root: Int16Array;
   /** Nearest fine vertex of each perforator. */
   vertex: Int32Array;
-  /** Surface distance to the root along the tree (m). */
+  /** Distance to the root along the tree (m, weighted by the axis of the linking vessels). */
   depth: Float32Array;
   /** Tree edges as fine-vertex pairs (child → parent) with flow weights. */
   treeEdges: Int32Array;
@@ -73,6 +81,9 @@ interface Sample {
   x: number;
   y: number;
   z: number;
+  /** Relative density of small perforators here, and of major ones. */
+  ds?: number;
+  dm?: number;
 }
 
 function triangleAreas(pos: Float32Array, tris: Uint32Array) {
@@ -240,38 +251,42 @@ export interface LadderPlacement {
   nMed: number;
 }
 
-/** Bump whenever placeLadder's output would change for the same inputs. */
-export const PLACEMENT_VERSION = 1;
+/** Bump whenever placeLadder's output would change for the same inputs (including the density model). */
+export const PLACEMENT_VERSION = 2;
 
 export function buildLadder(input: LadderInput, params: LadderParams = DEFAULT_LADDER): Ladder {
   return completeLadder(input, placeLadder(input, params));
 }
 
-export function placeLadder(input: Pick<LadderInput, 'positions' | 'triangles' | 'majorDensity'>, params: LadderParams = DEFAULT_LADDER): LadderPlacement {
+export function placeLadder(input: Pick<LadderInput, 'positions' | 'triangles' | 'density'>, params: LadderParams = DEFAULT_LADDER): LadderPlacement {
   const rng = mulberry32(params.seed);
   const { positions, triangles } = input;
   const { total: area } = triangleAreas(positions, triangles);
+  const density = input.density?.();
+  const clamp = (d: number) => Math.min(4, Math.max(0.25, d));
 
-  // 1. Small perforators: blue noise over the whole skin.
-  const candidates = sampleSurface(positions, triangles, Math.round(params.total * 2.6), rng);
+  // 1. Small perforators: blue noise over the whole skin, closer where the
+  //    skin is tethered (the scalp, the front of the face, palms and soles).
+  const candidates = sampleSurface(positions, triangles, Math.round(params.total * 3.2), rng);
+  for (const c of candidates) c.ds = clamp(density ? density.small(c.x, c.y, c.z) : 1);
   const r0 = Math.sqrt(area / params.total) * 0.9;
-  const all = poissonTarget(candidates, params.total, () => 1, r0);
+  const all = poissonTarget(candidates, params.total, (s) => 1 / Math.sqrt(s.ds!), r0);
 
-  // 2. Majors and mediums: coarser blue noise within the same set, denser
-  //    where surgeons find perforators clustered.
-  const density = input.majorDensity ?? (() => 1);
+  // 2. Majors and mediums: coarser blue noise within the same set, in rows
+  //    along the connective-tissue framework; mediums halfway between the
+  //    majors' pattern and the small ones'.
+  for (const s of all) s.dm = clamp(density ? density.major(s.x, s.y, s.z) : 1);
   const shuffled = all.slice();
   for (let i = shuffled.length - 1; i > 0; i--) {
     const j = Math.floor(rng() * (i + 1));
     [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
   }
-  const shape = (s: Sample) => 1 / Math.sqrt(Math.max(0.25, density(s.x, s.y, s.z)));
-  const majors = poissonTarget(shuffled, params.major, shape, Math.sqrt(area / params.major) * 0.85);
+  const majors = poissonTarget(shuffled, params.major, (s) => 1 / Math.sqrt(s.dm!), Math.sqrt(area / params.major) * 0.85);
   const majorSet = new Set(majors);
   const mediums = poissonTarget(
     shuffled.filter((s) => !majorSet.has(s)),
     params.medium,
-    shape,
+    (s) => 1 / Math.sqrt(Math.sqrt(s.dm! * s.ds!)),
     Math.sqrt(area / params.medium) * 0.85,
     majors,
   );
@@ -303,8 +318,10 @@ export function completeLadder(input: LadderInput, placement: LadderPlacement): 
   }
 
   // 3. Trees along the skin. Quad diagonals make the graph 8-connected so
-  //    the branches run straighter.
+  //    the branches run straighter; steps along a limb or across the trunk
+  //    cost less, so territories are ovals along the linking vessels.
   const graph: MeshGraph = buildMeshGraph(positions, withDiagonals(triangles, input.fineQuads));
+  if (input.axis) weighSteps(graph, positions, input.axis);
 
   const trunks = dijkstra(graph, input.rootVertices);
   const majorVerts = vertex.subarray(0, nMaj);
@@ -394,6 +411,20 @@ export function completeLadder(input: LadderInput, placement: LadderPlacement): 
     majors: majorsIdx,
     mediums: mediumsIdx,
   };
+}
+
+/** Scales each edge of the graph by the cost of that step under its first vertex's axis. */
+function weighSteps(graph: MeshGraph, P: Float32Array, field: AxisField) {
+  const { rowPtr, cols, lengths } = graph;
+  for (let a = 0; a < graph.vertexCount; a++) {
+    const { mode, axis } = field(P[a * 3], P[a * 3 + 1], P[a * 3 + 2]);
+    if (mode === 0) continue;
+    for (let k = rowPtr[a]; k < rowPtr[a + 1]; k++) {
+      const b = cols[k];
+      const L = lengths[k] || 1;
+      lengths[k] *= stepCost(mode, axis, (P[b * 3] - P[a * 3]) / L, (P[b * 3 + 1] - P[a * 3 + 1]) / L, (P[b * 3 + 2] - P[a * 3 + 2]) / L);
+    }
+  }
 }
 
 export function withDiagonals(triangles: Uint32Array, quads: Uint32Array): Uint32Array {

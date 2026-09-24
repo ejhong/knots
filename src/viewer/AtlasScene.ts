@@ -7,7 +7,8 @@ import { BodyModel, REFERENCE_SHAPE, type Shape } from './body/BodyModel';
 import { Backdrop } from './engine/Backdrop';
 import { Engine } from './engine/Engine';
 import type { ThemeName } from './engine/theme';
-import { majorDensity } from './data/perforatorDensity';
+import { perforatorDensity } from './data/perforatorDensity';
+import { axisField } from './perforators/axial';
 import { ROOTS, type RootDef } from './data/roots';
 import { buildLadder, completeLadder, DEFAULT_LADDER, withDiagonals, type Ladder, type LadderParams } from './perforators/generate';
 import { decodePlacement, placementKey } from './perforators/placementFile';
@@ -225,7 +226,8 @@ export class AtlasScene {
       triangles: body.triangles,
       fineQuads: body.subdivision.fineQuads,
       rootVertices: Int32Array.from(this.roots.map((r) => r.vertex)),
-      majorDensity: majorDensity((n) => body.joint(n) as Vec3),
+      density: () => perforatorDensity({ joint: (n) => body.joint(n) as Vec3, locate: (l) => this.locatePoint(l) }),
+      axis: axisField((n) => body.joint(n) as Vec3),
     };
     const placement = placementBuf ? decodePlacement(placementBuf, placementKey(ladderParams, body.sourceKey)) : null;
     if (placementBuf && !placement) console.warn('ladder.bin does not match this body and these parameters; computing the placement');
@@ -486,6 +488,14 @@ export class AtlasScene {
         // Percepts on the skin, nothing beneath: where attention and threat gather.
         return this.sampleSkin(2600, 47, (p) => 0.2 + 0.8 * zone(p)).map(({ anchor, w }) => ({ anchor, mode: 'skin' as const, weight: w }));
     }
+  }
+
+  /** Where a locator lands on the reference skin. */
+  private locatePoint(l: Locator): Vec3 | null {
+    const a = this.locator.resolve(l);
+    if (!a) return null;
+    const { p } = this.refPoint(a);
+    return [p.x, p.y, p.z];
   }
 
   /** A reference-figure position and surface normal for an anchor. */
