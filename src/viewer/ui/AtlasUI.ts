@@ -242,7 +242,7 @@ function ringCursor(paper: boolean) {
 }
 
 function bindCensus(panel: HTMLElement, scene: AtlasScene) {
-  // After any release, a way back to the knots of this age.
+  // After any release, a reset: every knot back as it was for this age.
   const restore = panel.querySelector<HTMLButtonElement>('[data-restore]')!;
   scene.interaction.onRelease(() => (restore.hidden = false));
   restore.addEventListener('click', () => {
