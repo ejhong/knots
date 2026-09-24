@@ -57,7 +57,7 @@ export const HYPOTHESES: Hypothesis[] = [
     timescale: 'Seconds (vessel) · minutes (collar) · days to weeks (the fascia rejoining).',
     breath: 'A deep in-breath reflexly constricts the skin’s small arteries within about two seconds; a slow out-breath lets them open. The breath acts directly on the vessel that is the knot.',
     travel: 'Small arteries conduct: a dilation travels along the vessel wall toward its feeding vessel at millimetres to centimetres a second, and flow shifts across the tree as a branch opens — so knots seem to move, and even out.',
-    age: 'The skin’s small vessels respond less, and resting sympathetic tone rises, with age; knots should rise with them, place by place. Children should be nearly free of them.',
+    age: 'With age resting sympathetic tone rises and the skin’s small vessels respond less, all over the body; knots should rise with them in number and in size — first where stress is held — and children should be nearly free of them.',
     test: 'Blinded palpation against a blinded Doppler map: do tender points sit on perforators? Then laser-speckle imaging at a release: a local flush of blood flow on the out-breath, absent at a sham site and during a held in-breath.',
     status: 'Every link is ordinary physiology observed somewhere; the new claims — that a knot is a perforator, and that its state travels along the tree — are untested.',
     body: [

@@ -54,6 +54,8 @@ export class KnotSim {
   readonly rootKnot: Float32Array;
   readonly rootFlash: Float32Array;
   readonly personal: Float32Array;
+  /** Age at which each site first holds (Infinity: never, within 90 years). */
+  readonly onset: Float32Array;
   readonly breath = new Breath();
   params: SimParams = { timeScale: 6, conductionSpeed: 0.03 };
   /** Global modifiers. */
@@ -106,6 +108,26 @@ export class KnotSim {
       this.personal[N + r] = hash01(r * 97 + 5);
     }
 
+    // Onset: within each size of vessel, every site ranks by how exposed it
+    // is — the stress zones first, then a person's own history (personal),
+    // and a held trunk dragging its branches (the tree term, applied
+    // top-down) — and the rank is read off the held-fraction curve as an age.
+    // Larger vessels begin a few years earlier: they are the gates.
+    const risk = new Float32Array(M);
+    this.onset = new Float32Array(M);
+    for (let lvl = 3; lvl >= 0; lvl--) {
+      const ids: number[] = [];
+      for (let i = 0; i < M; i++) {
+        if (this.level[i] !== lvl) continue;
+        const p = this.parent[i];
+        risk[i] = 0.62 * this.susc[i] + 0.26 * this.personal[i] + (p >= 0 ? 0.14 * risk[p] : 0);
+        ids.push(i);
+      }
+      ids.sort((a, b) => risk[b] - risk[a]);
+      const lead = lvl >= 2 ? 3 : lvl === 1 ? 1.5 : 0;
+      ids.forEach((i, r) => (this.onset[i] = KnotSim.onsetAge((r + 0.5) / ids.length) - lead));
+    }
+
     this.tone = new Float32Array(M).fill(0.2);
     this.gel = new Float32Array(M);
     this.nerve = new Float32Array(M);
@@ -126,39 +148,55 @@ export class KnotSim {
   }
 
   /**
-   * Knot burden across a life. Near zero in infancy; rising through midlife
-   * as cutaneous microvascular function declines and resting sympathetic
-   * tone climbs (two curves never yet laid on top of each other).
+   * The share of perforators held — a knot you could feel — at an age. None in
+   * infancy; about a fifth in the mid-thirties; two-thirds by the late fifties;
+   * approaching, never reaching, nine in ten. Resting sympathetic tone rises
+   * and the skin's small vessels respond less with age, all over the body, so
+   * the curve is body-wide; where it bites first is set by the stress zones.
+   * A prediction: no census has been taken.
    */
-  static burden(age: number): number {
-    const a = Math.max(0, age);
-    // Infants are nearly clean; the curve rises through midlife.
-    return (1 / (1 + Math.exp(-(a - 50) / 12.5))) * (1 - Math.exp(-a / 7));
+  static heldFraction(age: number): number {
+    const lo = KnotSim.sig(-4.5);
+    return Math.max(0, (KnotSim.MAX_HELD * (KnotSim.sig((age - 46) / 10) - lo)) / (1 - lo));
   }
 
-  /** Zone weighting by size class: larger vessels are the gates, and hold. */
-  private static LEVEL_WEIGHT = [1.0, 1.05, 1.35, 1.6];
+  /** The age at which the site of rank r (0 = first to hold) begins to hold. */
+  static onsetAge(r: number): number {
+    const lo = KnotSim.sig(-4.5);
+    const q = (r / KnotSim.MAX_HELD) * (1 - lo) + lo;
+    if (q >= 0.999) return Infinity;
+    return 46 + 10 * Math.log(q / (1 - q));
+  }
+
+  private static MAX_HELD = 0.9;
+  private static sig = (x: number) => 1 / (1 + Math.exp(-x));
 
   /**
-   * Sets the figure's history for an age: which sites a life has stuck.
-   * A site is stuck when its personal threshold falls under burden × weight,
-   * so the pattern is deterministic for a person and only grows with age.
+   * Sets the figure's history for an age. A site holds from its onset age on,
+   * and its hold deepens with the years: a young knot is small and mostly
+   * vessel tone (it comes and goes), an old one has grown a gelled collar and
+   * persists. The pattern is deterministic for a person and only grows.
    */
   settle(age: number) {
     this.age = age;
-    const F = KnotSim.burden(age);
+    const body = KnotSim.heldFraction(age) / KnotSim.MAX_HELD;
     const M = this.M;
     for (let i = 0; i < M; i++) {
       const s = this.susc[i];
-      const w = Math.min(1, Math.pow(0.2 + 0.8 * s, 1.35) * KnotSim.LEVEL_WEIGHT[this.level[i]]);
-      const p = this.personal[i];
-      const q = F * w;
-      const stuckness = q > p ? Math.min(1, (q - p) / (0.3 * q + 0.04)) : 0;
-      this.drive[i] = 0.1 + 0.3 * F * (0.4 + s);
-      this.gel[i] = stuckness > 0 ? 0.6 + 0.4 * stuckness : 0;
-      this.tone[i] = stuckness > 0 ? 0.72 + 0.23 * stuckness : 0.2 + this.drive[i] * 0.4;
-      this.nerve[i] = this.tone[i] * this.gel[i];
-      this.stuck[i] = stuckness > 0 ? 1 : 0;
+      this.drive[i] = 0.1 + 0.3 * body * (0.4 + s);
+      const years = age - this.onset[i];
+      if (years >= 0) {
+        const h = (0.2 + 0.8 * (1 - Math.exp(-years / 14))) * (0.8 + 0.2 * s);
+        this.tone[i] = 0.7 + 0.25 * h;
+        this.gel[i] = 0.3 + 0.7 * h;
+        this.nerve[i] = this.tone[i] * this.gel[i];
+        this.stuck[i] = 1;
+      } else {
+        this.tone[i] = 0.2 + this.drive[i] * 0.4;
+        this.gel[i] = 0;
+        this.nerve[i] = 0;
+        this.stuck[i] = 0;
+      }
       this.press[i] = 0;
       this.shear[i] = 0;
       this.stress[i] = 0;
@@ -261,13 +299,13 @@ export class KnotSim {
     const N = this.N;
     for (let i = 0; i < N; i++) {
       const k = 0.42 * this.tone[i] + 0.42 * this.gel[i] + 0.16 * this.nerve[i];
-      const v = (k - 0.34) / 0.4;
+      const v = (k - 0.42) / 0.45;
       this.knot[i] = v <= 0 ? 0 : v >= 1 ? 1 : v * v * (3 - 2 * v);
     }
     for (let r = 0; r < this.R; r++) {
       const i = N + r;
       const k = 0.42 * this.tone[i] + 0.42 * this.gel[i] + 0.16 * this.nerve[i];
-      const v = (k - 0.34) / 0.4;
+      const v = (k - 0.42) / 0.45;
       this.rootKnot[r] = v <= 0 ? 0 : v >= 1 ? 1 : v * v * (3 - 2 * v);
     }
   }

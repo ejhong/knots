@@ -188,8 +188,10 @@ export function createCloudMaterial() {
         float la = lvl < 0.5 ? uLevelAlpha.x : (lvl < 1.5 ? uLevelAlpha.y : uLevelAlpha.z);
         la *= lvl < 0.5 ? uLevelTone.x : (lvl < 1.5 ? uLevelTone.y : uLevelTone.z);
         // Micro-knots read as a warm tint; medium and major knots swell.
-        float k = aKnot * uKnotScale * (aLevel < 0.5 ? 0.55 : 1.0);
-        float halo = 1.0 + k * (0.9 + lvl * lvl * 1.1) + aFlash * (5.0 + lvl * 4.0) + aGlow * 1.5;
+        // Small knots are drawn here, as a warm tint on their own dot (there
+        // are tens of thousands); medium and major knots are embers (KnotEmbers).
+        float k = lvl < 0.5 ? aKnot * uKnotScale : 0.0;
+        float halo = 1.0 + k * 0.6 + aFlash * (5.0 + lvl * 4.0) + aGlow * 1.5;
         float px = base * halo * uProjScale / max(0.05, -mv.z);
         // Keep distant points as fine dust rather than vanishing.
         float minPx = 1.1 * uPixelRatio;
@@ -204,7 +206,7 @@ export function createCloudMaterial() {
         vShade = clamp(pow(smoothstep(-0.2, 1.0, ndl), 1.35) * 0.9 + sky * 0.1, 0.0, 1.0);
         // Twinkle: slow, per-point, breath-coupled.
         float tw = 0.88 + 0.12 * sin(uTime * (0.6 + aSeed * 0.8) + aSeed * 40.0);
-        vAlpha = a * tw * (0.92 + 0.08 * uBreath);
+        vAlpha = a * tw * (0.92 + 0.08 * uBreath) * (1.0 + k * 1.1);
         vKnot = k;
         vFlash = aFlash;
         vGlow = aGlow;
@@ -250,9 +252,9 @@ export function createCloudMaterial() {
           // Night: luminous dust; knots as embers; releases as stars.
           vec3 dust = uPoint * light * uBrightness;
           float big = vLevel / 2.0;
-          vec3 ember = mix(uKnot * 0.8, uKnotCore, core * big * 0.7);
-          col = mix(dust, ember * (0.55 + 0.6 * big), clamp(vKnot * 1.2, 0.0, 1.0)) * core;
-          col += uKnot * halo * vKnot * (0.25 + 0.75 * big);
+          vec3 warm = uKnot * (0.6 + 0.45 * light);
+          col = mix(dust, warm, clamp(vKnot * 1.1, 0.0, 1.0)) * core;
+          col += uKnot * halo * vKnot * 0.3;
           col += uStar * (star + halo * vFlash * 1.2 + core * vFlash);
           col += uPoint * halo * vGlow * 0.8;
           alpha = vAlpha;

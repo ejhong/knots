@@ -111,8 +111,8 @@ export const CHAPTERS: Chapter[] = [
     glyph: '齢',
     title: 'Across a life',
     seconds: 30,
-    html: `<p>Knots accumulate with age; the young have few. As we age, the small vessels of the skin respond less readily and resting sympathetic tone rises. The two curves — knots, and the reactivity of the skin’s vessels — have never been laid over each other. If knots are held perforators, the curves should match place by place, and children should be nearly free of knots.</p>
-<p>Here a life plays from one to ninety. The count in the corner is a prediction, not a measurement: no one has yet taken a census of knots.</p>`,
+    html: `<p>Knots accumulate with age, and they grow. The young have few. As we age, resting sympathetic tone rises and the small vessels of the skin respond less readily — all over the body — so every perforator slowly becomes likelier to hold, those under daily stress first. A young knot is small and comes and goes; an old one is larger and persists. The two curves — knots, and the reactivity of the skin’s vessels — have never been laid over each other. If knots are held perforators, they should match place by place.</p>
+<p>Here a life plays from one to ninety: almost none in infancy, about a fifth of perforators held in the thirties, two-thirds by the late fifties, approaching nine in ten. The count in the corner is a prediction, not a measurement: no one has yet taken a census of knots.</p>`,
     scene: { pose: { p: [-0.62, 0.66, 1.9], t: [0, 0.52, 0] }, demo: 'life' },
   },
   {

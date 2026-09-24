@@ -203,7 +203,8 @@ function createStalkMaterial() {
         vClipPos = p;
         gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0);
         vA = aLevel < 0.5 ? uAlpha.x : (aLevel < 1.5 ? uAlpha.y : uAlpha.z);
-        vKnot = aKnot;
+        // Small knots tint their stalk only a little: there are so many.
+        vKnot = aLevel < 0.5 ? aKnot * 0.35 : aKnot;
         vEnd = aEnd;
       }
     `,
@@ -219,8 +220,9 @@ function createStalkMaterial() {
       varying vec3 vClipPos;
       void main() {
         if (uClipOn > 0.5 && dot(vClipPos, uClip.xyz) > uClip.w) discard;
-        float a = vA * mix(0.45, 1.0, vEnd) * (1.0 + vKnot * 1.4);
-        vec3 col = mix(uColor, uKnot, clamp(vKnot * 1.3, 0.0, 1.0));
+        // The ember carries the knot; the vessel only warms a little.
+        float a = vA * mix(0.45, 1.0, vEnd) * (1.0 + vKnot * 0.4);
+        vec3 col = mix(uColor, uKnot, clamp(vKnot * 0.55, 0.0, 1.0));
         if (uGlowMode > 0.5) gl_FragColor = vec4(col * a, 1.0);
         else gl_FragColor = vec4(col, clamp(a, 0.0, 1.0));
       }
@@ -290,10 +292,10 @@ function createCollarMaterial() {
         if (r > 1.0) discard;
         float px = fwidth(r);
         // Open: a thin ring. Stuck: the collar thickens and fills — gelled.
-        float width = mix(0.07, 0.34, vKnot);
+        float width = mix(0.07, 0.16, vKnot);
         float ring = 1.0 - smoothstep(width, width + px * 1.5, abs(r - 0.66));
-        float fill = (1.0 - smoothstep(0.62, 0.66, r)) * vKnot * 0.35;
-        vec3 col = mix(uColor, uKnot, vKnot);
+        float fill = (1.0 - smoothstep(0.62, 0.66, r)) * vKnot * 0.12;
+        vec3 col = mix(uColor, uKnot, vKnot * 0.55);
         float a = ring * (vLevel > 1.5 ? 0.6 : 0.34) + fill;
         if (uGlowMode > 0.5) gl_FragColor = vec4(col * a, 1.0);
         else {

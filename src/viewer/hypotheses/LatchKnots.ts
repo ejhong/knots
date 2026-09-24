@@ -177,13 +177,20 @@ export class LatchKnots {
   }
 
   /** Which arterioles a life has latched by this age (same curve as the perforator knots). */
+  /** Onset ages, on the same held-fraction curve as the perforator knots. */
+  private onset?: Float32Array;
+
   settle(age: number) {
-    const F = KnotSim.burden(age);
+    if (!this.onset) {
+      const risk = Float32Array.from(this.weight, (w, i) => 0.7 * w + 0.3 * this.personal[i]);
+      const order = Array.from({ length: this.count }, (_, i) => i).sort((a, b) => risk[b] - risk[a]);
+      this.onset = new Float32Array(this.count);
+      order.forEach((i, r) => (this.onset![i] = KnotSim.onsetAge((r + 0.5) / this.count)));
+    }
     for (let i = 0; i < this.count; i++) {
-      const w = Math.min(1, Math.pow(0.2 + 0.8 * this.weight[i], 1.35) * 1.1);
-      const q = F * w;
-      const p = this.personal[i];
-      this.knot[i] = q > p ? Math.min(1, (q - p) / (0.3 * q + 0.04)) : 0;
+      const years = age - this.onset[i];
+      // Young latches are small and faint; old ones full.
+      this.knot[i] = years < 0 ? 0 : (0.2 + 0.8 * (1 - Math.exp(-years / 14))) * (0.8 + 0.2 * this.weight[i]);
       this.lKnot[i * 2] = this.lKnot[i * 2 + 1] = this.knot[i];
     }
     (this.pGeo.getAttribute('aKnot') as BufferAttribute).needsUpdate = true;

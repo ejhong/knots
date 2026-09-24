@@ -27,6 +27,7 @@ A living list. Checked items are live.
 - [x] Dissection window (off by default; double-click to open one)
 - [x] Knots drawn the same in every theory (terracotta); perforators neutral, by size, brightness and a ring
 - [x] Hover details in a fixed box; theory menu with short names
+- [x] Knots with age: each site's onset read off a held-fraction curve (almost none in infancy, ~⅕ at 35, ~⅔ by the late 50s, → 9 in 10), stress zones first, trees coherent; knots grow with years held; small knots drawn as a warm tint, medium and major as embers
 - [x] Deep channels layer: septa, raphes, neurovascular sheaths (22 structures)
 - [x] Manipulation tools removed for now (look-only atlas); to be redesigned later
 

@@ -122,7 +122,9 @@ export function mountTour(viz: HTMLElement, panel: HTMLElement) {
     cu.uLevelAlpha.value.set(1, 1, 1);
     scene.rootMarkers.points.visible = true;
     scene.trees.material.uniforms.uAlpha.value = 0.45 * (s.trees ?? 1);
-    if (s.age !== undefined && Math.abs(scene.body.shape.age - s.age) > 0.01) scene.setShape({ age: s.age });
+    // A life starts at one year old, so the camera flies to the infant.
+    const age = s.demo === 'life' ? 1 : s.age;
+    if (age !== undefined && Math.abs(scene.body.shape.age - age) > 0.01) scene.setShape({ age });
     // Every chapter starts from the same held state: releases shown in one
     // chapter do not carry into the next.
     scene.settle(scene.body.shape.age);
@@ -140,7 +142,7 @@ export function mountTour(viz: HTMLElement, panel: HTMLElement) {
     scene.engine.autoRotate = !!s.turntable;
     scene.engine.autoRotateSpeed = 0.08;
     flyTo(s.pose, instant ? 0 : 2.4);
-    if (s.demo) stopDemo = startDemo(s.demo);
+    if (s.demo) stopDemo = startDemo(s.demo, s);
   }
 
   function flyTo(pose: Chapter['scene']['pose'], duration: number) {
@@ -175,7 +177,7 @@ export function mountTour(viz: HTMLElement, panel: HTMLElement) {
     return true;
   }
 
-  function startDemo(kind: NonNullable<Chapter['scene']['demo']>): () => void {
+  function startDemo(kind: NonNullable<Chapter['scene']['demo']>, s: Chapter['scene']): () => void {
     const offs: Array<() => void> = [];
     const every = (seconds: number, fn: () => void) => {
       let t = seconds * 0.6;
@@ -277,31 +279,30 @@ export function mountTour(viz: HTMLElement, panel: HTMLElement) {
         break;
       }
       case 'life': {
-        let t = 0;
+        // Hold the infant while the camera arrives, then play one to ninety,
+        // framing the figure from the chapter's pose at its current height.
+        let t = -2.4;
         let acc = 0;
-        let lastH = scene.body.height();
         big.hidden = false;
         offs.push(
           scene.engine.onFrame(({ dt }) => {
             t += dt;
             acc += dt;
-            if (acc < 1 / 20) return;
+            if (t < 0 || t > 26.5 || acc < 1 / 20) return;
             acc = 0;
             const k = Math.min(1, t / 26);
             const eased = k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
             const age = 1 + 89 * eased;
             scene.setShape({ age });
             scene.settle(age);
-            // Keep the figure framed as it grows.
             const h = scene.body.height();
-            const tg = scene.engine.controls.target;
-            const off = scene.engine.camera.position.clone().sub(tg);
-            const s = h / lastH;
-            tg.multiplyScalar(s);
-            scene.engine.camera.position.copy(tg).add(off.multiplyScalar(s));
-            lastH = h;
+            scene.engine.setPose({
+              position: s.pose.p.map((x) => x * h) as [number, number, number],
+              target: s.pose.t.map((x) => x * h) as [number, number, number],
+              fov: s.pose.fov ?? 30,
+            });
             const c = scene.sim.census();
-            big.innerHTML = `<span class="v">${Math.round(age)} y</span><span class="k">${fmt.format(c[0])} micro · ${fmt.format(c[1])} medium · ${fmt.format(c[2])} major · ${c[3]} roots</span>`;
+            big.innerHTML = `<span class="v">${Math.round(age)} y</span><span class="k">${fmt.format(c[0])} small · ${fmt.format(c[1])} medium · ${fmt.format(c[2])} major knots</span>`;
           }) as () => void,
         );
         offs.push(() => (big.hidden = true));

@@ -6,7 +6,8 @@ import type { Ladder } from './generate';
 /**
  * Knots, drawn where the hypothesis puts them: at the collar where a stuck
  * perforator pierces a fascia — the deep fascia for major perforators, the
- * superficial fascia for the rest. Size follows the rung and how stuck it is.
+ * superficial fascia for medium ones. (Small knots are a tint on the
+ * perforator itself.) Size follows the rung and how long the knot has held.
  */
 export class KnotEmbers {
   readonly points: Points;
@@ -64,7 +65,8 @@ export class KnotEmbers {
         void main() {
           vKnot = aKnot;
           vLevel = aLevel;
-          if (aKnot < 0.02 || (aLevel < 0.5 && windowR(position) < SUP_FRAC)) {
+          // Small knots are a tint on the perforator itself (PerforatorCloud).
+          if (aKnot < 0.02 || aLevel < 0.5) {
             gl_Position = vec4(2.0, 2.0, 2.0, 1.0);
             gl_PointSize = 0.0;
             return;
@@ -76,9 +78,10 @@ export class KnotEmbers {
           vec4 mv = modelViewMatrix * vec4(p, 1.0);
           gl_Position = projectionMatrix * mv;
           // Rung sets the scale: a small collar is a pinpoint, a major one a coin.
-          float base = aLevel > 1.5 ? 0.012 : (aLevel > 0.5 ? 0.0072 : 0.0034);
+          float base = aLevel > 1.5 ? 0.012 : 0.0056;
           float breathe = 1.0 + 0.05 * sin(uTime * 0.9 + position.x * 40.0);
-          float px = base * (0.45 + 0.75 * aKnot) * breathe * uProjScale / max(0.05, -mv.z);
+          // A young knot is a small ember; an old one swells.
+          float px = base * (0.35 + 0.95 * aKnot) * breathe * uProjScale / max(0.05, -mv.z);
           gl_PointSize = clamp(px, 2.2 * uPixelRatio, 80.0 * uPixelRatio);
         }
       `,
@@ -99,9 +102,7 @@ export class KnotEmbers {
           float halo = exp(-r * r * 4.5);
           float big = vLevel / 2.0;
           vec3 col = mix(uKnot, uKnotCore, core * (0.3 + 0.5 * big));
-          // Micro-knots stay quiet: there are thousands of them.
-          float rung = vLevel > 0.5 ? 1.0 : 0.66;
-          float a = (core * 0.9 + halo * (0.35 + 0.35 * big)) * clamp(vKnot * 1.3, 0.0, 1.0) * rung;
+          float a = (core * 0.9 + halo * (0.35 + 0.35 * big)) * clamp(vKnot * 1.3, 0.0, 1.0) * (vLevel > 1.5 ? 1.0 : 0.82);
           if (uGlowMode > 0.5) gl_FragColor = vec4(col * a, 1.0);
           else {
             if (a < 0.02) discard;

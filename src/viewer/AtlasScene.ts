@@ -254,6 +254,7 @@ export class AtlasScene {
     this.refreshShape();
     this.setLift(this.lift);
     this.syncKnots();
+    this.applyKnotVisibility();
   }
 
   /** Resolves the deep channels' landmark paths into skin paths (reference shape). */
@@ -351,6 +352,7 @@ export class AtlasScene {
     // only while knots are shown: otherwise every perforator is plain.
     if (!this.zeroKnots) this.zeroKnots = new Float32Array(this.ladder.count);
     this.stalks.setKnots(this.knotsOn && perf ? this.sim.knot : this.zeroKnots);
+    this.cloud.material.uniforms.uKnotScale.value = this.knotsOn && perf ? 1 : 0;
     this.embers.points.visible = this.knotsOn && perf;
     this.rootMarkers.material.uniforms.uKnotAlpha.value = this.knotsOn && perf ? 1 : 0;
     this.latch.setVisible(this.knotsOn && this.hypothesis === 'latch');
