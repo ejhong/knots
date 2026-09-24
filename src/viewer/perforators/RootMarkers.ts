@@ -6,6 +6,7 @@ import {
   NormalBlending,
   Points,
   ShaderMaterial,
+  Vector4,
 } from 'three';
 import type { SceneTheme } from '../engine/theme';
 
@@ -52,6 +53,8 @@ export class RootMarkers {
         uAlpha: { value: 0.7 },
         uGlowMode: { value: 1 },
         uTime: { value: 0 },
+        uClip: { value: new Vector4() },
+        uClipOn: { value: 0 },
       },
       vertexShader: /* glsl */ `
         attribute float aKnot;
@@ -62,8 +65,10 @@ export class RootMarkers {
         varying float vKnot;
         varying float vFlash;
         varying float vHover;
+        varying vec3 vClipPos;
         void main() {
           vec4 mv = modelViewMatrix * vec4(position, 1.0);
+          vClipPos = position;
           gl_Position = projectionMatrix * mv;
           gl_Position.z -= 0.0004 * gl_Position.w;
           float s = uSize * (1.0 + aFlash * 2.5 + aHover * 0.5);
@@ -83,7 +88,11 @@ export class RootMarkers {
         varying float vKnot;
         varying float vFlash;
         varying float vHover;
+        uniform vec4 uClip;
+        uniform float uClipOn;
+        varying vec3 vClipPos;
         void main() {
+          if (uClipOn > 0.5 && dot(vClipPos, uClip.xyz) > uClip.w) discard;
           vec2 c = gl_PointCoord * 2.0 - 1.0;
           float r = length(c);
           if (r > 1.0) discard;

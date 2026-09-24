@@ -46,7 +46,7 @@ export class BodyLayers {
     this.floor = new Mesh(this.floorGeometry, this.floorMaterial);
     this.floor.renderOrder = 0;
     this.sheet = new Mesh(this.sheetGeometry, this.sheetMaterial);
-    this.sheet.renderOrder = 3;
+    this.sheet.renderOrder = 1.5;
     this.sheet.visible = false;
     for (const m of [this.floor, this.sheet]) m.frustumCulled = false;
   }

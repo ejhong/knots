@@ -7,6 +7,7 @@ import {
   Points,
   ShaderMaterial,
   Vector3,
+  Vector4,
 } from 'three';
 import { evalAnchors, type AnchorSet } from '../anchors/anchors';
 import type { BodyModel } from '../body/BodyModel';
@@ -130,6 +131,8 @@ export function createCloudMaterial() {
       uLift: { value: 0 },
       uKnotScale: { value: 1 },
       uBrightness: { value: 1 },
+      uClip: { value: new Vector4() },
+      uClipOn: { value: 0 },
     },
     vertexShader: /* glsl */ `
       attribute float aLevel;
@@ -156,9 +159,11 @@ export function createCloudMaterial() {
       varying float vLevel;
       varying float vSeed;
       varying float vCore;
+      varying vec3 vClipPos;
       void main() {
         vec3 n = normalize(normal);
         vec3 p = position + n * aLift * uLift;
+        vClipPos = p;
         vec4 mv = modelViewMatrix * vec4(p, 1.0);
         gl_Position = projectionMatrix * mv;
 
@@ -205,7 +210,11 @@ export function createCloudMaterial() {
       varying float vLevel;
       varying float vSeed;
       varying float vCore;
+      uniform vec4 uClip;
+      uniform float uClipOn;
+      varying vec3 vClipPos;
       void main() {
+        if (uClipOn > 0.5 && dot(vClipPos, uClip.xyz) > uClip.w) discard;
         vec2 c = gl_PointCoord * 2.0 - 1.0;
         float r = length(c);
         if (r > 1.0) discard;

@@ -1,4 +1,4 @@
-import { Color, DoubleSide, FrontSide, ShaderMaterial, Vector3, Vector4, type Side } from 'three';
+import { AdditiveBlending, Color, DoubleSide, FrontSide, NormalBlending, ShaderMaterial, Vector3, Vector4, type Side } from 'three';
 import type { SceneTheme } from '../engine/theme';
 
 /**
@@ -23,9 +23,8 @@ float isoLine(float f, float widthPx) {
 export function createSheetMaterial() {
   return new ShaderMaterial({
     transparent: true,
-    depthWrite: true,
+    depthWrite: false,
     side: FrontSide as Side,
-    extensions: {} as never,
     uniforms: {
       uLight: { value: new Vector3(-0.4, 0.7, 0.6).normalize() },
       uBodyLight: { value: new Color() },
@@ -44,6 +43,8 @@ export function createSheetMaterial() {
       uLens: { value: new Vector4(0, 0, 0, 0) },
       uTime: { value: 0 },
       uLift: { value: 0 },
+      uClip: { value: new Vector4() },
+      uClipOn: { value: 0 },
     },
     vertexShader: /* glsl */ `
       attribute vec3 aStone;
@@ -84,8 +85,11 @@ export function createSheetMaterial() {
       varying vec3 vNormal;
       varying vec3 vStone;
       varying float vStoneWeight;
+      uniform vec4 uClip;
+      uniform float uClipOn;
       ${GLSL_LINES}
       void main() {
+        if (uClipOn > 0.5 && dot(vWorld, uClip.xyz) > uClip.w) discard;
         vec3 N = normalize(vNormal);
         if (!gl_FrontFacing) N = -N;
         vec3 V = normalize(cameraPosition - vWorld);
@@ -119,7 +123,8 @@ export function createSheetMaterial() {
           float ringEdge = 1.0 - smoothstep(0.0, 0.0025, abs(dl - uLens.w));
           col = mix(col, uLine, ringEdge * 0.55);
         }
-        gl_FragColor = vec4(col, alpha);
+        if (uGlow > 0.5) gl_FragColor = vec4(col * alpha, 1.0);
+        else gl_FragColor = vec4(col, alpha);
       }
     `,
   });
@@ -142,15 +147,20 @@ export function createFloorMaterial() {
       uLineAlpha: { value: 0.35 },
       uGlow: { value: 0 },
       uTerritory: { value: 0 },
+      uInsetScale: { value: 0.55 },
+      uClip: { value: new Vector4() },
+      uClipOn: { value: 0 },
+      uInterior: { value: new Color() },
     },
     vertexShader: /* glsl */ `
       attribute float aInset;
       attribute vec3 aTerritory;
+      uniform float uInsetScale;
       varying vec3 vWorld;
       varying vec3 vNormal;
       varying vec3 vTerritory;
       void main() {
-        vec3 p = position - normal * aInset;
+        vec3 p = position - normal * aInset * uInsetScale;
         vec4 w = modelMatrix * vec4(p, 1.0);
         vWorld = w.xyz;
         vNormal = normalize(mat3(modelMatrix) * normal);
@@ -166,11 +176,21 @@ export function createFloorMaterial() {
       uniform float uSpacing;
       uniform float uLineAlpha;
       uniform float uTerritory;
+      uniform vec4 uClip;
+      uniform float uClipOn;
+      uniform vec3 uInterior;
       varying vec3 vWorld;
       varying vec3 vNormal;
       varying vec3 vTerritory;
       ${GLSL_LINES}
       void main() {
+        if (uClipOn > 0.5 && dot(vWorld, uClip.xyz) > uClip.w) discard;
+        if (!gl_FrontFacing) {
+          // The cut face: flesh beneath the deep fascia, hatched like a plate.
+          float h = isoLine((vWorld.x * 0.7 + vWorld.y + vWorld.z * 0.4) / 0.0035, 0.9);
+          gl_FragColor = vec4(mix(uInterior, uInterior * 1.6, h * 0.6), 1.0);
+          return;
+        }
         vec3 N = normalize(vNormal);
         float tone = smoothstep(-0.4, 1.0, dot(N, uLight));
         vec3 col = mix(uShadow, uFloor, tone);
@@ -186,6 +206,8 @@ export function createFloorMaterial() {
 }
 
 export function applySheetTheme(m: ShaderMaterial, t: SceneTheme) {
+  m.blending = t.glow ? AdditiveBlending : NormalBlending;
+  m.needsUpdate = true;
   m.uniforms.uBodyLight.value.copy(t.bodyLight);
   m.uniforms.uBodyShadow.value.copy(t.bodyShadow);
   m.uniforms.uLine.value.copy(t.line);
@@ -196,6 +218,7 @@ export function applySheetTheme(m: ShaderMaterial, t: SceneTheme) {
 }
 
 export function applyFloorTheme(m: ShaderMaterial, t: SceneTheme) {
+  m.uniforms.uInterior.value.copy(t.glow ? new Color('#2a1714') : new Color('#d9c4b8'));
   m.uniforms.uFloor.value.copy(t.floor);
   m.uniforms.uShadow.value.copy(t.bodyShadow).lerp(t.floor, 0.4);
   m.uniforms.uLine.value.copy(t.floorLine);

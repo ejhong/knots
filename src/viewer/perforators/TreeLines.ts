@@ -6,6 +6,7 @@ import {
   LineSegments,
   NormalBlending,
   ShaderMaterial,
+  Vector4,
 } from 'three';
 import type { BodyModel } from '../body/BodyModel';
 import type { SceneTheme } from '../engine/theme';
@@ -73,6 +74,14 @@ export class TreeLines {
     this.lines.renderOrder = 1;
   }
 
+  /** Per-fine-vertex depth of the floor (for sinking trees when lifted). */
+  setInsets(depth: Float32Array) {
+    const edges = this.ladder.treeEdges;
+    const a = new Float32Array(edges.length);
+    for (let i = 0; i < edges.length; i++) a[i] = depth[edges[i]];
+    this.geometry.setAttribute('aInset', new BufferAttribute(a, 1));
+  }
+
   refresh(body: BodyModel) {
     const P = body.positions;
     const N = body.normals;
@@ -117,19 +126,26 @@ function createTreeMaterial() {
       uBranchAlpha: { value: 0.45 },
       uTime: { value: 0 },
       uFlow: { value: 0.45 },
+      uInsetScale: { value: 0 },
+      uClip: { value: new Vector4() },
+      uClipOn: { value: 0 },
     },
     vertexShader: /* glsl */ `
       attribute float aFlow;
       attribute float aLevel;
       attribute float aPulse;
       attribute float aArc;
+      attribute float aInset;
       uniform float uOffset;
+      uniform float uInsetScale;
       varying float vArc;
       varying float vFlow;
       varying float vLevel;
       varying float vPulse;
+      varying vec3 vClipPos;
       void main() {
-        vec3 p = position + normalize(normal) * uOffset;
+        vec3 p = position + normalize(normal) * (uOffset - aInset * uInsetScale * 0.96);
+        vClipPos = p;
         gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0);
         vFlow = aFlow;
         vLevel = aLevel;
@@ -149,7 +165,11 @@ function createTreeMaterial() {
       varying float vFlow;
       varying float vLevel;
       varying float vPulse;
+      uniform vec4 uClip;
+      uniform float uClipOn;
+      varying vec3 vClipPos;
       void main() {
+        if (uClipOn > 0.5 && dot(vClipPos, uClip.xyz) > uClip.w) discard;
         float a = uAlpha * (vLevel > 1.5 ? mix(0.35, 1.0, vFlow) : uBranchAlpha * mix(0.4, 0.8, vFlow));
         // Light drifting up the tree toward the root (arc length decreases).
         float wave = fract(vArc * 9.0 + uTime * 0.11);

@@ -1,4 +1,4 @@
-import { Vector2, Vector3 } from 'three';
+import { DoubleSide, FrontSide, Vector2, Vector3 } from 'three';
 import { Locator3D, mirrorLocator, type Vec3 } from './anchors/locate';
 import type { Anchor } from './anchors/anchors';
 import { anchorVertex } from './anchors/anchors';
@@ -19,6 +19,9 @@ import { Picker } from './interaction/Picker';
 import { Interaction } from './interaction/Interaction';
 import { Pulses } from './perforators/Pulses';
 import { RootMarkers } from './perforators/RootMarkers';
+import { Stalks } from './perforators/Stalks';
+import { Interstitium } from './body/Interstitium';
+import { segmentBody, smoothField, REGIONS, SUBCUTANEOUS_DEPTH, type Segmentation } from './body/skeleton';
 import { TreeLines } from './perforators/TreeLines';
 
 export interface RootInstance {
@@ -49,6 +52,17 @@ export class AtlasScene {
   interaction!: Interaction;
   pulses!: Pulses;
   rootMarkers!: RootMarkers;
+  stalks!: Stalks;
+  interstitium!: Interstitium;
+  segmentation!: Segmentation;
+  /** Per-fine-vertex subcutaneous depth (m) and lift weight. */
+  depth!: Float32Array;
+  liftWeight!: Float32Array;
+  /** Per-perforator depth and lift weight. */
+  perfDepth!: Float32Array;
+  perfLift!: Float32Array;
+  /** Exaggerated lift of the sheet at lift = 1 (m). */
+  maxLift = 0.032;
   /** Spatial index over current perforator positions. */
   grid!: PointGrid;
   /** Reference positions of perforators (placement space). */
@@ -89,6 +103,19 @@ export class AtlasScene {
       body.triangles,
       (n) => body.joint(n),
     );
+
+    // Regions, fascial depth and lift weights (reference shape).
+    this.segmentation = segmentBody(body);
+    const V = body.meta.vertexCount;
+    const coarseDepth = new Float32Array(V);
+    const coarseLift = new Float32Array(V);
+    for (let v = 0; v < V; v++) {
+      coarseDepth[v] = SUBCUTANEOUS_DEPTH[REGIONS[this.segmentation.region[v]]];
+      const r = this.segmentation.radius[v];
+      coarseLift[v] = Math.min(1, Math.max(0.1, (r - 0.007) / 0.04));
+    }
+    this.depth = body.refineScalar(smoothField(coarseDepth, body.coarseQuads, 6));
+    this.liftWeight = body.refineScalar(smoothField(coarseLift, body.coarseQuads, 3));
 
     // Roots.
     for (const def of ROOTS) {
@@ -134,7 +161,25 @@ export class AtlasScene {
     this.sim = this.createSim();
 
     this.layers = new BodyLayers(body);
+    this.layers.inset.set(this.depth);
+    this.layers.liftWeight.set(this.liftWeight);
+    this.perfDepth = Float32Array.from(this.ladder.vertex, (v) => this.depth[v]);
+    this.perfLift = Float32Array.from(this.ladder.vertex, (v) => this.liftWeight[v]);
     this.cloud = new PerforatorCloud(this.ladder);
+    this.cloud.setLiftWeights(this.perfLift);
+    this.stalks = new Stalks(this.ladder, this.perfDepth, this.perfLift);
+    const refGrid = new PointGrid(this.refPositions, 0.012);
+    this.interstitium = new Interstitium(
+      body,
+      window.matchMedia?.('(max-width: 760px)').matches ? 14000 : 36000,
+      (x, y, z) => {
+        const j = refGrid.nearest(x, y, z, 0.03);
+        return j < 0 ? 0 : j;
+      },
+      this.ladder.count,
+      this.depth,
+      this.liftWeight,
+    );
     this.trees = new TreeLines(this.ladder);
     this.rootMarkers = new RootMarkers(this.roots.length);
     this.picker = new Picker(this.layers.floorGeometry, body.normals, body.triangles);
@@ -146,7 +191,17 @@ export class AtlasScene {
       }
     });
     const scene = this.engine.scene;
-    scene.add(this.layers.floor, this.trees.lines, this.cloud.points, this.rootMarkers.points, this.layers.sheet);
+    scene.add(
+      this.layers.floor,
+      this.trees.lines,
+      this.interstitium.points,
+      this.stalks.lines,
+      this.cloud.points,
+      this.stalks.collars,
+      this.rootMarkers.points,
+      this.layers.sheet,
+    );
+    this.trees.setInsets(this.depth);
     this.interaction = new Interaction(this);
 
     this.engine.onTheme((t) => {
@@ -154,6 +209,8 @@ export class AtlasScene {
       this.cloud.applyTheme(t);
       this.trees.applyTheme(t);
       this.rootMarkers.applyTheme(t);
+      this.stalks.applyTheme(t);
+      this.interstitium.applyTheme(t);
     });
     this.engine.onFrame(({ time, dt }) => {
       this.interaction.update(dt);
@@ -247,6 +304,8 @@ export class AtlasScene {
     if (this.grid) this.grid.rebuild(this.cloud.positions);
     else this.grid = new PointGrid(this.cloud.positions, 0.012);
     this.picker?.refit();
+    this.stalks?.refresh(this.cloud.positions, this.cloud.normals);
+    this.interstitium?.refresh(this.body, this.cloud.positions);
     if (this.rootMarkers) {
       this.roots.forEach((r, i) => {
         const p = this.rootPosition(r);
@@ -276,13 +335,50 @@ export class AtlasScene {
     this.cloud.flash.set(this.sim.flash);
     this.cloud.markKnotsDirty();
     this.cloud.markFlashDirty();
+    if (this.lift > 0.01) {
+      this.stalks.setKnots(this.sim.knot);
+      this.interstitium.setKnots(this.sim.knot);
+    }
     this.rootMarkers.knot.set(this.sim.rootKnot);
     this.rootMarkers.flash.set(this.sim.rootFlash);
     this.rootMarkers.update();
   }
 
+  /**
+   * Section cut: hides everything on the positive side of a plane
+   * (normal · p > d), revealing the layers in cross-section. Pass null to
+   * clear.
+   */
+  setClip(plane: { normal: [number, number, number]; d: number } | null) {
+    const mats = [
+      this.cloud.material,
+      this.trees.material,
+      this.stalks.lineMaterial,
+      this.stalks.collarMaterial,
+      this.interstitium.material,
+      this.rootMarkers.material,
+      this.layers.floorMaterial,
+      this.layers.sheetMaterial,
+    ];
+    for (const m of mats) {
+      m.uniforms.uClipOn.value = plane ? 1 : 0;
+      if (plane) m.uniforms.uClip.value.set(...plane.normal, plane.d);
+    }
+    this.layers.floorMaterial.side = plane ? DoubleSide : FrontSide;
+    this.layers.floorMaterial.needsUpdate = true;
+  }
+
+  /** Lifts the sheet off the floor: 0 = true anatomy, 1 = exaggerated. */
   setLift(v: number) {
+    const was = this.lift;
     this.lift = v;
+    this.stalks.setLift(v, this.maxLift);
+    this.interstitium.setLift(v, this.maxLift);
+    this.layers.sheet.visible = v > 0.01;
+    if (was <= 0.01 && v > 0.01) {
+      this.stalks.setKnots(this.sim.knot);
+      this.interstitium.setKnots(this.sim.knot);
+    }
   }
 
   private frame(time: number) {
@@ -310,12 +406,25 @@ export class AtlasScene {
     cu.uProjScale.value = projScale;
     cu.uPixelRatio.value = pr;
     cu.uTime.value = time;
-    cu.uLift.value = this.lift * 0.03;
-    this.layers.floorMaterial.uniforms.uLight.value.copy(this.lightWorld);
+    cu.uLift.value = this.lift * this.maxLift;
+    const lk = this.lift <= 0 ? 0 : this.lift >= 1 ? 1 : this.lift * this.lift * (3 - 2 * this.lift);
+    const insetScale = 0.55 + 0.45 * lk;
+    const fu = this.layers.floorMaterial.uniforms;
+    fu.uLight.value.copy(this.lightWorld);
+    fu.uInsetScale.value = insetScale;
+    fu.uLineAlpha.value = 0.22 + 0.4 * lk;
     const su = this.layers.sheetMaterial.uniforms;
     su.uLight.value.copy(this.lightWorld);
     su.uTime.value = time;
-    su.uLift.value = this.lift * 0.03;
+    su.uLift.value = this.lift * this.maxLift;
+    su.uOpacity.value = 0.32 * lk;
+    this.stalks.lineMaterial.uniforms.uInsetScale.value = insetScale;
+    this.stalks.collarMaterial.uniforms.uProjScale.value = projScale;
+    const iu = this.interstitium.material.uniforms;
+    iu.uTime.value = time;
+    iu.uProjScale.value = projScale;
+    iu.uPixelRatio.value = pr;
+    this.trees.material.uniforms.uInsetScale.value = insetScale * lk;
   }
 
   /** Where a root sits on the current figure. */
