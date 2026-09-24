@@ -54,7 +54,7 @@ export const HYPOTHESES: Hypothesis[] = [
     substance: 'Three things in one bundle: a constricted arteriole, a gelled collar of hyaluronan, and a compressed cutaneous nerve.',
     holds: 'A loop: constriction starves the tissue; the starved, acidic collar gels and tethers; the pressed nerve drives more constriction. Three memories on three timescales.',
     releases: 'Pressure finds the place and a slow out-breath lets it go: the vessel opens in seconds, the collar thins over minutes with warmth and movement, and the waking nerve flashes as a spark.',
-    timescale: 'Seconds (vessel) · minutes (collar) · the fascia: seconds for each line, months to years for the whole body.',
+    timescale: 'Seconds (vessel) · minutes (collar).',
     breath: 'A deep in-breath reflexly constricts the skin’s small arteries within about two seconds; a slow out-breath lets them open. The breath acts directly on the vessel that is the knot.',
     travel: 'Small arteries conduct: a dilation travels along the vessel wall toward its feeding vessel at millimetres to centimetres a second, and flow shifts across the tree as a branch opens — so knots seem to move, and even out.',
     age: 'With age resting sympathetic tone rises and the skin’s small vessels respond less, all over the body; knots should rise with them in number and in size — first where stress is held — and children should be nearly free of them.',
@@ -63,7 +63,7 @@ export const HYPOTHESES: Hypothesis[] = [
     body: [
       'The superficial fascia is joined to the layer beneath in two ways: by fine fibrous strands, and at the places where something passes through — a small artery with its veins, a cutaneous nerve and a lymphatic, rising together through a fibrous ring. Surgeons call these perforators, and a flap of skin will not lift until the perforators tethering it are dealt with.',
       'Suppose a knot is a perforator held stuck. The artery is smooth muscle, answering the breath within seconds by textbook physiology. The nerve is the spark: when the vessel opens, the starved nerve wakes and its patch of skin lights up — a foot waking, in miniature. The collar is the hold: hyaluronan around the bundle thickens to a gel when the tissue turns acidic and cool, and thins with warmth, flow and movement.',
-      'The fascia is a second system: the superficial fascia and the gliding plane beneath it, from the galea and the SMAS of the face to the membranous layers of the trunk and limbs. It is not what a knot is; it is what the knots hold down. The reports about the fascia — layers peeling along lines in time with the breath, hollowing, and a quick filling-in, each over in seconds, the whole body worked through over months or years — may belong to it.',
+      'The fascia is a second system: the superficial fascia and the gliding plane beneath it, from the galea and the SMAS of the face to the membranous layers of the trunk and limbs. It is not what a knot is; it is what the knots hold down. The reports about the fascia — layers peeling apart along lines, hollowing, and a filling-in felt as re-stitching — may belong to it.',
     ],
     refs: ['taylor1987', 'saintcyr2009', 'segal1986', 'stecco2011', 'heine1988', 'yoshinaga2025', 'bolton1936'],
     ready: true,
