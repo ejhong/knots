@@ -4,12 +4,11 @@ import { preferredTheme } from '../engine/theme';
 import { CHAPTERS, type Chapter } from '../../data/tour';
 
 const fmt = new Intl.NumberFormat('en-US');
-const PLAY = 'M8 5v14l11-7z';
-const PAUSE = 'M6 19h4V5H6v14zm8-14v14h4V5h-4z';
 
 /**
- * The introduction as a guided tour. Each chapter sets a scene in the atlas;
- * ▶ plays them in order, and scrolling the notes panel follows along.
+ * The introduction as a guided tour: each chapter sets a scene in the
+ * atlas. Scrolling the Introduction panel moves the figure along with it;
+ * clicking a chapter jumps to it.
  */
 export function mountTour(viz: HTMLElement, panel: HTMLElement) {
   const stage = viz.querySelector<HTMLElement>('[data-stage]')!;
@@ -26,25 +25,16 @@ export function mountTour(viz: HTMLElement, panel: HTMLElement) {
   (window as unknown as { atlas: AtlasScene }).atlas = scene;
 
   const label = viz.querySelector<HTMLElement>('[data-chapter-label]')!;
-  const timeEl = viz.querySelector<HTMLElement>('[data-time]')!;
-  const progress = viz.querySelector<HTMLInputElement>('[data-progress]')!;
-  const playBtn = viz.querySelector<HTMLButtonElement>('[data-play]')!;
-  const playIcon = playBtn.querySelector('path')!;
   const big = viz.querySelector<HTMLElement>('[data-big]')!;
   const list = panel.querySelector<HTMLElement>('[data-chapters]')!;
   const articles = [...panel.querySelectorAll<HTMLElement>('[data-chapter]')];
-  const markers = [...viz.querySelectorAll<HTMLButtonElement>('[data-goto]')];
 
   let current = -1;
-  let playing = false;
-  let elapsed = 0;
   let stopDemo: (() => void) | null = null;
   let lift = 0;
   let liftTarget = 0;
   let scrollingByCode = false;
   let ready = false;
-
-  const n = CHAPTERS.length;
 
   scene.ready.then(() => {
     ready = true;
@@ -55,15 +45,6 @@ export function mountTour(viz: HTMLElement, panel: HTMLElement) {
       if (Math.abs(lift - liftTarget) > 0.002) {
         lift += (liftTarget - lift) * Math.min(1, dt * 1.6);
         scene.setLift(lift);
-      }
-      if (playing && current >= 0) {
-        elapsed += dt;
-        const ch = CHAPTERS[current];
-        progress.value = String(current + Math.min(0.999, elapsed / ch.seconds));
-        if (elapsed >= ch.seconds) {
-          if (current < n - 1) go(current + 1, true);
-          else setPlaying(false);
-        }
       }
     });
     requestAnimationFrame(() => {
@@ -76,22 +57,6 @@ export function mountTour(viz: HTMLElement, panel: HTMLElement) {
     go(start, start > 0, true);
   });
 
-  function setPlaying(p: boolean) {
-    playing = p;
-    playIcon.setAttribute('d', p ? PAUSE : PLAY);
-    playBtn.setAttribute('aria-label', p ? 'Pause the tour' : 'Play the tour');
-  }
-
-  playBtn.addEventListener('click', () => {
-    if (!playing && current === n - 1 && elapsed >= CHAPTERS[n - 1].seconds - 0.1) go(0, true);
-    setPlaying(!playing);
-  });
-  markers.forEach((m) => m.addEventListener('click', () => go(Number(m.dataset.goto), true)));
-  progress.addEventListener('input', () => {
-    const v = Math.min(n - 1, Math.floor(Number(progress.value)));
-    if (v !== current) go(v, true);
-    elapsed = (Number(progress.value) - v) * CHAPTERS[v].seconds;
-  });
   articles.forEach((a) =>
     a.addEventListener('click', (e) => {
       if ((e.target as HTMLElement).closest('a')) return;
@@ -100,28 +65,36 @@ export function mountTour(viz: HTMLElement, panel: HTMLElement) {
     }),
   );
 
-  // Scrolling the notes follows along (when the user scrolls, not the tour).
-  const io = new IntersectionObserver(
-    (entries) => {
-      if (scrollingByCode) return;
-      const visible = entries.filter((e) => e.isIntersecting).sort((a, b) => a.boundingClientRect.top - b.boundingClientRect.top);
-      if (!visible.length) return;
-      const i = Number((visible[0].target as HTMLElement).dataset.chapter);
-      if (i !== current && ready) go(i, false);
+  // The figure follows the reader's scroll (but not our own programmatic
+  // scrolls): the active chapter is the last one whose top has passed the
+  // upper third of the panel — or the last chapter, once the reader reaches
+  // the bottom.
+  let scrollQueued = false;
+  const onScroll = () => {
+    scrollQueued = false;
+    if (scrollingByCode || !ready) return;
+    const line = list.scrollTop + list.clientHeight * 0.34;
+    let i = 0;
+    for (let k = 0; k < articles.length; k++) if (articles[k].offsetTop - list.offsetTop <= line) i = k;
+    if (list.scrollTop + list.clientHeight >= list.scrollHeight - 4) i = articles.length - 1;
+    if (i !== current) go(i, false);
+  };
+  list.addEventListener(
+    'scroll',
+    () => {
+      if (!scrollQueued) {
+        scrollQueued = true;
+        requestAnimationFrame(onScroll);
+      }
     },
-    { root: list, rootMargin: '0px 0px -65% 0px', threshold: 0 },
+    { passive: true },
   );
-  articles.forEach((a) => io.observe(a));
 
   function go(i: number, scroll: boolean, instant = false) {
     if (i === current) return;
     current = i;
-    elapsed = 0;
     const ch = CHAPTERS[i];
     label.textContent = `${ch.n} · ${ch.title}`;
-    timeEl.textContent = `${ch.n} / ${String(n).padStart(2, '0')}`;
-    progress.value = String(i + 0.001);
-    markers.forEach((m, k) => m.classList.toggle('active', k === i));
     articles.forEach((a, k) => a.classList.toggle('active', k === i));
     history.replaceState(null, '', `#${ch.id}`);
     if (scroll) {
