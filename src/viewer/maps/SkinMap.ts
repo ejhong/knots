@@ -7,7 +7,9 @@ import {
   NormalBlending,
   Points,
   ShaderMaterial,
+  Vector3,
   Vector4,
+  type PerspectiveCamera,
 } from 'three';
 import { evalAnchors, type Anchor, type AnchorSet } from '../anchors/anchors';
 import type { BodyModel } from '../body/BodyModel';
@@ -75,8 +77,12 @@ export class SkinMap {
   readonly bandMaterial?: ShaderMaterial;
   /** Skin positions of the places on the current figure (for picking). */
   readonly pointPos: Float32Array;
-  /** Raw skin polylines per line on the current figure (for picking). */
+  /** Raw skin polylines per line on the current figure, with their normals (for picking). */
   linePos: Float32Array[] = [];
+  private lineNrm: Float32Array[] = [];
+  /** How far the exploded view lifts each place and each line sample (its lift weight). */
+  private pointLift: Float32Array;
+  private lineLift: Float32Array[];
   private pointSet: AnchorSet;
   private lineSets: AnchorSet[];
   private pGeo = new BufferGeometry();
@@ -110,7 +116,9 @@ export class SkinMap {
     this.pGeo.setAttribute('position', new BufferAttribute(new Float32Array(P * 3), 3));
     this.pGeo.setAttribute('normal', new BufferAttribute(this.pNrm, 3));
     this.pGeo.setAttribute('aChannel', new BufferAttribute(Float32Array.from(points, (p) => p.group), 1));
-    this.pGeo.setAttribute('aLiftW', new BufferAttribute(Float32Array.from(points, (p) => liftOf(p.anchor)), 1));
+    this.pointLift = Float32Array.from(points, (p) => liftOf(p.anchor));
+    this.lineLift = lines.map((l) => Float32Array.from(l.anchors, liftOf));
+    this.pGeo.setAttribute('aLiftW', new BufferAttribute(this.pointLift, 1));
     this.pGeo.setAttribute('aHi', new BufferAttribute(this.pHi, 1));
     this.pGeo.setAttribute('aShape', new BufferAttribute(Float32Array.from(points, (p) => p.shape), 1));
 
@@ -206,10 +214,12 @@ export class SkinMap {
 
     let s = 0;
     let b = 0;
+    this.lineNrm = [];
     this.linePos = this.lineSets.map((set) => {
       const raw = new Float32Array(set.count * 3);
       const rawN = new Float32Array(set.count * 3);
       evalAnchors(set, T, P, N, raw, rawN);
+      this.lineNrm.push(rawN);
       const pos = smooth(raw, 3);
       const nrm = smooth(rawN, 3);
       const n = pos.length / 3;
@@ -239,36 +249,61 @@ export class SkinMap {
     }
   }
 
-  /** The nearest place to a skin position, within `radius` metres (−1 if none). */
-  nearestPoint(x: number, y: number, z: number, radius = 0.009): number {
-    let best = -1;
-    let bestD = radius * radius;
-    const P = this.pointPos;
-    for (let i = 0; i < this.data.points.length; i++) {
-      const d = (P[i * 3] - x) ** 2 + (P[i * 3 + 1] - y) ** 2 + (P[i * 3 + 2] - z) ** 2;
-      if (d < bestD && this.visibleGroup(this.data.points[i].group)) {
-        bestD = d;
-        best = i;
+  /**
+   * What the pointer is on, found on screen where the map is drawn (raised
+   * with the skin in the exploded view): the nearest place within a
+   * fingertip's reach, else the nearest line. Only what faces the camera and
+   * is not behind the body counts. `maxDist` is how far the body is under the
+   * pointer. Returns −1 for none.
+   */
+  pick(camera: PerspectiveCamera, width: number, height: number, sx: number, sy: number, maxDist: number, reachPx = 16): { point: number; line: number } {
+    const lift = LAYER_UNIFORMS.uLift.value * (LAYER_UNIFORMS.uGapPlane.value + LAYER_UNIFORMS.uGapSat.value);
+    const cam = camera.position;
+    const v = new Vector3();
+    // Screen distance² to the pointer of a raised skin sample, or Infinity if it cannot be seen.
+    const seen = (P: Float32Array, N: Float32Array, k: number, w: number, raise: number) => {
+      const nx = N[k * 3];
+      const ny = N[k * 3 + 1];
+      const nz = N[k * 3 + 2];
+      const off = lift * w + raise;
+      const x = P[k * 3] + nx * off;
+      const y = P[k * 3 + 1] + ny * off;
+      const z = P[k * 3 + 2] + nz * off;
+      const dx = cam.x - x;
+      const dy = cam.y - y;
+      const dz = cam.z - z;
+      const d = Math.hypot(dx, dy, dz);
+      if ((nx * dx + ny * dy + nz * dz) / d < 0.08 || d > maxDist + 0.06) return Infinity;
+      v.set(x, y, z).project(camera);
+      return ((v.x * 0.5 + 0.5) * width - sx) ** 2 + ((-v.y * 0.5 + 0.5) * height - sy) ** 2;
+    };
+    let point = -1;
+    let best = reachPx * reachPx;
+    this.data.points.forEach((p, i) => {
+      if (!this.visibleGroup(p.group)) return;
+      const d2 = seen(this.pointPos, this.pNrm, i, this.pointLift[i], 0.0016);
+      if (d2 < best) {
+        best = d2;
+        point = i;
       }
-    }
-    return best;
-  }
-
-  /** The nearest line to a skin position, within `radius` metres (−1 if none). */
-  nearestLine(x: number, y: number, z: number, radius = this.data.band ? 0.012 : 0.006): number {
-    let best = -1;
-    let bestD = radius * radius;
-    this.linePos.forEach((pl, li) => {
+    });
+    if (point >= 0) return { point, line: -1 };
+    let line = -1;
+    const reachLine = this.data.band ? reachPx : reachPx * 0.6;
+    best = reachLine * reachLine;
+    this.linePos.forEach((P, li) => {
       if (!this.visibleGroup(this.data.lines[li].group)) return;
-      for (let i = 0; i < pl.length; i += 3) {
-        const d = (pl[i] - x) ** 2 + (pl[i + 1] - y) ** 2 + (pl[i + 2] - z) ** 2;
-        if (d < bestD) {
-          bestD = d;
-          best = li;
+      const N = this.lineNrm[li];
+      const W = this.lineLift[li];
+      for (let k = 0; k < P.length / 3; k++) {
+        const d2 = seen(P, N, k, W[k], 0.0012);
+        if (d2 < best) {
+          best = d2;
+          line = li;
         }
       }
     });
-    return best;
+    return { point: -1, line };
   }
 
   private visibleGroup(g: number) {

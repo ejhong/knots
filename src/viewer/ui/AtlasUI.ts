@@ -326,12 +326,11 @@ function bindTooltip(viz: HTMLElement, scene: AtlasScene, card: MapCard) {
     }
     tip.hidden = false;
     tip.classList.add('on');
-    // A traditional map, when shown, comes first: its points, then its lines.
+    // A map, when shown, comes first: its places, then its lines, picked where they are drawn.
     const map = scene.activeMap;
     if (map) {
-      const { x, y, z } = h.hit.point;
-      const pi = map.nearestPoint(x, y, z);
-      const li = pi < 0 ? map.nearestLine(x, y, z) : -1;
+      const r = scene.engine.canvas.getBoundingClientRect();
+      const { point: pi, line: li } = map.pick(scene.engine.camera, r.width, r.height, h.screen.x, h.screen.y, h.hit.distance);
       const ch = pi >= 0 ? map.data.points[pi].group : li >= 0 ? map.data.lines[li].group : -1;
       if (pi !== mapLit[0] || ch !== mapLit[1]) {
         map.highlight(pi, pi >= 0 ? -1 : ch);

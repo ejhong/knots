@@ -163,12 +163,14 @@ export class Interaction {
   private setHover(h: HoverInfo | null) {
     const prev = this.hover;
     this.hover = h;
+    // With a map shown the map has the pointer: no perforator lights up under it.
+    const mark = !this.scene.activeMap;
     const glow = this.scene.cloud.glow;
     if (prev && prev.node >= 0) glow[prev.node] = 0;
-    if (h && h.node >= 0) glow[h.node] = 1;
+    if (mark && h && h.node >= 0) glow[h.node] = 1;
     this.scene.cloud.markGlowDirty();
     this.scene.rootMarkers.hover.fill(0);
-    if (h && h.root >= 0) this.scene.rootMarkers.hover[h.root] = 1;
+    if (mark && h && h.root >= 0) this.scene.rootMarkers.hover[h.root] = 1;
     for (const cb of this.listeners) cb(h);
   }
 
