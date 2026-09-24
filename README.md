@@ -1,7 +1,7 @@
 # Knots of Existence 結
 
 **An atlas of the body’s held places.** A three-dimensional, open, long-running visualisation of what a “knot” might be — built
-around the perforator-and-sheet hypothesis in Eugene Jhong’s essay
+around the perforator hypothesis — knots as stuck perforators, with the fascial sheet as a second system — in Eugene Jhong’s essay
 [Knots of Existence Hypotheses](https://ejhong.substack.com/p/knots-of-existence-hypotheses) (2026), set beside its rivals and beside the
 maps the contemplative traditions drew of the same ground.
 

@@ -81,7 +81,11 @@ const MAP_COLORS: Record<string, string> = {
           </div>
           <div class="settings-row">
             <span class="k">Form</span>
-            <input type="range" min="0" max="1" step="0.01" value="0.5" data-sex aria-label="Form: female to male" style="width:110px" />
+            <span class="form-range">
+              <span class="end">female</span>
+              <input type="range" min="0" max="1" step="0.01" value="1" data-sex aria-label="Form: female to male" />
+              <span class="end">male</span>
+            </span>
           </div>
           <div class="settings-row">
             <span class="k">Speed</span>
@@ -132,7 +136,7 @@ const MAP_COLORS: Record<string, string> = {
         <label class="row"><input type="checkbox" data-layer="roots" checked /> roots · gates <span class="n" data-count="roots"></span></label>
         <label class="row"><input type="checkbox" data-layer="knots" checked /> knots</label>
         <label class="row"><input type="checkbox" data-layer="territories" /> angiosomes (territories)</label>
-        <div class="segment">The sheet</div>
+        <div class="segment">The sheet — fascia &amp; interstitial space</div>
         <div class="slider-row">
           <span>lift the sheet off the floor <span class="faint" data-lift-out>0</span></span>
           <input type="range" min="0" max="1" step="0.01" value="0" data-lift aria-label="Lift the sheet" />
@@ -180,6 +184,22 @@ const MAP_COLORS: Record<string, string> = {
     </div>
   </aside>
 </Base>
+
+<style>
+  .form-range {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .form-range input {
+    width: 84px;
+  }
+  .form-range .end {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    color: var(--muted);
+  }
+</style>
 
 <script>
   import { mountAtlas } from '../viewer/ui/AtlasUI';

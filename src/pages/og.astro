@@ -1,0 +1,48 @@
+---
+// Composition for the social preview (public/og.jpg). Not linked; capture with
+// npx tsx scripts/shot.ts /knots/og/ public/og.png --w 1200 --h 630 --wait 3000, then convert to JPEG.
+---
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="robots" content="noindex" />
+    <title>og</title>
+    <style>
+      html, body { margin: 0; width: 1200px; height: 630px; overflow: hidden; background: #262422; }
+      canvas { position: absolute; inset: 0; width: 1200px; height: 630px; display: block; }
+      .t { position: absolute; left: 64px; top: 0; bottom: 0; display: grid; align-content: center; gap: 14px; z-index: 2; width: 520px; }
+      .title { display: flex; align-items: center; gap: 16px; font: 700 50px/1.05 -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif; letter-spacing: 0.5px; color: #f0e9de; }
+      .seal { display: inline-grid; place-items: center; width: 44px; height: 44px; border-radius: 6px; background: #b5614f; color: #faf7f2; font: 600 29px/1 'Hiragino Mincho ProN', 'Yu Mincho', serif; }
+      .sub { font: italic 24px/1.4 Georgia, serif; color: #cfc4b5; }
+      .quote { font: italic 14px/1.55 Georgia, serif; color: #9c9184; max-width: 460px; }
+      .url { font: 13px 'SF Mono', Menlo, monospace; color: #8f857a; margin-top: 10px; }
+      .fade { position: absolute; inset: 0; background: linear-gradient(90deg, rgba(38,36,34,0.92) 0%, rgba(38,36,34,0.55) 38%, rgba(38,36,34,0) 62%); z-index: 1; }
+    </style>
+  </head>
+  <body>
+    <canvas id="c"></canvas>
+    <div class="fade"></div>
+    <div class="t">
+      <div class="title"><span class="seal">結</span>Knots of Existence</div>
+      <div class="sub">An atlas of the body’s held places</div>
+      <div class="quote">“When all the knots of the heart are cut, here in this life, the mortal becomes immortal.” — Kaṭha Upaniṣad</div>
+      <div class="url">ejhong.github.io/knots</div>
+    </div>
+    <script>
+      import { AtlasScene } from '../viewer/AtlasScene';
+      const atlas = new AtlasScene(document.getElementById('c') as HTMLCanvasElement, {
+        theme: 'night',
+        modelBase: `${import.meta.env.BASE_URL}/models/`.replace('//', '/'),
+      });
+      (window as any).atlas = atlas;
+      atlas.ready.then(() => {
+        atlas.sim.settle(46);
+        const h = atlas.body.height();
+        atlas.engine.setPose({ position: [0.22 * h, 0.9 * h, -0.62 * h], target: [0.02 * h, 0.83 * h, -0.02 * h], fov: 30 });
+        atlas.engine.setViewShift(0.2, 0);
+        atlas.engine.start();
+        setTimeout(() => ((window as any).atlasReady = true), 1500);
+      });
+    </script>
+  </body>
+</html>

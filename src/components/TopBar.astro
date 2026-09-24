@@ -1,7 +1,8 @@
 ---
 /**
- * The top band, as in The OM Project: a title, a line of scripture in
- * Georgia italic, and — here — the navigation.
+ * The top band, as in The OM Project: a title and a line of scripture in
+ * Georgia italic — and beneath a hairline, the pages, sitting like tabs on
+ * the band's lower edge.
  */
 interface Props {
   current?: string;
@@ -38,13 +39,9 @@ const links = [
 
 <style>
   .top-bar {
-    display: flex;
-    align-items: flex-start;
-    justify-content: space-between;
-    gap: 24px;
-    padding: 12px 24px;
+    padding: 13px 24px 0;
     background: var(--border);
-    border-bottom: 1px solid var(--border);
+    border-bottom: 1px solid #d3cbc1;
     flex-shrink: 0;
   }
   .title {
@@ -79,48 +76,56 @@ const links = [
     color: var(--muted);
     margin-top: 4px;
     line-height: 1.5;
-    max-width: 600px;
+    max-width: 900px;
   }
   .attribution {
     font-style: normal;
     font-size: 9px;
-    opacity: 0.7;
+    opacity: 0.75;
+    white-space: nowrap;
   }
+  /* The pages: a hairline, then tabs that sit on the band's lower edge. */
   nav {
     display: flex;
-    flex-wrap: wrap;
-    justify-content: flex-end;
-    gap: 4px 18px;
-    padding-top: 6px;
+    gap: 26px;
+    margin-top: 11px;
+    border-top: 1px solid rgba(58, 54, 50, 0.1);
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+  nav::-webkit-scrollbar {
+    display: none;
   }
   nav a {
+    flex: none;
     font-size: 12px;
+    letter-spacing: 0.2px;
     color: var(--muted);
     text-decoration: none;
-    padding-bottom: 2px;
-    border-bottom: 1px solid transparent;
+    padding: 8px 0 7px;
+    margin-bottom: -1px;
+    border-bottom: 2px solid transparent;
+    transition: color 0.15s, border-color 0.15s;
   }
   nav a:hover {
     color: var(--text);
+    border-bottom-color: var(--frame-border);
   }
   nav a[aria-current='page'] {
     color: var(--text);
     font-weight: 600;
-    border-bottom-color: var(--accent);
+    border-bottom-color: var(--accent-dark);
   }
   @media (max-width: 760px) {
     .top-bar {
-      flex-direction: column;
-      gap: 8px;
-      padding: 10px 14px;
-    }
-    nav {
-      justify-content: flex-start;
-      gap: 4px 14px;
-      padding-top: 0;
+      padding: 10px 14px 0;
     }
     .subtitle-quote {
       display: none;
+    }
+    nav {
+      gap: 18px;
+      margin-top: 8px;
     }
   }
 </style>

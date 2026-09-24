@@ -2,8 +2,9 @@
 import Base from './Base.astro';
 
 /**
- * Reading pages: a rice-paper card of Georgia prose beside an ink-stone
- * contents panel — the OM arrangement, for text.
+ * Reading pages: one sheet of rice paper, centred, with a quiet index under
+ * the title and faint CJK marginalia beside each section — a sutra page in
+ * the OM palette. Sections opt in to marginalia with `data-glyph`.
  */
 interface Props {
   title: string;
@@ -11,105 +12,158 @@ interface Props {
   lede?: string;
   current: string;
   description?: string;
-  toc: { id: string; label: string; sub?: string }[];
+  /** Large ornament at the top of the sheet. */
+  glyph?: string;
+  /** One-line index of the page's sections. */
+  index?: { id: string; label: string }[];
   wide?: boolean;
 }
-const { title, kicker, lede, current, description, toc, wide = false } = Astro.props;
+const { title, kicker, lede, current, description, glyph, index = [], wide = false } = Astro.props;
 ---
 <Base title={title} current={current} description={description}>
-  <div class:list={['doc', { wide }]}>
-    <article class="doc-card card">
-      <header class="doc-head">
+  <div class="doc">
+    <article class:list={['sheet', { wide }]}>
+      {glyph && <span class="ornament cjk" aria-hidden="true">{glyph}</span>}
+      <header class="sheet-head">
         <p class="label">{kicker}</p>
         <h1>{title}</h1>
-        {lede && <p class="lede quote">{lede}</p>}
+        {lede && <p class="lede">{lede}</p>}
+        {
+          index.length > 0 && (
+            <nav class="index" aria-label="On this page">
+              {index.map((t) => (
+                <a href={`#${t.id}`}>{t.label}</a>
+              ))}
+            </nav>
+          )
+        }
       </header>
-      <div class="doc-body">
+      <div class="sheet-body">
         <slot />
       </div>
     </article>
-    <aside class="doc-toc panel" aria-label="Contents">
-      <div class="panel-head">Contents</div>
-      <nav class="panel-body">
-        {
-          toc.map((t) => (
-            <a class="toc-item" href={`#${t.id}`}>
-              <span>{t.label}</span>
-              {t.sub && <span class="sub">{t.sub}</span>}
-            </a>
-          ))
-        }
-      </nav>
-    </aside>
   </div>
 </Base>
 
 <style>
   .doc {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) 250px;
-    gap: 16px;
-    padding: 16px;
-    align-items: start;
-    max-width: 1180px;
+    padding: 24px 16px 0;
+  }
+  .sheet {
+    position: relative;
+    max-width: 880px;
     margin: 0 auto;
+    background: var(--bg);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 42px 64px 52px 72px;
+    box-shadow: 0 1px 0 rgba(255, 255, 255, 0.6) inset, 0 12px 40px -24px rgba(58, 54, 50, 0.18);
   }
-  .doc.wide {
-    max-width: 1480px;
+  .sheet.wide {
+    max-width: 1120px;
   }
-  .doc-card {
-    padding: 28px 36px 36px;
-    min-width: 0;
+  .ornament {
+    position: absolute;
+    top: 30px;
+    right: 44px;
+    font-size: 46px;
+    line-height: 1;
+    color: #d9d1c6;
+    user-select: none;
   }
-  .doc-head {
+  .sheet-head {
+    max-width: 680px;
+    padding-bottom: 22px;
+    margin-bottom: 8px;
     border-bottom: 1px solid var(--border);
-    padding-bottom: 18px;
-    margin-bottom: 22px;
   }
-  .doc-head h1 {
-    font-size: 20px;
+  h1 {
+    font-size: 24px;
     font-weight: 700;
-    letter-spacing: 0.5px;
-    margin: 6px 0 6px;
+    letter-spacing: 0.3px;
+    line-height: 1.2;
+    margin: 8px 0 10px;
+    text-wrap: balance;
   }
   .lede {
-    font-size: 12.5px;
-    line-height: 1.55;
-    max-width: 640px;
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 14px;
+    line-height: 1.6;
+    color: var(--muted);
   }
-  .doc-toc {
-    position: sticky;
-    top: 16px;
-    max-height: calc(100vh - 32px);
-  }
-  .toc-item {
-    display: grid;
-    gap: 1px;
+  .index {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 5px 20px;
+    margin-top: 16px;
     font-family: var(--font-mono);
     font-size: 10px;
-    color: #ddd4c7;
+  }
+  .index a {
+    color: var(--accent-dark);
     text-decoration: none;
-    padding: 5px 14px;
-    line-height: 1.4;
+    white-space: nowrap;
   }
-  .toc-item:hover {
-    background: rgba(255, 255, 255, 0.04);
-    color: #fff;
+  .index a:hover {
+    color: var(--terracotta);
   }
-  .toc-item .sub {
-    font-size: 9px;
-    color: var(--panel-faint);
+
+  /* Sections and their marginalia. */
+  .sheet-body :global(.sec) {
+    position: relative;
+    max-width: 680px;
+    padding: 26px 0 8px;
+    scroll-margin-top: 16px;
   }
+  .sheet-body :global(.sec + .sec) {
+    border-top: 1px solid var(--border);
+  }
+  .sheet-body :global(.sec.full) {
+    max-width: none;
+  }
+  .sheet-body :global(.sec[data-glyph])::before {
+    content: attr(data-glyph);
+    position: absolute;
+    left: -46px;
+    top: 30px;
+    writing-mode: vertical-rl;
+    font-family: var(--font-cjk);
+    font-size: 15px;
+    letter-spacing: 5px;
+    color: #cdc3b6;
+  }
+  .sheet-body :global(h2) {
+    font-family: var(--font-sans);
+    font-size: 15px;
+    font-weight: 700;
+    letter-spacing: 0.2px;
+    line-height: 1.3;
+    margin: 0 0 4px;
+  }
+  .sheet-body :global(.sec > .label) {
+    font-size: 9.5px;
+    margin-bottom: 12px;
+    display: block;
+  }
+
   @media (max-width: 900px) {
     .doc {
-      grid-template-columns: 1fr;
-      padding: 10px;
+      padding: 10px 10px 0;
     }
-    .doc-toc {
+    .sheet {
+      padding: 26px 20px 32px;
+    }
+    .ornament {
+      font-size: 34px;
+      top: 22px;
+      right: 20px;
+    }
+    .sheet-body :global(.sec[data-glyph])::before {
       display: none;
     }
-    .doc-card {
-      padding: 20px 18px 26px;
+    h1 {
+      padding-right: 44px;
     }
   }
 </style>

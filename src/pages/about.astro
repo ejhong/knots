@@ -1,11 +1,5 @@
 ---
 import Doc from '../layouts/Doc.astro';
-const toc = [
-  { id: 'what', label: 'What this is' },
-  { id: 'measured', label: 'Measured and representative' },
-  { id: 'caution', label: 'A caution' },
-  { id: 'open', label: 'Open source' },
-];
 ---
 <Doc
   title="How this atlas was made"
@@ -13,9 +7,9 @@ const toc = [
   current="about"
   lede="A hypothesis drawn carefully: what is measured, what is representative, and what is imagined."
   description="What this atlas is, how it was made, what is measured and what is representative, and how to contribute."
-  toc={toc}
+  glyph="作"
 >
-  <section id="what" class="prose block">
+  <section id="what" class="sec prose" data-glyph="何">
     <h2>What this is</h2>
     <p>
       <em>Knots of Existence</em> is a long-running, open visualisation of a question: what, physically, is the thing a foam roller finds
@@ -26,13 +20,13 @@ const toc = [
     </p>
   </section>
 
-  <section id="measured" class="block">
+  <section id="measured" class="sec" data-glyph="測">
     <h2>What is measured, and what is representative</h2>
     <dl class="kv">
       <dt>Body</dt>
       <dd>
-        The MakeHuman base mesh and age targets (CC0), averaged across its ethnic targets and blended between female and male, from infancy
-        to ninety; smoothed by one level of Catmull–Clark subdivision at runtime.
+        The MakeHuman base mesh and age targets (CC0), averaged across its ethnic targets, from infancy to ninety; male by default, with a
+        form control in the atlas settings that blends to female. Smoothed by one level of Catmull–Clark subdivision at runtime.
       </dd>
       <dt>Perforators</dt>
       <dd>
@@ -66,7 +60,7 @@ const toc = [
     </dl>
   </section>
 
-  <section id="caution" class="prose block">
+  <section id="caution" class="sec prose" data-glyph="慎">
     <h2>A caution</h2>
     <p>
       The base of the skull is anatomy, not a target: the suboccipital triangle sits over the vertebral artery, and deep pressure there is a
@@ -77,7 +71,7 @@ const toc = [
     </p>
   </section>
 
-  <section id="open" class="prose block">
+  <section id="open" class="sec prose" data-glyph="開">
     <h2>Open source</h2>
     <p>
       The code is MIT-licensed and the writing and data are CC BY 4.0, at{' '}
@@ -90,18 +84,6 @@ const toc = [
 </Doc>
 
 <style>
-  .block {
-    padding: 18px 0;
-    border-bottom: 1px solid var(--border);
-    scroll-margin-top: 12px;
-    max-width: 760px;
-  }
-  .block:first-child {
-    padding-top: 0;
-  }
-  .block:last-child {
-    border-bottom: 0;
-  }
   h2 {
     font-family: var(--font-sans);
     font-size: 15px;

@@ -2,7 +2,7 @@
 import Doc from '../layouts/Doc.astro';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const CORRESPONDENCES = [
-  ['Ashi points, acupoints', 'China', 'Stuck perforators — the staples', 'Heine: ~80% of points at fascial perforations; Langevin: 80% on connective-tissue planes; Maurer: bundles at only a few points'],
+  ['Ashi points, acupoints', 'China', 'Perforators held stuck — the staples', 'Heine: ~80% of points at fascial perforations; Langevin: 80% on connective-tissue planes; Maurer: bundles at only a few points'],
   ['Sinew channels and their knots (結)', 'China', 'Attachment lines of the sheet, where folds pile up', 'Proposed; untested'],
   ['Cou li — the texture between skin and flesh', 'China', 'The superficial fascial plane', 'Proposed'],
   ['Propagated sensation along the channel', 'China', 'Conducted vasodilation climbing a perforator tree', 'Speeds overlap (cm/s); untested together'],
@@ -14,16 +14,16 @@ const CORRESPONDENCES = [
   ['Saṅkhāras as solidified sensations', 'Buddhist', 'Stored holds that dissolve under equanimous attention and breath', 'Proposed'],
   ['Cupping and gua sha', 'China', 'Tools for the sheet: lift and shear the superficial plane', 'Mechanically plausible'],
 ];
-const toc = [
-  { id: 'reading', label: 'A note on reading' },
-  { id: 'china', label: `Points, channels, and the knots of the sinews`, sub: `China · Huangdi Neijing and after` },
-  { id: 'daoist', label: `The orbit and its three gates`, sub: `Daoist internal alchemy` },
-  { id: 'india', label: `Nāḍīs, cakras, and the three knots`, sub: `Yoga and tantra` },
-  { id: 'tibet', label: `Channels, winds, drops — and knots`, sub: `Tibet · tsa lung and Dzogchen` },
-  { id: 'buddhist', label: `Saṅkhāras, and the serpent over the head`, sub: `Buddhist practice and iconography` },
-  { id: 'kriya', label: `Where the life-force enters`, sub: `The medulla` },
-  { id: 'japan', label: `Kori`, sub: `Japan` },
-  { id: 'table', label: 'Proposed correspondences' },
+const index = [
+  { id: 'reading', label: 'reading' },
+  { id: 'china', label: 'China' },
+  { id: 'daoist', label: 'Daoist' },
+  { id: 'india', label: 'Yoga · tantra' },
+  { id: 'tibet', label: 'Tibet' },
+  { id: 'buddhist', label: 'Buddhist' },
+  { id: 'kriya', label: 'the medulla' },
+  { id: 'japan', label: 'Japan' },
+  { id: 'table', label: 'correspondences' },
 ];
 ---
 <Doc
@@ -32,9 +32,10 @@ const toc = [
   current="traditions"
   lede="Nearly every tradition that mapped the inner body arrived at the same three claims: there are knots, breath is the tool, and untying them changes consciousness."
   description="Maps of the inner body from Chinese medicine, Daoist alchemy, yoga and tantra, Tibetan tsa lung and Dzogchen, and Buddhist practice — read beside the anatomy of perforators and fascia."
-  toc={toc}
+  glyph="経"
+  index={index}
 >
-  <section id="reading" class="trad">
+  <section id="reading" class="sec" data-glyph="読">
     <h2>A note on reading</h2>
     <div class="prose"><p>
         These maps were drawn from the inside, in their own vocabularies, over two thousand years. They are not anatomy, and this page
@@ -45,11 +46,8 @@ const toc = [
       </p></div>
   </section>
 
-  <section id="china" class="trad">
-    <div class="trad-head">
-      <h2>Points, channels, and the knots of the sinews</h2>
-      <span class="cjk glyph" aria-hidden="true">経絡</span>
-    </div>
+  <section id="china" class="sec" data-glyph="経絡">
+    <h2>Points, channels, and the knots of the sinews</h2>
     <p class="label">China · Huangdi Neijing and after</p>
     <div class="prose">
       <p>
@@ -80,11 +78,8 @@ const toc = [
     </div>
   </section>
 
-  <section id="daoist" class="trad">
-    <div class="trad-head">
-      <h2>The orbit and its three gates</h2>
-      <span class="cjk glyph" aria-hidden="true">玉枕</span>
-    </div>
+  <section id="daoist" class="sec" data-glyph="玉枕">
+    <h2>The orbit and its three gates</h2>
     <p class="label">Daoist internal alchemy</p>
     <div class="prose">
       <p>
@@ -98,11 +93,8 @@ const toc = [
     </div>
   </section>
 
-  <section id="india" class="trad">
-    <div class="trad-head">
-      <h2>Nāḍīs, cakras, and the three knots</h2>
-      <span class="cjk glyph" aria-hidden="true">नाडी</span>
-    </div>
+  <section id="india" class="sec" data-glyph="輪">
+    <h2>Nāḍīs, cakras, and the three knots</h2>
     <p class="label">Yoga and tantra</p>
     <div class="prose">
       <p>
@@ -120,11 +112,8 @@ const toc = [
     </div>
   </section>
 
-  <section id="tibet" class="trad">
-    <div class="trad-head">
-      <h2>Channels, winds, drops — and knots</h2>
-      <span class="cjk glyph" aria-hidden="true">རྩ་རླུང་</span>
-    </div>
+  <section id="tibet" class="sec" data-glyph="脈風">
+    <h2>Channels, winds, drops — and knots</h2>
     <p class="label">Tibet · tsa lung and Dzogchen</p>
     <div class="prose">
       <p>
@@ -142,11 +131,8 @@ const toc = [
     </div>
   </section>
 
-  <section id="buddhist" class="trad">
-    <div class="trad-head">
-      <h2>Saṅkhāras, and the serpent over the head</h2>
-      <span class="cjk glyph" aria-hidden="true">龍</span>
-    </div>
+  <section id="buddhist" class="sec" data-glyph="龍">
+    <h2>Saṅkhāras, and the serpent over the head</h2>
     <p class="label">Buddhist practice and iconography</p>
     <div class="prose">
       <p>
@@ -163,11 +149,8 @@ const toc = [
     </div>
   </section>
 
-  <section id="kriya" class="trad">
-    <div class="trad-head">
-      <h2>Where the life-force enters</h2>
-      <span class="cjk glyph" aria-hidden="true">延髄</span>
-    </div>
+  <section id="kriya" class="sec" data-glyph="延髄">
+    <h2>Where the life-force enters</h2>
     <p class="label">The medulla</p>
     <div class="prose">
       <p>
@@ -179,11 +162,8 @@ const toc = [
     </div>
   </section>
 
-  <section id="japan" class="trad">
-    <div class="trad-head">
-      <h2>Kori</h2>
-      <span class="cjk glyph" aria-hidden="true">凝り</span>
-    </div>
+  <section id="japan" class="sec" data-glyph="凝り">
+    <h2>Kori</h2>
     <p class="label">Japan</p>
     <div class="prose">
       <p>
@@ -194,7 +174,7 @@ const toc = [
     </div>
   </section>
 
-  <section id="table" class="trad">
+  <section id="table" class="sec full" data-glyph="対照">
     <h2>Proposed correspondences</h2>
     <p class="label">Read beside the anatomy</p>
     <div class="table-wrap">
@@ -217,39 +197,6 @@ const toc = [
 </Doc>
 
 <style>
-  .trad {
-    padding: 20px 0 16px;
-    border-bottom: 1px solid var(--border);
-    scroll-margin-top: 12px;
-    max-width: 760px;
-  }
-  .trad:first-child {
-    padding-top: 0;
-  }
-  .trad#table {
-    max-width: none;
-    border-bottom: 0;
-  }
-  .trad-head {
-    display: flex;
-    align-items: baseline;
-    gap: 12px;
-  }
-  .trad h2 {
-    font-size: 15px;
-    font-weight: 700;
-    letter-spacing: 0.2px;
-    margin-bottom: 2px;
-  }
-  .glyph {
-    margin-left: auto;
-    font-size: 18px;
-    color: var(--faint);
-  }
-  .trad .label {
-    font-size: 9.5px;
-    margin-bottom: 10px;
-  }
   .table-wrap {
     overflow-x: auto;
     border: 1px solid var(--border);

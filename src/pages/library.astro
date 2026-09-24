@@ -9,10 +9,9 @@ const tags = [...tagCounts.entries()].sort((a, b) => b[1] - a[1]).map(([t]) => t
 const KIND: Record<string, string> = { paper: 'paper', book: 'book', text: 'text', web: 'web', essay: 'essay' };
 const yearLabel = (y: number) => (y < 0 ? `c. ${-y} BCE` : String(y));
 const KIND_COLOR: Record<string, string> = { tradition: 'var(--plum)', essay: 'var(--terracotta)', anatomy: 'var(--stone)', medicine: 'var(--accent-dark)' };
-const toc = [
-  { id: 'history', label: 'A short history of knots', sub: `${TIMELINE.length} moments` },
-  { id: 'sources', label: 'Sources', sub: `${REFERENCES.length} papers, books, texts` },
-  ...tags.slice(0, 12).map((t) => ({ id: `sources`, label: `· ${TAG_LABELS[t]}`, sub: `${tagCounts.get(t)}` })),
+const index = [
+  { id: 'history', label: 'a short history of knots' },
+  { id: 'sources', label: `${REFERENCES.length} sources` },
 ];
 ---
 <Doc
@@ -21,9 +20,10 @@ const toc = [
   current="library"
   lede="The papers behind each link in the chain, the critiques, and the texts in which the traditions mapped the same ground. Papers are verified against PubMed."
   description="The research on knots — trigger points, fascia, perforators, vessels — alongside the classical texts of Chinese medicine, yoga, Daoist alchemy and Tibetan practice, and a short history of how they met."
-  toc={toc}
+  glyph="典"
+  index={index}
 >
-  <section id="history" class="block">
+  <section id="history" class="sec" data-glyph="史">
     <h2>A short history of knots</h2>
     <ol class="timeline">
       {
@@ -46,7 +46,7 @@ const toc = [
     </ol>
   </section>
 
-  <section id="sources" class="block" data-library>
+  <section id="sources" class="sec" data-glyph="典" data-library>
     <h2>Sources</h2>
     <div class="controls">
       <div class="filters" role="group" aria-label="Filter by theme">
@@ -121,14 +121,6 @@ const toc = [
 </script>
 
 <style>
-  .block {
-    scroll-margin-top: 12px;
-  }
-  .block + .block {
-    margin-top: 28px;
-    padding-top: 22px;
-    border-top: 1px solid var(--border);
-  }
   h2 {
     font-size: 15px;
     font-weight: 700;

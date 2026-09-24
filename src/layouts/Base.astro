@@ -1,6 +1,7 @@
 ---
 import '../styles/global.css';
 import TopBar from '../components/TopBar.astro';
+import Enso from '../components/Enso.astro';
 
 interface Props {
   title?: string;
@@ -11,7 +12,7 @@ interface Props {
 }
 const {
   title,
-  description = 'Knots of Existence — an atlas of the body’s held places: a three-dimensional introduction to knots, the perforator-and-sheet hypothesis, its rivals, and the maps the contemplative traditions drew of the same ground.',
+  description = 'Knots of Existence — an atlas of the body’s held places: a three-dimensional introduction to knots, the perforator hypothesis and the fascial sheet, its rivals, and the maps the contemplative traditions drew of the same ground.',
   app = false,
   current = '',
 } = Astro.props;
@@ -33,7 +34,10 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     <meta property="og:description" content={description} />
     <meta property="og:type" content="website" />
     <meta property="og:url" content={canonical} />
-    <meta property="og:image" content={new URL(`${base}/og.png`, Astro.site)} />
+    <meta property="og:image" content={new URL(`${base}/og.jpg`, Astro.site)} />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:image:alt" content="Knots of Existence — a figure drawn as the body’s perforators, knots glowing at the neck and shoulders." />
     <meta name="twitter:card" content="summary_large_image" />
   </head>
   <body class:list={[{ app }]}>
@@ -44,11 +48,16 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     </main>
     {
       !app && (
-        <footer class="page-footer mono">
-          <span>© 2026 Eugene Jhong</span>
-          <a href="https://ejhong.substack.com/p/knots-of-existence-hypotheses">essay</a>
-          <a href="https://github.com/ejhong/knots">source</a>
-          <span>body: MakeHuman (CC0) · perforator positions are representative · not medical advice</span>
+        <footer class="page-footer">
+          <Enso size={30} seed={11} />
+          <p class="mono">Knots of Existence · © 2026 Eugene Jhong</p>
+          <p class="mono links">
+            <a href="https://ejhong.substack.com/p/knots-of-existence-hypotheses">the essay</a>
+            <a href="https://ejhong.substack.com/p/knots-of-existence-and-vasocomputation">the original essay</a>
+            <a href="https://github.com/ejhong/knots">source</a>
+            <a href="https://ejhong.github.io/om/">the OM project</a>
+          </p>
+          <p class="mono fine">body: MakeHuman (CC0) · perforator positions are representative · not medical advice</p>
         </footer>
       )
     }
@@ -71,17 +80,39 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
     gap: 16px;
   }
   .page-footer {
+    display: grid;
+    justify-items: center;
+    gap: 6px;
+    padding: 40px 24px 48px;
+    font-size: 9.5px;
+    color: var(--muted);
+    text-align: center;
+  }
+  .page-footer .enso {
+    color: var(--frame-accent);
+    margin-bottom: 6px;
+  }
+  .page-footer .links {
     display: flex;
     flex-wrap: wrap;
-    gap: 6px 16px;
-    font-size: 9px;
-    color: var(--muted);
-    padding: 24px;
-    border-top: 1px solid var(--border);
-    margin-top: 32px;
+    justify-content: center;
+    gap: 4px 0;
   }
-  .page-footer a {
-    color: var(--muted);
+  .page-footer .links a {
+    color: var(--accent-dark);
+    text-decoration: none;
+  }
+  .page-footer .links a:hover {
+    color: var(--terracotta);
+  }
+  .page-footer .links a + a::before {
+    content: '·';
+    color: var(--faint);
+    margin: 0 9px;
+  }
+  .page-footer .fine {
+    color: var(--faint);
+    font-size: 9px;
   }
   .skip:focus {
     position: fixed !important;

@@ -15,9 +15,18 @@ const ROWS: [keyof (typeof HYPOTHESES)[number], string][] = [
   ['test', 'Test'],
   ['status', 'Evidence'],
 ];
-const toc = [
-  ...HYPOTHESES.map((h, i) => ({ id: h.id, label: `${String(i + 1).padStart(2, '0')} ${h.name}`, sub: `${h.who} · ${h.year}` })),
-  { id: 'compare', label: 'Side by side' },
+const GLYPH: Record<string, string> = {
+  perforator: '結',
+  latch: '閂',
+  'trigger-point': '点',
+  densification: '膠',
+  nerve: '神経',
+  central: '脳',
+  attention: '観',
+};
+const index = [
+  ...HYPOTHESES.map((h, i) => ({ id: h.id, label: `${String(i + 1).padStart(2, '0')} ${h.name.split(' ·')[0]}` })),
+  { id: 'compare', label: 'side by side' },
 ];
 ---
 <Doc
@@ -26,12 +35,13 @@ const toc = [
   current="hypotheses"
   lede="Seven answers, each given at its strongest — with its own best evidence and its own sharpest test. The positions are not all rivals; where they part is testable."
   description="What is a knot? Seven candidate answers — stuck perforators, the vascular latch, the integrated trigger point, fascial densification, nerve sensitivity, central sensitisation, and attention — each at its strongest."
-  toc={toc}
+  glyph="説"
+  index={index}
   wide
 >
   {
     HYPOTHESES.map((h, i) => (
-      <section class="hyp" id={h.id}>
+      <section class="sec hyp" id={h.id} data-glyph={GLYPH[h.id]}>
         <div class="hyp-head">
           <span class="sw" style={`background:${h.color}`} />
           <h2>
@@ -76,7 +86,7 @@ const toc = [
     ))
   }
 
-  <section id="compare" class="compare">
+  <section id="compare" class="sec full compare">
     <h2>Side by side</h2>
     <div class="table-wrap" role="region" aria-label="Comparison of hypotheses" tabindex="0">
       <table>
@@ -116,12 +126,7 @@ const toc = [
 
 <style>
   .hyp {
-    padding: 22px 0 24px;
-    border-bottom: 1px solid var(--border);
-    scroll-margin-top: 12px;
-  }
-  .hyp:first-child {
-    padding-top: 0;
+    padding-bottom: 22px !important;
   }
   .hyp-head {
     display: flex;
@@ -204,10 +209,6 @@ const toc = [
   }
   .refs a {
     color: var(--muted);
-  }
-  .compare {
-    padding-top: 24px;
-    scroll-margin-top: 12px;
   }
   .compare h2 {
     font-size: 15px;

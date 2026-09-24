@@ -45,7 +45,7 @@ export interface Hypothesis {
 export const HYPOTHESES: Hypothesis[] = [
   {
     id: 'perforator',
-    name: 'Stuck perforators & the sheet',
+    name: 'Perforators',
     who: 'Jhong 2026',
     year: '2026',
     color: '#ff5b3d',
@@ -63,7 +63,7 @@ export const HYPOTHESES: Hypothesis[] = [
     body: [
       'The superficial fascia is pinned to the layer beneath in two ways: passive fibrous septa, and the places where something passes through — a small artery with its veins, a cutaneous nerve and a lymphatic, rising together through a fibrous ring. Surgeons call these perforators, and a flap will not lift until the perforators tethering it are dealt with.',
       'Suppose the knots are these staples, held stuck. The artery is the smooth muscle, answering breath in seconds by textbook physiology. The nerve is the star: when the vessel opens, the nerve reperfuses and its patch of skin lights up — a foot waking, miniaturised. The collar is the order: hyaluronan around the bundle gels when the tissue turns acidic and cool, and melts with warmth, washout and shear, so the sheet cannot slide until the staples open.',
-      'A second system follows once the staples go: the sheet itself — galea, SMAS, platysma, the membranous layers of trunk and limbs — delaminating, folding, venting and re-bonding over days. The knots go first because the sheet cannot move until they do.',
+      'The sheet is a separate, second system: the fascia and the interstitial space beneath it — galea, SMAS, platysma, the membranous layers of trunk and limbs, and the loose gliding plane under them. It is not what a knot is; it is what the knots hold down. Once enough staples open, the sheet delaminates, folds, vents and re-bonds over days — which is why the knots go first.',
     ],
     refs: ['jhong2026', 'jhong2026a', 'taylor1987', 'saintcyr2009', 'segal1986', 'stecco2011', 'heine1988', 'yoshinaga2025', 'bolton1936'],
     ready: true,

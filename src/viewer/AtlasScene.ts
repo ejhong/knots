@@ -32,7 +32,7 @@ export interface RootInstance {
 }
 
 /** The reference figure all placement is resolved against. */
-export const REFERENCE_SHAPE: Shape = { age: 30, sex: 0.5, stoop: 0 };
+export const REFERENCE_SHAPE: Shape = { age: 30, sex: 1, stoop: 0 };
 
 /**
  * Assembles the atlas: engine, figure, fascial layers, the perforator

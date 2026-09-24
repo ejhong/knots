@@ -28,7 +28,7 @@ export interface Shape {
   stoop: number;
 }
 
-export const DEFAULT_SHAPE: Shape = { age: 34, sex: 0.5, stoop: 0 };
+export const DEFAULT_SHAPE: Shape = { age: 34, sex: 1, stoop: 0 };
 
 /**
  * MakeHuman's age weighting: piecewise-linear between the baby (1 y),
