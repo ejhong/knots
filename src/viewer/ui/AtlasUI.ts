@@ -109,6 +109,7 @@ export function mountAtlas(viz: HTMLElement, panel: HTMLElement) {
     bindSettings(viz, stage, scene);
     bindHypotheses(viz, panel, scene);
     bindMaps(panel, scene, card);
+    firstVisitHint(viz, scene);
     const q = new URLSearchParams(location.search);
     if (q.get('depth')) {
       const v = Number(q.get('depth'));
@@ -594,4 +595,30 @@ function bindMaps(panel: HTMLElement, scene: AtlasScene, card: MapCard) {
       scene.setCompare(b.dataset.compare as 'knots' | 'perforators' | 'vessels' | 'channels', on);
     }),
   );
+}
+
+/** Once per browser: how to release knots, until it is tried or has faded. */
+function firstVisitHint(viz: HTMLElement, scene: AtlasScene) {
+  const el = viz.querySelector<HTMLElement>('[data-first-hint]');
+  if (!el) return;
+  let seen = false;
+  try {
+    seen = localStorage.getItem('knots-hint-release') === '1';
+  } catch {
+    /* storage unavailable: show it this time */
+  }
+  if (seen) return;
+  const touch = window.matchMedia?.('(pointer: coarse)').matches;
+  el.textContent = touch ? 'double-tap the body to release knots · tap to inspect' : 'double-click the body to release knots · click to inspect';
+  const done = () => {
+    el.classList.remove('on');
+    try {
+      localStorage.setItem('knots-hint-release', '1');
+    } catch {
+      /* ignore */
+    }
+  };
+  setTimeout(() => el.classList.add('on'), 1200);
+  setTimeout(done, 9000);
+  scene.interaction.onRelease(done);
 }

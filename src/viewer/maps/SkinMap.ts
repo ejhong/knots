@@ -53,6 +53,8 @@ export interface MapData {
   lines: MapLine[];
   /** Draw lines as broad soft bands (sinews) rather than threads (channels). */
   band?: boolean;
+  /** Marker size (1 = acupoint): a sparse map draws its few places larger. */
+  pointScale?: number;
 }
 
 /** Two passes of corner cutting, as a count: n → 4n − 6 for n ≥ 3. */
@@ -138,6 +140,7 @@ export class SkinMap {
     this.lGeo.setAttribute('aHi', new BufferAttribute(this.lHi, 1));
 
     this.pointMaterial = pointMaterial();
+    this.pointMaterial.uniforms.uScale.value = data.pointScale ?? 1;
     this.lineMaterial = lineMaterial(data.band ? 0.34 : 0.62);
     this.points = new Points(this.pGeo, this.pointMaterial);
     this.lines = new LineSegments(this.lGeo, this.lineMaterial);
@@ -446,12 +449,13 @@ function pointMaterial() {
   return new ShaderMaterial({
     transparent: true,
     depthWrite: false,
-    uniforms: UNIFORMS(),
+    uniforms: { ...UNIFORMS(), uScale: { value: 1 } },
     vertexShader: /* glsl */ `
       ${PLACE}
       attribute float aShape;
       uniform float uProjScale;
       uniform float uPixelRatio;
+      uniform float uScale;
       varying float vA;
       varying float vHi;
       varying float vShape;
@@ -462,7 +466,7 @@ function pointMaterial() {
         vClipPos = p;
         vec4 mv = modelViewMatrix * vec4(p, 1.0);
         gl_Position = projectionMatrix * mv;
-        float size = (aShape > 0.5 ? 0.011 : 0.0052) * (1.0 + aHi * 0.8);
+        float size = (aShape > 0.5 ? 0.011 : 0.0052) * uScale * (1.0 + aHi * 0.8);
         gl_PointSize = clamp(size * uProjScale / max(0.05, -mv.z), 2.0 * uPixelRatio, 34.0 * uPixelRatio);
         vA = windowR(position) < 1.0 ? 0.0 : soloFactor();
         vHi = aHi;

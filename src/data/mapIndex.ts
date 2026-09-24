@@ -51,7 +51,14 @@ export const MAP_GROUPS: MapGroup[] = [
         intro:
           'The usual trigger-point regions of 45 muscles, after Travell and Simons. Move over one: the muscle, where it refers pain, and the anatomy beneath it.',
       },
-      { id: 'tender-points', name: 'Tender points (1990)', ready: false },
+      {
+        id: 'tender-points',
+        name: 'Tender points (1990)',
+        ready: true,
+        count: '18',
+        intro:
+          'The eighteen tender points of the American College of Rheumatology’s 1990 criteria for fibromyalgia (Wolfe et al.): nine pairs, placed by their definitions. Pain on about 4 kg of pressure at eleven or more was part of the diagnosis then; the 2010 criteria dropped the count.',
+      },
       { id: 'dermatomes', name: 'Dermatomes', ready: false },
       { id: 'anatomy-trains', name: 'Myofascial lines', ready: false },
     ],

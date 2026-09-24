@@ -48,6 +48,9 @@ A living list. Checked items are live.
 - [x] Sinew channels and their knots (結), after Ling Shu 13: broad bands, knots as diamonds, courses simplified
 - [x] Trigger-point map (45 muscle regions, with referred pain) — to compare with the acupoints
 - [x] Maps one at a time: a list by tradition, each map's own chips, shared compare chips
+- [x] Tender points (1990): the eighteen of the fibromyalgia criteria, placed by definition
+- [x] Phones: split screen (figure above, panel scrolling below); tap inspects, double-tap releases, drag turns; nav fits one line
+- [x] First-visit hint for release; sharing image regenerated in the current look
 - [ ] Microcosmic orbit; three dantian
 - [ ] Cakras, nāḍīs, granthis, kuṇḍalinī
 - [ ] Tsa lung: three channels, wheels, channel-knots; kati channel

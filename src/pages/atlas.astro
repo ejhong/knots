@@ -26,6 +26,7 @@ const pct = (a: number) => ((a - 1) / 89) * 100;
       <div class="overlay bl" data-hint>drag to turn · click to select · double-click or hold to release knots · shift-click for a window</div>
       <div class="overlay br">© 2026 Eugene Jhong</div>
       <div class="tip" data-tip hidden aria-live="polite"></div>
+      <div class="first-hint" data-first-hint aria-live="polite"></div>
       <div class="loading" data-loading>
         <Enso size={56} seed={5} />
         <span>drawing a hundred thousand perforators</span>
@@ -167,6 +168,39 @@ const pct = (a: number) => ((a - 1) / 89) * 100;
 </Base>
 
 <style>
+  /* Shown once, on a first visit: how to release knots. */
+  .first-hint {
+    position: absolute;
+    left: 50%;
+    bottom: 24px;
+    transform: translateX(-50%);
+    z-index: 7;
+    padding: 7px 14px;
+    background: rgba(29, 27, 25, 0.86);
+    border: 1px solid #4a4640;
+    border-radius: 999px;
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: #efe7da;
+    white-space: nowrap;
+    opacity: 0;
+    transition: opacity 0.7s var(--ease);
+    pointer-events: none;
+  }
+  .first-hint.on {
+    opacity: 1;
+  }
+  :global(.paper) .first-hint {
+    background: rgba(250, 247, 242, 0.94);
+    border-color: var(--border);
+    color: var(--text);
+  }
+  @media (max-width: 480px) {
+    .first-hint {
+      font-size: 10px;
+      bottom: 14px;
+    }
+  }
   .notes-panel :global(.section-svg) {
     padding: 2px 10px 10px 12px;
   }

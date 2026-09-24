@@ -41,6 +41,7 @@ import { MERIDIANS, ORGAN, pointName } from './data/meridians';
 import { SINEWS } from './data/sinew';
 import { interiorSites } from './data/viscera';
 import { TRIGGER_CLUSTERS, TRIGGER_REGIONS } from './data/triggerPoints';
+import { TENDER_GROUPS, TENDER_POINTS } from './data/tenderPoints';
 import { SiteKnots, type KnotSite, type SiteStyle } from './hypotheses/SiteKnots';
 import { mulberry32 } from './lib/random';
 
@@ -54,7 +55,7 @@ const SITE_STYLES: Record<string, SiteStyle> = {
 import { SkinMap, type MapData, type MapLine, type MapPoint } from './maps/SkinMap';
 
 /** The maps the atlas can draw, one at a time. */
-export type MapId = 'meridians' | 'sinew' | 'trigger-points';
+export type MapId = 'meridians' | 'sinew' | 'trigger-points' | 'tender-points';
 import { TreeLines } from './perforators/TreeLines';
 
 export interface RootInstance {
@@ -819,7 +820,8 @@ export class AtlasScene {
   ensureMap(id: MapId): SkinMap {
     const built = this.maps[id];
     if (built) return built;
-    const data = id === 'meridians' ? this.meridianData() : id === 'sinew' ? this.sinewData() : this.triggerMapData();
+    const data =
+      id === 'meridians' ? this.meridianData() : id === 'sinew' ? this.sinewData() : id === 'tender-points' ? this.tenderData() : this.triggerMapData();
     const map = new SkinMap(data, this.body.triangles, this.liftWeight);
     map.refresh(this.body);
     map.applyTheme(this.engine.theme);
@@ -965,6 +967,41 @@ export class AtlasScene {
     };
   }
 
+  /** The eighteen tender points of the 1990 fibromyalgia criteria. */
+  private tenderData(): MapData {
+    const points: MapPoint[] = [];
+    for (const t of TENDER_POINTS)
+      for (const side of ['l', 'r'] as const) {
+        const a = this.place(t.at, side);
+        if (!a) {
+          console.warn('tender point did not resolve', t.name, side);
+          continue;
+        }
+        points.push({
+          group: t.group,
+          side,
+          anchor: a,
+          kicker: `tender points (1990) · ${TENDER_GROUPS[t.group].toLowerCase()}`,
+          title: t.name,
+          sub: t.where,
+          where: 'One of the eighteen tender points of the 1990 criteria for fibromyalgia (Wolfe et al.).',
+          shape: 0,
+        });
+      }
+    return {
+      id: 'tender-points',
+      title: 'Tender points (1990)',
+      groups: TENDER_GROUPS.map((g, i) => ({
+        chip: g.toLowerCase(),
+        name: g,
+        course: `${TENDER_POINTS.filter((t) => t.group === i).map((t) => t.name.toLowerCase()).join(', ')} — on each side.`,
+      })),
+      points,
+      lines: [],
+      pointScale: 2.6,
+    };
+  }
+
   /** The usual trigger-point regions of the muscles, after Travell and Simons. */
   private triggerMapData(): MapData {
     const points: MapPoint[] = [];
@@ -986,6 +1023,7 @@ export class AtlasScene {
     return {
       id: 'trigger-points',
       title: 'Trigger points',
+      pointScale: 1.8,
       groups: TRIGGER_REGIONS.map((r, i) => ({
         chip: r.toLowerCase(),
         name: r,

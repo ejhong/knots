@@ -32,14 +32,18 @@ export class Interaction {
   private listeners = new Set<(h: HoverInfo | null) => void>();
   private pointerId = -1;
   /** A press that has not (yet) become a drag. */
-  private down: { x: number; y: number; t: number; still: boolean; place: boolean } | null = null;
+  private down: { x: number; y: number; t: number; still: boolean; place: boolean; double: boolean } | null = null;
   private releaseListeners = new Set<() => void>();
   private placeListeners = new Set<(hit: SurfaceHit) => void>();
   private selectListeners = new Set<(h: HoverInfo | null) => void>();
   /** The last plain click, to recognise a second one as a double-click. */
   private lastClick: { x: number; y: number; t: number } | null = null;
+  /** Touch has no hover: a finger only inspects where it taps. */
+  private hoverOn = true;
   /** A press held this long without moving keeps releasing (ms). */
-  private static HOLD_MS = 350;
+  private static HOLD_MS = 450;
+  /** A second press this soon after a click's lift, and this near it, makes a double-click (ms, px). */
+  private static DOUBLE_MS = 420;
 
   constructor(private scene: AtlasScene) {
     const el = scene.engine.canvas;
@@ -87,8 +91,13 @@ export class Interaction {
 
   private onMove = (e: PointerEvent) => {
     const p = this.rel(e);
+    this.hoverOn = e.pointerType !== 'touch';
     this.pointer = { x: p.x, y: p.y, inside: true };
-    if (this.down && Math.hypot(p.x - this.down.x, p.y - this.down.y) > 6) this.down.still = false;
+    if (this.down && this.down.still && Math.hypot(p.x - this.down.x, p.y - this.down.y) > 6) {
+      // It became a drag: whatever was selected is let go.
+      this.down.still = false;
+      for (const cb of this.selectListeners) cb(null);
+    }
     this.scene.engine.poke();
   };
 
@@ -96,7 +105,20 @@ export class Interaction {
     if (e.button !== 0 || this.tool === 'look') return;
     if (this.tool === 'release') {
       const p = this.rel(e);
-      this.down = { x: p.x, y: p.y, t: performance.now(), still: true, place: e.shiftKey };
+      // The event's own time: a busy frame must not stretch a quick gesture.
+      const now = e.timeStamp || performance.now();
+      this.hoverOn = e.pointerType !== 'touch';
+      if (!this.hoverOn && this.hover) this.setHover(null);
+      const last = this.lastClick;
+      const double = !e.shiftKey && !!last && now - last.t < Interaction.DOUBLE_MS && Math.hypot(p.x - last.x, p.y - last.y) < (this.hoverOn ? 16 : 30);
+      this.down = { x: p.x, y: p.y, t: now, still: true, place: e.shiftKey, double };
+      if (double) {
+        // The second press of a double-click releases at once (and lets go of the selection).
+        this.lastClick = null;
+        for (const cb of this.selectListeners) cb(null);
+        const hit = this.cast(p.x, p.y, p.w, p.h);
+        if (hit) this.releaseHere(hit, 1.2);
+      }
       return;
     }
     const p = this.rel(e);
@@ -121,15 +143,9 @@ export class Interaction {
         if (hit) for (const cb of this.placeListeners) cb(hit);
         return;
       }
-      const now = performance.now();
+      if (d.double) return; // it released at its press
+      const now = e.timeStamp || performance.now();
       if (now - d.t >= Interaction.HOLD_MS) return; // a hold: it pressed while held
-      const last = this.lastClick;
-      if (last && now - last.t < 340 && Math.hypot(p.x - last.x, p.y - last.y) < 14) {
-        // The second click of a double-click: release.
-        this.lastClick = null;
-        if (hit) this.releaseHere(hit, 1.2);
-        return;
-      }
       this.lastClick = { x: p.x, y: p.y, t: now };
       const info = hit ? { hit, node: this.nearestNode(hit.point), root: this.nearestRoot(hit.point), screen: { x: p.x, y: p.y } } : null;
       for (const cb of this.selectListeners) cb(info);
@@ -165,9 +181,11 @@ export class Interaction {
       if (this.hover) this.setHover(null);
       return;
     }
-    const node = this.nearestNode(hit.point);
-    const root = this.nearestRoot(hit.point);
-    this.setHover({ hit, node, root, screen: { x: this.pointer.x, y: this.pointer.y } });
+    if (this.hoverOn) {
+      const node = this.nearestNode(hit.point);
+      const root = this.nearestRoot(hit.point);
+      this.setHover({ hit, node, root, screen: { x: this.pointer.x, y: this.pointer.y } });
+    } else if (this.hover) this.setHover(null);
     if (this.pressing) this.applyAt(hit, dt);
     // Holding still keeps pressing: about two clicks' worth a second.
     const d = this.down;
