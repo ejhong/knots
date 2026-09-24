@@ -303,7 +303,7 @@ const EXTRA: Reference[] = [
     venue: 'Harper & Row',
     kind: 'book',
     tags: ['tradition', 'contemplative'],
-    note: 'Saṅkhāras felt as solidified sensations that dissolve under equanimous attention — “nearly word for word, the foam-rolling protocol”.',
+    note: 'Saṅkhāras felt as solidified sensations that dissolve under equanimous attention.',
   },
   {
     id: 'udana21',

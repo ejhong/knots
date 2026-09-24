@@ -22,8 +22,7 @@ const GLYPH: Record<string, string> = {
   'trigger-point': '点',
   densification: '膠',
   nerve: '神経',
-  central: '脳',
-  attention: '観',
+  central: '覚',
 };
 const index = [
   ...HYPOTHESES.map((h, i) => ({ id: h.id, label: `${String(i + 1).padStart(2, '0')} ${h.label}` })),
@@ -34,8 +33,8 @@ const index = [
   title="What is a knot?"
   kicker="Hypotheses"
   current="hypotheses"
-  lede="Seven answers, each given at its strongest — with its own best evidence and its own sharpest test. The positions are not all rivals; where they part is testable."
-  description="What is a knot? Seven candidate answers — stuck perforators, the vascular latch, the integrated trigger point, fascial densification, nerve sensitivity, central sensitisation, and attention — each at its strongest."
+  lede="Six answers, each given at its strongest — its own best evidence and its own sharpest test. They are not all rivals, and where they part, they can be tested."
+  description="What is a knot? Six answers — perforators held stuck, the vascular latch, the trigger point, fascial densification, sensitised nerves, and perception — each at its strongest."
   glyph="説"
   index={index}
   wide

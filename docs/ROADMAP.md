@@ -36,8 +36,7 @@ A living list. Checked items are live.
 - [ ] Integrated trigger point: taut bands at endplate zones; referred-pain zones; local twitch
 - [ ] Fascial densification (Stecco): patches in the loose layer; friction and heat
 - [ ] Peripheral nerve: sensitised trunks and entrapment sites
-- [ ] Central sensitisation: widespread lowered thresholds
-- [ ] Breath and attention: knots follow attention; overbreathing sparks everywhere
+- [ ] Perception (sensitisation and attention): widespread lowered thresholds; knots follow attention; overbreathing sparks everywhere
 
 ## Maps
 - [ ] Channels (12 + Du/Ren) and acupoints (WHO 2008), placed by proportional cun on landmarks

@@ -153,10 +153,7 @@ export function crossSectionSVG({ dSup, dDeep, hypothesis, region, tone = 'dark'
       break;
     }
     case 'central':
-      note = 'no local lesion: amplified in the spinal cord and brain';
-      break;
-    case 'attention':
-      note = 'no local lesion: a percept in the body map';
+      note = 'nothing special in the tissue: made in the spinal cord and brain';
       break;
   }
 

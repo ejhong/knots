@@ -99,7 +99,7 @@ const index = [
               <p class="note">{r.note}</p>
               <p class="kind mono">
                 {KIND[r.kind]}
-                {r.tags.map((t) => ` · ${TAG_LABELS[t].toLowerCase()}`)}
+                {r.tags.filter((t) => !(r.kind === 'essay' && t === 'essay')).map((t) => ` · ${TAG_LABELS[t].toLowerCase()}`)}
               </p>
             </div>
           </li>
