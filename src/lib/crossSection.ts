@@ -128,10 +128,14 @@ export function crossSectionSVG({ dSup, dDeep, hypothesis, region, tone = 'dark'
       note = 'a perforator held where it pierces a fascia';
       break;
     case 'latch': {
+      // Latched arterioles in both vessel beds the atlas shows: skin and muscle.
       const ly = yDeep + (yBottom - yDeep) * 0.5;
       parts.push(`<path d="M${mid - 60} ${ly} L ${mid + 40} ${ly}" stroke="${c.vessel}" stroke-width="1" opacity="0.7"/>`);
       dot(mid + 8, ly, 3.2);
-      note = 'a latched arteriole inside muscle';
+      const sy = (yDermis + ySup) / 2;
+      parts.push(`<path d="M${mid + 20} ${sy.toFixed(1)} L ${mid + 70} ${sy.toFixed(1)}" stroke="${c.vessel}" stroke-width="0.7" opacity="0.7"/>`);
+      dot(mid + 46, sy, 2.2);
+      note = 'latched small arteries, in skin and muscle alike';
       break;
     }
     case 'trigger-point': {

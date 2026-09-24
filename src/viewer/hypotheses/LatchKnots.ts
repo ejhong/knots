@@ -11,17 +11,21 @@ import {
 } from 'three';
 import { evalAnchors, type AnchorSet } from '../anchors/anchors';
 import type { BodyModel } from '../body/BodyModel';
+import { LAYERS_GLSL, LAYER_UNIFORMS, WINDOW_GLSL, WINDOW_UNIFORMS } from '../body/layerModel';
 import type { SceneTheme } from '../engine/theme';
 import { hash01, mulberry32 } from '../lib/random';
 import { KnotSim } from '../sim/KnotSim';
 
 /**
- * Johnson's vascular latch, in the body: knots as latched arterioles inside
- * skeletal muscle, beneath the deep fascia. Drawn as knot embers — the same
- * colour and form as every other view's knots — on short arteriole segments
- * in the vessel colour, seen through the fascia. The sites gather in the
- * same stress zones, and follow the same age curve, as the perforator knots,
- * so the two can be compared.
+ * Johnson's vascular latch, in the body. He places latches in vascular
+ * smooth muscle wherever it wraps a vessel (and in hollow organs), with the
+ * brain at the centre of his account, and does not pin them to one tissue.
+ * The atlas shows two vessel beds, so it draws latched arterioles in both:
+ * the small arteries of the skin (half the sites, at 1.5–3.5 mm) and those
+ * inside the muscle beneath the deep fascia (the other half). Drawn as knot
+ * embers — the same colour and form as every other view's knots — on short
+ * arteriole segments in the vessel colour. The sites gather in the same
+ * stress zones, and follow the same age curve, as the perforator knots.
  */
 export class LatchKnots {
   readonly points: Points;
@@ -48,6 +52,8 @@ export class LatchKnots {
     zoneField: (x: number, y: number, z: number) => number,
     deepDepth: Float32Array,
     radius: (fineVertex: number) => number,
+    /** Per fine vertex: how far the layers open in the exploded view. */
+    liftWeight: Float32Array,
     seed = 23,
   ) {
     this.count = count;
@@ -75,6 +81,8 @@ export class LatchKnots {
     this.weight = new Float32Array(count);
     this.personal = new Float32Array(count);
     this.depthBelow = new Float32Array(count);
+    const bed = new Float32Array(count);
+    const liftW = new Float32Array(count);
     for (let i = 0; i < count; i++) {
       const r = rng() * acc;
       let lo = 0;
@@ -91,9 +99,16 @@ export class LatchKnots {
       uv[i * 2 + 1] = r1 * r2;
       this.personal[i] = hash01(i * 7331 + 101);
       const v0 = T[lo * 3];
-      // In the muscle: 5–14 mm under the deep fascia, never through a limb.
-      const extra = 0.005 + rng() * 0.009;
-      this.depthBelow[i] = Math.min(deepDepth[v0] + extra, radius(v0) * 0.5);
+      liftW[i] = liftWeight[v0];
+      if (i % 2 === 0) {
+        // The skin's own small arteries, 1.5–3.5 mm down (they lift with the skin).
+        bed[i] = 1;
+        this.depthBelow[i] = 0.0015 + rng() * 0.002;
+      } else {
+        // In the muscle: 5–14 mm under the deep fascia, never through a limb.
+        const extra = 0.005 + rng() * 0.009;
+        this.depthBelow[i] = Math.min(deepDepth[v0] + extra, radius(v0) * 0.5);
+      }
     }
     this.anchors = { tri, uv, count };
     this.pos = new Float32Array(count * 3);
@@ -117,6 +132,8 @@ export class LatchKnots {
     this.pGeo.setAttribute('position', new BufferAttribute(new Float32Array(count * 3), 3));
     this.pGeo.setAttribute('normal', new BufferAttribute(new Float32Array(count * 3), 3));
     this.pGeo.setAttribute('aKnot', new BufferAttribute(this.knot, 1));
+    this.pGeo.setAttribute('aBed', new BufferAttribute(bed, 1));
+    this.pGeo.setAttribute('aLiftW', new BufferAttribute(liftW, 1));
     this.pointMaterial = createPointMaterial();
     this.points = new Points(this.pGeo, this.pointMaterial);
     // Arteriole segments.
@@ -125,6 +142,8 @@ export class LatchKnots {
     this.lGeo.setAttribute('position', new BufferAttribute(this.lPos, 3));
     this.lGeo.setAttribute('normal', new BufferAttribute(new Float32Array(count * 6), 3));
     this.lGeo.setAttribute('aKnot', new BufferAttribute(this.lKnot, 1));
+    this.lGeo.setAttribute('aBed', new BufferAttribute(Float32Array.from({ length: count * 2 }, (_, k) => bed[k >> 1]), 1));
+    this.lGeo.setAttribute('aLiftW', new BufferAttribute(Float32Array.from({ length: count * 2 }, (_, k) => liftW[k >> 1]), 1));
     this.lineMaterial = createLineMaterial();
     this.lines = new LineSegments(this.lGeo, this.lineMaterial);
     for (const o of [this.points, this.lines]) {
@@ -176,7 +195,6 @@ export class LatchKnots {
     (this.lGeo.getAttribute('position') as BufferAttribute).needsUpdate = true;
   }
 
-  /** Which arterioles a life has latched by this age (same curve as the perforator knots). */
   /** Onset ages, on the same held-fraction curve as the perforator knots. */
   private onset?: Float32Array;
 
@@ -228,7 +246,23 @@ const COMMON_UNIFORMS = () => ({
   uPixelRatio: { value: 1 },
   uClip: { value: new Vector4() },
   uClipOn: { value: 0 },
+  ...LAYER_UNIFORMS,
+  ...WINDOW_UNIFORMS,
 });
+
+/** Skin-bed latches ride with the skin in the exploded view, and go with it inside the window. */
+const PLACE_GLSL = /* glsl */ `
+  attribute float aBed;
+  attribute float aLiftW;
+  ${LAYERS_GLSL}
+  ${WINDOW_GLSL}
+  vec3 placeLatch(vec3 pos, vec3 n) {
+    return pos + n * (aBed > 0.5 ? skinOffset(aLiftW) : 0.0);
+  }
+  bool cutAway(vec3 pos) {
+    return aBed > 0.5 && windowR(pos) < 1.0;
+  }
+`;
 
 function createPointMaterial() {
   return new ShaderMaterial({
@@ -240,23 +274,26 @@ function createPointMaterial() {
       attribute float aKnot;
       uniform float uProjScale;
       uniform float uPixelRatio;
+      ${PLACE_GLSL}
       varying float vA;
       varying vec3 vClipPos;
       void main() {
-        vClipPos = position;
         vec3 n = normalize(normal);
-        vec3 viewDir = normalize(cameraPosition - position);
+        vec3 p = placeLatch(position, n);
+        vClipPos = p;
+        vec3 viewDir = normalize(cameraPosition - p);
         float facing = dot(n, viewDir);
-        if (aKnot < 0.02 || facing < 0.05) {
+        if (aKnot < 0.02 || facing < 0.05 || cutAway(position)) {
           gl_Position = vec4(2.0, 2.0, 2.0, 1.0);
           gl_PointSize = 0.0;
           vA = 0.0;
           return;
         }
-        vec4 mv = modelViewMatrix * vec4(position, 1.0);
+        vec4 mv = modelViewMatrix * vec4(p, 1.0);
         gl_Position = projectionMatrix * mv;
-        gl_PointSize = clamp(0.0105 * (0.55 + 0.7 * aKnot) * uProjScale / max(0.05, -mv.z), 2.5 * uPixelRatio, 44.0 * uPixelRatio);
-        vA = clamp(aKnot * 1.2, 0.0, 1.0) * smoothstep(0.05, 0.35, facing);
+        // A young latch is a faint point; an old one a full ember.
+        gl_PointSize = clamp(0.0078 * (0.35 + 0.95 * aKnot) * uProjScale / max(0.05, -mv.z), 1.5 * uPixelRatio, 40.0 * uPixelRatio);
+        vA = clamp(aKnot * aKnot * 1.3, 0.0, 1.0) * smoothstep(0.05, 0.35, facing);
       }
     `,
     fragmentShader: /* glsl */ `
@@ -294,14 +331,17 @@ function createLineMaterial() {
     uniforms: COMMON_UNIFORMS(),
     vertexShader: /* glsl */ `
       attribute float aKnot;
+      ${PLACE_GLSL}
       varying float vA;
       varying vec3 vClipPos;
       void main() {
-        vClipPos = position;
-        vec3 viewDir = normalize(cameraPosition - position);
-        float facing = dot(normalize(normal), viewDir);
-        vA = aKnot < 0.02 ? 0.0 : clamp(aKnot, 0.0, 1.0) * smoothstep(0.05, 0.35, facing) * 0.45;
-        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        vec3 n = normalize(normal);
+        vec3 p = placeLatch(position, n);
+        vClipPos = p;
+        vec3 viewDir = normalize(cameraPosition - p);
+        float facing = dot(n, viewDir);
+        vA = aKnot < 0.02 || cutAway(position) ? 0.0 : clamp(aKnot, 0.0, 1.0) * smoothstep(0.05, 0.35, facing) * 0.45;
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0);
       }
     `,
     fragmentShader: /* glsl */ `

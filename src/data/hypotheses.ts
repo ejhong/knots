@@ -75,7 +75,7 @@ export const HYPOTHESES: Hypothesis[] = [
     who: 'Johnson',
     year: '2023',
     short: 'Held predictions are held vascular tension: a contraction sustained long enough engages smooth muscle’s latch state and freezes a pattern in place.',
-    layer: 'Vascular smooth muscle wherever it wraps a vessel — beside neurons in the brain, and in arterioles throughout the body.',
+    layer: 'Vascular smooth muscle wherever it wraps a vessel — beside neurons in the brain, in the small arteries of skin and muscle throughout the body — and the walls of hollow organs.',
     substance: 'Smooth muscle in the latch-bridge state: cross-bridges that stay attached, holding tension at a fraction of the usual energy.',
     holds: 'The latch itself, and a spiral: reduced flow leaves less energy to unlatch.',
     releases: 'Attention to the held tissue, cycles of heat and cold, meditation — noticing creates prediction errors that tease latches open — and psychedelics.',
@@ -87,7 +87,7 @@ export const HYPOTHESES: Hypothesis[] = [
     status: 'An integrative theory. In pressurised skeletal-muscle arterioles the latch looks more like sustained activation than an economical hold; the claims about the brain are open.',
     body: [
       'Michael Edward Johnson’s Principles of Vasocomputation (2023) makes three proposals about vascular smooth muscle: that vasomotion compresses fragile neural patterns into definite states; that a vascular contraction clamps the local circuit and so acts as a medium-term memory — a specific prediction, in the language of active inference; and that a contraction held long enough engages the latch-bridge mechanism, freezing the circuit as a durable hyperprior, cut off from awareness and from updating.',
-      'Craving and clinging — taṇhā — then become the reflexive compression of experience into stable, controllable states, and latched tension is their residue. The latch may be a system of its own, closer to the clinging of the mind than to the knots a roller finds; or the two may prove to be views of the same knots. The atlas draws latches in the small arteries inside skeletal muscle, beneath the deep fascia.',
+      'Craving and clinging — taṇhā — then become the reflexive compression of experience into stable, controllable states, and latched tension is their residue. The latch may be a system of its own, closer to the clinging of the mind than to the knots a roller finds; or the two may prove to be views of the same knots. Johnson does not place latches more precisely than vascular smooth muscle, so the atlas draws them in the two vessel beds it shows — the small arteries of the skin, and those in the muscle beneath the deep fascia. His latches in the brain and the organs lie beyond this atlas.',
     ],
     refs: ['johnson2023', 'johnson2024notes', 'hai1988'],
     ready: true,

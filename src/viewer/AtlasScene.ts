@@ -202,7 +202,7 @@ export class AtlasScene {
     this.embers = new KnotEmbers(this.ladder, this.perfDepth, this.perfSup, this.perfLift);
     this.graph = buildMeshGraph(body.positions, withDiagonals(body.triangles, body.subdivision.fineQuads));
     const radiusFine = body.refineScalar(this.segmentation.radius);
-    this.latch = new LatchKnots(body, 20000, this.zoneField, this.depth, (v) => radiusFine[v]);
+    this.latch = new LatchKnots(body, 20000, this.zoneField, this.depth, (v) => radiusFine[v], this.liftWeight);
     this.channels = new Channels(this.resolveChannels());
     this.trees = new TreeLines(this.ladder);
     this.rootMarkers = new RootMarkers(this.roots.length);

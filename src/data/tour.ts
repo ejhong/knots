@@ -50,7 +50,7 @@ export const CHAPTERS: Chapter[] = [
 <li><b>Breath.</b> Knots seem to answer to the breath. They let go on a slow out-breath, and a single relaxing breath — the long exhale that comes on its own in a hot shower — can soften many small knots at once. Some knots seem to come and go with breath and mood, and some may even be held from moment to moment; deeper, persistent knots let go only to focused attention and breath.</li>
 <li><b>Attention.</b> Pressure and focused attention — a foam roller, a patient hand — release knots one place at a time.</li>
 <li><b>Stress.</b> Knots seem to worsen under stress, and gather where it is held: neck and shoulders, jaw, belly, low back.</li>
-<li><b>Stiffness.</b> As knots gather they seem to limit movement: dull blocks that a stretch lengthens around but cannot reach.</li>
+<li><b>Stiffness.</b> As knots gather they seem to limit movement. A stretch is felt as a clear, sharp pull in the muscle, but it meets the knots as dull, deep blocks it cannot reach.</li>
 <li><b>Sparks.</b> A knot goes with a small pop, sometimes a star of tingling across a patch of skin.</li>
 <li><b>Euphoria.</b> A release can bring a wave of well-being — at times a euphoria some compare to MDMA.</li>
 <li><b>Migration.</b> When one knot lets go, others move in to fill the gap and settle into new places, as if the body were evening itself out.</li>
@@ -112,7 +112,7 @@ export const CHAPTERS: Chapter[] = [
     glyph: '齢',
     title: 'Across a life',
     seconds: 30,
-    html: `<p>Knots accumulate with age, and they grow. The young have few. As we age, resting sympathetic tone rises and the small vessels of the skin respond less readily — all over the body — so every perforator slowly becomes likelier to hold, those under daily stress first. A young knot is small and comes and goes; an old one is larger and persists. The two curves — knots, and the reactivity of the skin’s vessels — have never been laid over each other. If knots are held perforators, they should match place by place.</p>
+    html: `<p>Knots accumulate with age, and they grow. The young have few. As we age, resting sympathetic tone rises and the small vessels of the skin respond less readily — all over the body — so every perforator slowly becomes likelier to hold, those under daily stress first. A young knot is small and comes and goes; an old one is larger and persists, and as they gather the body stiffens. The two curves — knots, and the reactivity of the skin’s vessels — have never been laid over each other. If knots are held perforators, they should match place by place.</p>
 <p>Here a life plays from one to ninety: almost none in infancy, about a fifth of perforators held in the thirties, two-thirds by the late fifties, approaching nine in ten. The count in the corner is a prediction, not a measurement: no one has yet taken a census of knots.</p>`,
     scene: { pose: { p: [-0.62, 0.66, 1.9], t: [0, 0.52, 0] }, demo: 'life' },
   },
