@@ -21,6 +21,8 @@ const html = (s: string) => s.replaceAll('href="HYP"', `href="${base}/hypotheses
         <span><i class="sw sw-vessel"></i>vessel</span>
       </div>
       <div class="big-number" data-big hidden></div>
+      <svg class="plate-callout" data-callout aria-hidden="true"><line class="under" data-callout-line /><line data-callout-line /><circle class="under" data-callout-ring r="11" /><circle data-callout-ring r="11" /></svg>
+      <div class="plate-host" data-plate hidden></div>
       <div class="overlay bl">
         <a class="enter" href={`${base}/atlas/`}>enter the atlas →</a>
       </div>
@@ -177,6 +179,80 @@ const html = (s: string) => s.replaceAll('href="HYP"', `href="${base}/hypotheses
   .enter:hover {
     color: #fff;
     border-color: #6f665c;
+  }
+  /* The magnified plate of one perforator, and the line to where it is on the body. */
+  .plate-host {
+    position: absolute;
+    left: 16px;
+    bottom: 46px;
+    z-index: 6;
+    width: min(360px, 46%);
+    padding: 8px 10px 6px;
+    background: rgba(29, 27, 25, 0.84);
+    border: 1px solid #3a3836;
+    border-radius: 8px;
+    box-shadow: 0 6px 28px rgba(0, 0, 0, 0.3);
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.8s var(--ease);
+  }
+  .plate-host.on {
+    opacity: 1;
+  }
+  :global(.paper) .plate-host {
+    background: rgba(250, 247, 242, 0.92);
+    border-color: var(--border);
+    box-shadow: 0 6px 24px rgba(58, 54, 50, 0.12);
+  }
+  .plate-host :global(svg) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .plate-callout {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 5;
+    pointer-events: none;
+    opacity: 0;
+    transition: opacity 0.8s var(--ease);
+  }
+  .plate-callout.on {
+    opacity: 1;
+  }
+  .plate-callout line,
+  .plate-callout circle {
+    fill: none;
+    stroke: #efe7da;
+    stroke-opacity: 0.85;
+    stroke-width: 1.1;
+  }
+  .plate-callout line {
+    stroke-dasharray: 5 4;
+  }
+  .plate-callout .under {
+    stroke: #1d1b19;
+    stroke-opacity: 0.55;
+    stroke-width: 3.2;
+    stroke-dasharray: none;
+  }
+  :global(.paper) .plate-callout line,
+  :global(.paper) .plate-callout circle {
+    stroke: #3a3632;
+  }
+  :global(.paper) .plate-callout .under {
+    stroke: #faf7f2;
+  }
+  @media (max-width: 700px) {
+    .plate-callout {
+      display: none;
+    }
+    .plate-host {
+      width: 62%;
+      bottom: 40px;
+    }
   }
   .big-number {
     position: absolute;

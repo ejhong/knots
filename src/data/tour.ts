@@ -19,6 +19,11 @@ export interface TourScene {
   layers?: boolean;
   /** Show the deep channels on the deep fascia. */
   channels?: boolean;
+  /** Show a traditional map (the anatomy steps back), and bring layers forward to compare. */
+  map?: 'meridians' | 'sinew';
+  compare?: Array<'knots' | 'perforators' | 'vessels' | 'channels'>;
+  /** Show the magnified plate of one perforator letting go, linked to the window. */
+  plate?: boolean;
   /** Open the dissection window on the upper back. */
   window?: boolean;
 }
@@ -69,9 +74,9 @@ export const CHAPTERS: Chapter[] = [
     seconds: 26,
     html: `<p>Beneath the skin lies the superficial fascia, and beneath that a gliding plane over the deep fascia that wraps the muscles. The layers are joined in two ways: by fine fibrous strands, and wherever something passes through — a small artery with its veins, a cutaneous nerve and a lymphatic, rising together through a ring in the fascia. Surgeons call these <em>perforators</em>. They map them with a Doppler probe before raising a flap of skin, because the flap will not lift until the perforators holding it are dealt with.</p>
 <p>Suppose a knot is a perforator held stuck. Then each part of the bundle explains something. <strong>The artery is smooth muscle:</strong> a deep in-breath constricts the small arteries of the skin within about two seconds, and a slow out-breath lets them open. <strong>The nerve is the spark:</strong> a constricted vessel starves its own nerve; when the vessel opens, the nerve wakes and its patch of skin lights up — a foot waking, in miniature. <strong>The collar is the hold:</strong> hyaluronan around the bundle thickens to a gel when the tissue is starved, acidic and cool, and thins again with warmth, flow and movement.</p>
-<p>Here the layers are drawn apart: major perforators rising through the deep fascia, smaller ones through the superficial fascia, and a knot glowing wherever one is held.</p>`,
+<p>Here the layers are drawn apart: major perforators rising through the deep fascia, smaller ones through the superficial fascia, and a knot glowing wherever one is held. The inset magnifies one of them letting go.</p>`,
     refs: ['taylor1987', 'bolton1936', 'stecco2011'],
-    scene: { pose: { p: [0.4, 0.84, -0.78], t: [0.03, 0.78, -0.04] }, age: 46, layers: true, lift: 1, window: true },
+    scene: { pose: { p: [0.46, 0.84, -0.86], t: [0.1, 0.78, -0.04] }, age: 46, layers: true, lift: 1, window: true, plate: true },
   },
   {
     id: 'trees',
@@ -123,9 +128,9 @@ export const CHAPTERS: Chapter[] = [
     title: 'What the traditions knew',
     seconds: 24,
     html: `<p>Nearly every tradition that mapped the inner body arrived at three claims: <em>there are knots, breath is the tool, and untying them changes the mind.</em> Tibetan practice works the winds with the breath to loosen knots in the channels. Yoga names three knots, the granthis, along the central channel, and describes kuṇḍalinī rising like a serpent, with heat, currents and involuntary movement. The Buddha likened the rapture of deep concentration to water kneaded into a ball of bath powder until the whole of it is soaked through.</p>
-<p>Chinese medicine mapped both layers. There are the tender <em>ashi</em> points and the acupoints — about eighty percent of which lie where a vessel–nerve bundle pierces the superficial fascia (Heine, 1988) — and the channels between them, which may follow the connective-tissue planes between the muscles (Langevin, 2002): the deep channels drawn here in gold. The sinew channels, each of which <em>knots</em> (結) at the bony prominences where the fascia is anchored, belong to the same layer. Correspondence found after the fact is weak evidence, but it is now specific enough to check.</p>`,
+<p>Chinese medicine mapped both layers. There are the tender <em>ashi</em> points and the acupoints — about eighty percent of which lie where a vessel–nerve bundle pierces the superficial fascia (Heine, 1988) — and the channels between them, which may follow the connective-tissue planes between the muscles (Langevin, 2002). Here the fourteen channels and their 361 points are drawn in violet, over the deep planes in gold. The sinew channels, each of which <em>knots</em> (結) at the bony prominences where the fascia is anchored, belong to the same layer. Correspondence found after the fact is weak evidence, but it is now specific enough to check.</p>`,
     refs: ['heine1988', 'langevin2002', 'lingshu', 'hyp', 'mullin1996', 'dn2'],
-    scene: { pose: { p: [1.2, 0.72, 1.6], t: [0, 0.55, 0] }, age: 46, turntable: true, channels: true },
+    scene: { pose: { p: [1.2, 0.72, 1.6], t: [0, 0.55, 0] }, age: 46, turntable: true, channels: true, map: 'meridians', compare: ['channels'] },
   },
   {
     id: 'theories',

@@ -29,7 +29,8 @@ A living list. Checked items are live.
 - [x] Hover details in a fixed box; theory menu with short names
 - [x] Knots with age: each site's onset read off a held-fraction curve (almost none in infancy, ~⅕ at 35, ~⅔ by the late 50s, → 9 in 10), stress zones first, trees coherent; knots grow with years held; small knots drawn as a warm tint, medium and major as embers
 - [x] Deep channels layer: septa, raphes, neurovascular sheaths (22 structures)
-- [x] Release: double-click or hold presses (small knots go at once, larger take more); a released knot's hold passes, weaker, to a nearby perforator of its size (knots move, stay local, thin out); trails show where; click selects; shift-click places the window; reset button
+- [x] Release: double-click or hold presses (small knots go at once, larger take more); over ~1 s the knots around glide in to fill the space, in waves, each into a less crowded spot nearer the gap (the area evens out; released knots do not return); click selects; shift-click places the window; reset button
+- [x] Introduction: a magnified plate of one perforator letting go (chapter 02), linked to its place; the fourteen channels over the deep planes (chapter 07)
 - [ ] Release in the introduction; breath gating (release on the out-breath)
 - [ ] Stress: a control under which knots re-form (and breath under which they ease) — the dynamic return, shown deliberately rather than on a timer
 

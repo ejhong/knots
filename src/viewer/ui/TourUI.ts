@@ -2,6 +2,8 @@ import { Vector3 } from 'three';
 import { AtlasScene } from '../AtlasScene';
 import { preferredTheme } from '../engine/theme';
 import { CHAPTERS, type Chapter } from '../../data/tour';
+import { WINDOW_UNIFORMS } from '../body/layerModel';
+import { createKnotPlate } from './KnotPlate';
 
 const fmt = new Intl.NumberFormat('en-US');
 /** A fixed pseudo-random number in [0, 1) for an integer. */
@@ -33,6 +35,24 @@ export function mountTour(viz: HTMLElement, panel: HTMLElement) {
   const label = viz.querySelector<HTMLElement>('[data-chapter-label]')!;
   const big = viz.querySelector<HTMLElement>('[data-big]')!;
   const list = panel.querySelector<HTMLElement>('[data-chapters]')!;
+  // The magnified plate (chapter 02), and the line from it to its place on the body.
+  const plateHost = viz.querySelector<HTMLElement>('[data-plate]')!;
+  const plate = createKnotPlate(theme === 'paper' ? 'light' : 'dark');
+  plateHost.append(plate.el);
+  const callout = viz.querySelector<SVGSVGElement>('[data-callout]')!;
+  const calloutLines = [...callout.querySelectorAll<SVGLineElement>('[data-callout-line]')];
+  const calloutRings = [...callout.querySelectorAll<SVGCircleElement>('[data-callout-ring]')];
+  let plateOn = false;
+  const showPlate = (on: boolean) => {
+    plateOn = on;
+    plateHost.hidden = false;
+    requestAnimationFrame(() => {
+      plateHost.classList.toggle('on', on);
+      callout.classList.toggle('on', on);
+    });
+    if (on) plate.start();
+    else setTimeout(() => !plateOn && plate.stop(), 900);
+  };
   const articles = [...panel.querySelectorAll<HTMLElement>('[data-chapter]')];
 
   let current = -1;
@@ -51,6 +71,28 @@ export function mountTour(viz: HTMLElement, panel: HTMLElement) {
     scene.setVisible('channels', false);
     engine.start();
     engine.onFrame(({ dt }) => {
+      // The callout follows the window's place on the body as the camera moves.
+      if (plateOn) {
+        const w = WINDOW_UNIFORMS.uWindow.value;
+        const v = new Vector3(w.x, w.y, w.z).project(engine.camera);
+        const r = stage.getBoundingClientRect();
+        const pr = plateHost.getBoundingClientRect();
+        const x = (v.x * 0.5 + 0.5) * r.width;
+        const y = (-v.y * 0.5 + 0.5) * r.height;
+        const ax = pr.right - r.left - 10;
+        const ay = pr.top - r.top + 10;
+        const d = Math.hypot(x - ax, y - ay) || 1;
+        for (const ring of calloutRings) {
+          ring.setAttribute('cx', x.toFixed(1));
+          ring.setAttribute('cy', y.toFixed(1));
+        }
+        for (const line of calloutLines) {
+          line.setAttribute('x1', ax.toFixed(1));
+          line.setAttribute('y1', ay.toFixed(1));
+          line.setAttribute('x2', (x - ((x - ax) / d) * 11).toFixed(1));
+          line.setAttribute('y2', (y - ((y - ay) / d) * 11).toFixed(1));
+        }
+      }
       // Ease the layers apart.
       if (Math.abs(lift - liftTarget) > 0.002) {
         lift += (liftTarget - lift) * Math.min(1, dt * 1.6);
@@ -135,6 +177,9 @@ export function mountTour(viz: HTMLElement, panel: HTMLElement) {
     const layers = !!s.layers;
     scene.setVisible('fascia', layers);
     scene.setVisible('channels', !!s.channels);
+    scene.setMap(s.map ?? null);
+    for (const layer of ['knots', 'perforators', 'vessels', 'channels'] as const) scene.setCompare(layer, !!s.compare?.includes(layer));
+    if (!!s.plate !== plateOn) showPlate(!!s.plate);
     scene.stalks.lines.visible = layers;
     scene.stalks.collars.visible = layers;
     scene.setWindowOn(!!s.window);

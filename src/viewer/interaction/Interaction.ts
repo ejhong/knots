@@ -179,7 +179,7 @@ export class Interaction {
     const cam = this.scene.engine.camera;
     const h = this.scene.engine.canvas.getBoundingClientRect().height || 1;
     const perPx = (2 * cam.position.distanceTo(hit.point) * Math.tan((cam.fov * Math.PI) / 360)) / h;
-    const radius = Math.min(0.06, Math.max(0.008, 26 * perPx));
+    const radius = Math.min(0.07, Math.max(0.01, 32 * perPx));
     this.scene.releaseAt(hit.point, radius, amount);
     for (const cb of this.releaseListeners) cb();
   }

@@ -35,7 +35,7 @@ import {
 } from './body/skeleton';
 import { LAYER_UNIFORMS, WINDOW_UNIFORMS } from './body/layerModel';
 import { KnotEmbers } from './perforators/KnotEmbers';
-import { MoveTrails } from './perforators/MoveTrails';
+import { Migrants } from './perforators/Migrants';
 import { layerOffsets } from './body/layerModel';
 import { MERIDIANS, ORGAN, pointName } from './data/meridians';
 import { SINEWS } from './data/sinew';
@@ -91,8 +91,13 @@ export class AtlasScene {
   graph!: MeshGraph;
   latch!: LatchKnots;
   private rng = mulberry32(97);
-  /** Lines from released knots to where their hold went. */
-  readonly trails = new MoveTrails();
+  /** Knots gliding into a released area. */
+  readonly migrants = new Migrants();
+  /** Planned moves, by departure time (scene clock, s). */
+  private moves: { from: number; to: number; at: number; level: number }[] = [];
+  private clock = 0;
+  private lastPlan = -1;
+  private pendingPlan: { p: Vector3; r: number } | null = null;
   /** Knots of the site theories (trigger points, densification, nerves, perception), built when first chosen. */
   theories: Partial<Record<string, SiteKnots>> = {};
   /** Traditional (and clinical) maps, each built the first time it is shown. */
@@ -262,7 +267,8 @@ export class AtlasScene {
       this.layers.sheet,
       this.latch.lines,
       this.latch.points,
-      this.trails.lines,
+      this.migrants.streaks,
+      this.migrants.points,
     );
     this.layers.sheet.visible = true;
     this.trees.setInsets(this.depth);
@@ -277,7 +283,7 @@ export class AtlasScene {
       this.embers.applyTheme(t);
       this.channels.applyTheme(t);
       this.latch.applyTheme(t);
-      this.trails.applyTheme(t);
+      this.migrants.applyTheme(t);
       for (const m of Object.values(this.maps)) m!.applyTheme(t);
       for (const k of Object.values(this.theories)) k!.applyTheme(t);
     });
@@ -285,7 +291,7 @@ export class AtlasScene {
       this.interaction.update(dt);
       this.stepSim(dt);
       this.pulses.update(dt);
-      this.trails.update(dt);
+      this.updateMigration(dt);
       this.frame(time);
     });
     // A dissection window on the upper back, between the shoulder blades.
@@ -373,6 +379,9 @@ export class AtlasScene {
 
   /** Sets the history for an age and shows it. */
   settle(age: number) {
+    this.moves.length = 0;
+    this.pendingPlan = null;
+    this.migrants.clear();
     this.sim.settle(age);
     this.latch.settle(age);
     for (const t of Object.values(this.theories)) t!.settle(age);
@@ -519,6 +528,8 @@ export class AtlasScene {
     // the perforators themselves are hidden.
     this.cloud.points.visible = this.perforatorsOn || (this.knotsOn && perf);
     this.embers.points.visible = this.knotsOn && perf;
+    this.migrants.points.visible = this.knotsOn && perf;
+    this.migrants.streaks.visible = this.knotsOn && perf;
     for (const [id, t] of Object.entries(this.theories)) t!.setVisible(this.knotsOn && this.hypothesis === id);
     this.rootMarkers.material.uniforms.uKnotAlpha.value = this.knotsOn && perf ? 1 : 0;
     this.latch.setVisible(this.knotsOn && this.hypothesis === 'latch');
@@ -677,7 +688,8 @@ export class AtlasScene {
       this.channels.beadMaterial,
       this.latch.pointMaterial,
       this.latch.lineMaterial,
-      this.trails.material,
+      this.migrants.material,
+      this.migrants.streakMaterial,
       this.trees.material,
       this.stalks.lineMaterial,
       this.stalks.collarMaterial,
@@ -765,6 +777,9 @@ export class AtlasScene {
     su.uTime.value = time;
     su.uOpacity.value = 0.3;
     this.stalks.collarMaterial.uniforms.uProjScale.value = projScale;
+    const mu = this.migrants.material.uniforms;
+    mu.uProjScale.value = projScale;
+    mu.uPixelRatio.value = pr;
     const eu = this.embers.material.uniforms;
     eu.uProjScale.value = projScale;
     eu.uPixelRatio.value = pr;
@@ -1002,6 +1017,8 @@ export class AtlasScene {
     u(this.stalks.lineMaterial, perforators);
     u(this.stalks.collarMaterial, perforators);
     u(this.embers.material, knots);
+    u(this.migrants.material, knots);
+    u(this.migrants.streakMaterial, knots);
     u(this.latch.pointMaterial, knots);
     u(this.latch.lineMaterial, knots);
     u(this.trees.material, vessels);
@@ -1026,68 +1043,144 @@ export class AtlasScene {
     else this.theories[this.hypothesis]?.releaseAt(p, radius, amount, this.rng);
   }
 
-  /** What a released knot passes on, how weak it may get before it dissolves, and how far it reaches, by rung. */
-  private static REPLACE = 0.8;
-  private static MIN_HOLD = 0.18;
-  private static REACH = [0.012, 0.035, 0.08];
-
   /**
-   * The perforator view. A released knot's hold passes at once, a little
-   * weaker, to a nearby perforator of its size — on its own tree by
-   * preference — which becomes a knot or grows: so knots move, stay local,
-   * and thin out as an area is worked. A release never sets off another.
+   * The perforator view. Knots under the press let go (small ones at once,
+   * larger ones with more pressure); then, over about a second, the knots
+   * around move in to fill the space, in waves — the nearest first — each
+   * into a less crowded spot nearer the gap, so the area evens out. What
+   * let go does not come back: a worked area thins, and there are fewer
+   * knots over time. A release never sets off another.
    */
   private releasePerforators(p: Vector3, radius: number, amount: number) {
     const sim = this.sim;
     const s2 = 2 * (radius * 0.6) ** 2;
-    const released: [number, number][] = [];
+    let released = 0;
     this.grid.query(p.x, p.y, p.z, radius, (i, d) => {
       if (sim.hold[i] <= 0) return;
-      const h = sim.pressKnot(i, amount * Math.exp(-(d * d) / s2));
-      if (h > 0) released.push([i, h]);
+      if (sim.pressKnot(i, amount * Math.exp(-(d * d) / s2)) > 0) released++;
     });
-    if (!released.length) return;
-    const gone = new Set(released.map(([i]) => i));
-    for (const [i, h] of released) this.replaceKnot(i, h, gone);
+    if (!released) return;
     sim.computeOutputs();
     this.syncKnots();
+    // Plan the migration now, or (while a press is held) at most four times a second.
+    if (this.clock - this.lastPlan >= 0.25) this.planMigration(p, radius);
+    else this.pendingPlan = { p: p.clone(), r: radius };
   }
 
-  private replaceKnot(i: number, h: number, gone: Set<number>) {
-    const h2 = h * AtlasScene.REPLACE;
-    if (h2 < AtlasScene.MIN_HOLD) return;
+  /** Typical spacing of knots by rung (m), which sets how far each step of a move goes. */
+  private static SPACING = [0.0055, 0.024, 0.06];
+
+  private planMigration(p: Vector3, radius: number) {
+    this.lastPlan = this.clock;
     const L = this.ladder;
-    const lvl = L.level[i];
     const P = this.cloud.positions;
-    const R = AtlasScene.REACH[lvl];
-    const s2 = 2 * (R * 0.55) ** 2;
-    const cand: number[] = [];
-    const w: number[] = [];
-    let total = 0;
-    this.grid.query(P[i * 3], P[i * 3 + 1], P[i * 3 + 2], R, (j, d) => {
-      if (j === i || L.level[j] !== lvl || gone.has(j)) return;
-      let wt = (0.2 + 0.8 * this.sim.susc[j]) * Math.exp(-(d * d) / s2);
-      if (L.root[j] === L.root[i]) wt *= 1.6;
-      if (this.sim.hold[j] <= 0) wt *= 1.3;
-      cand.push(j);
-      w.push(wt);
-      total += wt;
-    });
-    if (!cand.length || total <= 0) return;
-    let r = this.rng() * total;
-    let k = 0;
-    while (k < cand.length - 1 && (r -= w[k]) > 0) k++;
-    const j = cand[k];
-    const cur = this.sim.hold[j];
-    this.sim.setHold(j, Math.min(1, cur > 0 ? Math.max(cur, h2) + 0.3 * Math.min(cur, h2) : h2));
-    this.sim.arrive[j] = 1;
-    // A trail between the two, where they are drawn (lifted with the skin).
+    const hold = this.sim.hold;
+    const reach = Math.min(0.12, Math.max(0.025, radius * 2.6));
+    for (let level = 0; level < 3; level++) {
+      const spacing = AtlasScene.SPACING[level];
+      if (reach < spacing * 1.5) continue;
+      const ids: number[] = [];
+      const index = new Map<number, number>();
+      this.grid.query(p.x, p.y, p.z, reach, (i) => {
+        if (L.level[i] !== level) return;
+        index.set(i, ids.length);
+        ids.push(i);
+      });
+      const n = ids.length;
+      if (n < 3) continue;
+      const held = Float32Array.from(ids, (i) => hold[i]);
+      const dist = Float32Array.from(ids, (i) => Math.hypot(P[i * 3] - p.x, P[i * 3 + 1] - p.y, P[i * 3 + 2] - p.z));
+      // Each knot feels its neighbours within about 1.7 spacings, and steps up to 1.6.
+      const feel = spacing * 1.7;
+      const stepMax = spacing * 1.6;
+      const nb: number[][] = [];
+      const nbD: number[][] = [];
+      ids.forEach((i) => {
+        const a: number[] = [];
+        const b: number[] = [];
+        this.grid.query(P[i * 3], P[i * 3 + 1], P[i * 3 + 2], feel, (j, d) => {
+          const k = index.get(j);
+          if (k === undefined || j === i) return;
+          a.push(k);
+          b.push(d);
+        });
+        nb.push(a);
+        nbD.push(b);
+      });
+      const crowd = (k: number, except: number) => {
+        let c = 0;
+        for (const q of nb[k]) if (q !== except && held[q] > 0) c++;
+        return c;
+      };
+      const waves = Math.min(8, Math.max(3, Math.ceil(radius / spacing) + 2));
+      const interval = 0.8 / waves;
+      const order = Array.from({ length: n }, (_, k) => k).sort((a, b) => dist[a] - dist[b]);
+      for (let w = 0; w < waves; w++) {
+        const vacated = new Set<number>();
+        for (const j of order) {
+          if (held[j] <= 0) continue;
+          let best = -1;
+          // Only into a spot with fewer neighbours: a gradient, not a drift.
+          let bestC = crowd(j, -1);
+          nb[j].forEach((k, m) => {
+            if (held[k] > 0 || vacated.has(k) || dist[k] >= dist[j] || nbD[j][m] > stepMax) return;
+            const c = crowd(k, j);
+            if (c < bestC) {
+              bestC = c;
+              best = k;
+            }
+          });
+          if (best < 0) continue;
+          held[best] = held[j];
+          held[j] = 0;
+          vacated.add(j);
+          this.moves.push({ from: ids[j], to: ids[best], at: this.clock + w * interval + this.rng() * 0.05, level });
+        }
+      }
+    }
+    this.moves.sort((a, b) => a.at - b.at);
+  }
+
+  /** Where a knot of a rung is drawn at a perforator (lifted with its layer). */
+  private knotPoint(i: number, level: number): number[] {
+    const o = layerOffsets(this.perfDepth[i], this.perfSup[i], this.perfLift[i]);
+    const off = level === 0 ? o.skin + 0.0004 : level === 1 ? o.sup + 0.0005 : o.deep + 0.001;
+    const P = this.cloud.positions;
     const N = this.cloud.normals;
-    const at = (k: number) => {
-      const off = layerOffsets(0, 0, this.perfLift[k]).skin + 0.0006;
-      return [0, 1, 2].map((c) => P[k * 3 + c] + N[k * 3 + c] * off);
-    };
-    this.trails.add(at(i), at(j));
+    return [0, 1, 2].map((c) => P[i * 3 + c] + N[i * 3 + c] * off);
+  }
+
+  /** Departures, glides and arrivals of migrating knots. */
+  private updateMigration(dt: number) {
+    this.clock += dt;
+    if (this.pendingPlan && this.clock - this.lastPlan >= 0.25) {
+      const { p, r } = this.pendingPlan;
+      this.pendingPlan = null;
+      this.planMigration(p, r);
+    }
+    const sim = this.sim;
+    let changed = false;
+    while (this.moves.length && this.moves[0].at <= this.clock) {
+      const m = this.moves.shift()!;
+      const h = sim.hold[m.from];
+      // A plan made on an earlier state may have gone stale: skip what no longer fits.
+      if (h <= 0 || sim.hold[m.to] > 0) continue;
+      const d = Math.hypot(...[0, 1, 2].map((c) => this.cloud.positions[m.from * 3 + c] - this.cloud.positions[m.to * 3 + c]));
+      const duration = Math.min(0.55, 0.22 + d * 18);
+      if (!this.migrants.spawn(this.knotPoint(m.from, m.level), this.knotPoint(m.to, m.level), h, m.level, duration, m.to)) continue;
+      sim.setHold(m.from, 0);
+      changed = true;
+    }
+    for (const a of this.migrants.update(dt)) {
+      const cur = sim.hold[a.to];
+      sim.setHold(a.to, cur > 0 ? Math.min(1, Math.max(cur, a.hold) + 0.3 * Math.min(cur, a.hold)) : a.hold);
+      sim.arrive[a.to] = 0.6;
+      changed = true;
+    }
+    if (changed) {
+      sim.computeOutputs();
+      this.syncKnots();
+    }
   }
 
   /** Where a root sits on the current figure. */

@@ -231,14 +231,14 @@ function fitCamera(scene: AtlasScene, previousHeight: number) {
 }
 
 /**
- * A thin ring the size of a press (26 px): where a click will release. An SVG
+ * A thin ring the size of a press (32 px): where a double-click will release. An SVG
  * cursor, so it needs no drawing of its own; a crosshair where unsupported.
  */
 function ringCursor(paper: boolean) {
   const stroke = paper ? '#3a3632' : '#efe7da';
   const halo = paper ? '#faf7f2' : '#1d1b19';
-  const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='56' height='56'><circle cx='28' cy='28' r='26' fill='none' stroke='${halo}' stroke-opacity='0.5' stroke-width='2.5'/><circle cx='28' cy='28' r='26' fill='none' stroke='${stroke}' stroke-opacity='0.75' stroke-width='1'/><circle cx='28' cy='28' r='1.2' fill='${stroke}'/></svg>`;
-  return `url("data:image/svg+xml,${encodeURIComponent(svg)}") 28 28, crosshair`;
+  const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='68' height='68'><circle cx='34' cy='34' r='32' fill='none' stroke='${halo}' stroke-opacity='0.5' stroke-width='2.5'/><circle cx='34' cy='34' r='32' fill='none' stroke='${stroke}' stroke-opacity='0.75' stroke-width='1'/><circle cx='34' cy='34' r='1.2' fill='${stroke}'/></svg>`;
+  return `url("data:image/svg+xml,${encodeURIComponent(svg)}") 34 34, crosshair`;
 }
 
 function bindCensus(panel: HTMLElement, scene: AtlasScene) {
