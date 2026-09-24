@@ -2,6 +2,11 @@
 
 A living list. Checked items are live.
 
+## Look and content
+- [x] Look and feel of The OM Project (rice paper, ink stone, small system type, earth palette)
+- [x] Introduction as a guided tour (12 chapters, each a scene; ▶ plays)
+- [ ] Author's content revisions (in progress)
+
 ## Atlas — the perforator hypothesis
 - [x] Figure from MakeHuman (CC0): age 1–90, female↔male, runtime subdivision
 - [x] Perforator ladder: roots → 374 major → ~3,600 medium → ~100,000 small; trees along the skin
@@ -17,6 +22,9 @@ A living list. Checked items are live.
 - [ ] Practice mode: roots first, descend the tree, rate-matched to re-bonding — to the knot-free endpoint
 - [ ] Posture with age (kyphosis, forward head) with part-aware deformation
 - [ ] Move ladder generation into a Web Worker; mobile quality tiers
+- [ ] Exclude cavities (inside the mouth, eye sockets, nostrils, ear canals) from perforator sampling — ray-test each vertex outward
+- [ ] Tame additive glare where stalks are seen edge-on at silhouettes and section edges
+- [x] Sheet lift, stalks, collars, interstitium (hyaluronan gel around stuck staples); region-specific depths; section cuts
 
 ## Hypotheses in the atlas
 - [ ] Vascular latch (Johnson): latched arterioles inside muscle; attention/heat/cold release; tension field

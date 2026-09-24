@@ -595,6 +595,12 @@
   line-height: 1.45;
 }
 
+@media (max-width: 700px) {
+  .overlay.tr.legend,
+  .overlay.bl[data-hint] {
+    display: none;
+  }
+}
 @media (max-width: 900px) {
   .visualization {
     min-height: 72vh;

@@ -207,15 +207,17 @@ function poissonTarget(
 ) {
   let scale = r0;
   let best: Sample[] = [];
-  for (let iter = 0; iter < 6; iter++) {
+  for (let iter = 0; iter < 8; iter++) {
     const maxShape = 2.5;
     const res = poisson(samples, (s) => scale * shape(s), scale * maxShape, preset);
     best = res;
     const ratio = res.length / target;
-    if (Math.abs(ratio - 1) < 0.03) break;
-    scale *= Math.pow(ratio, 0.5);
+    // Aim slightly over, then trim to the exact count (the samples are
+    // already in random order, so trimming removes a random subset).
+    if (ratio >= 1 && ratio < 1.04) break;
+    scale *= Math.pow(ratio / 1.015, 0.5);
   }
-  return best;
+  return best.length > target ? best.slice(0, target) : best;
 }
 
 function nearestVertex(tris: Uint32Array, s: { tri: number; u: number; v: number }) {

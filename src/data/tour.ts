@@ -58,7 +58,7 @@ export const CHAPTERS: Chapter[] = [
 <p>Suppose the knots are these staples, held stuck. <strong>The artery is the smooth muscle:</strong> a deep inhale reflexly constricts skin arterioles within about two seconds; a slow exhale lets them open. <strong>The nerve is the star:</strong> when the vessel opens, the starved nerve reperfuses and its patch of skin lights up — a foot waking, in miniature. <strong>The collar is the order:</strong> hyaluronan around the bundle gels when the tissue turns acidic and cool, and melts with warmth, washout and shear; only then can the sheet slide.</p>
 <p>Here the sheet is lifted to show them: stalks crossing the interstitial plane, a collar where each pierces the sheet, the stuck ones burning.</p>`,
     refs: ['taylor1987', 'bolton1936', 'stecco2011'],
-    scene: { pose: { p: [0.36, 0.86, -0.26], t: [0.02, 0.82, -0.05] }, age: 46, lift: 0.95 },
+    scene: { pose: { p: [0.46, 0.88, -0.42], t: [0.03, 0.82, -0.05] }, age: 46, lift: 0.85 },
   },
   {
     id: 'trees',
@@ -80,7 +80,7 @@ export const CHAPTERS: Chapter[] = [
     html: `<p>The scalp and face are covered by one continuous sheet — the galea aponeurotica, becoming the temporoparietal fascia, becoming the SMAS of the face — over a plane of loose tissue anatomists call the danger area of the scalp, because anything introduced into it spreads over the whole cranium. Below the neck the same arrangement continues over the entire body, pinned to bone along particular lines: nuchal line, mastoid, cheekbone, jaw, collarbone, iliac crest, inguinal ligament.</p>
 <p>On this reading the second family is the sheet behaving once its staples are free. Separation is septa giving way. The chains are folds propagating along a loosened membrane — nothing is pulled; a fold advances. The gates are attachment lines where folds pile up. Hollowing is a freed pocket; filling is re-adhesion, fibrin bridging within days and collagen within two weeks — strand by strand, which is why it is felt as stitching.</p>`,
     refs: ['gray2020', 'benias2018', 'guimberteau2015'],
-    scene: { pose: { p: [0.62, 0.52, 0.05], t: [0, 0.47, -0.01] }, age: 46, lift: 0.7, section: 'sagittal' },
+    scene: { pose: { p: [0.5, 0.9, 0.06], t: [0, 0.86, -0.01] }, age: 46, lift: 0.7, section: 'sagittal' },
   },
   {
     id: 'ladder',
