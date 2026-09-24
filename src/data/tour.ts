@@ -12,7 +12,7 @@ export interface TourScene {
    * Special behaviours: `breath` lets many small knots go on a slow exhale,
    * then presses knots one at a time; `release` only presses.
    */
-  demo?: 'breath' | 'release' | 'ladder' | 'life';
+  demo?: 'breath' | 'release' | 'ladder' | 'life' | 'theories';
   turntable?: boolean;
   trees?: number;
   /** Show the fascial layers and the perforators' stalks (opened by `lift`). */
@@ -139,9 +139,9 @@ export const CHAPTERS: Chapter[] = [
     title: 'Alternate theories',
     seconds: 22,
     html: `<p>Perforators are one answer. Michael Johnson’s <em>vasocomputation</em> places held tension in latched vascular smooth muscle — predictions held as vascular clamps. It may describe a system of its own, closer to the clinging of the mind than to the knots a roller finds; or the two may prove to be views of the same knots.</p>
-<p>The trigger-point hypothesis finds contraction knots at overactive motor endplates inside muscle. Fascial densification places knots in thickened hyaluronan between the layers. A nerve view finds sensitised nerves where they pierce the fascia. And the physician’s first answer places knots in perception: the spinal cord and brain turn ordinary signals into tender spots, overbreathing makes the sparks, and attention makes the map. Each predicts something different, and each can be drawn on the same body — see <a href="HYP">Hypotheses</a>, or choose one in the <a href="ATLAS">Atlas</a>.</p>`,
+<p>The trigger-point hypothesis finds contraction knots at overactive motor endplates inside muscle. Fascial densification places knots in thickened hyaluronan between the layers. A nerve view finds sensitised nerves where they pierce the fascia. And the physician’s first answer places knots in perception: the spinal cord and brain turn ordinary signals into tender spots, overbreathing makes the sparks, and attention makes the map. Each predicts something different, and each can be drawn on the same body: here they are in turn, beginning with Johnson’s latches — the same knot, in each theory’s place. See <a href="HYP">Hypotheses</a>, or choose one in the <a href="ATLAS">Atlas</a>.</p>`,
     refs: ['johnson2023', 'gerwin2004', 'stecco2011', 'quintner1994', 'woolf2011'],
-    scene: { pose: { p: [-1.4, 0.7, -1.2], t: [0, 0.55, 0] }, age: 46, turntable: true },
+    scene: { pose: { p: [-1.4, 0.7, -1.2], t: [0, 0.55, 0] }, age: 46, turntable: true, demo: 'theories' },
   },
   {
     id: 'moderation',

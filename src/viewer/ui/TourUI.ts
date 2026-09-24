@@ -4,6 +4,7 @@ import { preferredTheme } from '../engine/theme';
 import { CHAPTERS, type Chapter } from '../../data/tour';
 import { WINDOW_UNIFORMS } from '../body/layerModel';
 import { createKnotPlate } from './KnotPlate';
+import { hypothesisById } from '../../data/hypotheses';
 
 const fmt = new Intl.NumberFormat('en-US');
 /** A fixed pseudo-random number in [0, 1) for an integer. */
@@ -177,6 +178,7 @@ export function mountTour(viz: HTMLElement, panel: HTMLElement) {
     const layers = !!s.layers;
     scene.setVisible('fascia', layers);
     scene.setVisible('channels', !!s.channels);
+    scene.setHypothesis('perforator');
     scene.setMap(s.map ?? null);
     for (const layer of ['knots', 'perforators', 'vessels', 'channels'] as const) scene.setCompare(layer, !!s.compare?.includes(layer));
     if (!!s.plate !== plateOn) showPlate(!!s.plate);
@@ -292,6 +294,32 @@ export function mountTour(viz: HTMLElement, panel: HTMLElement) {
           releaseNear(target(), 0.12, () => true);
         });
         break;
+      case 'theories': {
+        // The alternate theories in turn on the same body: Johnson's latches first.
+        const order = ['latch', 'trigger-point', 'densification', 'nerve', 'central'];
+        const base = label.textContent ?? '';
+        let k = 0;
+        let t = 0;
+        const show = () => {
+          scene.setHypothesis(order[k]);
+          label.textContent = `${base} · ${hypothesisById(order[k])?.label ?? ''}`;
+        };
+        show();
+        offs.push(
+          scene.engine.onFrame(({ dt }) => {
+            t += dt;
+            if (t < (k === 0 ? 7 : 5)) return;
+            t = 0;
+            k = (k + 1) % order.length;
+            show();
+          }) as () => void,
+        );
+        offs.push(() => {
+          scene.setHypothesis('perforator');
+          label.textContent = base;
+        });
+        break;
+      }
       case 'ladder': {
         const L = scene.ladder;
         const counts = [0, 0, 0];
