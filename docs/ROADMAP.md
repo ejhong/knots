@@ -34,7 +34,7 @@ A living list. Checked items are live.
 ## Hypotheses in the atlas
 - [x] Vascular latch (Johnson): latched arterioles inside muscle (same zones/age curve as perforator knots)
 - [x] True-scale cross-section showing where each hypothesis puts the knot (atlas + Hypotheses page)
-- [x] Integrated trigger point: knots in taut bands of the muscles Travell and Simons mapped (46 muscles, both sides)
+- [x] Integrated trigger point: knots in taut bands of the muscles Travell and Simons mapped (45 muscle regions, both sides)
 - [x] Fascial densification: soft patches in the gliding plane, gathered in the stress zones
 - [x] Peripheral nerve: sensitised nerves where they pierce the fascia, beside every medium and major perforator
 - [x] Perception: places felt on the skin with nothing beneath, coming and going
@@ -42,7 +42,9 @@ A living list. Checked items are live.
 
 ## Maps
 - [x] Channels (12 + Du/Ren) and all 361 acupoints (WHO 2008), placed by proportional cun on landmarks; hover card with names, place and nearest anatomy; solo a channel; the anatomy quiets when a map is on (compare chips bring a layer back)
-- [ ] Sinew channels and their knots (jie)
+- [x] Sinew channels and their knots (結), after Ling Shu 13: broad bands, knots as diamonds, courses simplified
+- [x] Trigger-point map (45 muscle regions, with referred pain) — to compare with the acupoints
+- [x] Maps one at a time: a list by tradition, each map's own chips, shared compare chips
 - [ ] Microcosmic orbit; three dantian
 - [ ] Cakras, nāḍīs, granthis, kuṇḍalinī
 - [ ] Tsa lung: three channels, wheels, channel-knots; kati channel

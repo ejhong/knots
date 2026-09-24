@@ -3,11 +3,6 @@ import Base from '../layouts/Base.astro';
 import Enso from '../components/Enso.astro';
 import { HYPOTHESES } from '../data/hypotheses';
 import { MAP_GROUPS } from '../data/mapIndex';
-import { MERIDIANS } from '../viewer/data/meridians';
-/** The organ each channel is named for, in one or two characters. */
-const SHORT: Record<string, string> = {
-  LU: '肺', LI: '大腸', ST: '胃', SP: '脾', HT: '心', SI: '小腸', BL: '膀胱', KI: '腎', PC: '心包', TE: '三焦', GB: '膽', LR: '肝', GV: '督', CV: '任',
-};
 import '../styles/app.css';
 const AGES = [1, 5, 10, 18, 25, 35, 45, 55, 70, 90];
 const pct = (a: number) => ((a - 1) / 89) * 100;
@@ -97,6 +92,7 @@ const pct = (a: number) => ((a - 1) / 89) * 100;
           <div><span class="v" data-c="2">—</span><span class="k">major</span></div>
           <div><span class="v" data-c="3">—</span><span class="k">roots</span></div>
         </div>
+        <p class="sub census-note" data-census-note></p>
       </div>
 
       <div class="tab-page" data-page="layers" hidden>
@@ -130,24 +126,28 @@ const pct = (a: number) => ((a - 1) / 89) * 100;
 
       <div class="tab-page" data-page="maps" hidden>
         <div class="map-card" data-map-card>
-          <div class="mc-kicker" data-mc-kicker>Chinese medicine</div>
-          <div class="mc-title" data-mc-title>The channels and their points</div>
+          <div class="mc-kicker" data-mc-kicker>Maps</div>
+          <div class="mc-title" data-mc-title>Traditional and clinical maps</div>
           <div class="mc-sub" data-mc-sub></div>
-          <p class="mc-note" data-mc-note>Turn the map on, then move over the body: each point’s name, its place, and the anatomy beneath it appear here.</p>
+          <p class="mc-note" data-mc-note>Choose a map. While it is on, the anatomy steps back — bring a layer forward below to compare.</p>
         </div>
-        <div class="segment">Chinese medicine</div>
-        <label class="row"><input type="checkbox" data-map="meridians" /> channels and points <span class="n">361</span></label>
-        <p class="sub">the twelve primary channels and the two midline vessels, placed by the WHO standard — approximate</p>
-        <div class="chipset channels" data-channel-grid hidden>
-          <button class="chip is-active" type="button" data-ch="-1">all</button>
-          {
-            MERIDIANS.map((m, i) => (
-              <button class="chip" type="button" data-ch={i} title={m.name}>
-                {m.code} <span class="cjk">{SHORT[m.code]}</span>
-              </button>
-            ))
-          }
-        </div>
+        <div class="segment">Map</div>
+        <label class="row"><input type="radio" name="map" value="" checked /> none</label>
+        {
+          MAP_GROUPS.filter((g) => g.maps.some((m) => m.ready)).map((g) => (
+            <>
+              <p class="map-tradition">{g.tradition}</p>
+              {g.maps
+                .filter((m) => m.ready)
+                .map((m) => (
+                  <label class="row">
+                    <input type="radio" name="map" value={m.id} /> {m.name} <span class="n">{m.count}</span>
+                  </label>
+                ))}
+            </>
+          ))
+        }
+        <div class="chipset channels" data-map-chips hidden></div>
         <div class="segment">Compare with</div>
         <div class="chipset" data-compare-grid>
           <button class="chip" type="button" data-compare="knots">knots</button>
@@ -189,6 +189,10 @@ const pct = (a: number) => ((a - 1) / 89) * 100;
     color: var(--panel-faint);
     padding: 0 12px 4px 31px;
     margin-top: -3px;
+  }
+  .census-note {
+    padding: 2px 14px 10px !important;
+    margin-top: 0 !important;
   }
   .notes-panel :global(.ends) {
     display: flex;
@@ -249,7 +253,15 @@ const pct = (a: number) => ((a - 1) / 89) * 100;
     line-height: 1.55;
     color: var(--panel-faint);
   }
-  .chipset.channels .cjk {
+  .map-tradition {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    color: var(--panel-faint);
+    padding: 6px 12px 0;
+  }
+  .chipset.channels :global(.cjk) {
     font-family: var(--font-cjk);
     font-size: 10px;
     color: var(--panel-faint);

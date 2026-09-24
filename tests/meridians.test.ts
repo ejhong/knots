@@ -18,3 +18,29 @@ describe('the channels of Chinese medicine', () => {
     }
   });
 });
+
+import { SINEWS } from '../src/viewer/data/sinew';
+import { TRIGGER_CLUSTERS } from '../src/viewer/data/triggerPoints';
+
+describe('the sinew channels', () => {
+  it('has the twelve, each binding somewhere, all on known landmarks', () => {
+    // Every stop resolves to a known point (the data module throws otherwise).
+    expect(SINEWS.map((s) => s.code)).toEqual(['LU', 'LI', 'ST', 'SP', 'HT', 'SI', 'BL', 'KI', 'PC', 'TE', 'GB', 'LR']);
+    for (const s of SINEWS) {
+      const knots = s.lines.flat().filter((st) => st.knot);
+      expect(knots.length, s.code).toBeGreaterThanOrEqual(3);
+      for (const line of s.lines) expect(line.length, s.code).toBeGreaterThanOrEqual(2);
+    }
+  });
+});
+
+describe('the trigger-point map', () => {
+  it('names where each muscle refers pain, in four regions', () => {
+    expect(TRIGGER_CLUSTERS.length).toBe(45);
+    for (const c of TRIGGER_CLUSTERS) {
+      expect(c.refers, c.muscle).toBeTruthy();
+      expect(c.region).toBeGreaterThanOrEqual(0);
+      expect(c.region).toBeLessThanOrEqual(3);
+    }
+  });
+});

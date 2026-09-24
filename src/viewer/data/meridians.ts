@@ -32,6 +32,11 @@ export interface MeridianDef {
   points: PointDef[];
 }
 
+/** The organ each channel is named for, in one or two characters. */
+export const ORGAN: Record<string, string> = {
+  LU: '肺', LI: '大腸', ST: '胃', SP: '脾', HT: '心', SI: '小腸', BL: '膀胱', KI: '腎', PC: '心包', TE: '三焦', GB: '膽', LR: '肝', GV: '督', CV: '任',
+};
+
 export const pointName = (code: string) => (NAMES as unknown as Record<string, [string, string, string]>)[code];
 
 import {

@@ -31,6 +31,8 @@ export interface Hypothesis {
   travel: string;
   /** Why knots accumulate with age. */
   age: string;
+  /** How many knots it predicts in a body. */
+  count: string;
   /** Its sharpest test. */
   test: string;
   /** Where the evidence stands, in one honest sentence. */
@@ -58,6 +60,7 @@ export const HYPOTHESES: Hypothesis[] = [
     breath: 'A deep in-breath reflexly constricts the skin’s small arteries within about two seconds; a slow out-breath lets them open. The breath acts directly on the vessel that is the knot.',
     travel: 'Small arteries conduct: a dilation travels along the vessel wall toward its feeding vessel at millimetres to centimetres a second, and flow shifts across the tree as a branch opens — so knots seem to move, and even out.',
     age: 'With age resting sympathetic tone rises and the skin’s small vessels respond less, all over the body; knots should rise with them in number and in size — first where stress is held — and children should be nearly free of them.',
+    count: 'Up to one per perforator: about 100,000 small, 3,600 medium and 374 major — tens of thousands of micro-knots by midlife, matching the dozens to the square inch that some report.',
     test: 'Blinded palpation against a blinded Doppler map: do tender points sit on perforators? Then laser-speckle imaging at a release: a local flush of blood flow on the out-breath, absent at a sham site and during a held in-breath.',
     status: 'Every link is ordinary physiology observed somewhere; the new claims — that a knot is a perforator, and that its state travels along the tree — are untested.',
     body: [
@@ -83,6 +86,7 @@ export const HYPOTHESES: Hypothesis[] = [
     breath: 'Indirect: through autonomic state and attention rather than a specific reflex.',
     travel: 'Tension patterns are distributed; release follows the loosening of the predictions they hold.',
     age: 'Latches accumulate from early childhood as we settle on predictions; each makes the system simpler and less alive.',
+    count: 'No count is given. Any small artery or hollow organ could latch — millions of sites in principle; the atlas draws a sample.',
     test: 'Image vascular tension directly as it forms and dissolves; the model predicts that vasomotion nearly stops during deep meditative cessations.',
     status: 'An integrative theory. In pressurised skeletal-muscle arterioles the latch looks more like sustained activation than an economical hold; the claims about the brain are open.',
     body: [
@@ -107,6 +111,7 @@ export const HYPOTHESES: Hypothesis[] = [
     breath: 'Indirect: relaxation lowers motor drive.',
     travel: 'Pain refers in stereotyped patterns, and key trigger points maintain satellites.',
     age: 'Accumulates with overload, posture and injury.',
+    count: 'Hundreds: a few regions in each muscle, at mapped sites — far fewer than the micro-knots some report.',
     test: 'Image taut bands (MR and ultrasound elastography), record spontaneous electrical activity at the nidus, and sample its chemistry by microdialysis.',
     status: 'Widely taught, and key findings replicate — stiff nodules on ultrasound, spontaneous electrical activity, an acidic milieu — but diagnosis by touch is unreliable and the construct remains contested.',
     body: [
@@ -131,6 +136,7 @@ export const HYPOTHESES: Hypothesis[] = [
     breath: 'Not central.',
     travel: 'Along sequences of fascia — myofascial units and chains.',
     age: 'Rises with immobility and age, as the loose layers thicken.',
+    count: 'Tens to hundreds of patches, each centimetres across — regions rather than points.',
     test: 'Ultrasound: the loose sublayers are thicker in chronic neck pain and thin with treatment (Stecco 2014).',
     status: 'Plausible biophysics with supportive imaging; small trials.',
     body: [
@@ -154,6 +160,7 @@ export const HYPOTHESES: Hypothesis[] = [
     breath: 'Indirect.',
     travel: 'Along the nerve’s territory.',
     age: 'Entrapment and sensitisation rise with age and injury.',
+    count: 'Thousands: wherever a nerve of the skin pierces the fascia — about as many as the medium and major perforators it travels with.',
     test: 'Nerve-specific tests at tender points; the response to freeing the nerve with fluid (hydrodissection).',
     status: 'Entrapments where nerves pierce the fascia are established (anterior cutaneous and cluneal nerve entrapment); extending this to all knots is contested.',
     body: [
@@ -177,6 +184,7 @@ export const HYPOTHESES: Hypothesis[] = [
     breath: 'Overbreathing lowers carbon dioxide and causes tingling and sparks anywhere; slow breathing calms arousal and threat.',
     travel: 'A percept can move anywhere in an instant; sensitisation spreads by spinal segment.',
     age: 'Tied less to age than to history: injury, stress and sleep.',
+    count: 'No fixed number: as many places as sensitisation and attention make, and they can move.',
     test: 'Widespread lowered pressure-pain thresholds, including at places never worked; and at a felt release, blood-flow changes that are global, equal at sham sites, and follow carbon dioxide rather than the felt event.',
     status: 'Central sensitisation is well established in many chronic pain states, and overbreathing reliably causes tingling. Neither explains why the same discrete spots return to the same places.',
     body: [

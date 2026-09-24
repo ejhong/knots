@@ -5,7 +5,9 @@ import type { HoverInfo } from '../interaction/Interaction';
 import { hypothesisById } from '../../data/hypotheses';
 import { crossSectionSVG } from '../../lib/crossSection';
 import { REGIONS } from '../body/skeleton';
-import { MERIDIANS, pointName } from '../data/meridians';
+import { mapById } from '../../data/mapIndex';
+import type { MapId } from '../AtlasScene';
+import type { SkinMap } from '../maps/SkinMap';
 
 const REGION_LABEL: Record<string, string> = {
   head: 'scalp',
@@ -233,12 +235,13 @@ function bindCensus(panel: HTMLElement, scene: AtlasScene) {
   const els = [0, 1, 2, 3].map((i) => panel.querySelector<HTMLElement>(`[data-c="${i}"]`)!);
   const keys = [0, 1, 2, 3].map((i) => els[i].nextElementSibling as HTMLElement);
   // What each theory counts, when it isn't the perforators' four rungs.
+  // Where the count is a sample drawn rather than a prediction, it says so.
   const SINGLE: Record<string, [() => number, string]> = {
-    latch: [() => scene.latch.census(), 'latched'],
+    latch: [() => scene.latch.census(), 'latched · of a sample drawn'],
     'trigger-point': [() => scene.theories['trigger-point']?.census() ?? 0, 'trigger points'],
-    densification: [() => scene.theories.densification?.census() ?? 0, 'densified patches'],
+    densification: [() => scene.theories.densification?.census() ?? 0, 'patches · a sample drawn'],
     nerve: [() => scene.theories.nerve?.census() ?? 0, 'sensitised nerves'],
-    central: [() => scene.theories.central?.census() ?? 0, 'places felt'],
+    central: [() => scene.theories.central?.census() ?? 0, 'places felt · a sample drawn'],
   };
   const update = () => {
     const single = SINGLE[scene.hypothesis];
@@ -288,7 +291,7 @@ function bindTooltip(viz: HTMLElement, scene: AtlasScene, card: MapCard) {
     if (!h || stale) {
       tip.classList.remove('on');
       if (mapLit[0] !== -1 || mapLit[1] !== -1) {
-        scene.meridians?.highlight(-1, -1);
+        scene.activeMap?.highlight(-1, -1);
         mapLit = [-1, -1];
       }
       if (lit !== -1) {
@@ -300,18 +303,18 @@ function bindTooltip(viz: HTMLElement, scene: AtlasScene, card: MapCard) {
     tip.hidden = false;
     tip.classList.add('on');
     // A traditional map, when shown, comes first: its points, then its lines.
-    const map = scene.meridians;
-    if (map?.lines.visible) {
+    const map = scene.activeMap;
+    if (map) {
       const { x, y, z } = h.hit.point;
       const pi = map.nearestPoint(x, y, z);
       const li = pi < 0 ? map.nearestLine(x, y, z) : -1;
-      const ch = pi >= 0 ? map.mapPoints[pi].channel : li >= 0 ? map.mapLines[li].channel : -1;
+      const ch = pi >= 0 ? map.data.points[pi].group : li >= 0 ? map.data.lines[li].group : -1;
       if (pi !== mapLit[0] || ch !== mapLit[1]) {
         map.highlight(pi, pi >= 0 ? -1 : ch);
         mapLit = [pi, ch];
       }
       if (pi >= 0 || li >= 0) {
-        const d = pi >= 0 ? describePoint(scene, pi) : describeChannel(ch);
+        const d = pi >= 0 ? describePlace(scene, map, pi) : describeGroup(map, ch);
         card.set(d);
         tip.innerHTML = `<div class="t-kicker">${d.kicker}</div><div class="t-title">${d.title}</div><div class="t-note">${d.sub}</div>`;
         return;
@@ -402,6 +405,7 @@ function bindHypotheses(viz: HTMLElement, panel: HTMLElement, scene: AtlasScene)
     const h = hypothesisById(sel.value)!;
     scene.setHypothesis(h.id);
     panel.querySelector('[data-card-kicker]')!.textContent = h.name;
+    panel.querySelector('[data-census-note]')!.textContent = h.count;
     panel.querySelector('[data-card-body]')!.innerHTML = `<p>${h.short}</p><p><em>Where.</em> ${h.layer}</p><p><em>Holds.</em> ${h.holds}</p>`;
     drawSection();
   };
@@ -446,14 +450,10 @@ function mapCard(panel: HTMLElement): MapCard {
 }
 
 const len = (d: number) => (!isFinite(d) ? 'over 6 cm' : d < 0.01 ? `${Math.round(d * 1000)} mm` : `${(d * 100).toFixed(1)} cm`);
-const cap = (s: string) => s.replace(/^\p{L}/u, (c) => c.toUpperCase());
 
-/** A point: its names, its place, and the anatomy nearest it on this figure. */
-function describePoint(scene: AtlasScene, i: number): CardText {
-  const map = scene.meridians!;
-  const p = map.mapPoints[i];
-  const m = MERIDIANS[p.channel];
-  const [han, pinyin, english] = pointName(p.code) ?? ['', p.code, ''];
+/** A place on a map: its names, where it is, and the anatomy nearest it on this figure. */
+function describePlace(scene: AtlasScene, map: SkinMap, i: number): CardText {
+  const p = map.data.points[i];
   const x = map.pointPos[i * 3];
   const y = map.pointPos[i * 3 + 1];
   const z = map.pointPos[i * 3 + 2];
@@ -482,50 +482,80 @@ function describePoint(scene: AtlasScene, i: number): CardText {
     chIdx < 0 ? '' : chD < 0.008 ? `over the ${chName}` : `${len(chD)} from the ${chName}`,
   ].filter(Boolean);
   return {
-    kicker: `${m.code} ${p.n} · ${m.name.split(',')[0]} · ${side}`,
-    title: `${cap(pinyin)}  ${han}`,
-    sub: english,
-    note: `${p.where}.<span class="anat">${anat.join(' · ')}</span>`,
+    kicker: `${p.kicker} · ${side}`,
+    title: p.title,
+    sub: p.sub,
+    note: `${p.where}<span class="anat">${anat.join(' · ')}</span>`,
   };
 }
 
-function describeChannel(ch: number): CardText {
-  const m = MERIDIANS[ch];
+/** A group of a map: a channel, a region. */
+function describeGroup(map: SkinMap, g: number): CardText {
+  const m = map.data.groups[g];
   return {
-    kicker: `channel · ${m.code}`,
+    kicker: `${map.data.title} · ${m.chip}`,
     title: m.name,
-    sub: m.hanzi,
-    note: `${m.course} ${m.points.length} points${m.bilateral ? ' on each side' : ''}.`,
+    sub: m.hanzi ?? '',
+    note: m.course,
   };
 }
 
-/** The Maps tab: a map on or off, one channel alone, and layers brought forward to compare. */
+/** The Maps tab: one map at a time, a group of it alone, and layers brought forward to compare. */
 function bindMaps(panel: HTMLElement, scene: AtlasScene, card: MapCard) {
-  const toggle = panel.querySelector<HTMLInputElement>('[data-map="meridians"]')!;
-  const grid = panel.querySelector<HTMLElement>('[data-channel-grid]')!;
-  const chips = [...grid.querySelectorAll<HTMLButtonElement>('[data-ch]')];
+  const grid = panel.querySelector<HTMLElement>('[data-map-chips]')!;
   let solo = -1;
-  toggle.addEventListener('change', () => {
-    scene.setMap('meridians', toggle.checked);
-    grid.hidden = !toggle.checked;
-    if (toggle.checked) scene.meridians!.solo(solo);
-  });
+  const intro = (id: string | null) => {
+    const m = id ? mapById(id) : null;
+    card.set(
+      m
+        ? { kicker: m.tradition, title: m.name, sub: '', note: m.intro ?? '' }
+        : {
+            kicker: 'Maps',
+            title: 'Traditional and clinical maps',
+            sub: '',
+            note: 'Choose a map. While it is on, the anatomy steps back — bring a layer forward below to compare.',
+          },
+    );
+  };
   const setSolo = (i: number) => {
     solo = i;
-    scene.meridians?.solo(i);
-    chips.forEach((c) => c.classList.toggle('is-active', Number(c.dataset.ch) === i));
-    if (i >= 0) card.set(describeChannel(i));
+    scene.activeMap?.solo(i);
+    grid.querySelectorAll<HTMLButtonElement>('[data-ch]').forEach((c) => c.classList.toggle('is-active', Number(c.dataset.ch) === i));
+    const map = scene.activeMap;
+    if (map && i >= 0) card.set(describeGroup(map, i));
   };
-  chips.forEach((c) => {
-    const i = Number(c.dataset.ch);
-    c.addEventListener('click', () => setSolo(i === solo || i < 0 ? -1 : i));
-    c.addEventListener('mouseenter', () => {
-      if (i < 0 || !scene.meridians) return;
-      scene.meridians.highlight(-1, i);
-      card.set(describeChannel(i));
-    });
-    c.addEventListener('mouseleave', () => scene.meridians?.highlight(-1, -1));
-  });
+  const show = (id: MapId | null) => {
+    scene.setMap(id);
+    solo = -1;
+    grid.innerHTML = '';
+    grid.hidden = !id;
+    intro(id);
+    const map = scene.activeMap;
+    if (!map) return;
+    map.solo(-1);
+    const chip = (i: number, label: string, cjk = '') => {
+      const b = document.createElement('button');
+      b.type = 'button';
+      b.className = `chip${i < 0 ? ' is-active' : ''}`;
+      b.dataset.ch = String(i);
+      b.innerHTML = cjk ? `${label} <span class="cjk">${cjk}</span>` : label;
+      b.addEventListener('click', () => setSolo(i === solo || i < 0 ? -1 : i));
+      b.addEventListener('mouseenter', () => {
+        if (i < 0 || !scene.activeMap) return;
+        scene.activeMap.highlight(-1, i);
+        card.set(describeGroup(scene.activeMap, i));
+      });
+      b.addEventListener('mouseleave', () => scene.activeMap?.highlight(-1, -1));
+      grid.append(b);
+    };
+    chip(-1, 'all');
+    map.data.groups.forEach((g, i) => chip(i, g.chip, g.cjk));
+  };
+  panel.querySelectorAll<HTMLInputElement>('input[name="map"]').forEach((r) =>
+    r.addEventListener('change', () => {
+      if (r.checked) show((r.value || null) as MapId | null);
+    }),
+  );
   panel.querySelectorAll<HTMLButtonElement>('[data-compare]').forEach((b) =>
     b.addEventListener('click', () => {
       const on = !b.classList.contains('is-active');

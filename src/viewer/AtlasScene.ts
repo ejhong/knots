@@ -1,5 +1,5 @@
 import { DoubleSide, FrontSide, Vector2, Vector3 } from 'three';
-import { Locator3D, mirrorLocator, type Vec3 } from './anchors/locate';
+import { Locator3D, mirrorLocator, type Locator, type Vec3 } from './anchors/locate';
 import type { Anchor } from './anchors/anchors';
 import { anchorVertex } from './anchors/anchors';
 import { BodyLayers } from './body/BodyLayers';
@@ -35,9 +35,10 @@ import {
 } from './body/skeleton';
 import { LAYER_UNIFORMS, WINDOW_UNIFORMS } from './body/layerModel';
 import { KnotEmbers } from './perforators/KnotEmbers';
-import { MERIDIANS } from './data/meridians';
+import { MERIDIANS, ORGAN, pointName } from './data/meridians';
+import { SINEWS } from './data/sinew';
 import { interiorSites } from './data/viscera';
-import { TRIGGER_CLUSTERS } from './data/triggerPoints';
+import { TRIGGER_CLUSTERS, TRIGGER_REGIONS } from './data/triggerPoints';
 import { SiteKnots, type KnotSite, type SiteStyle } from './hypotheses/SiteKnots';
 import { mulberry32 } from './lib/random';
 
@@ -48,7 +49,10 @@ const SITE_STYLES: Record<string, SiteStyle> = {
   nerve: { size: 0.0095 },
   central: { size: 0.011, twinkle: true },
 };
-import { MeridianMap, type MapLine, type MapPoint } from './maps/MeridianMap';
+import { SkinMap, type MapData, type MapLine, type MapPoint } from './maps/SkinMap';
+
+/** The maps the atlas can draw, one at a time. */
+export type MapId = 'meridians' | 'sinew' | 'trigger-points';
 import { TreeLines } from './perforators/TreeLines';
 
 export interface RootInstance {
@@ -86,8 +90,9 @@ export class AtlasScene {
   latch!: LatchKnots;
   /** Knots of the site theories (trigger points, densification, nerves, perception), built when first chosen. */
   theories: Partial<Record<string, SiteKnots>> = {};
-  /** Chinese medicine's channels and points, built the first time they are shown. */
-  meridians?: MeridianMap;
+  /** Traditional (and clinical) maps, each built the first time it is shown. */
+  maps: Partial<Record<MapId, SkinMap>> = {};
+  activeMapId: MapId | null = null;
   /** Skin positions of the reference figure (where every locator is resolved). */
   private refSkin!: Float32Array;
   /** A traditional map in front: the anatomy recedes, except the layers being compared. */
@@ -266,7 +271,7 @@ export class AtlasScene {
       this.embers.applyTheme(t);
       this.channels.applyTheme(t);
       this.latch.applyTheme(t);
-      this.meridians?.applyTheme(t);
+      for (const m of Object.values(this.maps)) m!.applyTheme(t);
       for (const k of Object.values(this.theories)) k!.applyTheme(t);
     });
     this.engine.onFrame(({ time, dt }) => {
@@ -626,7 +631,7 @@ export class AtlasScene {
     this.trees.refresh(this.body);
     this.channels?.refresh(this.body, this.depth);
     this.latch?.refresh(this.body);
-    this.meridians?.refresh(this.body);
+    for (const m of Object.values(this.maps)) m!.refresh(this.body);
     for (const k of Object.values(this.theories)) k!.refresh(this.body);
     this.updateWindow();
     for (const cb of this.shapeListeners) cb();
@@ -666,7 +671,7 @@ export class AtlasScene {
       this.rootMarkers.material,
       this.layers.floorMaterial,
       this.layers.sheetMaterial,
-      ...(this.meridians ? [this.meridians.lineMaterial, this.meridians.pointMaterial] : []),
+      ...Object.values(this.maps).flatMap((m) => m!.materials),
       ...Object.values(this.theories).flatMap((k) => [k!.pointMaterial, k!.lineMaterial]),
     ];
     for (const m of mats) {
@@ -756,10 +761,11 @@ export class AtlasScene {
     this.latch.pointMaterial.uniforms.uProjScale.value = projScale;
     this.latch.pointMaterial.uniforms.uPixelRatio.value = pr;
     this.channels.beadMaterial.uniforms.uPixelRatio.value = pr;
-    if (this.meridians) {
-      this.meridians.pointMaterial.uniforms.uProjScale.value = projScale;
-      this.meridians.pointMaterial.uniforms.uPixelRatio.value = pr;
-    }
+    for (const m of Object.values(this.maps))
+      for (const mat of m!.materials) {
+        mat.uniforms.uProjScale.value = projScale;
+        mat.uniforms.uPixelRatio.value = pr;
+      }
     for (const k of Object.values(this.theories)) {
       const tu = k!.pointMaterial.uniforms;
       tu.uProjScale.value = projScale;
@@ -768,86 +774,200 @@ export class AtlasScene {
     }
   }
 
+  /** The map on show, if any. */
+  get activeMap(): SkinMap | null {
+    return this.activeMapId ? (this.maps[this.activeMapId] ?? null) : null;
+  }
+
+  /** Shows one map (or none), quieting the anatomy while a map is on. */
+  setMap(id: MapId | null) {
+    for (const m of Object.values(this.maps)) m!.setVisible(false);
+    this.activeMapId = id;
+    if (id) this.ensureMap(id).setVisible(true);
+    this.quiet = !!id;
+    this.applyQuiet();
+  }
+
+  ensureMap(id: MapId): SkinMap {
+    const built = this.maps[id];
+    if (built) return built;
+    const data = id === 'meridians' ? this.meridianData() : id === 'sinew' ? this.sinewData() : this.triggerMapData();
+    const map = new SkinMap(data, this.body.triangles, this.liftWeight);
+    map.refresh(this.body);
+    map.applyTheme(this.engine.theme);
+    this.engine.scene.add(...map.objects);
+    this.maps[id] = map;
+    return map;
+  }
+
+  /** Resolves a map locator on one side (bilateral entries are written for the left). */
+  private place(at: Locator, side: 'l' | 'r' | 'm'): Anchor | null {
+    return this.locator.resolve(side === 'r' ? mirrorLocator(at) : at);
+  }
+
+  private routeCache?: (stops: Anchor[]) => Anchor[];
   /**
-   * Builds the channels and points of Chinese medicine: every point resolved
-   * on the reference figure (mirrored for the right side), and each channel
-   * drawn point to point by the shortest path along the skin (so a channel
-   * passing from the chest to the arm goes over the shoulder, never across
-   * the gap under the arm), smoothed when drawn.
+   * Joins stops by the shortest path along the skin (so a line from the chest
+   * to the arm goes over the shoulder, never across the gap under the arm).
    */
-  ensureMeridians(): MeridianMap {
-    if (this.meridians) return this.meridians;
-    const T = this.body.triangles;
-    const R = this.refSkin;
-    const posOf = (a: Anchor): Vec3 => {
-      const t = a.tri * 3;
-      const w = 1 - a.u - a.v;
-      return [0, 1, 2].map((k) => R[T[t] * 3 + k] * w + R[T[t + 1] * 3 + k] * a.u + R[T[t + 2] * 3 + k] * a.v) as Vec3;
-    };
-    // A skin anchor for every mesh vertex (a corner of one of its triangles).
-    const V = R.length / 3;
-    const vTri = new Int32Array(V).fill(-1);
-    const vCorner = new Uint8Array(V);
-    for (let t = 0; t < T.length / 3; t++)
-      for (let c = 0; c < 3; c++) {
-        const v = T[t * 3 + c];
-        if (vTri[v] < 0) {
-          vTri[v] = t;
-          vCorner[v] = c;
+  private route(stops: Anchor[]): Anchor[] {
+    if (!this.routeCache) {
+      const T = this.body.triangles;
+      const R = this.refSkin;
+      const posOf = (a: Anchor): Vec3 => {
+        const t = a.tri * 3;
+        const w = 1 - a.u - a.v;
+        return [0, 1, 2].map((k) => R[T[t] * 3 + k] * w + R[T[t + 1] * 3 + k] * a.u + R[T[t + 2] * 3 + k] * a.v) as Vec3;
+      };
+      // A skin anchor for every mesh vertex (a corner of one of its triangles).
+      const V = R.length / 3;
+      const vTri = new Int32Array(V).fill(-1);
+      const vCorner = new Uint8Array(V);
+      for (let t = 0; t < T.length / 3; t++)
+        for (let c = 0; c < 3; c++) {
+          const v = T[t * 3 + c];
+          if (vTri[v] < 0) {
+            vTri[v] = t;
+            vCorner[v] = c;
+          }
         }
-      }
-    const vertexAnchor = (v: number): Anchor => ({ tri: vTri[v], u: vCorner[v] === 1 ? 1 : 0, v: vCorner[v] === 2 ? 1 : 0 });
-    const route = makePathfinder(this.graph);
+      const vertexAnchor = (v: number): Anchor => ({ tri: vTri[v], u: vCorner[v] === 1 ? 1 : 0, v: vCorner[v] === 2 ? 1 : 0 });
+      const path = makePathfinder(this.graph);
+      this.routeCache = (stops) => {
+        const out: Anchor[] = [];
+        for (const a of stops) {
+          if (out.length) {
+            const prev = out[out.length - 1];
+            const p0 = posOf(prev);
+            const p1 = posOf(a);
+            const d = Math.hypot(p1[0] - p0[0], p1[1] - p0[1], p1[2] - p0[2]);
+            const way = path(anchorVertex(prev, T), anchorVertex(a, T), d * 2.4 + 0.05);
+            if (way) for (let k = 1; k < way.length - 1; k++) out.push(vertexAnchor(way[k]));
+          }
+          out.push(a);
+        }
+        return out;
+      };
+    }
+    return this.routeCache(stops);
+  }
+
+  /** Chinese medicine's fourteen channels and 361 points (WHO 2008). */
+  private meridianData(): MapData {
     const points: MapPoint[] = [];
     const lines: MapLine[] = [];
-    MERIDIANS.forEach((m, ch) => {
-      const sides: Array<'l' | 'r' | 'm'> = m.bilateral ? ['l', 'r'] : ['m'];
-      for (const side of sides) {
+    MERIDIANS.forEach((m, g) => {
+      for (const side of (m.bilateral ? ['l', 'r'] : ['m']) as Array<'l' | 'r' | 'm'>) {
         const byN = new Map<number, Anchor>();
         for (const p of m.points) {
-          const a = this.locator.resolve(side === 'r' ? mirrorLocator(p.at) : p.at);
+          const a = this.place(p.at, side);
           if (!a) {
             console.warn('acupoint did not resolve', `${m.code}${p.n}`, side);
             continue;
           }
           byN.set(p.n, a);
-          points.push({ code: `${m.code}${p.n}`, channel: ch, n: p.n, side, anchor: a, where: p.where });
+          const [han, pinyin, english] = pointName(`${m.code}${p.n}`) ?? ['', `${m.code}${p.n}`, ''];
+          points.push({
+            group: g,
+            side,
+            anchor: a,
+            kicker: `${m.code} ${p.n} · ${m.name.split(',')[0]}`,
+            title: `${pinyin.replace(/^\p{L}/u, (c) => c.toUpperCase())}  ${han}`,
+            sub: english,
+            where: `${p.where}.`,
+            shape: 0,
+          });
         }
         for (const spec of m.lines ?? [m.points.map((p) => p.n)]) {
-          const anchors: Anchor[] = [];
-          for (const n of spec) {
-            const a = byN.get(n);
-            if (!a) continue;
-            if (anchors.length) {
-              const prev = anchors[anchors.length - 1];
-              const p0 = posOf(prev);
-              const p1 = posOf(a);
-              const d = Math.hypot(p1[0] - p0[0], p1[1] - p0[1], p1[2] - p0[2]);
-              const path = route(anchorVertex(prev, T), anchorVertex(a, T), d * 2.4 + 0.05);
-              if (path) for (let k = 1; k < path.length - 1; k++) anchors.push(vertexAnchor(path[k]));
-            }
-            anchors.push(a);
-          }
-          if (anchors.length >= 2) lines.push({ channel: ch, side, anchors });
+          const stops = spec.map((n) => byN.get(n)).filter((a): a is Anchor => !!a);
+          if (stops.length >= 2) lines.push({ group: g, side, anchors: this.route(stops) });
         }
       }
     });
-    const map = new MeridianMap(points, lines, T, this.liftWeight);
-    map.refresh(this.body);
-    map.applyTheme(this.engine.theme);
-    this.engine.scene.add(map.lines, map.points);
-    this.meridians = map;
-    return map;
+    return {
+      id: 'meridians',
+      title: 'Channels and points',
+      groups: MERIDIANS.map((m) => ({ chip: m.code, cjk: ORGAN[m.code], name: m.name, hanzi: m.hanzi, course: m.course })),
+      points,
+      lines,
+    };
   }
 
-  /** Shows or hides a traditional map, quieting the anatomy while it is on. */
-  setMap(id: 'meridians', on: boolean) {
-    if (id === 'meridians') {
-      if (on) this.ensureMeridians().setVisible(true);
-      else this.meridians?.setVisible(false);
-    }
-    this.quiet = on;
-    this.applyQuiet();
+  /** The twelve sinew channels of the Ling Shu, with the places they bind (結). */
+  private sinewData(): MapData {
+    const points: MapPoint[] = [];
+    const lines: MapLine[] = [];
+    SINEWS.forEach((m, g) => {
+      for (const side of ['l', 'r'] as const) {
+        const seen = new Set<string>();
+        for (const stops of m.lines) {
+          const anchors: Anchor[] = [];
+          for (const st of stops) {
+            const a = this.place(st.at, side);
+            if (!a) {
+              console.warn('sinew stop did not resolve', m.code, side);
+              continue;
+            }
+            anchors.push(a);
+            if (st.knot && !seen.has(st.knot)) {
+              seen.add(st.knot);
+              points.push({
+                group: g,
+                side,
+                anchor: a,
+                kicker: `${m.code} sinew channel · a knot 結`,
+                title: st.knot,
+                sub: m.hanzi,
+                where: `One of the places where this sinew channel binds.${st.note ? ` ${st.note}` : ''}`,
+                shape: 1,
+              });
+            }
+          }
+          if (anchors.length >= 2) lines.push({ group: g, side, anchors: this.route(anchors) });
+        }
+      }
+    });
+    return {
+      id: 'sinew',
+      title: 'Sinew channels',
+      groups: SINEWS.map((m) => ({ chip: m.code, cjk: ORGAN[m.code], name: m.name, hanzi: m.hanzi, course: m.course })),
+      points,
+      lines,
+      band: true,
+    };
+  }
+
+  /** The usual trigger-point regions of the muscles, after Travell and Simons. */
+  private triggerMapData(): MapData {
+    const points: MapPoint[] = [];
+    for (const c of TRIGGER_CLUSTERS)
+      for (const side of ['l', 'r'] as const) {
+        const a = this.place(c.at, side);
+        if (!a) continue;
+        points.push({
+          group: c.region,
+          side,
+          anchor: a,
+          kicker: `trigger points · ${TRIGGER_REGIONS[c.region].toLowerCase()}`,
+          title: c.muscle,
+          sub: c.refers ? `refers pain to ${c.refers}` : '',
+          where: 'A usual trigger-point region of this muscle, after Travell and Simons.',
+          shape: 0,
+        });
+      }
+    return {
+      id: 'trigger-points',
+      title: 'Trigger points',
+      groups: TRIGGER_REGIONS.map((r, i) => ({
+        chip: r.toLowerCase(),
+        name: r,
+        course: `${TRIGGER_CLUSTERS.filter((c) => c.region === i).length} muscles: ${TRIGGER_CLUSTERS.filter((c) => c.region === i)
+          .map((c) => c.muscle.toLowerCase())
+          .join(', ')}.`,
+      })),
+      points,
+      lines: [],
+    };
   }
 
   /** Brings one anatomical layer back to full strength while a map is on. */
