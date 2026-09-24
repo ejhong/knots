@@ -4,7 +4,7 @@ A living list. Checked items are live.
 
 ## Look and content
 - [x] Look and feel of The OM Project (rice paper, ink stone, small system type, earth palette)
-- [x] Introduction as a guided tour (12 chapters, each a scene; ▶ plays)
+- [x] Introduction: nine chapters, each a scene; scrolling the panel moves the figure
 - [ ] Author's content revisions (in progress)
 
 ## Atlas — the perforator hypothesis
@@ -13,21 +13,20 @@ A living list. Checked items are live.
 - [x] Knot simulation: vessel tone / collar gel / nerve; breath-gated release; conducted dilation up the tree; age settle
 - [x] Tools: press (exhale-gated), roll, hydrodissect, stress brush; scenarios (back ache, desk neck, headache, anxious, cold, sauna)
 - [x] Stars and light climbing the trees on release
-- [ ] The sheet (second family): lift the sheet off the floor; interstitial plane with hyaluronan; staples as stalks
-- [ ] Sheet phase: load sharing among staples, cascade threshold, folds propagating to attachment lines, hollowing, re-bonding (kintsugi stitching)
-- [ ] Gates: attachment lines (nuchal line, mastoid, zygoma, mandible, hyoid, clavicle, axilla, inguinal ligament, iliac crest)
-- [ ] Region-specific fascial depths (scalp, face, trunk, limbs); named sheets (galea, SMAS, platysma, thoracolumbar fascia, fascia lata)
-- [ ] The tissue block: one staple up close — artery, venae comitantes, nerve, lymphatic, collar, septa; the release sequence
-- [ ] The ring at the base of the skull: nuchal ligament, myodural bridge, pharyngeal raphe
-- [ ] Practice mode: roots first, descend the tree, rate-matched to re-bonding — to the knot-free endpoint
+- [ ] The fascia over days (later): peeling, hollowing and re-knitting, drawn from reports
+- [ ] Attachment lines of the fascia (zygoma, mandible, hyoid, clavicle, axilla, inguinal ligament, iliac crest, …)
+- [ ] Named fasciae (galea, SMAS, platysma, thoracolumbar fascia, fascia lata)
+- [ ] The tissue block: one perforator up close — artery, venae comitantes, nerve, lymphatic, collar, septa
 - [ ] Posture with age (kyphosis, forward head) with part-aware deformation
 - [ ] Move ladder generation into a Web Worker; mobile quality tiers
 - [ ] Exclude cavities (inside the mouth, eye sockets, nostrils, ear canals) from perforator sampling — ray-test each vertex outward
 - [ ] Tame additive glare where stalks are seen edge-on at silhouettes and section edges
-- [x] Sheet lift, stalks, collars, interstitium (hyaluronan gel around stuck staples); region-specific depths; section cuts
+- [x] Fascial layers, stalks and collars; region-specific depths; section cuts
 - [x] Layered anatomy by default (exploded): skin · superficial fat · superficial fascia · gliding plane · deep fascia · muscle
 - [x] Perforators at true depths (major through deep fascia, small through superficial fascia); knots at the collar
-- [x] Dissection window (double-click to move)
+- [x] Dissection window (off by default; double-click to open one)
+- [x] Knots drawn the same in every theory (terracotta); perforators neutral, by size, brightness and a ring
+- [x] Hover details in a fixed box; theory menu with short names
 - [x] Deep channels layer: septa, raphes, neurovascular sheaths (22 structures)
 - [x] Manipulation tools removed for now (look-only atlas); to be redesigned later
 
@@ -38,12 +37,12 @@ A living list. Checked items are live.
 - [ ] Fascial densification (Stecco): patches in the loose layer; friction and heat
 - [ ] Peripheral nerve: sensitised trunks and entrapment sites
 - [ ] Central sensitisation: widespread lowered thresholds
-- [ ] The other road: knots follow attention; hyperventilation sparks everywhere
+- [ ] Breath and attention: knots follow attention; overbreathing sparks everywhere
 
 ## Maps
 - [ ] Channels (12 + Du/Ren) and acupoints (WHO 2008), placed by proportional cun on landmarks
 - [ ] Sinew channels and their knots (jie)
-- [ ] Wind points; Jade Pillow; microcosmic orbit and three gates; three dantian
+- [ ] Microcosmic orbit; three dantian
 - [ ] Cakras, nāḍīs, granthis, kuṇḍalinī
 - [ ] Tsa lung: three channels, wheels, channel-knots; kati channel
 - [ ] Trigger points (Travell & Simons) and referred zones; 1990 tender points; dermatomes; myofascial lines
@@ -56,5 +55,4 @@ A living list. Checked items are live.
 - [ ] Social image, sitemap
 
 ## Open questions (for the author)
-- Which body: androgynous blend (current), or offer female/male forms?
-- Should the essays be mirrored on the site, or only linked?
+- How should manipulation (pressure, breath) return to the atlas, if at all?

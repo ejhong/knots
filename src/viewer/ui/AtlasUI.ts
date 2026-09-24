@@ -89,7 +89,7 @@ export function mountAtlas(viz: HTMLElement, panel: HTMLElement) {
     scene.interaction.tool = 'look';
     canvas.style.cursor = 'grab';
     scene.settle(34);
-    scene.setWindowOn(true);
+    scene.setWindowOn(false);
     engine.setPose({ position: [-1.02, 1.42, -1.95], target: [0.03, 1.16, -0.02], fov: 30 });
     engine.autoRotate = true;
     engine.start();
@@ -251,63 +251,76 @@ function bindCensus(panel: HTMLElement, scene: AtlasScene) {
   setInterval(update, 500);
 }
 
+/**
+ * What the pointer is over, in a fixed box at the lower left of the canvas
+ * (it does not chase the pointer). It lingers a moment after the pointer
+ * leaves, so it does not flicker between perforators.
+ */
 function bindTooltip(viz: HTMLElement, scene: AtlasScene) {
   const tip = viz.querySelector<HTMLElement>('[data-tip]')!;
   const bar = (label: string, v: number, hot = false) =>
     `<span>${label}</span><span class="bar${hot ? ' hot' : ''}"><i style="width:${(v * 100).toFixed(0)}%"></i></span><span>${v.toFixed(2)}</span>`;
   let current: HoverInfo | null = null;
+  let lastSeen = 0;
   scene.interaction.onHover((h) => {
-    current = h;
-    tip.hidden = !h || (h.node < 0 && h.root < 0);
+    if (h && (h.node >= 0 || h.root >= 0)) {
+      current = h;
+      lastSeen = performance.now();
+    }
   });
   let lit = -1;
   setInterval(() => {
     const h = current;
+    const stale = performance.now() - lastSeen > 900;
+    if (!h || stale) {
+      tip.classList.remove('on');
+      if (lit !== -1) {
+        scene.channels.highlight(-1);
+        lit = -1;
+      }
+      return;
+    }
+    tip.hidden = false;
+    tip.classList.add('on');
     // Channels take precedence when the pointer is right on one.
-    const ch = h && scene.channels.lines.visible ? scene.channels.nearest(h.hit.point.x, h.hit.point.y, h.hit.point.z) : -1;
+    const ch = scene.channels.lines.visible ? scene.channels.nearest(h.hit.point.x, h.hit.point.y, h.hit.point.z) : -1;
     if (ch !== lit) {
       scene.channels.highlight(ch);
       lit = ch;
     }
-    if (h && ch >= 0) {
+    if (ch >= 0) {
       const c = scene.channels.channels[ch];
-      tip.hidden = false;
       tip.innerHTML = `<div class="t-kicker">deep channel · ${c.def.kind}${c.side === 'm' ? ' · midline' : c.side === 'l' ? ' · left' : ' · right'}</div>
         <div class="t-title">${c.def.name}</div>
         <div class="t-note">${c.def.note}</div>`;
       return;
     }
-    if (!h || tip.hidden) return;
     const sim = scene.sim;
     const L = scene.ladder;
+    // Knot state belongs to the perforator view; elsewhere, anatomy only.
+    const perf = scene.hypothesis === 'perforator';
+    const state = (i: number) => {
+      if (!perf) return '';
+      const stuck = sim.stuck[i] === 1;
+      return `<div class="t-state ${stuck ? 'stuck' : 'open'}">${stuck ? 'held — a knot' : 'open'}</div>
+        <div class="bars">${bar('vessel', sim.tone[i], sim.tone[i] > 0.6)}${bar('collar', sim.gel[i], sim.gel[i] > 0.5)}${bar('nerve', sim.nerve[i], sim.nerve[i] > 0.5)}</div>`;
+    };
     if (h.root >= 0) {
       const r = scene.roots[h.root];
-      const i = L.count + h.root;
-      const stuck = sim.stuck[i] === 1;
-      tip.innerHTML = `<div class="t-kicker">source vessel · ${r.side === 'l' ? 'left' : r.side === 'r' ? 'right' : 'midline'}${r.def.gate ? ' · at an attachment line' : ''}</div>
+      tip.innerHTML = `<div class="t-kicker">source vessel · ${r.side === 'l' ? 'left' : r.side === 'r' ? 'right' : 'midline'}</div>
         <div class="t-title">${r.def.name}</div>
-        <div class="t-state ${stuck ? 'stuck' : 'open'}">${stuck ? 'held — a root knot' : 'open'}</div>
-        <div class="bars">${bar('vessel', sim.tone[i], sim.tone[i] > 0.6)}${bar('collar', sim.gel[i], sim.gel[i] > 0.5)}${bar('nerve', sim.nerve[i], sim.nerve[i] > 0.5)}</div>
+        ${state(L.count + h.root)}
         <div class="t-note">${r.def.note}</div>`;
       return;
     }
     const i = h.node;
     const lvl = L.level[i];
     const rootDef = scene.roots[L.root[i]];
-    const stuck = sim.stuck[i] === 1;
     tip.innerHTML = `<div class="t-kicker">${LEVEL_NAME[lvl]} · № ${fmt.format(i + 1)}</div>
       <div class="t-title">${rootDef ? rootDef.def.name.split(' ·')[0] : '—'} tree${rootDef ? `, ${rootDef.side === 'l' ? 'left' : 'right'}` : ''}</div>
-      <div class="t-state ${stuck ? 'stuck' : 'open'}">${stuck ? 'stuck — a knot' : 'open'}</div>
-      <div class="bars">${bar('vessel', sim.tone[i], sim.tone[i] > 0.6)}${bar('collar', sim.gel[i], sim.gel[i] > 0.5)}${bar('nerve', sim.nerve[i], sim.nerve[i] > 0.5)}</div>
+      ${state(i)}
       <div class="t-note">${LEVEL_DEPTH[lvl]} · ${(L.depth[i] * 100).toFixed(0)} cm from its source along the skin</div>`;
   }, 120);
-  scene.engine.onFrame(() => {
-    const h = current;
-    if (!h || tip.hidden) return;
-    const w = viz.clientWidth;
-    tip.style.left = `${Math.min(h.screen.x, w - 280)}px`;
-    tip.style.top = `${h.screen.y}px`;
-  });
 }
 
 function bindSettings(viz: HTMLElement, stage: HTMLElement, scene: AtlasScene) {
@@ -339,7 +352,6 @@ function bindSettings(viz: HTMLElement, stage: HTMLElement, scene: AtlasScene) {
 
 function bindHypotheses(viz: HTMLElement, panel: HTMLElement, scene: AtlasScene) {
   const sel = viz.querySelector<HTMLSelectElement>('[data-hyp-select]')!;
-  const who = viz.querySelector<HTMLElement>('[data-hyp-who]')!;
   const sectionEl = panel.querySelector<HTMLElement>('[data-section]')!;
   const whereEl = panel.querySelector<HTMLElement>('[data-section-where]')!;
   const q = new URLSearchParams(location.search).get('h');
@@ -353,10 +365,7 @@ function bindHypotheses(viz: HTMLElement, panel: HTMLElement, scene: AtlasScene)
   };
   const show = () => {
     const h = hypothesisById(sel.value)!;
-    who.textContent = h.who;
     scene.setHypothesis(h.id);
-    const sw = viz.querySelector<HTMLElement>('[data-knot-swatch]');
-    if (sw) sw.style.background = h.id === 'latch' ? '#b9a5e0' : '#d9826d';
     panel.querySelector('[data-card-kicker]')!.textContent = h.name;
     panel.querySelector('[data-card-body]')!.innerHTML = `<p>${h.short}</p><p><em>Where.</em> ${h.layer}</p><p><em>Holds.</em> ${h.holds}</p>`;
     drawSection();

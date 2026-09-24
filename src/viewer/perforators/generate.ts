@@ -2,7 +2,7 @@ import { buildMeshGraph, dijkstra, type MeshGraph } from '../lib/graph';
 import { mulberry32, type Rng } from '../lib/random';
 
 /**
- * The ladder of staples.
+ * The ladder of perforators.
  *
  * Every point on the skin is fed by a tree: a source vessel ("root") gives
  * off major perforators (≥0.5 mm — Taylor & Palmer counted ~374), which feed

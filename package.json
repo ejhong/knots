@@ -2,7 +2,7 @@
   "name": "knots",
   "version": "0.1.0",
   "private": true,
-  "description": "An atlas of the body's knots: a 3D visualization of the perforator-and-sheet hypothesis and its rivals, with traditional maps for comparison.",
+  "description": "An atlas of the body's knots: a 3D visualization of perforators, fascia and the theories of what knots are, with traditional maps for comparison.",
   "type": "module",
   "license": "MIT",
   "author": "Eugene Jhong",

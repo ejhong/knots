@@ -6,12 +6,17 @@ Owner: Eugene Jhong. Source essays: `docs/source/*.md` (the Substack posts are c
 ## Principles
 
 - **Look and feel of The OM Project** (ejhong.github.io/om): rice paper, ink-stone panels, small system type (sans, Georgia,
-  SF Mono), earth palette — terracotta for knots, sage for release. The figure itself is sacred art: light in an ink-stone card.
-  See `docs/DESIGN.md`.
+  SF Mono), earth palette — terracotta for knots and nothing else (the same in every theory), sage for release; perforators are one
+  neutral colour, told apart by size, brightness and a ring for the major ones. The figure itself is sacred art: light in an
+  ink-stone card. See `docs/DESIGN.md`.
 - **Anatomical honesty.** Counts and clusters come from the literature (Taylor & Palmer 1987; Saint-Cyr 2009). Anything representative
-  is labelled as such. The simulation illustrates a hypothesis; it is not a measurement. Keep the safety cautions (the base of the skull
-  is anatomy, not a target).
-- **Fair to rivals.** Each hypothesis gets its strongest form, its best evidence and its sharpest test (`src/data/hypotheses.ts`).
+  is labelled as such. The simulation illustrates a hypothesis; it is not a measurement.
+- **Describe, never prescribe.** Nothing is a protocol. Keep the moderation guidance (Varieties of Contemplative Experience, Cheetah
+  House) and keep the narrative general; check with the author before adding anything about technique or intensity.
+- **Words.** Say *fascia* (not “sheet”) and *knots* or *perforators* (not “staples”). State things directly: the essays are credited in
+  About and at the top of the Library, not narrated (“the essay says”).
+- **Fair to every theory.** Each gets its strongest form, its best evidence and its sharpest test (`src/data/hypotheses.ts`); the
+  atlas menu uses its one- or two-word `label`.
 - **Verified references only.** Add papers to `src/data/papers.json` from PubMed E-utilities output (title/authors/venue/DOI), never
   from memory.
 

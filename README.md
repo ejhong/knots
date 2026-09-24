@@ -1,15 +1,14 @@
 # Knots of Existence 結
 
-**An atlas of the body’s held places.** A three-dimensional, open, long-running visualisation of what a “knot” might be — built
-around the perforator hypothesis — knots as stuck perforators, with the fascial sheet as a second system — in Eugene Jhong’s essay
-[Knots of Existence Hypotheses](https://ejhong.substack.com/p/knots-of-existence-hypotheses) (2026), set beside its rivals and beside the
-maps the contemplative traditions drew of the same ground.
+**An atlas of the body’s held places.** A three-dimensional, open, long-running visualisation of what a “knot” might be — the body’s
+perforators and fascia, the theories of what knots are, and the maps the contemplative traditions drew of the same ground. It grew
+from Eugene Jhong’s essays, which head the Library.
 
 **Live:** <https://ejhong.github.io/knots/>
 
-- **Introduction** — a guided tour in twelve chapters: press ▶ and the figure illustrates each one.
-- **Atlas** — the body drawn as ~100,000 perforators; knots as stuck ones. Press a knot and breathe out; drag age from 1 to 90; aggravate a
-  back ache; watch release climb the vessel trees toward their roots.
+- **Introduction** — nine short chapters; scroll the panel and the figure illustrates each one.
+- **Atlas** — the body drawn as ~100,000 perforators at their depths, with the fascia opened in layers, the deep channels and the knots;
+  choose a theory, set the age from 1 to 90, hover to inspect.
 - **Hypotheses** — seven answers, each at its strongest, with a comparison table.
 - **Traditions** — Chinese medicine, Daoist alchemy, yoga and tantra, Tibetan tsa lung and Dzogchen, Buddhist practice.
 - **Library** — verified references and a short history of knots.

@@ -26,7 +26,7 @@ const GLYPH: Record<string, string> = {
   attention: '観',
 };
 const index = [
-  ...HYPOTHESES.map((h, i) => ({ id: h.id, label: `${String(i + 1).padStart(2, '0')} ${h.name.split(' ·')[0]}` })),
+  ...HYPOTHESES.map((h, i) => ({ id: h.id, label: `${String(i + 1).padStart(2, '0')} ${h.label}` })),
   { id: 'compare', label: 'side by side' },
 ];
 ---
@@ -44,12 +44,12 @@ const index = [
     HYPOTHESES.map((h, i) => (
       <section class="sec hyp" id={h.id} data-glyph={GLYPH[h.id]}>
         <div class="hyp-head">
-          <span class="sw" style={`background:${h.color}`} />
           <h2>
             <span class="n mono">{String(i + 1).padStart(2, '0')}</span> {h.name}
           </h2>
           <span class="who mono">
-            {h.who} · {h.year}
+            {h.who}
+            {h.year ? ` · ${h.year}` : ''}
           </span>
           {h.ready ? (
             <a class="btn" href={`${base}/atlas/?h=${h.id}`}>
@@ -97,10 +97,7 @@ const index = [
             <th scope="col"></th>
             {
               HYPOTHESES.map((h) => (
-                <th scope="col">
-                  <span class="sw" style={`background:${h.color}`} />
-                  {h.name}
-                </th>
+                <th scope="col">{h.label}</th>
               ))
             }
           </tr>
@@ -119,10 +116,6 @@ const index = [
         </tbody>
       </table>
     </div>
-    <p class="note prose">
-      The perforator essay reads Johnson’s latch as the <em>live</em> form of the same clinging whose <em>stored</em> form is a
-      stuck staple, and agrees with the nerve and densification views about two of the three parts of its bundle.
-    </p>
   </section>
 </Doc>
 
@@ -147,13 +140,6 @@ const index = [
     font-weight: 400;
     color: var(--muted);
     margin-right: 4px;
-  }
-  .sw {
-    display: inline-block;
-    width: 14px;
-    height: 8px;
-    border-radius: 2px;
-    flex: none;
   }
   .who {
     font-size: 10px;
@@ -270,10 +256,6 @@ const index = [
   td {
     font-family: var(--font-serif);
     color: var(--text);
-  }
-  .note {
-    margin-top: 14px;
-    max-width: 760px;
   }
   @media (max-width: 700px) {
     .kv {

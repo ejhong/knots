@@ -17,9 +17,9 @@ float isoLine(float f, float widthPx) {
 `;
 
 /**
- * The sheet: skin and superficial fascia, drawn as an engraving — horizontal
- * contour lines like raked gravel, which turn into concentric rings around
- * each staple (major perforator), the way a rake circles a stone.
+ * The veil: the superficial fascia, drawn as an engraving — horizontal
+ * contour lines like raked gravel, which can turn into concentric rings
+ * around a major perforator, the way a rake circles a stone.
  */
 export function createSheetMaterial() {
   return new ShaderMaterial({
@@ -146,7 +146,7 @@ export function createSheetMaterial() {
 
 /**
  * The floor: deep fascia. Finer, crossed lines like woven aponeurosis, darker
- * and quieter than the sheet. Seen when the sheet is lifted or cut away.
+ * and quieter than the veil. Seen through the veil, or where it is cut away.
  */
 export function createFloorMaterial() {
   return new ShaderMaterial({

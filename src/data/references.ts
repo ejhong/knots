@@ -18,7 +18,6 @@ export type Tag =
   | 'imaging'
   | 'acupuncture'
   | 'anatomy'
-  | 'base-of-skull'
   | 'mind'
   | 'animals'
   | 'contemplative'
@@ -51,7 +50,7 @@ const EXTRA: Reference[] = [
     url: 'https://ejhong.substack.com/p/knots-of-existence-hypotheses',
     kind: 'essay',
     tags: ['essay', 'perforators', 'fascia', 'contemplative'],
-    note: 'The source of this site: knots as stuck perforators; the sheet as the second system; trees, gates, the base of the skull, the traditions, the experiments.',
+    note: 'Where this atlas began: knots as perforators held stuck, the fascia as a second system, trees of vessels, the traditions, and experiments to test it.',
   },
   {
     id: 'jhong2026a',
@@ -146,7 +145,7 @@ const EXTRA: Reference[] = [
     venue: 'Elsevier',
     kind: 'book',
     tags: ['anatomy'],
-    note: 'For the galea, the SMAS, the danger area of the scalp, and the fascial planes of the neck.',
+    note: 'For the galea, the SMAS, the superficial fascia and the fascial planes of the body.',
   },
 
   // Chinese medicine and Daoist alchemy.
@@ -198,7 +197,7 @@ const EXTRA: Reference[] = [
     venue: 'Rider',
     kind: 'text',
     tags: ['tradition', 'contemplative'],
-    note: 'The microcosmic orbit and its three gates — the tailbone, the mid-spine, and the Jade Pillow at the occiput.',
+    note: 'The microcosmic orbit, and the patience it asks for.',
   },
   {
     id: 'chia1983',
@@ -250,7 +249,7 @@ const EXTRA: Reference[] = [
     venue: 'Philosophical Library',
     kind: 'book',
     tags: ['tradition', 'contemplative'],
-    note: 'The Kriya lineage, which places the entry of the life-force at the medulla, at the base of the skull.',
+    note: 'The Kriya Yoga lineage, and its account of breath and the life-force.',
   },
 
   // Tibet: tsa lung, Dzogchen, the rainbow body.
@@ -318,6 +317,17 @@ const EXTRA: Reference[] = [
     note: 'After the awakening, a storm; the nāga king Mucalinda coils around the seated Buddha and spreads his hood above the head.',
   },
   {
+    id: 'dn2',
+    authors: 'Pāli Canon',
+    year: -400,
+    title: 'Sāmaññaphala Sutta (Dīgha Nikāya 2) — the fruits of the contemplative life',
+    venue: 'Dīgha Nikāya',
+    url: 'https://www.accesstoinsight.org/tipitaka/dn/dn.02.0.than.html',
+    kind: 'text',
+    tags: ['tradition', 'contemplative'],
+    note: 'The similes of the jhānas: rapture and pleasure suffusing the whole body, as water kneaded into a ball of bath powder soaks it through.',
+  },
+  {
     id: 'ingram2008',
     authors: 'Daniel M. Ingram',
     year: 2008,
@@ -359,7 +369,7 @@ const EXTRA: Reference[] = [
     url: 'https://howtounclench.com/',
     kind: 'web',
     tags: ['contemplative', 'breath'],
-    note: 'Practices of release, linked from the essay. Read the cautions first.',
+    note: 'Practices of release. Read the cautions first.',
   },
 ];
 
@@ -381,7 +391,6 @@ export const TAG_LABELS: Record<Tag, string> = {
   imaging: 'Imaging',
   acupuncture: 'Acupuncture',
   anatomy: 'Anatomy',
-  'base-of-skull': 'Base of the skull',
   mind: 'Mind',
   animals: 'Animals',
   contemplative: 'Contemplative',

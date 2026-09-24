@@ -2,6 +2,8 @@
  * A true-scale cross-section through the skin at one place: skin,
  * superficial fat, superficial fascia, the gliding plane, deep fascia,
  * muscle — with perforators, and a mark where a hypothesis puts the knot.
+ * The knot is always drawn the same way, in the one knot colour; only its
+ * place changes.
  * Pure SVG (a string), so it renders at build time on the Hypotheses page
  * and live in the atlas as the pointer moves.
  */
@@ -30,12 +32,9 @@ const PAL = {
     muscle: '#5a3a33',
     fibre: '#6e4a41',
     vessel: '#e6dccd',
+    band: '#9a6a5e',
     knot: '#e38a72',
-    latch: '#b9a5e0',
-    tp: '#e0b85f',
-    dens: '#7fc4bb',
-    nerve: '#8ea8d6',
-    mist: '#b59bbd',
+    nerve: '#d9c77a',
   },
   light: {
     text: '#3a3632',
@@ -48,12 +47,9 @@ const PAL = {
     muscle: '#d9b2a6',
     fibre: '#c49488',
     vessel: '#3a3632',
+    band: '#b88579',
     knot: '#c87868',
-    latch: '#7f68b4',
-    tp: '#b98a2b',
-    dens: '#3f8f86',
-    nerve: '#4f6f9e',
-    mist: '#a482ac',
+    nerve: '#a08a3a',
   },
 };
 
@@ -102,12 +98,6 @@ export function crossSectionSVG({ dSup, dDeep, hypothesis, region, tone = 'dark'
     const r = Math.min(5, (ySup - yDermis) / 2 - 1);
     if (r > 1.2) parts.push(`<ellipse cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" rx="${(r * 1.3).toFixed(1)}" ry="${r.toFixed(1)}" fill="none" stroke="${c.faint}" stroke-width="0.5" opacity="0.6"/>`);
   }
-  // Gliding plane: hyaluronan specks.
-  for (let i = 0; i < 26; i++) {
-    const px = x0 + 4 + ((i * 37) % (x1 - x0 - 8));
-    const py = ySup + 2 + (((i * 53) % 97) / 97) * Math.max(1, yDeep - ySup - 4);
-    parts.push(`<circle cx="${px.toFixed(1)}" cy="${py.toFixed(1)}" r="0.8" fill="${c.mist}" opacity="0.7"/>`);
-  }
   // Muscle fibres.
   for (let i = 0; i < 4; i++) {
     const fy = yDeep + 5 + i * ((yBottom - yDeep - 8) / 3);
@@ -127,39 +117,39 @@ export function crossSectionSVG({ dSup, dDeep, hypothesis, region, tone = 'dark'
     parts.push(`<line x1="${sx}" x2="${sx}" y1="${ySup + 3}" y2="${yDermis + 1}" stroke="${c.vessel}" stroke-width="0.7" opacity="0.8"/>`);
   }
 
-  // Where this hypothesis puts the knot.
-  const dot = (cx: number, cy: number, fill: string, r = 3.4) =>
-    parts.push(`<circle cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="${r}" fill="${fill}"/><circle cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="${r + 3}" fill="none" stroke="${fill}" stroke-width="0.8" opacity="0.6"/>`);
+  // Where this hypothesis puts the knot — always the same mark.
+  const dot = (cx: number, cy: number, r = 3.4) =>
+    parts.push(`<circle cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="${r}" fill="${c.knot}"/><circle cx="${cx.toFixed(1)}" cy="${cy.toFixed(1)}" r="${r + 3}" fill="none" stroke="${c.knot}" stroke-width="0.8" opacity="0.6"/>`);
   let note = '';
   switch (hypothesis) {
     case 'perforator':
-      dot(px, yDeep, c.knot, 3.6);
-      dot(mid + 38, ySup, c.knot, 2.4);
-      note = 'knot = collar where a perforator pierces a fascia';
+      dot(px, yDeep, 3.6);
+      dot(mid + 38, ySup, 2.4);
+      note = 'a perforator held where it pierces a fascia';
       break;
     case 'latch': {
       const ly = yDeep + (yBottom - yDeep) * 0.5;
-      parts.push(`<path d="M${mid - 60} ${ly} L ${mid + 40} ${ly}" stroke="${c.latch}" stroke-width="1.2" opacity="0.8"/>`);
-      dot(mid + 8, ly, c.latch, 3.2);
-      note = 'knot = latched arteriole inside muscle';
+      parts.push(`<path d="M${mid - 60} ${ly} L ${mid + 40} ${ly}" stroke="${c.vessel}" stroke-width="1" opacity="0.7"/>`);
+      dot(mid + 8, ly, 3.2);
+      note = 'a latched arteriole inside muscle';
       break;
     }
     case 'trigger-point': {
       const ty = yDeep + (yBottom - yDeep) * 0.55;
-      parts.push(`<line x1="${mid - 50}" x2="${mid + 60}" y1="${ty}" y2="${ty}" stroke="${c.tp}" stroke-width="3" opacity="0.55" stroke-linecap="round"/>`);
-      dot(mid + 10, ty, c.tp, 3.4);
-      note = 'knot = contraction knot in a taut band';
+      parts.push(`<line x1="${mid - 50}" x2="${mid + 60}" y1="${ty}" y2="${ty}" stroke="${c.band}" stroke-width="3" opacity="0.8" stroke-linecap="round"/>`);
+      dot(mid + 10, ty, 3.4);
+      note = 'a contraction knot in a taut band of muscle';
       break;
     }
     case 'densification':
-      parts.push(`<ellipse cx="${mid + 20}" cy="${((ySup + yDeep) / 2).toFixed(1)}" rx="34" ry="${Math.max(2.5, (yDeep - ySup) / 2 - 1).toFixed(1)}" fill="${c.dens}" opacity="0.45"/>`);
-      note = 'knot = densified hyaluronan in the gliding plane';
+      parts.push(`<ellipse cx="${mid + 20}" cy="${((ySup + yDeep) / 2).toFixed(1)}" rx="34" ry="${Math.max(2.5, (yDeep - ySup) / 2 - 1).toFixed(1)}" fill="${c.knot}" opacity="0.4"/>`);
+      note = 'thickened hyaluronan in the gliding plane';
       break;
     case 'nerve': {
       const nx = mid + 50;
       parts.push(`<path d="M${nx} ${yBottom} L ${nx} ${yDeep} L ${nx - 6} ${ySup} L ${nx - 10} ${yDermis}" fill="none" stroke="${c.nerve}" stroke-width="1.2"/>`);
-      dot(nx, yDeep, c.nerve, 3);
-      note = 'knot = sensitised nerve where it pierces fascia';
+      dot(nx, yDeep, 3);
+      note = 'a sensitised nerve where it pierces the fascia';
       break;
     }
     case 'central':

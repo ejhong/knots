@@ -76,7 +76,7 @@ export class KnotEmbers {
           vec4 mv = modelViewMatrix * vec4(p, 1.0);
           gl_Position = projectionMatrix * mv;
           // Rung sets the scale: a small collar is a pinpoint, a major one a coin.
-          float base = aLevel > 1.5 ? 0.012 : (aLevel > 0.5 ? 0.0072 : 0.0044);
+          float base = aLevel > 1.5 ? 0.012 : (aLevel > 0.5 ? 0.0072 : 0.0034);
           float breathe = 1.0 + 0.05 * sin(uTime * 0.9 + position.x * 40.0);
           float px = base * (0.45 + 0.75 * aKnot) * breathe * uProjScale / max(0.05, -mv.z);
           gl_PointSize = clamp(px, 2.2 * uPixelRatio, 80.0 * uPixelRatio);
@@ -99,7 +99,9 @@ export class KnotEmbers {
           float halo = exp(-r * r * 4.5);
           float big = vLevel / 2.0;
           vec3 col = mix(uKnot, uKnotCore, core * (0.3 + 0.5 * big));
-          float a = (core * 0.9 + halo * (0.35 + 0.35 * big)) * clamp(vKnot * 1.3, 0.0, 1.0);
+          // Micro-knots stay quiet: there are thousands of them.
+          float rung = vLevel > 0.5 ? 1.0 : 0.66;
+          float a = (core * 0.9 + halo * (0.35 + 0.35 * big)) * clamp(vKnot * 1.3, 0.0, 1.0) * rung;
           if (uGlowMode > 0.5) gl_FragColor = vec4(col * a, 1.0);
           else {
             if (a < 0.02) discard;

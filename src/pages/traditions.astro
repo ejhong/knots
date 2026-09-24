@@ -2,17 +2,16 @@
 import Doc from '../layouts/Doc.astro';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const CORRESPONDENCES = [
-  ['Ashi points, acupoints', 'China', 'Perforators held stuck — the staples', 'Heine: ~80% of points at fascial perforations; Langevin: 80% on connective-tissue planes; Maurer: bundles at only a few points'],
-  ['Sinew channels and their knots (結)', 'China', 'Attachment lines of the sheet, where folds pile up', 'Proposed; untested'],
+  ['Ashi points, acupoints', 'China', 'Perforators, held', 'Heine: ~80% of points at fascial perforations; Langevin: 80% on connective-tissue planes; Maurer: bundles at only a few points'],
+  ['Sinew channels and their knots (結)', 'China', 'Lines where the fascia is anchored to bone', 'Proposed; untested'],
   ['Cou li — the texture between skin and flesh', 'China', 'The superficial fascial plane', 'Proposed'],
-  ['Propagated sensation along the channel', 'China', 'Conducted vasodilation climbing a perforator tree', 'Speeds overlap (cm/s); untested together'],
-  ['The wind points — Fengchi, Fengfu, Yifeng, Fengmen', 'China', 'Roots of the posterior trees; gates of the sheet', 'Fengchi sits where the occipital artery and nerve come through the fascia'],
-  ['The Jade Pillow (玉枕), third gate of the orbit', 'Daoist', 'The occipital gate and the ring at the base of the skull', 'Anatomical convergence is real; the link is proposed'],
-  ['Channel-knots (rtsa mdud) untied by the winds', 'Tibet', 'Stuck states released by breath', 'Proposed'],
+  ['Propagated sensation along the channel', 'China', 'Conducted vasodilation along a perforator tree', 'Speeds overlap (cm/s); untested together'],
+  ['Channel-knots (rtsa mdud) untied by the winds', 'Tibet', 'Held states released by breath', 'Proposed'],
   ['Granthis — Brahma, Viṣṇu, Rudra', 'India', 'Knots along the midline, the last between the brows (the front root of the galea)', 'Proposed'],
-  ['Kuṇḍalinī rising; kriyās', 'India', 'Release travelling up trees; the sheet re-forming', 'Documented as experience (Lindahl 2017); mechanism open'],
-  ['Saṅkhāras as solidified sensations', 'Buddhist', 'Stored holds that dissolve under equanimous attention and breath', 'Proposed'],
-  ['Cupping and gua sha', 'China', 'Tools for the sheet: lift and shear the superficial plane', 'Mechanically plausible'],
+  ['Kuṇḍalinī rising; kriyās', 'India', 'Release travelling along trees; the fascia re-knitting', 'Documented as experience (Lindahl 2017); mechanism open'],
+  ['Saṅkhāras as solidified sensations', 'Buddhist', 'Held states that dissolve under equanimous attention and breath', 'Proposed'],
+  ['Rapture (pīti) suffusing the body', 'Buddhist', 'The skin’s small vessels opening widely at once — warmth, tingling, well-being', 'Proposed'],
+  ['Cupping and gua sha', 'China', 'Tools for the fascia: lift and shear the superficial plane', 'Mechanically plausible'],
 ];
 const index = [
   { id: 'reading', label: 'reading' },
@@ -21,7 +20,6 @@ const index = [
   { id: 'india', label: 'Yoga · tantra' },
   { id: 'tibet', label: 'Tibet' },
   { id: 'buddhist', label: 'Buddhist' },
-  { id: 'kriya', label: 'the medulla' },
   { id: 'japan', label: 'Japan' },
   { id: 'table', label: 'correspondences' },
 ];
@@ -39,9 +37,9 @@ const index = [
     <h2>A note on reading</h2>
     <div class="prose"><p>
         These maps were drawn from the inside, in their own vocabularies, over two thousand years. They are not anatomy, and this page
-        does not claim they were secretly describing it. What the essay proposes is narrower: where the traditions and modern reports
-        converge on a <em>location</em>, the location is often a real convergence in the anatomy — and a correspondence specific enough to
-        be coded blind and tested. Correspondence found after the fact is the weakest kind of evidence. Each map will be drawn on the same
+        does not claim they were secretly describing it. What is proposed here is narrower: where the traditions and modern reports agree
+        on a <em>place</em> in the body, the place is often a real structure in the anatomy — a correspondence specific enough to be coded
+        blind and checked. Correspondence found after the fact is the weakest kind of evidence. Each map will be drawn on the same
         body in the <a href={`${base}/atlas/`}>atlas</a> so they can be compared, point by point.
       </p></div>
   </section>
@@ -57,39 +55,30 @@ const index = [
         Governor (Du) up the back and the Conception (Ren) down the front.
       </p>
       <p>
-        The second is the sheet. The <em>Neijing</em> describes the <em>cou li</em> — the interstices between skin and flesh through which the
+        The second is the fascia. The <em>Neijing</em> describes the <em>cou li</em> — the interstices between skin and flesh through which the
         defensive qi circulates and through which pathogenic “wind” enters. And it describes the <em>jing jin</em>, twelve sinew channels of
         muscle and connective tissue whose defining feature is that each one <em>knots</em> — 結, jié, to bind or tie — at bony prominences:
-        ankle, knee, hip, shoulder, the occiput, the mastoid, the cheekbone. The Bladder sinew channel knots at the back of the head. Its
-        prescribed treatment is heat at the painful spot: fire needling and warm needling.
-      </p>
-      <p>
-        The points at the base of the skull carry the names of wind: <strong>Fengchi</strong> (GB 20, Wind Pool) in the hollow between trapezius
-        and sternocleidomastoid; <strong>Fengfu</strong> (GV 16, Wind Palace) at the midline below the occipital bump; <strong>Yifeng</strong> (TE
-        17, Wind Screen) behind the ear; <strong>Fengmen</strong> (BL 12, Wind Gate) beside the spine. A finger’s width above Fengfu,
-        on the bump itself, is <strong>Naohu</strong> (GV 17), the Brain’s Door. Needling and acupressure act at points; cupping and gua sha
-        act on the plane — lifting and shearing it until “sha” rises.
+        ankle, knee, hip, shoulder, the cheekbone. Their prescribed treatment is heat at the painful spot: fire needling and warm needling.
+        Needling and acupressure act at points; cupping and gua sha act on the plane — lifting and shearing it until “sha” rises.
       </p>
       <p>
         Chinese research has also documented, for decades, <em>propagated sensation along the channel</em>: stimulating a point produces warmth
-        or tingling that travels along the meridian at roughly one to ten centimetres a second, halted by pressure or cold — the profile, the
-        essay notes, of conducted vasodilation climbing a tree.
+        or tingling that travels along the meridian at roughly one to ten centimetres a second, halted by pressure or cold — much the profile
+        of conducted vasodilation travelling along a tree of vessels.
       </p>
     </div>
   </section>
 
-  <section id="daoist" class="sec" data-glyph="玉枕">
-    <h2>The orbit and its three gates</h2>
+  <section id="daoist" class="sec" data-glyph="周天">
+    <h2>The orbit</h2>
     <p class="label">Daoist internal alchemy</p>
     <div class="prose">
       <p>
         In <em>neidan</em>, internal alchemy, the practitioner circulates the breath-energy in the <em>microcosmic orbit</em>: up the Governor
-        vessel along the spine and over the head, down the Conception vessel in front. Three gates block the way up the back —
-        <strong>Weilü</strong> at the tailbone, <strong>Jiaji</strong> between the shoulder blades, and <strong>Yuzhen</strong>, the Jade Pillow, at
-        the occiput. The third is described as the hardest to open; its opening is described as light filling the head. Three dantian — below
-        the navel, at the heart, between the brows — are the fields in which the work is done.
+        vessel along the spine and over the head, down the Conception vessel in front, through gates along the way where the flow is said to
+        be blocked until the work opens them. Three dantian — below the navel, at the heart, between the brows — are the fields in which the
+        work is done. The manuals counsel patience: the orbit is opened over years, not forced.
       </p>
-      <p>This essay’s gate at the ridge is the Jade Pillow.</p>
     </div>
   </section>
 
@@ -125,8 +114,8 @@ const index = [
       <p>
         Dzogchen adds a channel of its own, the <em>kati</em> — a crystal tube connecting the heart to the eyes — and makes the tradition’s most
         extreme claim about the body at the end: the <strong>rainbow body</strong>, <em>’ja’ lus</em>, in which the body of a realised
-        practitioner is said to shrink at death and dissolve into light, leaving hair and nails. The essay’s own endpoint is humbler and
-        measurable: a body with all its perforators and none of its knots.
+        practitioner is said to shrink at death and dissolve into light, leaving hair and nails. On the perforator view the endpoint is
+        humbler, and measurable: a body with all its perforators open and none of its knots.
       </p>
     </div>
   </section>
@@ -137,27 +126,16 @@ const index = [
     <div class="prose">
       <p>
         In the Vipassana taught by S. N. Goenka, gross, solidified bodily sensations are <em>saṅkhāras</em> — congealed reactions — that
-        dissolve under equanimous attention and breath. The original essay noticed that this is, nearly word for word, the foam-rolling
-        protocol, with attention as the probe.
+        dissolve under equanimous attention and breath. This is, nearly word for word, the foam-rolling protocol, with attention as the
+        probe. And the suttas describe the rapture of deep concentration suffusing the whole body, as water kneaded into a ball of bath
+        powder soaks it through, within and without — the well-being that can come with a release.
       </p>
       <p>
         After the awakening, the Udāna says, a great storm came; the nāga king <strong>Mucalinda</strong> coiled his body around the seated
         Buddha and spread his hood above his head for seven days. In the iconography the hood is seven-headed, a canopy over the crown.
-        Beneath it sits the <em>uṣṇīṣa</em>, the rise at the top of the Buddha’s head. It is imagery, not evidence — but it rhymes with one of
-        the strangest reports in the essay: a layer at the back of the head that peels, and spreads forward over the face.
-      </p>
-    </div>
-  </section>
-
-  <section id="kriya" class="sec" data-glyph="延髄">
-    <h2>Where the life-force enters</h2>
-    <p class="label">The medulla</p>
-    <div class="prose">
-      <p>
-        The Kriya lineage places the entry of the life-force at the medulla, at the base of the skull — the same place accounts of awakening,
-        across traditions, locate the decisive release: low, at the back, felt inside the head. The anatomy there is a ring of attachments
-        around the foramen magnum — nuchal ligament behind, pharyngeal raphe in front, the myodural bridge between — which is why the essay
-        calls it the master tether, and why it is also the one place no one should press hard.
+        Beneath it sits the <em>uṣṇīṣa</em>, the rise at the top of the Buddha’s head. It is imagery, not evidence — but serpents recur
+        wherever the traditions describe what moves in the body: kuṇḍalinī coiled at the base of the spine, the nāga’s hood over the crown,
+        and the snake-like rising some practitioners report today.
       </p>
     </div>
   </section>
@@ -180,7 +158,7 @@ const index = [
     <div class="table-wrap">
       <table>
         <thead>
-          <tr><th>Traditional structure</th><th>Tradition</th><th>Proposed correlate (the essay)</th><th>Status</th></tr>
+          <tr><th>Traditional structure</th><th>Tradition</th><th>Proposed correlate</th><th>Status</th></tr>
         </thead>
         <tbody>
           {CORRESPONDENCES.map((r) => (
@@ -190,8 +168,8 @@ const index = [
       </table>
     </div>
     <p class="fine prose">
-      The essay lists the blind coding of these correspondences as a project (VASO-R006): that the classical points are perforators, the
-      sinew-channel knots are attachment lines, and the channels are the trees and planes between them.
+      Each can be checked blind: are the classical points perforators, are the sinew-channel knots the lines where the fascia is anchored,
+      and are the channels the trees and planes between them?
     </p>
   </section>
 </Doc>

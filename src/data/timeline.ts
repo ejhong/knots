@@ -27,7 +27,6 @@ export const TIMELINE: Moment[] = [
   { year: '1990', kind: 'medicine', text: 'The American College of Rheumatology fixes eighteen tender points for fibromyalgia.', ref: 'wolfe1990' },
   { year: '1993', kind: 'medicine', text: 'Hubbard and Berkoff record spontaneous needle-EMG activity at trigger points.', ref: 'hubbard1993' },
   { year: '1994', kind: 'medicine', text: 'McNulty and colleagues: mental arithmetic turns up the activity at a trigger point but not beside it. Quintner and Cohen propose the nerve alternative.', ref: 'mcnulty1994' },
-  { year: '1995', kind: 'anatomy', text: 'Hack and colleagues describe the myodural bridge, tying the suboccipital muscles to the dura.', ref: 'hack1995' },
   { year: '2002', kind: 'anatomy', text: 'Langevin and Yandow: 80% of acupoints lie on connective-tissue planes.', ref: 'langevin2002' },
   { year: '2005', kind: 'medicine', text: 'Shah’s microdialysis samples the acidic, mediator-rich milieu inside active trigger points.', ref: 'shah2005' },
   { year: '2009', kind: 'anatomy', text: 'Sikdar images trigger points as stiff hypoechoic nodules. Saint-Cyr names the perforasome.', ref: 'saintcyr2009' },
@@ -36,5 +35,5 @@ export const TIMELINE: Moment[] = [
   { year: '2017', kind: 'tradition', text: 'Lindahl, Britton and colleagues catalogue meditation-related challenges, including pressure that builds and releases.', ref: 'lindahl2017' },
   { year: '2018', kind: 'anatomy', text: 'Benias and colleagues describe a body-wide, fluid-filled interstitium in the fasciae and dermis.', ref: 'benias2018' },
   { year: '2023', kind: 'essay', text: 'Michael Edward Johnson proposes vasocomputation: vascular tension as memory, latches as hyperpriors.', ref: 'johnson2023' },
-  { year: '2026', kind: 'essay', text: 'Knots of Existence and Vasocomputation; then Knots of Existence Hypotheses — knots as stuck perforators, and the sheet.', ref: 'jhong2026' },
+  { year: '2026', kind: 'essay', text: 'Knots of Existence and Vasocomputation, then Knots of Existence Hypotheses: knots as perforators held stuck, and the fascia as a second system.', ref: 'jhong2026' },
 ];

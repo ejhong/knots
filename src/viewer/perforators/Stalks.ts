@@ -152,7 +152,7 @@ export class Stalks {
       m.blending = t.glow ? AdditiveBlending : NormalBlending;
       m.needsUpdate = true;
     }
-    const a = t.glow ? [0.034, 0.16, 0.5] : [0.05, 0.2, 0.55];
+    const a = t.glow ? [0.022, 0.16, 0.5] : [0.035, 0.2, 0.55];
     this.lineMaterial.uniforms.uAlpha.value.set(a[0], a[1], a[2]);
   }
 }
@@ -292,7 +292,7 @@ function createCollarMaterial() {
         float ring = 1.0 - smoothstep(width, width + px * 1.5, abs(r - 0.66));
         float fill = (1.0 - smoothstep(0.62, 0.66, r)) * vKnot * 0.35;
         vec3 col = mix(uColor, uKnot, vKnot);
-        float a = ring * (vLevel > 1.5 ? 0.85 : 0.5) + fill;
+        float a = ring * (vLevel > 1.5 ? 0.6 : 0.34) + fill;
         if (uGlowMode > 0.5) gl_FragColor = vec4(col * a, 1.0);
         else {
           if (a < 0.01) discard;

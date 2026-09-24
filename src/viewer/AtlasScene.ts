@@ -24,7 +24,6 @@ import { Interaction } from './interaction/Interaction';
 import { Pulses } from './perforators/Pulses';
 import { RootMarkers } from './perforators/RootMarkers';
 import { Stalks } from './perforators/Stalks';
-import { Interstitium } from './body/Interstitium';
 import {
   EXPLODE_WEIGHT,
   REGIONS,
@@ -67,7 +66,6 @@ export class AtlasScene {
   pulses!: Pulses;
   rootMarkers!: RootMarkers;
   stalks!: Stalks;
-  interstitium!: Interstitium;
   embers!: KnotEmbers;
   channels!: Channels;
   graph!: MeshGraph;
@@ -201,19 +199,6 @@ export class AtlasScene {
     this.cloud.setLiftWeights(this.perfLift);
     this.stalks = new Stalks(this.ladder, this.perfDepth, this.perfSup, this.perfLift);
     this.embers = new KnotEmbers(this.ladder, this.perfDepth, this.perfSup, this.perfLift);
-    const refGrid = new PointGrid(this.refPositions, 0.012);
-    this.interstitium = new Interstitium(
-      body,
-      window.matchMedia?.('(max-width: 760px)').matches ? 14000 : 36000,
-      (x, y, z) => {
-        const j = refGrid.nearest(x, y, z, 0.03);
-        return j < 0 ? 0 : j;
-      },
-      this.ladder.count,
-      this.depth,
-      this.supDepth,
-      this.liftWeight,
-    );
     this.graph = buildMeshGraph(body.positions, withDiagonals(body.triangles, body.subdivision.fineQuads));
     const radiusFine = body.refineScalar(this.segmentation.radius);
     this.latch = new LatchKnots(body, 20000, this.zoneField, this.depth, (v) => radiusFine[v]);
@@ -234,7 +219,6 @@ export class AtlasScene {
       this.channels.lines,
       this.channels.beads,
       this.trees.lines,
-      this.interstitium.points,
       this.stalks.lines,
       this.cloud.points,
       this.stalks.collars,
@@ -254,7 +238,6 @@ export class AtlasScene {
       this.trees.applyTheme(t);
       this.rootMarkers.applyTheme(t);
       this.stalks.applyTheme(t);
-      this.interstitium.applyTheme(t);
       this.embers.applyTheme(t);
       this.channels.applyTheme(t);
       this.latch.applyTheme(t);
@@ -364,11 +347,10 @@ export class AtlasScene {
 
   private applyKnotVisibility() {
     const perf = this.hypothesis === 'perforator';
-    // Stalks, collars and gel show the perforator knots only in that view.
+    // Stalks and collars show the perforator knots only in that view, and
+    // only while knots are shown: otherwise every perforator is plain.
     if (!this.zeroKnots) this.zeroKnots = new Float32Array(this.ladder.count);
-    const k = perf ? this.sim.knot : this.zeroKnots;
-    this.stalks.setKnots(k);
-    this.interstitium.setKnots(k);
+    this.stalks.setKnots(this.knotsOn && perf ? this.sim.knot : this.zeroKnots);
     this.embers.points.visible = this.knotsOn && perf;
     this.rootMarkers.material.uniforms.uKnotAlpha.value = this.knotsOn && perf ? 1 : 0;
     this.latch.setVisible(this.knotsOn && this.hypothesis === 'latch');
@@ -383,8 +365,7 @@ export class AtlasScene {
     this.embers.setKnots(this.sim.knot);
     const perf = this.hypothesis === 'perforator';
     if (!this.zeroKnots) this.zeroKnots = new Float32Array(this.ladder.count);
-    this.stalks.setKnots(perf ? this.sim.knot : this.zeroKnots);
-    this.interstitium.setKnots(perf ? this.sim.knot : this.zeroKnots);
+    this.stalks.setKnots(this.knotsOn && perf ? this.sim.knot : this.zeroKnots);
     this.rootMarkers.knot.set(this.sim.rootKnot);
     this.rootMarkers.flash.set(this.sim.rootFlash);
     this.rootMarkers.update();
@@ -476,7 +457,6 @@ export class AtlasScene {
     this.picker?.refit();
     this.stalks?.refresh(this.cloud.positions, this.cloud.normals);
     this.embers?.refresh(this.cloud.positions, this.cloud.normals);
-    this.interstitium?.refresh(this.body, this.cloud.positions);
     if (this.rootMarkers) {
       // Roots sit where the source vessel meets the deep fascia.
       this.roots.forEach((r, i) => {
@@ -526,7 +506,6 @@ export class AtlasScene {
       this.trees.material,
       this.stalks.lineMaterial,
       this.stalks.collarMaterial,
-      this.interstitium.material,
       this.rootMarkers.material,
       this.layers.floorMaterial,
       this.layers.sheetMaterial,
@@ -559,7 +538,6 @@ export class AtlasScene {
         break;
       case 'fascia':
         this.layers.sheet.visible = on;
-        this.interstitium.points.visible = on;
         this.layers.floorMaterial.uniforms.uLineAlpha.value = on ? 0.45 : 0.12;
         break;
       case 'vessels':
@@ -612,10 +590,6 @@ export class AtlasScene {
     eu.uProjScale.value = projScale;
     eu.uPixelRatio.value = pr;
     eu.uTime.value = time;
-    const iu = this.interstitium.material.uniforms;
-    iu.uTime.value = time;
-    iu.uProjScale.value = projScale;
-    iu.uPixelRatio.value = pr;
     this.trees.material.uniforms.uInsetScale.value = 1;
     this.channels.beadMaterial.uniforms.uProjScale.value = projScale;
     this.latch.pointMaterial.uniforms.uProjScale.value = projScale;

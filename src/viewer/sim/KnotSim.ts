@@ -6,7 +6,7 @@ import { Breath } from './Breath';
  * The first family: knots as stuck perforators.
  *
  * Each perforator (and each root trunk) carries three coupled states at
- * three timescales — the essay's composite memory element:
+ * three timescales — a composite memory element:
  *   tone   the arteriole's constriction (seconds; sympathetic, breath-gated)
  *   gel    the hyaluronan collar around the bundle (minutes; gels when the
  *          vessel starves its own tissue acid and cool, melts with warmth,
@@ -16,10 +16,8 @@ import { Breath } from './Breath';
  * — makes each site bistable: open, or stuck. A knot is a stuck state, not a
  * structure; the perforator stays either way.
  *
- * Trees couple the sites: a downstream vessel cannot stay open while its
- * trunk is shut, and a dilation conducts upstream toward the root. So local
- * clearing is temporary until the root clears, and the felt release migrates
- * toward the ridge.
+ * Trees couple the sites: a tight trunk holds its branches, and a dilation
+ * conducts upstream toward the root.
  */
 export interface ReleaseEvent {
   node: number;
@@ -130,7 +128,7 @@ export class KnotSim {
   /**
    * Knot burden across a life. Near zero in infancy; rising through midlife
    * as cutaneous microvascular function declines and resting sympathetic
-   * tone climbs (the essay's two curves "never laid on top of each other").
+   * tone climbs (two curves never yet laid on top of each other).
    */
   static burden(age: number): number {
     const a = Math.max(0, age);
@@ -283,6 +281,18 @@ export class KnotSim {
     for (const [i, w] of nodes) {
       this.shear[i] = Math.max(this.shear[i], w * strength);
       this.press[i] = Math.max(this.press[i], w * strength * 0.6);
+    }
+  }
+
+  /**
+   * A slow, relaxing breath reaching these sites: the vessel opens and the
+   * collar thins, so each lets go on the next step (with its spark).
+   */
+  soften(nodes: Iterable<number>) {
+    for (const i of nodes) {
+      this.tone[i] = Math.min(this.tone[i], 0.22);
+      this.gel[i] *= 0.1;
+      this.nerve[i] *= 0.4;
     }
   }
 

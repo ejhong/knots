@@ -13,16 +13,16 @@ export interface RootDef {
   id: string;
   name: string;
   region: 'head' | 'neck' | 'trunk' | 'back' | 'pelvis' | 'arm' | 'leg';
-  /** Where the trunk enters the sheet, in atlas language. */
+  /** Where the trunk enters the fascia, in atlas language. */
   note: string;
   bilateral: boolean;
   at: Locator;
-  /** Marks the gates the essay names: roots at attachment lines. */
+  /** Roots at attachment lines, where the fascia is anchored. */
   gate?: boolean;
 }
 
 export const ROOTS: RootDef[] = [
-  // Head — "on the order of ten trunks enter the sheet of the head".
+  // Head — on the order of ten trunks feed the scalp and face.
   {
     id: 'occipital',
     name: 'Occipital artery · greater occipital nerve',
@@ -92,7 +92,7 @@ export const ROOTS: RootDef[] = [
     id: 'deep-cervical',
     name: 'Deep cervical',
     region: 'neck',
-    note: 'Paraspinal perforators of the back of the neck, upstream of the occipital gate.',
+    note: 'Paraspinal perforators of the back of the neck.',
     bilateral: true,
     at: { ray: { mid: ['neck', 'head'], o: [0.018, -0.01, 0.0] }, dir: [0.35, 0, -1] },
   },
@@ -218,7 +218,7 @@ export const ROOTS: RootDef[] = [
     id: 'cluneal',
     name: 'Superior cluneal nerves',
     region: 'back',
-    note: 'Where the cluneal nerves pierce the thoracolumbar fascia at the iliac crest — a recognised entrapment, and one of the roots the essay names.',
+    note: 'Where the cluneal nerves pierce the thoracolumbar fascia at the iliac crest — a recognised entrapment.',
     bilateral: true,
     gate: true,
     at: { ray: { j: 'spine-4', o: [0.07, -0.05, 0.0] }, dir: [0.45, 0, -1] },

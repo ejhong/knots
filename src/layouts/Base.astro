@@ -12,7 +12,7 @@ interface Props {
 }
 const {
   title,
-  description = 'Knots of Existence — an atlas of the body’s held places: a three-dimensional introduction to knots, the perforator hypothesis and the fascial sheet, its rivals, and the maps the contemplative traditions drew of the same ground.',
+  description = 'Knots of Existence — an atlas of the body’s held places: a three-dimensional introduction to knots, perforators and fascia, the theories of what knots are, and the maps the contemplative traditions drew of the same ground.',
   app = false,
   current = '',
 } = Astro.props;
@@ -52,8 +52,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site);
           <Enso size={30} seed={11} />
           <p class="mono">Knots of Existence · © 2026 Eugene Jhong</p>
           <p class="mono links">
-            <a href="https://ejhong.substack.com/p/knots-of-existence-hypotheses">the essay</a>
-            <a href="https://ejhong.substack.com/p/knots-of-existence-and-vasocomputation">the original essay</a>
+            <a href={`${base}/library/#essays`}>essays</a>
             <a href="https://github.com/ejhong/knots">source</a>
             <a href="https://ejhong.github.io/om/">the OM project</a>
           </p>

@@ -7,7 +7,7 @@ export type ThemeName = 'paper' | 'night';
  * so the canvas and the page read as one surface.
  *
  * Palette: washi paper and sumi ink, with one accent — shu (朱), the vermilion
- * of a seal — reserved for knots. Map overlays use traditional Japanese
+ * of a seal — reserved for knots, whatever the hypothesis. Map overlays use traditional Japanese
  * colours (see src/viewer/maps/palette.ts).
  */
 export interface SceneTheme {
@@ -28,9 +28,6 @@ export interface SceneTheme {
   pulse: Color;
   gold: Color;
   halo: Color;
-  /** The interstitial mist, and its gel around a stuck staple. */
-  mist: Color;
-  gel: Color;
   /** 0 for paper (ink on light), 1 for ink stone (light on dark). */
   glow: number;
 }
@@ -60,8 +57,6 @@ export const THEMES: Record<ThemeName, SceneTheme> = {
     pulse: c('#5f935f'),
     gold: c('#9a8a78'),
     halo: c('#ffffff'),
-    mist: c('#a482ac'),
-    gel: c('#6b4a73'),
     glow: 0,
   },
   night: {
@@ -81,8 +76,6 @@ export const THEMES: Record<ThemeName, SceneTheme> = {
     pulse: c('#9dcc9a'),
     gold: c('#c9a45f'),
     halo: c('#c4b8a8'),
-    mist: c('#b59bbd'),
-    gel: c('#f0e2f4'),
     glow: 1,
   },
 };

@@ -11,7 +11,7 @@ import {
 import type { SceneTheme } from '../engine/theme';
 
 /**
- * Roots as small open rings — the gates where a trunk enters the sheet.
+ * Roots as small open rings — where a source vessel reaches the fascia.
  * A stuck root fills with an ember; a released root flares.
  */
 export class RootMarkers {

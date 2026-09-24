@@ -4,11 +4,11 @@ import type { BodyModel } from './BodyModel';
 import { applyFloorTheme, applySheetTheme, createFloorMaterial, createSheetMaterial } from './materials';
 
 /**
- * The two surfaces of the essay's second system:
+ * The two surfaces of the fascia, the second system:
  *  - the floor — deep fascia, an opaque surface a few millimetres in, which
  *    also hides the far side of the constellation;
- *  - the sheet — skin and superficial fascia, an engraved veil that can be
- *    lifted off the floor to open the interstitial plane between them.
+ *  - the veil (`sheet` in code) — the superficial fascia, engraved, lifted
+ *    off the floor in the exploded view to open the gliding plane between.
  */
 export class BodyLayers {
   readonly floorGeometry = new BufferGeometry();

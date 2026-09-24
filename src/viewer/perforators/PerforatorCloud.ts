@@ -19,8 +19,11 @@ import { LAYERS_GLSL, LAYER_UNIFORMS, WINDOW_GLSL, WINDOW_UNIFORMS } from '../bo
 /**
  * The figure as a constellation: every point is a perforator. Points are
  * lit like a relief (brighter where the skin faces the light), so the
- * 100,000 staples read as the body itself. A stuck perforator swells into an
- * ember — a knot; a release flares as a star.
+ * 100,000 perforators read as the body itself. The rungs share one colour and
+ * differ by size and brightness: small ones a faint dust, medium ones clear
+ * dots, major ones larger and brighter. (Where each pierces a fascia is drawn
+ * as a ring by Stalks.) Knots are drawn separately (KnotEmbers), in the one
+ * knot colour; a release flares here as a star.
  */
 export class PerforatorCloud {
   readonly points: Points;
@@ -124,8 +127,10 @@ export function createCloudMaterial() {
       uLight: { value: new Vector3(-0.4, 0.7, 0.6).normalize() },
       uProjScale: { value: 800 },
       uPixelRatio: { value: 1 },
-      uSize: { value: new Vector3(0.0015, 0.0024, 0.0036) },
+      uSize: { value: new Vector3(0.0013, 0.0024, 0.0042) },
       uLevelAlpha: { value: new Vector3(1, 1, 1) },
+      /** Brightness by rung: small, medium, major. */
+      uLevelTone: { value: new Vector3(0.34, 0.8, 1.0) },
       uGlowMode: { value: 1 },
       uTime: { value: 0 },
       uBreath: { value: 0 },
@@ -148,6 +153,7 @@ export function createCloudMaterial() {
       uniform float uPixelRatio;
       uniform vec3 uSize;
       uniform vec3 uLevelAlpha;
+      uniform vec3 uLevelTone;
       uniform float uTime;
       uniform float uBreath;
       ${LAYERS_GLSL}
@@ -178,6 +184,7 @@ export function createCloudMaterial() {
         float lvl = aLevel;
         float base = lvl < 0.5 ? uSize.x : (lvl < 1.5 ? uSize.y : uSize.z);
         float la = lvl < 0.5 ? uLevelAlpha.x : (lvl < 1.5 ? uLevelAlpha.y : uLevelAlpha.z);
+        la *= lvl < 0.5 ? uLevelTone.x : (lvl < 1.5 ? uLevelTone.y : uLevelTone.z);
         // Micro-knots read as a warm tint; medium and major knots swell.
         float k = aKnot * uKnotScale * (aLevel < 0.5 ? 0.55 : 1.0);
         float halo = 1.0 + k * (0.9 + lvl * lvl * 1.1) + aFlash * (5.0 + lvl * 4.0) + aGlow * 1.5;

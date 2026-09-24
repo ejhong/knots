@@ -17,10 +17,11 @@ import { KnotSim } from '../sim/KnotSim';
 
 /**
  * Johnson's vascular latch, in the body: knots as latched arterioles inside
- * skeletal muscle — beneath the deep fascia, where the original essay placed
- * the latch. Drawn as lavender embers on short arteriole segments, seen
- * through the fascia. The sites gather in the same stress zones, and follow
- * the same age curve, as the perforator knots, so the two can be compared.
+ * skeletal muscle, beneath the deep fascia. Drawn as knot embers — the same
+ * colour and form as every other view's knots — on short arteriole segments
+ * in the vessel colour, seen through the fascia. The sites gather in the
+ * same stress zones, and follow the same age curve, as the perforator knots,
+ * so the two can be compared.
  */
 export class LatchKnots {
   readonly points: Points;
@@ -201,8 +202,10 @@ export class LatchKnots {
   }
 
   applyTheme(t: SceneTheme) {
+    this.pointMaterial.uniforms.uColor.value.copy(t.knot);
+    this.pointMaterial.uniforms.uCore.value.copy(t.knotCore);
+    this.lineMaterial.uniforms.uColor.value.copy(t.tree);
     for (const m of [this.pointMaterial, this.lineMaterial]) {
-      m.uniforms.uColor.value.copy(t.glow ? new Color('#b9a5e0') : new Color('#7f68b4'));
       m.uniforms.uGlowMode.value = t.glow;
       m.blending = t.glow ? AdditiveBlending : NormalBlending;
       m.needsUpdate = true;
@@ -212,6 +215,7 @@ export class LatchKnots {
 
 const COMMON_UNIFORMS = () => ({
   uColor: { value: new Color() },
+  uCore: { value: new Color() },
   uGlowMode: { value: 1 },
   uProjScale: { value: 800 },
   uPixelRatio: { value: 1 },
@@ -250,6 +254,7 @@ function createPointMaterial() {
     `,
     fragmentShader: /* glsl */ `
       uniform vec3 uColor;
+      uniform vec3 uCore;
       uniform float uGlowMode;
       uniform vec4 uClip;
       uniform float uClipOn;
@@ -259,15 +264,15 @@ function createPointMaterial() {
         if (uClipOn > 0.5 && dot(vClipPos, uClip.xyz) > uClip.w) discard;
         float r = length(gl_PointCoord * 2.0 - 1.0);
         if (r > 1.0) discard;
-        // A small diamond core — a latched ring of smooth muscle — in a soft halo.
-        vec2 q = abs(gl_PointCoord * 2.0 - 1.0);
-        float core = 1.0 - smoothstep(0.32, 0.42, q.x + q.y);
-        float halo = exp(-r * r * 4.0);
-        float a = (core * 0.9 + halo * 0.4) * vA;
-        if (uGlowMode > 0.5) gl_FragColor = vec4(uColor * a, 1.0);
+        // The same ember as a perforator knot: a bright core in a soft halo.
+        float core = 1.0 - smoothstep(0.22, 0.4, r);
+        float halo = exp(-r * r * 4.5);
+        vec3 col = mix(uColor, uCore, core * 0.55);
+        float a = (core * 0.9 + halo * 0.5) * vA;
+        if (uGlowMode > 0.5) gl_FragColor = vec4(col * a, 1.0);
         else {
           if (a < 0.02) discard;
-          gl_FragColor = vec4(uColor, a);
+          gl_FragColor = vec4(col, a);
         }
       }
     `,
@@ -288,7 +293,7 @@ function createLineMaterial() {
         vClipPos = position;
         vec3 viewDir = normalize(cameraPosition - position);
         float facing = dot(normalize(normal), viewDir);
-        vA = aKnot < 0.02 ? 0.0 : clamp(aKnot, 0.0, 1.0) * smoothstep(0.05, 0.35, facing) * 0.55;
+        vA = aKnot < 0.02 ? 0.0 : clamp(aKnot, 0.0, 1.0) * smoothstep(0.05, 0.35, facing) * 0.45;
         gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
       }
     `,

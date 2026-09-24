@@ -4,6 +4,12 @@ import { preferredTheme } from '../engine/theme';
 import { CHAPTERS, type Chapter } from '../../data/tour';
 
 const fmt = new Intl.NumberFormat('en-US');
+/** A fixed pseudo-random number in [0, 1) for an integer. */
+const hash = (i: number) => {
+  let x = Math.imul(i ^ 0x9e3779b9, 0x85ebca6b);
+  x = Math.imul(x ^ (x >>> 13), 0xc2b2ae35);
+  return ((x ^ (x >>> 16)) >>> 0) / 4294967296;
+};
 
 /**
  * The introduction as a guided tour: each chapter sets a scene in the
@@ -43,7 +49,7 @@ export function mountTour(viz: HTMLElement, panel: HTMLElement) {
     scene.setVisible('channels', false);
     engine.start();
     engine.onFrame(({ dt }) => {
-      // Ease the sheet's lift.
+      // Ease the layers apart.
       if (Math.abs(lift - liftTarget) > 0.002) {
         lift += (liftTarget - lift) * Math.min(1, dt * 1.6);
         scene.setLift(lift);
@@ -116,14 +122,15 @@ export function mountTour(viz: HTMLElement, panel: HTMLElement) {
     cu.uLevelAlpha.value.set(1, 1, 1);
     scene.rootMarkers.points.visible = true;
     scene.trees.material.uniforms.uAlpha.value = 0.34 * (s.trees ?? 1);
-    if (s.age !== undefined && Math.abs(scene.body.shape.age - s.age) > 0.01) {
-      scene.setShape({ age: s.age });
-      scene.settle(s.age);
-    }
+    if (s.age !== undefined && Math.abs(scene.body.shape.age - s.age) > 0.01) scene.setShape({ age: s.age });
+    // Every chapter starts from the same held state: releases shown in one
+    // chapter do not carry into the next.
+    scene.settle(scene.body.shape.age);
     // The fascial layers and the perforators' stalks appear only in the
-    // chapters about them; elsewhere the figure is its skin of staples.
+    // chapters about them; elsewhere the figure is its skin of perforators.
     const layers = !!s.layers;
     scene.setVisible('fascia', layers);
+    scene.setVisible('channels', !!s.channels);
     scene.stalks.lines.visible = layers;
     scene.stalks.collars.visible = layers;
     scene.setWindowOn(!!s.window);
@@ -184,44 +191,64 @@ export function mountTour(viz: HTMLElement, panel: HTMLElement) {
     };
     const target = () => scene.engine.controls.target.clone();
     switch (kind) {
+      case 'breath': {
+        // A slow, relaxing breath: many of the small knots let go at once, in
+        // a wave from the neck down, and drift back over the following
+        // seconds; the breath comes round again. Between breaths, pressure
+        // finds one knot at a time.
+        const L = scene.ladder;
+        const P = scene.cloud.positions;
+        let queue: [number, number][] = [];
+        let k = 0;
+        let t = 0;
+        let cycle = 0;
+        const wave = () => {
+          const h = scene.body.height();
+          queue = [];
+          k = 0;
+          t = 0;
+          for (let i = 0; i < L.count; i++) {
+            if (!scene.sim.stuck[i] || L.level[i] !== 0 || hash(i + cycle * 7919) > 0.6) continue;
+            const drop = Math.max(0, Math.min(1, (h * 0.9 - P[i * 3 + 1]) / (h * 0.55)));
+            queue.push([i, drop * 2.6 + hash(i * 7 + 3) * 0.7]);
+          }
+          queue.sort((a, b) => a[1] - b[1]);
+          cycle++;
+        };
+        let untilWave = 1.4;
+        let untilPress = 7;
+        offs.push(
+          scene.engine.onFrame(({ dt }) => {
+            untilWave -= dt;
+            if (untilWave <= 0) {
+              wave();
+              untilWave = 16;
+            }
+            t += dt;
+            const batch: number[] = [];
+            while (k < queue.length && queue[k][1] <= t) batch.push(queue[k++][0]);
+            if (batch.length) scene.sim.soften(batch);
+            untilPress -= dt;
+            if (untilPress <= 0) {
+              untilPress = 3.2;
+              if (untilWave > 5 && scene.sim.breath.phase !== 'inhale') releaseNear(target(), 0.14, () => true);
+            }
+          }) as () => void,
+        );
+        break;
+      }
       case 'release':
         every(3.2, () => {
           if (scene.sim.breath.phase === 'inhale') return;
           releaseNear(target(), 0.12, () => true);
         });
         break;
-      case 'pulse-occiput': {
-        const L = scene.ladder;
-        const occ = new Set(scene.roots.map((r, k) => (r.def.id === 'occipital' ? k : -1)).filter((k) => k >= 0));
-        every(2.6, () => {
-          releaseNear(target(), 0.2, (i) => occ.has(L.root[i]));
-        });
-        break;
-      }
-      case 'gate': {
-        const occ = scene.roots.map((r, k) => (r.def.id === 'occipital' || r.def.id === 'deep-cervical' ? k : -1)).filter((k) => k >= 0);
-        let t = 0;
-        offs.push(
-          scene.engine.onFrame(({ dt }) => {
-            t += dt;
-            const v = 0.5 + 0.5 * Math.sin(t * 1.4);
-            for (const k of occ) scene.rootMarkers.hover[k] = v;
-            scene.rootMarkers.update();
-          }) as () => void,
-        );
-        offs.push(() => {
-          scene.rootMarkers.hover.fill(0);
-          scene.rootMarkers.update();
-        });
-        every(4, () => releaseNear(target(), 0.1, () => true));
-        break;
-      }
       case 'ladder': {
         const L = scene.ladder;
         const counts = [0, 0, 0];
         for (let i = 0; i < L.count; i++) counts[L.level[i]]++;
         const stages: [number, number, number, string, string][] = [
-          [0, 0, 0, `~${scene.roots.length / 2 | 0} × 2`, 'roots · source arteries entering the sheet'],
+          [0, 0, 0, `~${scene.roots.length / 2 | 0} × 2`, 'source arteries · the roots of the trees'],
           [0, 0, 1, fmt.format(counts[2]), 'major perforators (≥ 0.5 mm) — Taylor & Palmer counted 374'],
           [0, 1, 1, fmt.format(counts[1]), 'medium perforators'],
           [1, 1, 1, fmt.format(counts[0] + counts[1] + counts[2]), 'perforators in all — one every 4–5 mm of skin'],

@@ -1,6 +1,6 @@
 ---
 import Doc from '../layouts/Doc.astro';
-import { REFERENCES, TAG_LABELS, type Tag } from '../data/references';
+import { REFERENCES, TAG_LABELS, refById, type Tag } from '../data/references';
 import { TIMELINE } from '../data/timeline';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const tagCounts = new Map<Tag, number>();
@@ -8,8 +8,11 @@ for (const r of REFERENCES) for (const t of r.tags) tagCounts.set(t, (tagCounts.
 const tags = [...tagCounts.entries()].sort((a, b) => b[1] - a[1]).map(([t]) => t);
 const KIND: Record<string, string> = { paper: 'paper', book: 'book', text: 'text', web: 'web', essay: 'essay' };
 const yearLabel = (y: number) => (y < 0 ? `c. ${-y} BCE` : String(y));
-const KIND_COLOR: Record<string, string> = { tradition: 'var(--plum)', essay: 'var(--terracotta)', anatomy: 'var(--stone)', medicine: 'var(--accent-dark)' };
+const KIND_COLOR: Record<string, string> = { tradition: 'var(--plum)', essay: 'var(--text)', anatomy: 'var(--stone)', medicine: 'var(--accent-dark)' };
+// The essays this atlas grew from, first, for anyone who wants to read further.
+const ESSAYS = ['jhong2026', 'jhong2026a', 'johnson2023'].map((id) => refById(id)!);
 const index = [
+  { id: 'essays', label: 'essays' },
   { id: 'history', label: 'a short history of knots' },
   { id: 'sources', label: `${REFERENCES.length} sources` },
 ];
@@ -23,6 +26,26 @@ const index = [
   glyph="典"
   index={index}
 >
+  <section id="essays" class="sec" data-glyph="文">
+    <h2>Essays</h2>
+    <p class="intro">The essays this atlas grew from, for reading further.</p>
+    <ol class="essays">
+      {
+        ESSAYS.map((r) => (
+          <li>
+            <a class="e-title" href={r.url} rel="noopener">
+              {r.title}
+            </a>
+            <span class="e-by mono">
+              {r.authors} · {r.venue}
+            </span>
+            <p class="e-note">{r.note}</p>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
   <section id="history" class="sec" data-glyph="史">
     <h2>A short history of knots</h2>
     <ol class="timeline">
@@ -125,6 +148,46 @@ const index = [
     font-size: 15px;
     font-weight: 700;
     margin-bottom: 12px;
+  }
+  .intro {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 12.5px;
+    color: var(--muted);
+    margin: -6px 0 12px;
+  }
+  .essays {
+    list-style: none;
+    display: grid;
+    gap: 14px;
+  }
+  .essays li {
+    display: grid;
+    gap: 2px;
+    padding-left: 14px;
+    border-left: 2px solid var(--frame-accent);
+  }
+  .e-title {
+    font-family: var(--font-serif);
+    font-size: 16px;
+    font-weight: 700;
+    line-height: 1.3;
+    text-decoration: none;
+    color: var(--text);
+  }
+  .e-title:hover {
+    text-decoration: underline;
+  }
+  .e-by {
+    font-size: 9.5px;
+    color: var(--muted);
+  }
+  .e-note {
+    font-family: var(--font-serif);
+    font-size: 12.5px;
+    line-height: 1.5;
+    max-width: 760px;
+    margin-top: 3px;
   }
   .timeline {
     list-style: none;

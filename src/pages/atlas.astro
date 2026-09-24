@@ -3,7 +3,6 @@ import Base from '../layouts/Base.astro';
 import Enso from '../components/Enso.astro';
 import { HYPOTHESES } from '../data/hypotheses';
 import { MAP_GROUPS } from '../data/mapIndex';
-import { SCENARIOS } from '../viewer/sim/scenarios';
 import '../styles/app.css';
 const AGES = [1, 5, 10, 18, 25, 35, 45, 55, 70, 90];
 const pct = (a: number) => ((a - 1) / 89) * 100;
@@ -17,29 +16,28 @@ const MAP_COLORS: Record<string, string> = {
   sabi: '#6fa7a2',
 };
 ---
-<Base title="Atlas" app current="atlas" description="An interactive three-dimensional atlas of the body’s perforators, fascia and knots, with rival hypotheses and traditional maps for comparison.">
+<Base title="Atlas" app current="atlas" description="An interactive three-dimensional atlas of the body’s perforators, fascia and knots, with alternate theories and traditional maps for comparison.">
   <section class="visualization" data-atlas>
     <div class="canvas-container frame-marks" data-stage>
-      <canvas id="atlas-canvas" aria-label="Three-dimensional figure made of the body's perforators. Drag to turn; press a knot and breathe out to release it."></canvas>
+      <canvas id="atlas-canvas" aria-label="Three-dimensional figure made of the body's perforators, with its fascia and knots. Drag to turn; hover to inspect."></canvas>
 
       <div class="overlay tl">
-        <select class="mono-select" data-hyp-select aria-label="Hypothesis">
-          {HYPOTHESES.map((h) => <option value={h.id} disabled={!h.ready}>{h.name}{h.ready ? '' : ' — soon'}</option>)}
+        <select class="mono-select" data-hyp-select aria-label="Theory">
+          {HYPOTHESES.map((h) => <option value={h.id} disabled={!h.ready}>{h.label}{h.ready ? '' : ' · soon'}</option>)}
         </select>
-        <span data-hyp-who>Jhong 2026</span>
       </div>
       <div class="overlay tr legend">
         <span><i style="background:#e6dccd"></i>perforator</span>
-        <span><i style="background:#d9826d" data-knot-swatch></i>knot</span>
+        <span><i style="background:#d9826d"></i>knot</span>
         <span><i style="background:#9aa2a8"></i>vessel</span>
         <span><i style="background:#d8b775"></i>channel</span>
       </div>
-      <div class="overlay bl" data-hint>drag to turn · scroll to zoom · hover to inspect · double-click to move the window</div>
+      <div class="overlay bl" data-hint>drag to turn · scroll to zoom · hover to inspect · double-click to open a window</div>
       <div class="overlay br">© 2026 Eugene Jhong</div>
-      <div class="tip" data-tip hidden></div>
+      <div class="tip" data-tip hidden aria-live="polite"></div>
       <div class="loading" data-loading>
         <Enso size={56} seed={5} />
-        <span>drawing a hundred thousand staples</span>
+        <span>drawing a hundred thousand perforators</span>
       </div>
     </div>
 
@@ -92,7 +90,7 @@ const MAP_COLORS: Record<string, string> = {
     </div>
     <div class="panel-body">
       <div class="tab-page" data-page="notes">
-        <div class="segment" data-card-kicker>Hypothesis</div>
+        <div class="segment" data-card-kicker>Theory</div>
         <div class="prose-dark" data-card-body></div>
         <div class="segment">Where the knot is <span class="faint" data-section-where></span></div>
         <div class="section-svg" data-section></div>
@@ -107,17 +105,18 @@ const MAP_COLORS: Record<string, string> = {
 
       <div class="tab-page" data-page="layers" hidden>
         <div class="segment">Show</div>
+        <label class="row"><input type="checkbox" data-layer="knots" checked /> knots</label>
+        <p class="sub">where the chosen theory places them</p>
         <label class="row"><input type="checkbox" data-layer="perforators" checked /> perforators <span class="n" data-count="perforators"></span></label>
         <p class="sub">major, medium and small — each at its depth</p>
-        <label class="row"><input type="checkbox" data-layer="knots" checked /> knots — perforators held stuck</label>
         <label class="row"><input type="checkbox" data-layer="fascia" checked /> fascia &amp; gliding plane</label>
-        <p class="sub">superficial fascia · interstitial plane · deep fascia</p>
+        <p class="sub">superficial fascia · gliding plane · deep fascia</p>
         <label class="row"><input type="checkbox" data-layer="vessels" checked /> source vessels <span class="n" data-count="roots"></span></label>
         <p class="sub">the arteries feeding each tree, and their branches</p>
         <label class="row"><input type="checkbox" data-layer="channels" checked /> deep channels <span class="n" data-count="channels"></span></label>
         <p class="sub">septa, raphes and neurovascular sheaths of the deep fascia</p>
-        <label class="row"><input type="checkbox" data-window checked /> dissection window</label>
-        <p class="sub">skin cut back, superficial fascia removed — double-click the body to move it</p>
+        <label class="row"><input type="checkbox" data-window /> dissection window</label>
+        <p class="sub">skin cut back, superficial fascia removed — or double-click the body to open one there</p>
         <label class="row"><input type="checkbox" data-layer="territories" /> angiosomes</label>
         <p class="sub">approximate territory of each source vessel</p>
         <div class="segment">Depth</div>

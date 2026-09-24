@@ -17,10 +17,10 @@ export interface MapGroup {
 
 export const MAP_GROUPS: MapGroup[] = [
   {
-    tradition: 'The sheet',
+    tradition: 'The fascia',
     maps: [
-      { id: 'gates', name: 'Gates — attachment lines', color: 'silver', ready: false },
-      { id: 'sheets', name: 'Named fascial sheets', color: 'silver', ready: false },
+      { id: 'attachments', name: 'Attachment lines', color: 'silver', ready: false },
+      { id: 'fasciae', name: 'Named fasciae', color: 'silver', ready: false },
     ],
   },
   {
@@ -29,13 +29,12 @@ export const MAP_GROUPS: MapGroup[] = [
       { id: 'meridians', name: 'Channels (jing luo)', color: 'ai', ready: false },
       { id: 'acupoints', name: 'Acupoints', color: 'ai', ready: false },
       { id: 'sinew', name: 'Sinew channels & their knots', color: 'moegi', ready: false },
-      { id: 'wind', name: 'The wind points', color: 'yamabuki', ready: false },
     ],
   },
   {
     tradition: 'Daoist alchemy',
     maps: [
-      { id: 'orbit', name: 'Microcosmic orbit · three gates', color: 'yamabuki', ready: false },
+      { id: 'orbit', name: 'Microcosmic orbit', color: 'yamabuki', ready: false },
       { id: 'dantian', name: 'Three dantian', color: 'yamabuki', ready: false },
     ],
   },

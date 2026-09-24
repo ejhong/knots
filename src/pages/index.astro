@@ -27,7 +27,7 @@ const html = (s: string) => s.replaceAll('href="HYP"', `href="${base}/hypotheses
       <div class="overlay br">© 2026 Eugene Jhong</div>
       <div class="loading" data-loading>
         <Enso size={56} seed={5} />
-        <span>drawing a hundred thousand staples</span>
+        <span>drawing a hundred thousand perforators</span>
       </div>
     </div>
   </section>
@@ -59,9 +59,7 @@ const html = (s: string) => s.replaceAll('href="HYP"', `href="${base}/hypotheses
           </article>
         ))
       }
-      <div class="coda">
-        <p class="prose-dark">Drawn from <a href="https://ejhong.substack.com/p/knots-of-existence-hypotheses">Knots of Existence Hypotheses</a> and <a href="https://ejhong.substack.com/p/knots-of-existence-and-vasocomputation">Knots of Existence and Vasocomputation</a> (Eugene Jhong, 2026). A hypothesis, drawn carefully; not medical advice.</p>
-      </div>
+      <p class="coda">Not medical advice · <a href={`${base}/about/`}>about</a> · <a href={`${base}/library/`}>library</a></p>
     </div>
   </aside>
 </Base>
@@ -113,7 +111,50 @@ const html = (s: string) => s.replaceAll('href="HYP"', `href="${base}/hypotheses
     color: var(--panel-muted);
   }
   .coda {
-    padding: 14px 0 20px;
+    padding: 14px 14px 22px;
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.3px;
+    color: var(--panel-faint);
+  }
+  .coda a {
+    color: var(--panel-faint);
+  }
+  .coda a:hover {
+    color: var(--panel-muted);
+  }
+  /* Field notes: short observations, each led by a small mono label and
+     marked with the knot colour. */
+  .chapter :global(ul.obs) {
+    list-style: none;
+    margin: -0.2em 0 0.95em;
+    padding: 0;
+    display: grid;
+    gap: 5px;
+  }
+  .chapter :global(ul.obs li) {
+    position: relative;
+    padding-left: 14px;
+  }
+  .chapter :global(ul.obs li)::before {
+    content: '';
+    position: absolute;
+    left: 2px;
+    top: 0.62em;
+    width: 5px;
+    height: 5px;
+    border-radius: 50%;
+    background: #d9826d;
+    opacity: 0.85;
+  }
+  .chapter :global(ul.obs b) {
+    font-family: var(--font-mono);
+    font-weight: 400;
+    font-size: 9px;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: #efe7da;
+    margin-right: 4px;
   }
   .chapter-label {
     font-size: 11px;

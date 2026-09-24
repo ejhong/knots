@@ -5,7 +5,7 @@ src/viewer/AtlasScene.ts   assembles everything below and steps it each frame
  ├─ engine/Engine          WebGLRenderer + OrbitControls + EffectComposer (bloom only at night) + camera flights
  ├─ engine/Backdrop        full-screen void: mandorla halo, vignette, grain; drifting dust
  ├─ body/BodyModel         MakeHuman quads → (age, sex) morph → Catmull–Clark (sparse stencil) → normals
- ├─ body/BodyLayers        floor (deep fascia, opaque, occludes the far side) + sheet (engraved veil)
+ ├─ body/BodyLayers        floor (deep fascia, opaque, occludes the far side) + superficial fascia (engraved veil)
  ├─ anchors/Locator3D      landmark locators → { tri, u, v } anchors via BVH ray casts (indirect BVH!)
  ├─ perforators/generate   blue-noise ladder + multi-source Dijkstra trees (territories = angiosomes)
  ├─ perforators/PerforatorCloud   100k points, relief-lit; knots swell into embers; stars

@@ -529,20 +529,29 @@
   background: #33402f;
 }
 
-/* Tooltip over the canvas. */
+/* What the pointer is over: a fixed box at the lower left of the canvas. */
 .tip {
   position: absolute;
   z-index: 8;
+  left: 16px;
+  bottom: 40px;
+  width: 236px;
   pointer-events: none;
-  min-width: 190px;
-  max-width: 250px;
   padding: 9px 11px 10px;
-  background: rgba(35, 34, 32, 0.94);
+  background: rgba(35, 34, 32, 0.9);
   border: 1px solid #3a3836;
   border-radius: 8px;
   color: var(--panel-text);
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25);
-  transform: translate(16px, -50%);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.2);
+  opacity: 0;
+  transform: translateY(4px);
+  transition:
+    opacity 0.25s var(--ease),
+    transform 0.25s var(--ease);
+}
+.tip.on {
+  opacity: 1;
+  transform: none;
 }
 .tip .t-kicker {
   font-family: var(--font-mono);

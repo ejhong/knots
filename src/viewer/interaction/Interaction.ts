@@ -14,7 +14,7 @@ export interface HoverInfo {
 }
 
 /**
- * Pointer → body. Hovering finds the nearest staple; pressing applies the
+ * Pointer → body. Hovering finds the nearest perforator; pressing applies the
  * chosen tool where the finger lands. Dragging off the body orbits.
  */
 export class Interaction {
