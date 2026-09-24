@@ -196,13 +196,23 @@ const pct = (a: number) => ((a - 1) / 89) * 100;
     color: var(--panel-faint);
     font-size: 9px;
   }
+  /* A fixed height: what it shows changes as the pointer moves, and the chips
+     below must never move under the pointer. */
   .map-card {
     margin: 10px 12px 6px;
     padding: 10px 12px 11px;
     border: 1px solid var(--panel-line);
     border-radius: 8px;
     background: #2f2c29;
-    min-height: 96px;
+    height: 184px;
+    overflow: hidden;
+  }
+  .mc-kicker,
+  .mc-title {
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
   }
   .mc-kicker {
     font-family: var(--font-mono);

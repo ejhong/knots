@@ -10,7 +10,7 @@ import type { ThemeName } from './engine/theme';
 import { majorDensity } from './data/perforatorDensity';
 import { ROOTS, type RootDef } from './data/roots';
 import { buildLadder, DEFAULT_LADDER, withDiagonals, type Ladder, type LadderParams } from './perforators/generate';
-import { buildMeshGraph, dijkstra, tracePath, type MeshGraph } from './lib/graph';
+import { buildMeshGraph, dijkstra, makePathfinder, tracePath, type MeshGraph } from './lib/graph';
 import { Channels, type ChannelInstance } from './body/Channels';
 import { CHANNELS } from './data/channels';
 import { LatchKnots } from './hypotheses/LatchKnots';
@@ -36,6 +36,7 @@ import {
 import { LAYER_UNIFORMS, WINDOW_UNIFORMS } from './body/layerModel';
 import { KnotEmbers } from './perforators/KnotEmbers';
 import { MERIDIANS } from './data/meridians';
+import { interiorSites } from './data/viscera';
 import { MeridianMap, type MapLine, type MapPoint } from './maps/MeridianMap';
 import { TreeLines } from './perforators/TreeLines';
 
@@ -212,7 +213,7 @@ export class AtlasScene {
     this.embers = new KnotEmbers(this.ladder, this.perfDepth, this.perfSup, this.perfLift);
     this.graph = buildMeshGraph(body.positions, withDiagonals(body.triangles, body.subdivision.fineQuads));
     const radiusFine = body.refineScalar(this.segmentation.radius);
-    this.latch = new LatchKnots(body, 20000, this.zoneField, this.depth, (v) => radiusFine[v], this.liftWeight);
+    this.latch = new LatchKnots(body, 20000, this.zoneField, this.depth, (v) => radiusFine[v], this.liftWeight, interiorSites());
     this.channels = new Channels(this.resolveChannels());
     this.trees = new TreeLines(this.ladder);
     this.rootMarkers = new RootMarkers(this.roots.length);
@@ -625,8 +626,9 @@ export class AtlasScene {
   /**
    * Builds the channels and points of Chinese medicine: every point resolved
    * on the reference figure (mirrored for the right side), and each channel
-   * drawn point to point along the skin — straight segments snapped to the
-   * nearest skin every 6 mm, smoothed when drawn.
+   * drawn point to point by the shortest path along the skin (so a channel
+   * passing from the chest to the arm goes over the shoulder, never across
+   * the gap under the arm), smoothed when drawn.
    */
   ensureMeridians(): MeridianMap {
     if (this.meridians) return this.meridians;
@@ -637,6 +639,20 @@ export class AtlasScene {
       const w = 1 - a.u - a.v;
       return [0, 1, 2].map((k) => R[T[t] * 3 + k] * w + R[T[t + 1] * 3 + k] * a.u + R[T[t + 2] * 3 + k] * a.v) as Vec3;
     };
+    // A skin anchor for every mesh vertex (a corner of one of its triangles).
+    const V = R.length / 3;
+    const vTri = new Int32Array(V).fill(-1);
+    const vCorner = new Uint8Array(V);
+    for (let t = 0; t < T.length / 3; t++)
+      for (let c = 0; c < 3; c++) {
+        const v = T[t * 3 + c];
+        if (vTri[v] < 0) {
+          vTri[v] = t;
+          vCorner[v] = c;
+        }
+      }
+    const vertexAnchor = (v: number): Anchor => ({ tri: vTri[v], u: vCorner[v] === 1 ? 1 : 0, v: vCorner[v] === 2 ? 1 : 0 });
+    const route = makePathfinder(this.graph);
     const points: MapPoint[] = [];
     const lines: MapLine[] = [];
     MERIDIANS.forEach((m, ch) => {
@@ -658,15 +674,12 @@ export class AtlasScene {
             const a = byN.get(n);
             if (!a) continue;
             if (anchors.length) {
-              const p0 = posOf(anchors[anchors.length - 1]);
+              const prev = anchors[anchors.length - 1];
+              const p0 = posOf(prev);
               const p1 = posOf(a);
               const d = Math.hypot(p1[0] - p0[0], p1[1] - p0[1], p1[2] - p0[2]);
-              const steps = Math.max(1, Math.ceil(d / 0.006));
-              for (let k = 1; k < steps; k++) {
-                const f = k / steps;
-                const c = this.locator.closest([p0[0] + (p1[0] - p0[0]) * f, p0[1] + (p1[1] - p0[1]) * f, p0[2] + (p1[2] - p0[2]) * f]);
-                if (c) anchors.push(c);
-              }
+              const path = route(anchorVertex(prev, T), anchorVertex(a, T), d * 2.4 + 0.05);
+              if (path) for (let k = 1; k < path.length - 1; k++) anchors.push(vertexAnchor(path[k]));
             }
             anchors.push(a);
           }

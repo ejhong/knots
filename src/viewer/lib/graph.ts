@@ -168,3 +168,90 @@ export function tracePath(pred: Int32Array, v: number, maxLen = 4096): number[] 
   }
   return path;
 }
+
+/**
+ * Shortest paths between pairs of vertices along the mesh, for drawing many
+ * short routes (a map's channels): each search stops at its target, and the
+ * buffers are reused, so thousands of calls stay cheap.
+ */
+export function makePathfinder(g: MeshGraph) {
+  const V = g.vertexCount;
+  const dist = new Float32Array(V).fill(Infinity);
+  const pred = new Int32Array(V).fill(-1);
+  const touched: number[] = [];
+  let hd = new Float32Array(4096);
+  let hv = new Int32Array(4096);
+  let n = 0;
+  const push = (d: number, v: number) => {
+    if (n === hd.length) {
+      const d2 = new Float32Array(n * 2);
+      d2.set(hd);
+      hd = d2;
+      const v2 = new Int32Array(n * 2);
+      v2.set(hv);
+      hv = v2;
+    }
+    let i = n++;
+    while (i > 0) {
+      const p = (i - 1) >> 1;
+      if (hd[p] <= d) break;
+      hd[i] = hd[p];
+      hv[i] = hv[p];
+      i = p;
+    }
+    hd[i] = d;
+    hv[i] = v;
+  };
+  const pop = (): number => {
+    const top = hv[0];
+    const ld = hd[--n];
+    const lv = hv[n];
+    let i = 0;
+    while (true) {
+      const l = i * 2 + 1;
+      if (l >= n) break;
+      const r = l + 1;
+      const c = r < n && hd[r] < hd[l] ? r : l;
+      if (hd[c] >= ld) break;
+      hd[i] = hd[c];
+      hv[i] = hv[c];
+      i = c;
+    }
+    hd[i] = ld;
+    hv[i] = lv;
+    return top;
+  };
+  return (s: number, t: number, maxDist = Infinity): number[] | null => {
+    for (const v of touched) {
+      dist[v] = Infinity;
+      pred[v] = -1;
+    }
+    touched.length = 0;
+    n = 0;
+    dist[s] = 0;
+    touched.push(s);
+    push(0, s);
+    while (n > 0) {
+      const u = pop();
+      const d = dist[u];
+      if (u === t || d > maxDist) break;
+      for (let e = g.rowPtr[u]; e < g.rowPtr[u + 1]; e++) {
+        const w = g.cols[e];
+        const nd = d + g.lengths[e];
+        if (nd < dist[w]) {
+          if (dist[w] === Infinity) touched.push(w);
+          dist[w] = nd;
+          pred[w] = u;
+          push(nd, w);
+        }
+      }
+    }
+    if (dist[t] === Infinity) return null;
+    const path: number[] = [];
+    for (let v = t; v >= 0 && path.length < 100000; v = pred[v]) {
+      path.push(v);
+      if (v === s) break;
+    }
+    return path.reverse();
+  };
+}
