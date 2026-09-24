@@ -77,7 +77,10 @@ export class Backdrop {
           float d = length(q);
           float halo = exp(-d * d * 1.6) * (1.0 + 0.06 * uBreath);
           float inner = exp(-d * d * 7.0) * 0.35;
-          vec3 col = uBg + uHalo * (halo + inner) * uHaloStrength;
+          // Light on ink stone; on paper, a warm gold wash like leaf behind a figure.
+          vec3 col = uPaper > 0.5
+            ? mix(uBg, uHalo, clamp((halo + inner) * uHaloStrength, 0.0, 1.0))
+            : uBg + uHalo * (halo + inner) * uHaloStrength;
           // Vignette.
           vec2 v = vUv - 0.5;
           v.x *= uAspect;
@@ -86,7 +89,7 @@ export class Backdrop {
           if (uPaper > 0.5) {
             vec2 fp = vUv * vec2(uAspect, 1.0) * 900.0;
             float fib = noise(fp * vec2(0.08, 1.3)) * 0.5 + noise(fp * vec2(1.1, 0.07)) * 0.5;
-            col -= (fib - 0.5) * 0.018;
+            col -= (fib - 0.5) * 0.03;
           }
           // Grain.
           float gr = hash(vUv * 1000.0 + fract(uTime * 0.37) * 100.0) - 0.5;
@@ -174,9 +177,9 @@ export class Backdrop {
       u.uVignette.value = 0.5;
     } else {
       u.uHalo.value.copy(t.halo);
-      u.uHaloStrength.value = 0.05;
+      u.uHaloStrength.value = 0.55;
       u.uGrain.value = 0.012;
-      u.uVignette.value = 0.12;
+      u.uVignette.value = 0.16;
     }
     const d = this.dustMaterial.uniforms;
     d.uColor.value.copy(t.point);

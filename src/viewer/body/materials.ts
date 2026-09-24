@@ -124,6 +124,8 @@ export function createSheetMaterial() {
         col = mix(col, uRim, rim * uRimAlpha);
 
         float alpha = uOpacity;
+        // On paper the silhouette is an ink line, drawn at full strength.
+        if (uGlow < 0.5) alpha = max(alpha, rim * uRimAlpha * 0.85);
         // The cut edges — fascia inside, skin outside — drawn like lines on a plate.
         float edge = max(1.0 - smoothstep(0.0, 0.035, abs(wr - SUP_FRAC - 0.01)),
                          0.7 * (1.0 - smoothstep(0.0, 0.03, abs(wr - 1.0))));
@@ -240,8 +242,8 @@ export function applySheetTheme(m: ShaderMaterial, t: SceneTheme) {
   m.uniforms.uLine.value.copy(t.line);
   m.uniforms.uRim.value.copy(t.rim);
   m.uniforms.uGlow.value = t.glow;
-  m.uniforms.uLineAlpha.value = t.glow ? 0.34 : 0.42;
-  m.uniforms.uRimAlpha.value = t.glow ? 0.5 : 0.6;
+  m.uniforms.uLineAlpha.value = t.glow ? 0.34 : 0.5;
+  m.uniforms.uRimAlpha.value = t.glow ? 0.5 : 0.75;
 }
 
 export function applyFloorTheme(m: ShaderMaterial, t: SceneTheme) {

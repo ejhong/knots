@@ -92,6 +92,17 @@
   height: 8px;
   border-radius: 2px;
 }
+/* Swatches match the figure: light on ink stone, ink on rice paper. */
+.legend .sw-perforator { background: #e6dccd; }
+.legend .sw-knot { background: #e27b61; }
+.legend .sw-release { background: #9dcc9a; }
+.legend .sw-vessel { background: #b3c4d2; }
+.legend .sw-channel { background: #d8b775; }
+.paper .legend .sw-perforator { background: #2f2b28; }
+.paper .legend .sw-knot { background: #c4452f; }
+.paper .legend .sw-release { background: #5f935f; }
+.paper .legend .sw-vessel { background: #3f5b78; }
+.paper .legend .sw-channel { background: #a2792f; }
 
 /* Corner frame marks, as on OM's chart. */
 .frame-marks::before,
