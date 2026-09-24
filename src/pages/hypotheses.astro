@@ -2,6 +2,7 @@
 import Doc from '../layouts/Doc.astro';
 import { HYPOTHESES } from '../data/hypotheses';
 import { refById } from '../data/references';
+import { crossSectionSVG } from '../lib/crossSection';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const ROWS: [keyof (typeof HYPOTHESES)[number], string][] = [
   ['layer', 'Where'],
@@ -59,6 +60,7 @@ const index = [
           )}
         </div>
         <p class="short quote">{h.short}</p>
+        <figure class="section" set:html={crossSectionSVG({ dSup: 0.0042, dDeep: 0.01, hypothesis: h.id, region: 'upper back', tone: 'light', width: 330 })} />
         <div class="prose">
           {h.body.map((p) => (
             <p set:html={p} />
@@ -166,6 +168,18 @@ const index = [
     margin-left: auto;
     font-size: 9px;
     color: var(--faint);
+  }
+  .section {
+    margin: 4px 0 14px;
+    padding: 12px 14px 8px;
+    background: var(--frame-bg);
+    border-radius: 8px;
+    max-width: 380px;
+  }
+  .section :global(svg) {
+    display: block;
+    width: 100%;
+    height: auto;
   }
   .short {
     font-size: 13px;

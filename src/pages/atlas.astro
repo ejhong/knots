@@ -30,7 +30,7 @@ const MAP_COLORS: Record<string, string> = {
       </div>
       <div class="overlay tr legend">
         <span><i style="background:#e6dccd"></i>perforator</span>
-        <span><i style="background:#d9826d"></i>knot</span>
+        <span><i style="background:#d9826d" data-knot-swatch></i>knot</span>
         <span><i style="background:#9aa2a8"></i>vessel</span>
         <span><i style="background:#d8b775"></i>channel</span>
       </div>
@@ -94,6 +94,8 @@ const MAP_COLORS: Record<string, string> = {
       <div class="tab-page" data-page="notes">
         <div class="segment" data-card-kicker>Hypothesis</div>
         <div class="prose-dark" data-card-body></div>
+        <div class="segment">Where the knot is <span class="faint" data-section-where></span></div>
+        <div class="section-svg" data-section></div>
         <div class="segment">Census</div>
         <div class="census" data-census>
           <div><span class="v" data-c="0">—</span><span class="k">micro</span></div>
@@ -153,6 +155,14 @@ const MAP_COLORS: Record<string, string> = {
 </Base>
 
 <style>
+  .notes-panel :global(.section-svg) {
+    padding: 2px 10px 10px 12px;
+  }
+  .notes-panel :global(.section-svg svg) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
   .form-range {
     display: inline-flex;
     align-items: center;

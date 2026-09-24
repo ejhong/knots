@@ -76,10 +76,10 @@ export class KnotEmbers {
           vec4 mv = modelViewMatrix * vec4(p, 1.0);
           gl_Position = projectionMatrix * mv;
           // Rung sets the scale: a small collar is a pinpoint, a major one a coin.
-          float base = aLevel > 1.5 ? 0.011 : (aLevel > 0.5 ? 0.0062 : 0.0034);
+          float base = aLevel > 1.5 ? 0.012 : (aLevel > 0.5 ? 0.0072 : 0.0044);
           float breathe = 1.0 + 0.05 * sin(uTime * 0.9 + position.x * 40.0);
           float px = base * (0.45 + 0.75 * aKnot) * breathe * uProjScale / max(0.05, -mv.z);
-          gl_PointSize = clamp(px, 1.5 * uPixelRatio, 80.0 * uPixelRatio);
+          gl_PointSize = clamp(px, 2.2 * uPixelRatio, 80.0 * uPixelRatio);
         }
       `,
       fragmentShader: /* glsl */ `

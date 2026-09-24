@@ -90,7 +90,7 @@ export const HYPOTHESES: Hypothesis[] = [
       'Tanha — craving, clinging — is then the reflexive compression of experience into stable, controllable states, and its residue is latched tension. “Tanha is cringe.” The original knots essay placed that latch in the arterioles inside skeletal muscle; the perforator essay relocates the vascular element to the skin and keeps the latch as an option for the brain, the venous bed and the gut.',
     ],
     refs: ['johnson2023', 'johnson2024notes', 'hai1988', 'jhong2026'],
-    ready: false,
+    ready: true,
   },
   {
     id: 'trigger-point',

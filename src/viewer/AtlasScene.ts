@@ -13,6 +13,7 @@ import { buildLadder, DEFAULT_LADDER, withDiagonals, type Ladder, type LadderPar
 import { buildMeshGraph, dijkstra, tracePath, type MeshGraph } from './lib/graph';
 import { Channels, type ChannelInstance } from './body/Channels';
 import { CHANNELS } from './data/channels';
+import { LatchKnots } from './hypotheses/LatchKnots';
 import { PerforatorCloud } from './perforators/PerforatorCloud';
 import { KNOT_ZONES } from './data/zones';
 import { PointGrid } from './lib/spatial';
@@ -70,6 +71,12 @@ export class AtlasScene {
   embers!: KnotEmbers;
   channels!: Channels;
   graph!: MeshGraph;
+  latch!: LatchKnots;
+  /** Susceptibility of a skin point to holding knots (the stress zones). */
+  zoneField!: (x: number, y: number, z: number) => number;
+  /** The hypothesis whose knots are drawn. */
+  hypothesis = 'perforator';
+  private knotsOn = true;
   segmentation!: Segmentation;
   /** Per-fine-vertex depth of the deep fascia and of the superficial fascia (m), and explode weight. */
   depth!: Float32Array;
@@ -208,6 +215,8 @@ export class AtlasScene {
       this.liftWeight,
     );
     this.graph = buildMeshGraph(body.positions, withDiagonals(body.triangles, body.subdivision.fineQuads));
+    const radiusFine = body.refineScalar(this.segmentation.radius);
+    this.latch = new LatchKnots(body, 20000, this.zoneField, this.depth, (v) => radiusFine[v]);
     this.channels = new Channels(this.resolveChannels());
     this.trees = new TreeLines(this.ladder);
     this.rootMarkers = new RootMarkers(this.roots.length);
@@ -232,6 +241,8 @@ export class AtlasScene {
       this.embers.points,
       this.rootMarkers.points,
       this.layers.sheet,
+      this.latch.lines,
+      this.latch.points,
     );
     this.layers.sheet.visible = true;
     this.trees.setInsets(this.depth);
@@ -246,6 +257,7 @@ export class AtlasScene {
       this.interstitium.applyTheme(t);
       this.embers.applyTheme(t);
       this.channels.applyTheme(t);
+      this.latch.applyTheme(t);
     });
     this.engine.onFrame(({ time, dt }) => {
       this.interaction.update(dt);
@@ -338,7 +350,28 @@ export class AtlasScene {
   /** Sets the history for an age and shows it. */
   settle(age: number) {
     this.sim.settle(age);
+    this.latch.settle(age);
     this.syncKnots();
+  }
+
+  /** Chooses whose knots are drawn: 'perforator' or 'latch' (others to come). */
+  setHypothesis(id: string) {
+    this.hypothesis = id;
+    this.applyKnotVisibility();
+  }
+
+  private zeroKnots?: Float32Array;
+
+  private applyKnotVisibility() {
+    const perf = this.hypothesis === 'perforator';
+    // Stalks, collars and gel show the perforator knots only in that view.
+    if (!this.zeroKnots) this.zeroKnots = new Float32Array(this.ladder.count);
+    const k = perf ? this.sim.knot : this.zeroKnots;
+    this.stalks.setKnots(k);
+    this.interstitium.setKnots(k);
+    this.embers.points.visible = this.knotsOn && perf;
+    this.rootMarkers.material.uniforms.uKnotAlpha.value = this.knotsOn && perf ? 1 : 0;
+    this.latch.setVisible(this.knotsOn && this.hypothesis === 'latch');
   }
 
   /** Pushes the simulation's knot state to every layer that draws it. */
@@ -348,8 +381,10 @@ export class AtlasScene {
     this.cloud.markKnotsDirty();
     this.cloud.markFlashDirty();
     this.embers.setKnots(this.sim.knot);
-    this.stalks.setKnots(this.sim.knot);
-    this.interstitium.setKnots(this.sim.knot);
+    const perf = this.hypothesis === 'perforator';
+    if (!this.zeroKnots) this.zeroKnots = new Float32Array(this.ladder.count);
+    this.stalks.setKnots(perf ? this.sim.knot : this.zeroKnots);
+    this.interstitium.setKnots(perf ? this.sim.knot : this.zeroKnots);
     this.rootMarkers.knot.set(this.sim.rootKnot);
     this.rootMarkers.flash.set(this.sim.rootFlash);
     this.rootMarkers.update();
@@ -400,6 +435,7 @@ export class AtlasScene {
         dist[i] = Math.hypot(P[i * 3] - P[q * 3], P[i * 3 + 1] - P[q * 3 + 1], P[i * 3 + 2] - P[q * 3 + 2]);
       }
     }
+    this.zoneField = field;
     const sim = new KnotSim(L, this.roots.length, P, field, rootSusc, dist);
     sim.settle(34);
     // Per-zone node lists (reference space) for scenarios.
@@ -454,6 +490,7 @@ export class AtlasScene {
     }
     this.trees.refresh(this.body);
     this.channels?.refresh(this.body, this.depth);
+    this.latch?.refresh(this.body);
     this.updateWindow();
     for (const cb of this.shapeListeners) cb();
   }
@@ -484,6 +521,8 @@ export class AtlasScene {
       this.embers.material,
       this.channels.lineMaterial,
       this.channels.beadMaterial,
+      this.latch.pointMaterial,
+      this.latch.lineMaterial,
       this.trees.material,
       this.stalks.lineMaterial,
       this.stalks.collarMaterial,
@@ -515,8 +554,8 @@ export class AtlasScene {
         this.stalks.collars.visible = on;
         break;
       case 'knots':
-        this.embers.points.visible = on;
-        this.rootMarkers.material.uniforms.uKnotAlpha.value = on ? 1 : 0;
+        this.knotsOn = on;
+        this.applyKnotVisibility();
         break;
       case 'fascia':
         this.layers.sheet.visible = on;
@@ -579,6 +618,8 @@ export class AtlasScene {
     iu.uPixelRatio.value = pr;
     this.trees.material.uniforms.uInsetScale.value = 1;
     this.channels.beadMaterial.uniforms.uProjScale.value = projScale;
+    this.latch.pointMaterial.uniforms.uProjScale.value = projScale;
+    this.latch.pointMaterial.uniforms.uPixelRatio.value = pr;
     this.channels.beadMaterial.uniforms.uPixelRatio.value = pr;
   }
 

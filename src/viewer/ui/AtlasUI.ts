@@ -3,6 +3,26 @@ import { AtlasScene } from '../AtlasScene';
 import { preferredTheme, rememberTheme, type ThemeName } from '../engine/theme';
 import type { HoverInfo } from '../interaction/Interaction';
 import { hypothesisById } from '../../data/hypotheses';
+import { crossSectionSVG } from '../../lib/crossSection';
+import { REGIONS } from '../body/skeleton';
+
+const REGION_LABEL: Record<string, string> = {
+  head: 'scalp',
+  face: 'face',
+  neck: 'neck',
+  chest: 'chest',
+  'upper-back': 'upper back',
+  abdomen: 'abdomen',
+  'lower-back': 'low back',
+  pelvis: 'groin',
+  buttock: 'buttock',
+  'upper-arm': 'upper arm',
+  forearm: 'forearm',
+  hand: 'hand',
+  thigh: 'thigh',
+  leg: 'lower leg',
+  foot: 'foot',
+};
 
 const fmt = new Intl.NumberFormat('en-US');
 const LEVEL_NAME = ['small perforator', 'medium perforator', 'major perforator', 'root'];
@@ -83,7 +103,7 @@ export function mountAtlas(viz: HTMLElement, panel: HTMLElement) {
     bindCensus(panel, scene);
     bindTooltip(viz, scene);
     bindSettings(viz, stage, scene);
-    bindHypotheses(viz, panel);
+    bindHypotheses(viz, panel, scene);
     const q = new URLSearchParams(location.search);
     if (q.get('depth')) {
       const v = Number(q.get('depth'));
@@ -208,11 +228,23 @@ function fitCamera(scene: AtlasScene, previousHeight: number) {
 
 function bindCensus(panel: HTMLElement, scene: AtlasScene) {
   const els = [0, 1, 2, 3].map((i) => panel.querySelector<HTMLElement>(`[data-c="${i}"]`)!);
+  const keys = [0, 1, 2, 3].map((i) => els[i].nextElementSibling as HTMLElement);
   const update = () => {
+    if (scene.hypothesis === 'latch') {
+      const vals = [fmt.format(scene.latch.census()), '—', '—', '—'];
+      const names = ['latched', '', '', ''];
+      vals.forEach((v, i) => {
+        els[i].textContent = v;
+        keys[i].textContent = names[i];
+      });
+      return;
+    }
+    const names = ['micro', 'medium', 'major', 'roots'];
     const c = scene.sim.census();
     c.forEach((n, i) => {
       const s = fmt.format(n);
       if (els[i].textContent !== s) els[i].textContent = s;
+      keys[i].textContent = names[i];
     });
   };
   update();
@@ -305,17 +337,44 @@ function bindSettings(viz: HTMLElement, stage: HTMLElement, scene: AtlasScene) {
   turn.addEventListener('change', () => (scene.engine.autoRotate = turn.checked));
 }
 
-function bindHypotheses(viz: HTMLElement, panel: HTMLElement) {
+function bindHypotheses(viz: HTMLElement, panel: HTMLElement, scene: AtlasScene) {
   const sel = viz.querySelector<HTMLSelectElement>('[data-hyp-select]')!;
   const who = viz.querySelector<HTMLElement>('[data-hyp-who]')!;
+  const sectionEl = panel.querySelector<HTMLElement>('[data-section]')!;
+  const whereEl = panel.querySelector<HTMLElement>('[data-section-where]')!;
   const q = new URLSearchParams(location.search).get('h');
   if (q && hypothesisById(q)?.ready) sel.value = q;
+
+  // The cross-section follows the pointer; it starts at the dissection window.
+  let place = { dSup: 0.0042, dDeep: 0.01, region: 'upper back' };
+  const drawSection = () => {
+    sectionEl.innerHTML = crossSectionSVG({ ...place, hypothesis: sel.value, tone: scene.engine.theme.glow ? 'dark' : 'light' });
+    whereEl.textContent = `· ${place.region}`;
+  };
   const show = () => {
     const h = hypothesisById(sel.value)!;
     who.textContent = h.who;
+    scene.setHypothesis(h.id);
+    const sw = viz.querySelector<HTMLElement>('[data-knot-swatch]');
+    if (sw) sw.style.background = h.id === 'latch' ? '#b9a5e0' : '#d9826d';
     panel.querySelector('[data-card-kicker]')!.textContent = h.name;
     panel.querySelector('[data-card-body]')!.innerHTML = `<p>${h.short}</p><p><em>Where.</em> ${h.layer}</p><p><em>Holds.</em> ${h.holds}</p>`;
+    drawSection();
   };
   sel.addEventListener('change', show);
   show();
+
+  let last = 0;
+  scene.interaction.onHover((h) => {
+    if (!h) return;
+    const now = performance.now();
+    if (now - last < 150) return;
+    last = now;
+    const T = scene.body.triangles;
+    const coarse = T[h.hit.tri * 3];
+    const fine = T[h.hit.tri * 3];
+    const region = REGIONS[scene.segmentation.region[coarse]] ?? 'chest';
+    place = { dSup: scene.supDepth[fine], dDeep: scene.depth[fine], region: REGION_LABEL[region] ?? region };
+    drawSection();
+  });
 }
