@@ -3,18 +3,14 @@ import Base from '../layouts/Base.astro';
 import Enso from '../components/Enso.astro';
 import { HYPOTHESES } from '../data/hypotheses';
 import { MAP_GROUPS } from '../data/mapIndex';
+import { MERIDIANS } from '../viewer/data/meridians';
+/** The organ each channel is named for, in one or two characters. */
+const SHORT: Record<string, string> = {
+  LU: '肺', LI: '大腸', ST: '胃', SP: '脾', HT: '心', SI: '小腸', BL: '膀胱', KI: '腎', PC: '心包', TE: '三焦', GB: '膽', LR: '肝', GV: '督', CV: '任',
+};
 import '../styles/app.css';
 const AGES = [1, 5, 10, 18, 25, 35, 45, 55, 70, 90];
 const pct = (a: number) => ((a - 1) / 89) * 100;
-const MAP_COLORS: Record<string, string> = {
-  silver: '#9aa2a8',
-  ai: '#7189a8',
-  moegi: '#7ca67c',
-  yamabuki: '#c9a45f',
-  fuji: '#a482ac',
-  toki: '#c87868',
-  sabi: '#6fa7a2',
-};
 ---
 <Base title="Atlas" app current="atlas" description="An interactive three-dimensional atlas of the body’s perforators, fascia and knots, with alternate theories and traditional maps for comparison.">
   <section class="visualization" data-atlas>
@@ -133,21 +129,37 @@ const MAP_COLORS: Record<string, string> = {
       </div>
 
       <div class="tab-page" data-page="maps" hidden>
-        {
-          MAP_GROUPS.map((g) => (
-            <>
-              <div class="segment">{g.tradition}</div>
-              {g.maps.map((m) => (
-                <label class:list={['row', { soon: !m.ready }]}>
-                  <input type="checkbox" data-map={m.id} disabled={!m.ready} />
-                  <span class="swatch" style={`background:${MAP_COLORS[m.color] ?? '#9aa2a8'}`} />
-                  {m.name}
-                  {!m.ready && <span class="n">soon</span>}
-                </label>
-              ))}
-            </>
-          ))
-        }
+        <div class="map-card" data-map-card>
+          <div class="mc-kicker" data-mc-kicker>Chinese medicine</div>
+          <div class="mc-title" data-mc-title>The channels and their points</div>
+          <div class="mc-sub" data-mc-sub></div>
+          <p class="mc-note" data-mc-note>Turn the map on, then move over the body: each point’s name, its place, and the anatomy beneath it appear here.</p>
+        </div>
+        <div class="segment">Chinese medicine</div>
+        <label class="row"><input type="checkbox" data-map="meridians" /> channels and points <span class="n">361</span></label>
+        <p class="sub">the twelve primary channels and the two midline vessels, placed by the WHO standard — approximate</p>
+        <div class="chipset channels" data-channel-grid hidden>
+          <button class="chip is-active" type="button" data-ch="-1">all</button>
+          {
+            MERIDIANS.map((m, i) => (
+              <button class="chip" type="button" data-ch={i} title={m.name}>
+                {m.code} <span class="cjk">{SHORT[m.code]}</span>
+              </button>
+            ))
+          }
+        </div>
+        <div class="segment">Compare with</div>
+        <div class="chipset" data-compare-grid>
+          <button class="chip" type="button" data-compare="knots">knots</button>
+          <button class="chip" type="button" data-compare="perforators">perforators</button>
+          <button class="chip" type="button" data-compare="vessels">vessels</button>
+          <button class="chip" type="button" data-compare="channels">deep channels</button>
+        </div>
+        <p class="sub">With a map on, the anatomy steps back; bring one layer forward to compare.</p>
+        <div class="segment">To come</div>
+        <ul class="soon-list">
+          {MAP_GROUPS.flatMap((g) => g.maps.filter((m) => !m.ready).map((m) => <li>{m.name} <span>{g.tradition}</span></li>))}
+        </ul>
       </div>
     </div>
   </aside>
@@ -183,6 +195,68 @@ const MAP_COLORS: Record<string, string> = {
     justify-content: space-between;
     color: var(--panel-faint);
     font-size: 9px;
+  }
+  .map-card {
+    margin: 10px 12px 6px;
+    padding: 10px 12px 11px;
+    border: 1px solid var(--panel-line);
+    border-radius: 8px;
+    background: #2f2c29;
+    min-height: 96px;
+  }
+  .mc-kicker {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    letter-spacing: 0.4px;
+    text-transform: uppercase;
+    color: #b9a2c6;
+  }
+  .mc-title {
+    font-size: 13.5px;
+    font-weight: 600;
+    color: #f2ebe0;
+    margin-top: 3px;
+  }
+  .mc-sub {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 12px;
+    color: var(--panel-muted);
+    margin-top: 1px;
+  }
+  .mc-note {
+    font-family: var(--font-serif);
+    font-size: 11.5px;
+    line-height: 1.5;
+    color: #d8cfc2;
+    margin-top: 6px;
+  }
+  .mc-note :global(.anat) {
+    display: block;
+    margin-top: 5px;
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    line-height: 1.55;
+    color: var(--panel-faint);
+  }
+  .chipset.channels .cjk {
+    font-family: var(--font-cjk);
+    font-size: 10px;
+    color: var(--panel-faint);
+  }
+  .soon-list {
+    list-style: none;
+    padding: 2px 14px 12px;
+    font-family: var(--font-serif);
+    font-size: 11.5px;
+    line-height: 1.7;
+    color: var(--panel-faint);
+  }
+  .soon-list span {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    margin-left: 4px;
+    opacity: 0.8;
   }
   .form-range .end {
     font-family: var(--font-mono);

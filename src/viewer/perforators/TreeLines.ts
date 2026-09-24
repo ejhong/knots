@@ -120,6 +120,7 @@ function createTreeMaterial() {
       uColor: { value: new Color() },
       uPulseColor: { value: new Color() },
       uAlpha: { value: 0.62 },
+      uDim: { value: 1 },
       uOffset: { value: 0.0006 },
       uLift: { value: 0 },
       uGlowMode: { value: 1 },
@@ -157,6 +158,7 @@ function createTreeMaterial() {
       uniform vec3 uColor;
       uniform vec3 uPulseColor;
       uniform float uAlpha;
+      uniform float uDim;
       uniform float uGlowMode;
       uniform float uBranchAlpha;
       uniform float uTime;
@@ -176,7 +178,7 @@ function createTreeMaterial() {
         float wave = fract(vArc * 9.0 + uTime * 0.11);
         float bead = smoothstep(0.86, 1.0, wave) * uFlow * (vLevel > 1.5 ? 1.0 : 0.6);
         vec3 col = mix(uColor * (1.0 + bead * 0.7), uPulseColor, clamp(vPulse, 0.0, 1.0));
-        a = max(a * (1.0 + bead * 1.2), vPulse * 0.95);
+        a = max(a * (1.0 + bead * 1.2), vPulse * 0.95) * uDim;
         if (uGlowMode > 0.5) gl_FragColor = vec4(col * a, 1.0);
         else gl_FragColor = vec4(col, a);
       }

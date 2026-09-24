@@ -168,6 +168,7 @@ function createStalkMaterial() {
       uKnot: { value: new Color() },
       uGlowMode: { value: 1 },
       uAlpha: { value: new Vector3(0.034, 0.16, 0.5) },
+      uDim: { value: 1 },
       uClip: { value: new Vector4() },
       uClipOn: { value: 0 },
     },
@@ -212,6 +213,7 @@ function createStalkMaterial() {
       uniform vec3 uColor;
       uniform vec3 uKnot;
       uniform float uGlowMode;
+      uniform float uDim;
       uniform vec4 uClip;
       uniform float uClipOn;
       varying float vA;
@@ -221,7 +223,7 @@ function createStalkMaterial() {
       void main() {
         if (uClipOn > 0.5 && dot(vClipPos, uClip.xyz) > uClip.w) discard;
         // The ember carries the knot; the vessel only warms a little.
-        float a = vA * mix(0.45, 1.0, vEnd) * (1.0 + vKnot * 0.4);
+        float a = vA * mix(0.45, 1.0, vEnd) * (1.0 + vKnot * 0.4) * uDim;
         vec3 col = mix(uColor, uKnot, clamp(vKnot * 0.55, 0.0, 1.0));
         if (uGlowMode > 0.5) gl_FragColor = vec4(col * a, 1.0);
         else gl_FragColor = vec4(col, clamp(a, 0.0, 1.0));
@@ -241,6 +243,7 @@ function createCollarMaterial() {
       uKnot: { value: new Color() },
       uProjScale: { value: 800 },
       uGlowMode: { value: 1 },
+      uDim: { value: 1 },
       uClip: { value: new Vector4() },
       uClipOn: { value: 0 },
     },
@@ -280,6 +283,7 @@ function createCollarMaterial() {
       uniform vec3 uColor;
       uniform vec3 uKnot;
       uniform float uGlowMode;
+      uniform float uDim;
       uniform vec4 uClip;
       uniform float uClipOn;
       varying float vKnot;
@@ -296,7 +300,7 @@ function createCollarMaterial() {
         float ring = 1.0 - smoothstep(width, width + px * 1.5, abs(r - 0.66));
         float fill = (1.0 - smoothstep(0.62, 0.66, r)) * vKnot * 0.12;
         vec3 col = mix(uColor, uKnot, vKnot * 0.55);
-        float a = ring * (vLevel > 1.5 ? 0.6 : 0.34) + fill;
+        float a = (ring * (vLevel > 1.5 ? 0.6 : 0.34) + fill) * uDim;
         if (uGlowMode > 0.5) gl_FragColor = vec4(col * a, 1.0);
         else {
           if (a < 0.01) discard;

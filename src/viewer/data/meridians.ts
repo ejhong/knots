@@ -1,0 +1,612 @@
+import type { LimbSegment, Locator, PointExpr, Vec3 } from '../anchors/locate';
+import NAMES from './acupoint-names.json';
+
+/**
+ * The fourteen channels of Chinese medicine — the twelve primary channels
+ * and the Governor and Conception vessels — with their 361 points.
+ *
+ * Each point is placed the way the WHO standard (2008) defines it: by
+ * proportional body inches (cun) along a limb, or by level and cun from the
+ * midline on the trunk, or by landmark on the head. Positions are resolved on
+ * the reference adult and ride with the skin. They are approximate — for
+ * comparing the maps with the anatomy, never for needling.
+ *
+ * Names (characters, pinyin, English) follow the standard numbering as listed
+ * on Wikipedia's "List of acupuncture points" (after Deadman et al.).
+ */
+export interface PointDef {
+  n: number;
+  at: Locator;
+  where: string;
+}
+
+export interface MeridianDef {
+  code: string;
+  name: string;
+  hanzi: string;
+  /** Its course, in a sentence. */
+  course: string;
+  bilateral: boolean;
+  /** Polylines through these point numbers (default: every point in order). */
+  lines?: number[][];
+  points: PointDef[];
+}
+
+export const pointName = (code: string) => (NAMES as unknown as Record<string, [string, string, string]>)[code];
+
+/* ---------- Placement helpers (left side; bilateral points are mirrored). ---------- */
+
+const limb = (seg: LimbSegment, t: number, deg: number): Locator => ({ limb: seg, t, deg });
+/** Forearm: 12 cun from the cubital crease (t = 0) to the wrist crease (t = 1). */
+const fa = (cunAboveWrist: number, deg: number) => limb('forearm', 1 - cunAboveWrist / 12, deg);
+/** Upper arm: 9 cun from the anterior axillary fold (about a fifth of the way down) to the cubital crease. */
+const AXILLA_T = 0.18;
+const ua = (cunBelowFold: number, deg: number) => limb('upper-arm', AXILLA_T + (cunBelowFold / 9) * (1 - AXILLA_T), deg);
+/** Thigh: 19 cun from the hip to the popliteal crease. */
+const th = (cunAboveKnee: number, deg: number) => limb('thigh', 1 - cunAboveKnee / 19, deg);
+/** Leg: 16 cun from the knee crease (t = 0) to the ankle (t = 1). */
+const lg = (cunBelowKnee: number, deg: number) => limb('leg', cunBelowKnee / 16, deg);
+
+/** Reference heights of the midline joints, for trunk levels (metres, reference adult). */
+const CHAIN: [string, number][] = [
+  ['pelvis', 0.924],
+  ['spine-4', 1.011],
+  ['spine-3', 1.081],
+  ['spine-2', 1.14],
+  ['spine-1', 1.275],
+  ['neck', 1.482],
+  ['head', 1.578],
+  ['head-2', 1.734],
+];
+function atHeight(y: number, o: Vec3 = [0, 0, 0]): PointExpr {
+  if (y <= CHAIN[0][1]) return { j: CHAIN[0][0], o: [o[0], y - CHAIN[0][1] + o[1], o[2]] };
+  for (let i = 0; i < CHAIN.length - 1; i++) {
+    const [a, ya] = CHAIN[i];
+    const [b, yb] = CHAIN[i + 1];
+    if (y <= yb) return { lerp: [a, b, (y - ya) / (yb - ya)], o };
+  }
+  const [a, ya] = CHAIN[CHAIN.length - 1];
+  return { j: a, o: [o[0], y - ya + o[1], o[2]] };
+}
+
+/** Horizontal cun on the front (nipples 8 cun apart) and the back (scapulae 6 cun apart). */
+const H = 0.024;
+const B = 0.023;
+/** The navel, and vertical cun above (8 to the xiphisternal junction) and below it (5 to the pubic symphysis). */
+const NAVEL = 1.058;
+const nav = (cun: number) => NAVEL + (cun >= 0 ? cun * 0.0253 : cun * 0.0286);
+/** Intercostal spaces at the midline; the ribs slope down a little laterally. */
+const ICS = [0, 1.408, 1.382, 1.356, 1.33, 1.304, 1.278, 1.252];
+const ics = (k: number, cunLateral: number) => ICS[k] - 0.0045 * cunLateral;
+/** Spinous processes; "below" a vertebra is the depression under its process. */
+const SPINE: Record<string, number> = {
+  C7: 1.462, T1: 1.438, T2: 1.414, T3: 1.39, T4: 1.366, T5: 1.342, T6: 1.318, T7: 1.294, T8: 1.27, T9: 1.246, T10: 1.222,
+  T11: 1.198, T12: 1.174, L1: 1.146, L2: 1.117, L3: 1.088, L4: 1.059, L5: 1.03, S1: 1.0, S2: 0.976, S3: 0.953, S4: 0.93,
+};
+const ORDER = Object.keys(SPINE);
+const below = (v: string) => {
+  const i = ORDER.indexOf(v);
+  return (SPINE[v] + (i < ORDER.length - 1 ? SPINE[ORDER[i + 1]] : SPINE[v] - 0.024)) / 2;
+};
+
+/** The front of the trunk at a height, so many cun from the midline (reached from outside). */
+const front = (y: number, cun: number, up = 0): Locator => ({ near: atHeight(y, [cun * H, 0, 0]), dir: [0, up, 1] });
+/** The back of the trunk. */
+const back = (y: number, cun: number, up = 0): Locator => ({ near: atHeight(y, [cun * B, 0, 0]), dir: [0, up, -1] });
+/** The flank, from inside the trunk outward (the arm hangs outside it). */
+const flank = (y: number, forward = 0): Locator => ({ ray: atHeight(y), dir: [1, 0, forward] });
+/** A point on the head, neck or face, reached from outside along `dir` (reference coordinates). */
+const at = (x: number, y: number, z: number, dir: Vec3): Locator => ({ near: { j: 'ground', o: [x, y, z] }, dir, reach: 0.15 });
+const face = (x: number, y: number, side = 0) => at(x, y, 0.05, [side, 0, 1]);
+/**
+ * The scalp: a ray from the centre of the skull, `theta` degrees along the
+ * midline arc (0 forward, 90 straight up, 180 back) and `phi` degrees out to
+ * the side.
+ */
+const scalp = (theta: number, phi: number): Locator => {
+  const t = (theta * Math.PI) / 180;
+  const p = (phi * Math.PI) / 180;
+  return { ray: { mid: ['head', 'head-2'] }, dir: [Math.sin(p), Math.cos(p) * Math.sin(t), Math.cos(p) * Math.cos(t)] };
+};
+const near = (j: string, o: Vec3, dir: Vec3): Locator => ({ near: { j, o }, dir, reach: 0.15 });
+/** From inside a joint outward, for points facing another limb (the inner ankle, the armpit). */
+const from = (j: string, o: Vec3, dir: Vec3): Locator => ({ ray: { j, o }, dir });
+
+const pts = (rows: [number, Locator, string][]): PointDef[] => rows.map(([n, at, where]) => ({ n, at, where }));
+const seq = (a: number, b: number) => Array.from({ length: b - a + 1 }, (_, i) => a + i);
+
+/* ---------- The channels. ---------- */
+
+export const MERIDIANS: MeridianDef[] = [
+  {
+    code: 'LU',
+    name: 'Lung channel of the hand, greater yin',
+    hanzi: '手太陰肺經',
+    course: 'From the chest, down the front of the arm, to the thumb.',
+    bilateral: true,
+    points: pts([
+      [1, front(ics(1, 6), 6), 'Chest, in the first intercostal space, 6 cun from the midline'],
+      [2, front(1.405, 6, 0.3), 'In the hollow below the outer end of the collarbone, 6 cun from the midline'],
+      [3, ua(3, 45), 'Upper arm, radial edge of the biceps, 3 cun below the armpit fold'],
+      [4, ua(4, 45), 'Upper arm, radial edge of the biceps, 4 cun below the armpit fold'],
+      [5, fa(12, 35), 'Elbow crease, on the radial side of the biceps tendon'],
+      [6, fa(7, 50), 'Forearm, 7 cun above the wrist crease, radial side'],
+      [7, fa(1.5, 65), 'Just above the wrist on the radial side, 1.5 cun above the crease'],
+      [8, fa(1, 60), 'Wrist, 1 cun above the crease, over the radial artery'],
+      [9, fa(0, 55), 'Wrist crease, radial to the radial artery'],
+      [10, limb('hand', 0.45, 60), 'Palm, at the middle of the thumb metacarpal, where the palm skin meets the back'],
+      [11, limb('finger-1', 0.92, 110), 'Radial side of the thumb, beside the corner of the nail'],
+    ]),
+  },
+  {
+    code: 'LI',
+    name: 'Large intestine channel of the hand, yang brightness',
+    hanzi: '手陽明大腸經',
+    course: 'From the index finger, up the outer arm and over the shoulder, to beside the nose.',
+    bilateral: true,
+    points: pts([
+      [1, limb('finger-2', 0.9, 125), 'Radial side of the index finger, beside the corner of the nail'],
+      [2, limb('finger-2', 0.15, 100), 'Radial side of the index finger, just beyond the knuckle'],
+      [3, limb('hand', 0.9, 100), 'Radial side of the hand, just before the index knuckle'],
+      [4, limb('hand', 0.5, 145), 'Back of the hand, between the first and second metacarpals'],
+      [5, fa(0, 115), 'Radial side of the wrist, in the anatomical snuffbox'],
+      [6, fa(3, 120), 'Forearm, 3 cun above the wrist, on the radial-dorsal line'],
+      [7, fa(5, 120), 'Forearm, 5 cun above the wrist'],
+      [8, fa(8, 115), 'Forearm, 4 cun below the elbow crease'],
+      [9, fa(9, 110), 'Forearm, 3 cun below the elbow crease'],
+      [10, fa(10, 105), 'Forearm, 2 cun below the elbow crease'],
+      [11, fa(12, 95), 'Outer end of the elbow crease'],
+      [12, ua(8, 110), 'Above the elbow, 1 cun above the lateral epicondyle'],
+      [13, ua(6, 100), 'Upper arm, 3 cun above the elbow crease, lateral side'],
+      [14, ua(2, 95), 'Upper arm, at the lower end of the deltoid'],
+      [15, near('l-shoulder', [0.02, 0.01, 0.02], [0.6, 0.6, 0.5]), 'Shoulder, in the front hollow below the acromion when the arm is raised'],
+      [16, near('l-shoulder', [-0.035, 0.03, -0.015], [0.1, 1, -0.2]), 'Top of the shoulder, between the end of the collarbone and the spine of the scapula'],
+      [17, at(0.058, 1.453, 0.01, [1, 0, 0.35]), 'Side of the neck, at the back edge of the sternocleidomastoid, level with the cricoid'],
+      [18, at(0.053, 1.473, 0.02, [0.8, 0, 0.6]), 'Side of the neck, level with the Adam’s apple, between the heads of the sternocleidomastoid'],
+      [19, face(0.011, 1.566), 'Upper lip, below the outer edge of the nostril'],
+      [20, face(0.021, 1.578, 0.3), 'In the groove beside the nostril, level with the middle of its wing'],
+    ]),
+  },
+  {
+    code: 'ST',
+    name: 'Stomach channel of the foot, yang brightness',
+    hanzi: '足陽明胃經',
+    course: 'From below the eye, over the face and down the front of the body and leg, to the second toe.',
+    bilateral: true,
+    lines: [seq(1, 8), [5, ...seq(9, 45)]],
+    points: pts([
+      [1, face(0.029, 1.605), 'Below the pupil, between the eyeball and the rim of the orbit'],
+      [2, face(0.029, 1.596), 'Below the pupil, over the infraorbital foramen'],
+      [3, face(0.029, 1.576), 'Below the pupil, level with the lower edge of the nostril'],
+      [4, face(0.031, 1.549), 'Beside the corner of the mouth'],
+      [5, at(0.047, 1.522, 0.07, [0.6, -0.2, 0.8]), 'Jaw, in front of the angle, over the facial artery'],
+      [6, at(0.058, 1.542, 0.06, [1, 0, 0.35]), 'Cheek, on the masseter, a finger-width in front of the jaw angle'],
+      [7, at(0.066, 1.59, 0.072, [1, 0, 0.3]), 'In front of the ear, in the hollow below the zygomatic arch'],
+      [8, scalp(33, 45), 'Corner of the forehead, 0.5 cun within the hairline, 4.5 cun from the midline'],
+      [9, at(0.036, 1.476, 0.05, [0.35, 0, 1]), 'Neck, beside the Adam’s apple, over the carotid pulse'],
+      [10, at(0.038, 1.457, 0.05, [0.35, 0, 1]), 'Neck, midway between the carotid point and the collarbone'],
+      [11, at(0.028, 1.438, 0.04, [0.2, 0.3, 1]), 'Above the inner end of the collarbone, between the two heads of the sternocleidomastoid'],
+      [12, at(0.096, 1.44, 0.03, [0, 0.5, 1]), 'Hollow above the collarbone, 4 cun from the midline'],
+      [13, front(1.412, 4), 'Below the collarbone, 4 cun from the midline'],
+      [14, front(ics(1, 4), 4), 'Chest, first intercostal space, 4 cun from the midline'],
+      [15, front(ics(2, 4), 4), 'Chest, second intercostal space, 4 cun from the midline'],
+      [16, front(ics(3, 4), 4), 'Chest, third intercostal space, 4 cun from the midline'],
+      [17, front(ics(4, 4), 4), 'The centre of the nipple'],
+      [18, front(ics(5, 4), 4), 'Chest, fifth intercostal space, below the nipple'],
+      [19, front(nav(6), 2), 'Upper abdomen, 6 cun above the navel, 2 cun from the midline'],
+      [20, front(nav(5), 2), '5 cun above the navel, 2 cun from the midline'],
+      [21, front(nav(4), 2), '4 cun above the navel, 2 cun from the midline'],
+      [22, front(nav(3), 2), '3 cun above the navel, 2 cun from the midline'],
+      [23, front(nav(2), 2), '2 cun above the navel, 2 cun from the midline'],
+      [24, front(nav(1), 2), '1 cun above the navel, 2 cun from the midline'],
+      [25, front(nav(0), 2), 'Level with the navel, 2 cun from the midline'],
+      [26, front(nav(-1), 2), '1 cun below the navel, 2 cun from the midline'],
+      [27, front(nav(-2), 2), '2 cun below the navel, 2 cun from the midline'],
+      [28, front(nav(-3), 2), '3 cun below the navel, 2 cun from the midline'],
+      [29, front(nav(-4), 2), '4 cun below the navel, 2 cun from the midline'],
+      [30, front(nav(-5), 2), 'Groin, level with the top of the pubic bone, over the femoral pulse'],
+      [31, limb('thigh', 0.09, 15), 'Front of the thigh, in the hollow between three muscles, below the hip crease'],
+      [32, th(8, 18), 'Front of the thigh, 6 cun above the kneecap'],
+      [33, th(5, 22), 'Front of the thigh, 3 cun above the kneecap, lateral side'],
+      [34, th(4, 30), '2 cun above the outer upper corner of the kneecap'],
+      [35, lg(0, 25), 'Knee, in the hollow outside the patellar ligament'],
+      [36, lg(3, 22), '3 cun below the knee hollow, a finger-width outside the shinbone'],
+      [37, lg(6, 22), '6 cun below the knee hollow, beside the shinbone'],
+      [38, lg(8, 22), '8 cun below the knee hollow, beside the shinbone'],
+      [39, lg(9, 22), '9 cun below the knee hollow, beside the shinbone'],
+      [40, lg(8, 42), '8 cun above the outer ankle, two finger-widths outside the shinbone'],
+      [41, lg(16, 3), 'Front of the ankle, between the two tendons'],
+      [42, limb('foot', 0.4, 0), 'Highest point of the top of the foot, over the dorsalis pedis pulse'],
+      [43, limb('foot', 0.82, 22), 'Top of the foot, between the second and third metatarsals'],
+      [44, limb('toe-2', 0.05, 45), 'Between the second and third toes, at the web'],
+      [45, limb('toe-2', 0.85, 115), 'Lateral side of the second toe, beside the corner of the nail'],
+    ]),
+  },
+  {
+    code: 'SP',
+    name: 'Spleen channel of the foot, greater yin',
+    hanzi: '足太陰脾經',
+    course: 'From the big toe, up the inside of the leg and the front of the trunk, to the side of the chest.',
+    bilateral: true,
+    points: pts([
+      [1, limb('toe-1', 0.85, 250), 'Medial side of the big toe, beside the corner of the nail'],
+      [2, limb('toe-1', 0.12, 268), 'Medial side of the big toe, just beyond its joint'],
+      [3, limb('foot', 0.95, 265), 'Medial edge of the foot, just behind the big toe joint'],
+      [4, limb('foot', 0.55, 258), 'Medial edge of the foot, below the base of the first metatarsal'],
+      [5, limb('foot', 0.1, 292), 'In front of and below the inner ankle bone'],
+      [6, lg(13, 255), '3 cun above the inner ankle, behind the edge of the shinbone'],
+      [7, lg(10, 255), '6 cun above the inner ankle, behind the edge of the shinbone'],
+      [8, lg(5, 258), '3 cun below the knee point, behind the edge of the shinbone'],
+      [9, lg(2, 262), 'Below the inner knee, where the shinbone’s condyle meets its shaft'],
+      [10, th(4, 318), 'Inner thigh, 2 cun above the inner corner of the kneecap, on the vastus medialis'],
+      [11, th(10, 300), 'Inner thigh, a third of the way from the kneecap to the groin'],
+      [12, front(0.905, 3.5), 'Groin crease, outside the femoral pulse, 3.5 cun from the midline'],
+      [13, front(nav(-4), 4), 'Lower abdomen, 4 cun below the navel, 4 cun from the midline'],
+      [14, front(nav(-1.3), 4), '1.3 cun below the navel, 4 cun from the midline'],
+      [15, front(nav(0), 4), 'Level with the navel, 4 cun from the midline'],
+      [16, front(nav(3), 4), '3 cun above the navel, 4 cun from the midline'],
+      [17, front(ics(5, 6), 6), 'Chest, fifth intercostal space, 6 cun from the midline'],
+      [18, front(ics(4, 6), 6), 'Chest, fourth intercostal space, 6 cun from the midline'],
+      [19, front(ics(3, 6), 6), 'Chest, third intercostal space, 6 cun from the midline'],
+      [20, front(ics(2, 6), 6), 'Chest, second intercostal space, 6 cun from the midline'],
+      [21, flank(1.262, 0), 'Side of the chest, sixth intercostal space, on the midaxillary line'],
+    ]),
+  },
+  {
+    code: 'HT',
+    name: 'Heart channel of the hand, lesser yin',
+    hanzi: '手少陰心經',
+    course: 'From the armpit, down the inner arm, to the little finger.',
+    bilateral: true,
+    points: pts([
+      [1, from('l-shoulder', [-0.02, -0.035, 0], [-0.35, -1, 0]), 'Centre of the armpit, over the axillary pulse'],
+      [2, ua(6, 288), 'Inner upper arm, 3 cun above the elbow crease, beside the biceps'],
+      [3, fa(12, 292), 'Inner elbow, between the end of the crease and the medial epicondyle'],
+      [4, fa(1.5, 305), 'Forearm, 1.5 cun above the wrist crease, ulnar side'],
+      [5, fa(1, 305), 'Forearm, 1 cun above the wrist crease, ulnar side'],
+      [6, fa(0.5, 305), 'Forearm, 0.5 cun above the wrist crease, ulnar side'],
+      [7, fa(0, 305), 'Wrist crease, radial to the flexor carpi ulnaris tendon'],
+      [8, limb('hand', 0.6, 328), 'Palm, between the fourth and fifth metacarpals'],
+      [9, limb('finger-5', 0.9, 120), 'Radial side of the little finger, beside the corner of the nail'],
+    ]),
+  },
+  {
+    code: 'SI',
+    name: 'Small intestine channel of the hand, greater yang',
+    hanzi: '手太陽小腸經',
+    course: 'From the little finger, up the back of the arm and over the shoulder blade, to in front of the ear.',
+    bilateral: true,
+    points: pts([
+      [1, limb('finger-5', 0.9, 240), 'Ulnar side of the little finger, beside the corner of the nail'],
+      [2, limb('finger-5', 0.12, 265), 'Ulnar side of the little finger, just beyond the knuckle'],
+      [3, limb('hand', 0.85, 265), 'Ulnar edge of the hand, just before the little finger knuckle'],
+      [4, limb('hand', 0.15, 262), 'Ulnar edge of the hand, at the base of the fifth metacarpal'],
+      [5, fa(0, 250), 'Ulnar side of the wrist, between the ulnar styloid and the triquetrum'],
+      [6, fa(1, 222), 'Back of the wrist, 1 cun up, beside the head of the ulna'],
+      [7, fa(5, 240), 'Forearm, 5 cun above the wrist, on the ulnar border'],
+      [8, fa(12, 228), 'Elbow, between the olecranon and the medial epicondyle'],
+      [9, near('l-shoulder', [0.0, -0.05, -0.02], [0.3, 0, -1]), 'Back of the shoulder, 1 cun above the posterior armpit fold'],
+      [10, near('l-shoulder', [-0.005, -0.005, -0.03], [0.2, 0.3, -1]), 'Back of the shoulder, below the spine of the scapula'],
+      [11, back(1.335, 4.3), 'Middle of the shoulder blade, in the infraspinous fossa'],
+      [12, back(1.405, 4.0, 0.3), 'Above the middle of the spine of the scapula'],
+      [13, back(1.402, 2.6, 0.3), 'Inner end of the supraspinous fossa'],
+      [14, back(below('T1'), 3), 'Upper back, level with T1, 3 cun from the midline'],
+      [15, back(below('C7'), 2), 'Level with C7, 2 cun from the midline'],
+      [16, at(0.06, 1.476, -0.01, [1, 0, -0.1]), 'Side of the neck, behind the sternocleidomastoid, level with the Adam’s apple'],
+      [17, at(0.052, 1.515, 0.03, [1, 0, 0]), 'Behind the angle of the jaw, in front of the sternocleidomastoid'],
+      [18, face(0.052, 1.597, 0.5), 'Cheek, below the cheekbone, directly under the outer corner of the eye'],
+      [19, at(0.07, 1.6, 0.058, [1, 0, 0.3]), 'In front of the ear, between the tragus and the jaw joint'],
+    ]),
+  },
+  {
+    code: 'BL',
+    name: 'Bladder channel of the foot, greater yang',
+    hanzi: '足太陽膀胱經',
+    course: 'From the inner corner of the eye, over the head and down the back in two lines, to the little toe.',
+    bilateral: true,
+    lines: [seq(1, 40), [...seq(41, 54), 40], [40, ...seq(55, 67)]],
+    points: pts([
+      [1, face(0.013, 1.622, 0.3), 'Just above and inside the inner corner of the eye'],
+      [2, face(0.013, 1.641), 'Inner end of the eyebrow'],
+      [3, scalp(37, 4), 'Directly above the eyebrow’s inner end, 0.5 cun within the hairline'],
+      [4, scalp(37, 13), '0.5 cun within the hairline, 1.5 cun from the midline'],
+      [5, scalp(43, 13), '1 cun within the hairline, 1.5 cun from the midline'],
+      [6, scalp(62, 13), '2.5 cun within the hairline, 1.5 cun from the midline'],
+      [7, scalp(82, 13), '4 cun within the hairline, 1.5 cun from the midline'],
+      [8, scalp(102, 13), '5.5 cun within the hairline, 1.5 cun from the midline'],
+      [9, scalp(190, 11), 'Back of the head, level with the top of the occipital bump, 1.3 cun from the midline'],
+      [10, back(1.545, 1.3), 'Back of the neck, outside the trapezius, level with C2'],
+      [11, back(below('T1'), 1.5), 'Level with T1, 1.5 cun from the midline'],
+      [12, back(below('T2'), 1.5), 'Level with T2, 1.5 cun from the midline'],
+      [13, back(below('T3'), 1.5), 'Level with T3, 1.5 cun from the midline'],
+      [14, back(below('T4'), 1.5), 'Level with T4, 1.5 cun from the midline'],
+      [15, back(below('T5'), 1.5), 'Level with T5, 1.5 cun from the midline'],
+      [16, back(below('T6'), 1.5), 'Level with T6, 1.5 cun from the midline'],
+      [17, back(below('T7'), 1.5), 'Level with T7, 1.5 cun from the midline'],
+      [18, back(below('T9'), 1.5), 'Level with T9, 1.5 cun from the midline'],
+      [19, back(below('T10'), 1.5), 'Level with T10, 1.5 cun from the midline'],
+      [20, back(below('T11'), 1.5), 'Level with T11, 1.5 cun from the midline'],
+      [21, back(below('T12'), 1.5), 'Level with T12, 1.5 cun from the midline'],
+      [22, back(below('L1'), 1.5), 'Level with L1, 1.5 cun from the midline'],
+      [23, back(below('L2'), 1.5), 'Level with L2, 1.5 cun from the midline'],
+      [24, back(below('L3'), 1.5), 'Level with L3, 1.5 cun from the midline'],
+      [25, back(below('L4'), 1.5), 'Level with L4, 1.5 cun from the midline'],
+      [26, back(below('L5'), 1.5), 'Level with L5, 1.5 cun from the midline'],
+      [27, back(SPINE.S1, 1.5), 'Sacrum, level with the first sacral foramen, 1.5 cun from the midline'],
+      [28, back(SPINE.S2, 1.5), 'Sacrum, level with the second sacral foramen, 1.5 cun from the midline'],
+      [29, back(SPINE.S3, 1.5), 'Sacrum, level with the third sacral foramen, 1.5 cun from the midline'],
+      [30, back(SPINE.S4, 1.5), 'Sacrum, level with the fourth sacral foramen, 1.5 cun from the midline'],
+      [31, back(SPINE.S1, 0.8), 'In the first sacral foramen'],
+      [32, back(SPINE.S2, 0.75), 'In the second sacral foramen'],
+      [33, back(SPINE.S3, 0.7), 'In the third sacral foramen'],
+      [34, back(SPINE.S4, 0.65), 'In the fourth sacral foramen'],
+      [35, back(0.892, 0.5, -0.3), 'Beside the tip of the coccyx, 0.5 cun out'],
+      [36, limb('thigh', 0.14, 180), 'Middle of the gluteal fold'],
+      [37, limb('thigh', 0.51, 180), 'Back of the thigh, 6 cun below the gluteal fold'],
+      [38, limb('thigh', 0.94, 160), 'Back of the thigh, 1 cun above the knee crease, inside the biceps tendon'],
+      [39, lg(0, 152), 'Outer end of the knee crease, inside the biceps femoris tendon'],
+      [40, lg(0, 180), 'Middle of the knee crease'],
+      [41, back(below('T2'), 3), 'Level with T2, 3 cun from the midline'],
+      [42, back(below('T3'), 3), 'Level with T3, 3 cun from the midline'],
+      [43, back(below('T4'), 3), 'Level with T4, 3 cun from the midline'],
+      [44, back(below('T5'), 3), 'Level with T5, 3 cun from the midline'],
+      [45, back(below('T6'), 3), 'Level with T6, 3 cun from the midline'],
+      [46, back(below('T7'), 3), 'Level with T7, 3 cun from the midline'],
+      [47, back(below('T9'), 3), 'Level with T9, 3 cun from the midline'],
+      [48, back(below('T10'), 3), 'Level with T10, 3 cun from the midline'],
+      [49, back(below('T11'), 3), 'Level with T11, 3 cun from the midline'],
+      [50, back(below('T12'), 3), 'Level with T12, 3 cun from the midline'],
+      [51, back(below('L1'), 3), 'Level with L1, 3 cun from the midline'],
+      [52, back(below('L2'), 3), 'Level with L2, 3 cun from the midline'],
+      [53, back(SPINE.S2, 3), 'Buttock, level with the second sacral foramen, 3 cun from the midline'],
+      [54, back(SPINE.S4, 3), 'Buttock, level with the fourth sacral foramen, 3 cun from the midline'],
+      [55, lg(2, 180), '2 cun below the knee crease, between the heads of the gastrocnemius'],
+      [56, lg(5, 180), 'Calf, 5 cun below the knee crease, in the belly of the gastrocnemius'],
+      [57, lg(8, 180), 'Calf, where the two bellies of the gastrocnemius meet the tendon'],
+      [58, lg(9, 150), '7 cun above the outer ankle, at the outer edge of the gastrocnemius'],
+      [59, lg(13, 160), '3 cun above the outer ankle, in front of the Achilles tendon'],
+      [60, lg(16, 142), 'Between the outer ankle bone and the Achilles tendon'],
+      [61, near('l-ankle', [0.02, -0.04, -0.04], [1, -0.2, -0.5]), 'Outer heel, below the ankle point, on the side of the calcaneus'],
+      [62, near('l-ankle', [0.022, -0.028, 0.0], [1, -0.1, 0]), 'Directly below the outer ankle bone'],
+      [63, near('l-ankle', [0.025, -0.035, 0.03], [1, -0.2, 0.2]), 'In front of and below the outer ankle, below the cuboid'],
+      [64, limb('foot', 0.55, 100), 'Outer edge of the foot, in front of the fifth metatarsal tuberosity'],
+      [65, limb('foot', 0.95, 100), 'Outer edge of the foot, behind the little toe joint'],
+      [66, limb('toe-5', 0.1, 100), 'Outer edge of the little toe, just beyond its joint'],
+      [67, limb('toe-5', 0.85, 115), 'Outer side of the little toe, beside the corner of the nail'],
+    ]),
+  },
+  {
+    code: 'KI',
+    name: 'Kidney channel of the foot, lesser yin',
+    hanzi: '足少陰腎經',
+    course: 'From the sole, up the inside of the leg and close beside the midline, to below the collarbone.',
+    bilateral: true,
+    points: pts([
+      [1, limb('foot', 0.78, 185), 'Sole, in the deepest hollow when the toes curl, a third of the way from toes to heel'],
+      [2, limb('foot', 0.35, 248), 'Inner edge of the foot, below the navicular tuberosity'],
+      [3, lg(16, 218), 'Between the inner ankle bone and the Achilles tendon'],
+      [4, from('l-ankle', [0, -0.02, -0.025], [-1, 0, -0.6]), 'Behind and below the inner ankle, above the heel bone'],
+      [5, from('l-ankle', [0, -0.035, -0.02], [-1, -0.2, -0.3]), '1 cun below the ankle point, in front of the heel’s tuberosity'],
+      [6, from('l-ankle', [0, -0.028, 0.004], [-1, 0, 0]), '1 cun below the inner ankle bone'],
+      [7, lg(14, 212), '2 cun above the inner ankle, in front of the Achilles tendon'],
+      [8, lg(14, 240), '2 cun above the inner ankle, behind the edge of the shinbone'],
+      [9, lg(11, 205), '5 cun above the inner ankle, between the soleus and the Achilles tendon'],
+      [10, lg(0, 222), 'Inner end of the knee crease, outside the semitendinosus tendon'],
+      [11, front(nav(-5), 0.5), 'Top of the pubic bone, 0.5 cun from the midline'],
+      [12, front(nav(-4), 0.5), '4 cun below the navel, 0.5 cun from the midline'],
+      [13, front(nav(-3), 0.5), '3 cun below the navel, 0.5 cun from the midline'],
+      [14, front(nav(-2), 0.5), '2 cun below the navel, 0.5 cun from the midline'],
+      [15, front(nav(-1), 0.5), '1 cun below the navel, 0.5 cun from the midline'],
+      [16, front(nav(0), 0.5), 'Level with the navel, 0.5 cun from the midline'],
+      [17, front(nav(2), 0.5), '2 cun above the navel, 0.5 cun from the midline'],
+      [18, front(nav(3), 0.5), '3 cun above the navel, 0.5 cun from the midline'],
+      [19, front(nav(4), 0.5), '4 cun above the navel, 0.5 cun from the midline'],
+      [20, front(nav(5), 0.5), '5 cun above the navel, 0.5 cun from the midline'],
+      [21, front(nav(6), 0.5), '6 cun above the navel, 0.5 cun from the midline'],
+      [22, front(ics(5, 2), 2), 'Chest, fifth intercostal space, 2 cun from the midline'],
+      [23, front(ics(4, 2), 2), 'Chest, fourth intercostal space, 2 cun from the midline'],
+      [24, front(ics(3, 2), 2), 'Chest, third intercostal space, 2 cun from the midline'],
+      [25, front(ics(2, 2), 2), 'Chest, second intercostal space, 2 cun from the midline'],
+      [26, front(ics(1, 2), 2), 'Chest, first intercostal space, 2 cun from the midline'],
+      [27, front(1.42, 2, 0.2), 'Below the collarbone, 2 cun from the midline'],
+    ]),
+  },
+  {
+    code: 'PC',
+    name: 'Pericardium channel of the hand, reverting yin',
+    hanzi: '手厥陰心包經',
+    course: 'From the chest beside the nipple, down the middle of the inner arm, to the middle finger.',
+    bilateral: true,
+    points: pts([
+      [1, front(ics(4, 5), 5), 'Chest, fourth intercostal space, 1 cun outside the nipple'],
+      [2, ua(2, 8), 'Upper arm, 2 cun below the armpit fold, between the two heads of the biceps'],
+      [3, fa(12, 355), 'Elbow crease, on the ulnar side of the biceps tendon'],
+      [4, fa(5, 0), 'Forearm, 5 cun above the wrist, between the two tendons'],
+      [5, fa(3, 0), 'Forearm, 3 cun above the wrist, between the two tendons'],
+      [6, fa(2, 0), 'Forearm, 2 cun above the wrist, between the two tendons'],
+      [7, fa(0, 0), 'Middle of the wrist crease, between the two tendons'],
+      [8, limb('hand', 0.62, 12), 'Centre of the palm, between the second and third metacarpals'],
+      [9, limb('finger-3', 0.97, 0), 'Tip of the middle finger'],
+    ]),
+  },
+  {
+    code: 'TE',
+    name: 'Triple energizer channel of the hand, lesser yang',
+    hanzi: '手少陽三焦經',
+    course: 'From the ring finger, up the back of the arm and around the ear, to the end of the eyebrow.',
+    bilateral: true,
+    points: pts([
+      [1, limb('finger-4', 0.9, 240), 'Ulnar side of the ring finger, beside the corner of the nail'],
+      [2, limb('hand', 1.0, 215), 'Back of the hand, between the ring and little fingers, at the web'],
+      [3, limb('hand', 0.8, 210), 'Back of the hand, between the fourth and fifth metacarpals'],
+      [4, fa(0, 190), 'Back of the wrist crease, beside the extensor tendon'],
+      [5, fa(2, 180), 'Back of the forearm, 2 cun above the wrist, between the two bones'],
+      [6, fa(3, 180), 'Back of the forearm, 3 cun above the wrist'],
+      [7, fa(3, 205), 'Back of the forearm, 3 cun above the wrist, beside the ulna'],
+      [8, fa(4, 180), 'Back of the forearm, 4 cun above the wrist'],
+      [9, fa(7, 180), 'Back of the forearm, 5 cun below the tip of the elbow'],
+      [10, ua(8, 180), 'Back of the arm, in the hollow 1 cun above the olecranon'],
+      [11, ua(7, 180), 'Back of the arm, 2 cun above the olecranon'],
+      [12, ua(5, 185), 'Back of the arm, midway up the triceps'],
+      [13, ua(3, 190), 'Back of the arm, at the back edge of the deltoid'],
+      [14, near('l-shoulder', [0.01, 0.005, -0.02], [0.7, 0.5, -0.5]), 'Shoulder, in the back hollow below the acromion when the arm is raised'],
+      [15, back(1.44, 3.3, 0.5), 'Top of the shoulder blade, in the suprascapular fossa'],
+      [16, at(0.056, 1.51, -0.01, [1, 0, -0.3]), 'Side of the neck, behind the sternocleidomastoid, level with the jaw angle'],
+      [17, at(0.06, 1.576, 0.028, [1, 0, -0.2]), 'Behind the earlobe, between the mastoid and the jaw'],
+      [18, at(0.064, 1.596, 0.016, [1, 0, -0.4]), 'Behind the ear, over the mastoid'],
+      [19, at(0.066, 1.614, 0.018, [1, 0, -0.4]), 'Behind the ear, higher on the curve'],
+      [20, at(0.072, 1.635, 0.035, [1, 0.5, 0]), 'Directly above the apex of the ear, at the hairline'],
+      [21, at(0.07, 1.612, 0.057, [1, 0, 0.3]), 'In front of the ear, in the hollow above the tragus'],
+      [22, at(0.071, 1.624, 0.064, [1, 0.1, 0.3]), 'Temple, in front of the root of the ear, over the temporal pulse'],
+      [23, face(0.05, 1.641, 0.6), 'Outer end of the eyebrow'],
+    ]),
+  },
+  {
+    code: 'GB',
+    name: 'Gallbladder channel of the foot, lesser yang',
+    hanzi: '足少陽膽經',
+    course: 'From the outer corner of the eye, back and forth over the side of the head, down the side of the body, to the fourth toe.',
+    bilateral: true,
+    points: pts([
+      [1, face(0.052, 1.619, 0.7), 'Beside the outer corner of the eye, 0.5 cun out'],
+      [2, at(0.068, 1.588, 0.056, [1, 0, 0.3]), 'In front of the ear, below the tragus'],
+      [3, at(0.07, 1.612, 0.08, [1, 0, 0.3]), 'Above the middle of the zygomatic arch'],
+      [4, at(0.064, 1.683, 0.09, [1, 0.3, 0.3]), 'Temple, a quarter of the way down the curve from the forehead corner'],
+      [5, at(0.068, 1.666, 0.082, [1, 0.2, 0.3]), 'Temple, midway down the curve'],
+      [6, at(0.07, 1.648, 0.072, [1, 0.1, 0.3]), 'Temple, three quarters of the way down the curve'],
+      [7, at(0.071, 1.632, 0.062, [1, 0, 0.3]), 'In front of the ear, level with its apex'],
+      [8, at(0.072, 1.665, 0.035, [1, 0.4, 0]), '1.5 cun above the apex of the ear'],
+      [9, at(0.071, 1.66, 0.02, [1, 0.4, -0.2]), 'Above the back of the ear, 2 cun within the hairline'],
+      [10, at(0.068, 1.642, 0.008, [1, 0.2, -0.4]), 'Behind the ear, a third of the way down to the mastoid'],
+      [11, at(0.064, 1.615, 0.005, [1, 0, -0.5]), 'Behind the ear, two thirds of the way down'],
+      [12, at(0.056, 1.568, 0.005, [0.8, 0, -0.6]), 'Behind and below the mastoid process'],
+      [13, scalp(34, 27), '0.5 cun within the front hairline, 3 cun from the midline'],
+      [14, face(0.03, 1.66), '1 cun above the eyebrow, directly above the pupil'],
+      [15, scalp(37, 20), '0.5 cun within the hairline, directly above the pupil'],
+      [16, scalp(49, 20), '1.5 cun within the hairline, above the pupil'],
+      [17, scalp(63, 20), '2.5 cun within the hairline, above the pupil'],
+      [18, scalp(84, 20), '4 cun within the hairline, above the pupil'],
+      [19, scalp(188, 24), 'Back of the head, level with the top of the occipital bump'],
+      [20, scalp(213, 30), 'Below the occipital bone, in the hollow between the neck muscles'],
+      [21, { near: { lerp: ['neck', 'l-shoulder', 0.5] }, dir: [0, 1, 0] }, 'Top of the shoulder, midway from C7 to the acromion'],
+      [22, flank(1.31, 0), 'Side of the chest, 3 cun below the armpit, fourth intercostal space'],
+      [23, flank(1.305, 0.35), 'Side of the chest, 1 cun in front of the midaxillary line'],
+      [24, front(ics(7, 4), 4), 'Chest, seventh intercostal space, below the nipple'],
+      [25, flank(1.12, -0.4), 'Side of the waist, below the free end of the twelfth rib'],
+      [26, flank(NAVEL, 0.3), 'Side of the waist, level with the navel, below the eleventh rib'],
+      [27, front(nav(-3), 4.6), 'Lower abdomen, in front of the anterior superior iliac spine'],
+      [28, front(nav(-3.4), 4.3), '0.5 cun in front of and below the iliac spine point'],
+      [29, flank(0.93, 0.25), 'Hip, midway between the iliac spine and the greater trochanter'],
+      [30, back(0.905, 4.6), 'Buttock, a third of the way from the greater trochanter to the sacrum'],
+      [31, th(7, 90), 'Side of the thigh, 7 cun above the knee crease'],
+      [32, th(5, 90), 'Side of the thigh, 5 cun above the knee crease'],
+      [33, th(1.2, 96), 'Outer knee, above the lateral epicondyle of the femur'],
+      [34, lg(2, 75), 'Below the knee, in the hollow in front of and below the head of the fibula'],
+      [35, lg(9, 108), '7 cun above the outer ankle, behind the fibula'],
+      [36, lg(9, 82), '7 cun above the outer ankle, in front of the fibula'],
+      [37, lg(11, 84), '5 cun above the outer ankle, in front of the fibula'],
+      [38, lg(12, 86), '4 cun above the outer ankle, in front of the fibula'],
+      [39, lg(13, 88), '3 cun above the outer ankle, in front of the fibula'],
+      [40, limb('foot', 0.1, 72), 'In front of and below the outer ankle bone'],
+      [41, limb('foot', 0.55, 58), 'Top of the foot, where the fourth and fifth metatarsals meet'],
+      [42, limb('foot', 0.85, 62), 'Top of the foot, between the fourth and fifth metatarsals'],
+      [43, limb('toe-4', 0.05, 60), 'Between the fourth and fifth toes, at the web'],
+      [44, limb('toe-4', 0.85, 115), 'Outer side of the fourth toe, beside the corner of the nail'],
+    ]),
+  },
+  {
+    code: 'LR',
+    name: 'Liver channel of the foot, reverting yin',
+    hanzi: '足厥陰肝經',
+    course: 'From the big toe, up the inside of the leg, to the side of the chest.',
+    bilateral: true,
+    points: pts([
+      [1, limb('toe-1', 0.85, 112), 'Outer side of the big toe, beside the corner of the nail'],
+      [2, limb('toe-1', 0.05, 50), 'Between the first and second toes, at the web'],
+      [3, limb('foot', 0.6, 340), 'Top of the foot, in the hollow where the first and second metatarsals meet'],
+      [4, limb('foot', 0.05, 300), 'Front of the inner ankle, inside the tibialis anterior tendon'],
+      [5, lg(11, 300), '5 cun above the inner ankle, on the flat inner face of the shinbone'],
+      [6, lg(9, 300), '7 cun above the inner ankle, on the inner face of the shinbone'],
+      [7, lg(2, 245), 'Below the inner knee, 1 cun behind the spleen point'],
+      [8, lg(0, 250), 'Inner end of the knee crease'],
+      [9, th(5, 280), 'Inner thigh, 4 cun above the medial epicondyle'],
+      [10, front(0.83, 2.5), 'Upper inner thigh, 3 cun below the groin point'],
+      [11, front(0.858, 2.4), 'Upper inner thigh, 2 cun below the groin point'],
+      [12, front(0.905, 2.5), 'Groin, level with the top of the pubic bone, 2.5 cun from the midline'],
+      [13, flank(1.14, 0.35), 'Side of the abdomen, below the free end of the eleventh rib'],
+      [14, front(ics(6, 4), 4), 'Chest, sixth intercostal space, below the nipple'],
+    ]),
+  },
+  {
+    code: 'GV',
+    name: 'Governor vessel',
+    hanzi: '督脈',
+    course: 'From the tip of the coccyx, up the spine and over the head, to the upper lip.',
+    bilateral: false,
+    points: pts([
+      [1, back(0.875, 0, -0.5), 'Below the tip of the coccyx'],
+      [2, back(0.912, 0, -0.2), 'At the sacral hiatus'],
+      [3, back(below('L4'), 0), 'Below the spinous process of L4'],
+      [4, back(below('L2'), 0), 'Below the spinous process of L2'],
+      [5, back(below('L1'), 0), 'Below the spinous process of L1'],
+      [6, back(below('T11'), 0), 'Below the spinous process of T11'],
+      [7, back(below('T10'), 0), 'Below the spinous process of T10'],
+      [8, back(below('T9'), 0), 'Below the spinous process of T9'],
+      [9, back(below('T7'), 0), 'Below the spinous process of T7'],
+      [10, back(below('T6'), 0), 'Below the spinous process of T6'],
+      [11, back(below('T5'), 0), 'Below the spinous process of T5'],
+      [12, back(below('T3'), 0), 'Below the spinous process of T3'],
+      [13, back(below('T1'), 0), 'Below the spinous process of T1'],
+      [14, back(below('C7'), 0), 'Below the spinous process of C7'],
+      [15, scalp(218, 0), 'Back of the neck, 0.5 cun within the hairline'],
+      [16, scalp(205, 0), 'Below the occipital bump, between the two trapezius muscles'],
+      [17, scalp(190, 0), 'At the top of the occipital bump'],
+      [18, scalp(152, 0), '1.5 cun above the occipital bump'],
+      [19, scalp(122, 0), '3 cun above the occipital bump'],
+      [20, scalp(93, 0), 'Crown of the head, 5 cun within the front hairline'],
+      [21, scalp(74, 0), '3.5 cun within the front hairline'],
+      [22, scalp(56, 0), '2 cun within the front hairline'],
+      [23, scalp(43, 0), '1 cun within the front hairline'],
+      [24, scalp(37, 0), '0.5 cun within the front hairline'],
+      [25, face(0, 1.586), 'Tip of the nose'],
+      [26, face(0, 1.566), 'In the groove of the upper lip, a third of the way down'],
+      [27, face(0, 1.557), 'On the tubercle of the upper lip'],
+      [28, face(0, 1.553), 'Inside the upper lip, at the frenulum'],
+    ]),
+  },
+  {
+    code: 'CV',
+    name: 'Conception vessel',
+    hanzi: '任脈',
+    course: 'From the perineum, up the front midline, to the chin.',
+    bilateral: false,
+    points: pts([
+      [1, { near: { j: 'pelvis', o: [0, -0.1, 0] }, dir: [0, -1, 0] }, 'Perineum, midway between the anus and the genitals'],
+      [2, front(nav(-5), 0, 0.2), 'Top of the pubic bone, on the midline'],
+      [3, front(nav(-4), 0), '4 cun below the navel'],
+      [4, front(nav(-3), 0), '3 cun below the navel'],
+      [5, front(nav(-2), 0), '2 cun below the navel'],
+      [6, front(nav(-1.5), 0), '1.5 cun below the navel'],
+      [7, front(nav(-1), 0), '1 cun below the navel'],
+      [8, front(nav(0), 0), 'The centre of the navel'],
+      [9, front(nav(1), 0), '1 cun above the navel'],
+      [10, front(nav(2), 0), '2 cun above the navel'],
+      [11, front(nav(3), 0), '3 cun above the navel'],
+      [12, front(nav(4), 0), '4 cun above the navel, midway to the sternum'],
+      [13, front(nav(5), 0), '5 cun above the navel'],
+      [14, front(nav(6), 0), '6 cun above the navel'],
+      [15, front(nav(7), 0), '1 cun below the xiphisternal junction'],
+      [16, front(1.262, 0), 'At the xiphisternal junction'],
+      [17, front(ICS[4], 0), 'Breastbone, level with the fourth intercostal space, between the nipples'],
+      [18, front(ICS[3], 0), 'Breastbone, level with the third intercostal space'],
+      [19, front(ICS[2], 0), 'Breastbone, level with the second intercostal space'],
+      [20, front(ICS[1], 0), 'Breastbone, level with the first intercostal space'],
+      [21, front(1.42, 0, 0.1), '1 cun below the suprasternal notch'],
+      [22, at(0, 1.44, 0.05, [0, 0.2, 1]), 'Centre of the suprasternal notch'],
+      [23, at(0, 1.492, 0.06, [0, -0.5, 1]), 'Above the Adam’s apple, in the hollow above the hyoid'],
+      [24, face(0, 1.534), 'Centre of the groove between the lower lip and the chin'],
+    ]),
+  },
+];
+
+export const MERIDIAN_COUNT = MERIDIANS.reduce((n, m) => n + m.points.length, 0);

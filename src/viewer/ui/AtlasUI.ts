@@ -5,6 +5,7 @@ import type { HoverInfo } from '../interaction/Interaction';
 import { hypothesisById } from '../../data/hypotheses';
 import { crossSectionSVG } from '../../lib/crossSection';
 import { REGIONS } from '../body/skeleton';
+import { MERIDIANS, pointName } from '../data/meridians';
 
 const REGION_LABEL: Record<string, string> = {
   head: 'scalp',
@@ -101,9 +102,11 @@ export function mountAtlas(viz: HTMLElement, panel: HTMLElement) {
     bindLayers(panel, scene);
     bindAge(viz, scene);
     bindCensus(panel, scene);
-    bindTooltip(viz, scene);
+    const card = mapCard(panel);
+    bindTooltip(viz, scene, card);
     bindSettings(viz, stage, scene);
     bindHypotheses(viz, panel, scene);
+    bindMaps(panel, scene, card);
     const q = new URLSearchParams(location.search);
     if (q.get('depth')) {
       const v = Number(q.get('depth'));
@@ -256,7 +259,7 @@ function bindCensus(panel: HTMLElement, scene: AtlasScene) {
  * (it does not chase the pointer). It lingers a moment after the pointer
  * leaves, so it does not flicker between perforators.
  */
-function bindTooltip(viz: HTMLElement, scene: AtlasScene) {
+function bindTooltip(viz: HTMLElement, scene: AtlasScene, card: MapCard) {
   const tip = viz.querySelector<HTMLElement>('[data-tip]')!;
   const bar = (label: string, v: number, hot = false) =>
     `<span>${label}</span><span class="bar${hot ? ' hot' : ''}"><i style="width:${(v * 100).toFixed(0)}%"></i></span><span>${v.toFixed(2)}</span>`;
@@ -269,11 +272,16 @@ function bindTooltip(viz: HTMLElement, scene: AtlasScene) {
     }
   });
   let lit = -1;
+  let mapLit: [number, number] = [-1, -1];
   setInterval(() => {
     const h = current;
     const stale = performance.now() - lastSeen > 900;
     if (!h || stale) {
       tip.classList.remove('on');
+      if (mapLit[0] !== -1 || mapLit[1] !== -1) {
+        scene.meridians?.highlight(-1, -1);
+        mapLit = [-1, -1];
+      }
       if (lit !== -1) {
         scene.channels.highlight(-1);
         lit = -1;
@@ -282,6 +290,24 @@ function bindTooltip(viz: HTMLElement, scene: AtlasScene) {
     }
     tip.hidden = false;
     tip.classList.add('on');
+    // A traditional map, when shown, comes first: its points, then its lines.
+    const map = scene.meridians;
+    if (map?.lines.visible) {
+      const { x, y, z } = h.hit.point;
+      const pi = map.nearestPoint(x, y, z);
+      const li = pi < 0 ? map.nearestLine(x, y, z) : -1;
+      const ch = pi >= 0 ? map.mapPoints[pi].channel : li >= 0 ? map.mapLines[li].channel : -1;
+      if (pi !== mapLit[0] || ch !== mapLit[1]) {
+        map.highlight(pi, pi >= 0 ? -1 : ch);
+        mapLit = [pi, ch];
+      }
+      if (pi >= 0 || li >= 0) {
+        const d = pi >= 0 ? describePoint(scene, pi) : describeChannel(ch);
+        card.set(d);
+        tip.innerHTML = `<div class="t-kicker">${d.kicker}</div><div class="t-title">${d.title}</div><div class="t-note">${d.sub}</div>`;
+        return;
+      }
+    }
     // Channels take precedence when the pointer is right on one.
     const ch = scene.channels.lines.visible ? scene.channels.nearest(h.hit.point.x, h.hit.point.y, h.hit.point.z) : -1;
     if (ch !== lit) {
@@ -386,4 +412,116 @@ function bindHypotheses(viz: HTMLElement, panel: HTMLElement, scene: AtlasScene)
     place = { dSup: scene.supDepth[fine], dDeep: scene.depth[fine], region: REGION_LABEL[region] ?? region };
     drawSection();
   });
+}
+
+interface CardText {
+  kicker: string;
+  title: string;
+  sub: string;
+  note: string;
+}
+type MapCard = { set(d: CardText): void };
+
+/** The card at the top of the Maps tab, which follows the pointer over a map. */
+function mapCard(panel: HTMLElement): MapCard {
+  const q = (k: string) => panel.querySelector<HTMLElement>(`[data-mc-${k}]`)!;
+  const [kicker, title, sub, note] = ['kicker', 'title', 'sub', 'note'].map(q);
+  return {
+    set(d) {
+      kicker.textContent = d.kicker;
+      title.textContent = d.title;
+      sub.textContent = d.sub;
+      note.innerHTML = d.note;
+    },
+  };
+}
+
+const len = (d: number) => (!isFinite(d) ? 'over 6 cm' : d < 0.01 ? `${Math.round(d * 1000)} mm` : `${(d * 100).toFixed(1)} cm`);
+const cap = (s: string) => s.replace(/^\p{L}/u, (c) => c.toUpperCase());
+
+/** A point: its names, its place, and the anatomy nearest it on this figure. */
+function describePoint(scene: AtlasScene, i: number): CardText {
+  const map = scene.meridians!;
+  const p = map.mapPoints[i];
+  const m = MERIDIANS[p.channel];
+  const [han, pinyin, english] = pointName(p.code) ?? ['', p.code, ''];
+  const x = map.pointPos[i * 3];
+  const y = map.pointPos[i * 3 + 1];
+  const z = map.pointPos[i * 3 + 2];
+  const nearest = [Infinity, Infinity, Infinity];
+  scene.grid.query(x, y, z, 0.06, (j, d) => {
+    const l = scene.ladder.level[j];
+    if (d < nearest[l]) nearest[l] = d;
+  });
+  // The nearest deep channel, and how far.
+  let chIdx = -1;
+  let chD = 0.03;
+  scene.channels.skinLines.forEach((pl, ci) => {
+    for (let k = 0; k < pl.length; k += 3) {
+      const d = Math.hypot(pl[k] - x, pl[k + 1] - y, pl[k + 2] - z);
+      if (d < chD) {
+        chD = d;
+        chIdx = ci;
+      }
+    }
+  });
+  const side = p.side === 'l' ? 'left' : p.side === 'r' ? 'right' : 'midline';
+  const chName = chIdx >= 0 ? scene.channels.channels[chIdx].def.name.toLowerCase() : '';
+  const anat = [
+    `nearest medium perforator ${len(nearest[1])}`,
+    `major ${len(nearest[2])}`,
+    chIdx < 0 ? '' : chD < 0.008 ? `over the ${chName}` : `${len(chD)} from the ${chName}`,
+  ].filter(Boolean);
+  return {
+    kicker: `${m.code} ${p.n} · ${m.name.split(',')[0]} · ${side}`,
+    title: `${cap(pinyin)}  ${han}`,
+    sub: english,
+    note: `${p.where}.<span class="anat">${anat.join(' · ')}</span>`,
+  };
+}
+
+function describeChannel(ch: number): CardText {
+  const m = MERIDIANS[ch];
+  return {
+    kicker: `channel · ${m.code}`,
+    title: m.name,
+    sub: m.hanzi,
+    note: `${m.course} ${m.points.length} points${m.bilateral ? ' on each side' : ''}.`,
+  };
+}
+
+/** The Maps tab: a map on or off, one channel alone, and layers brought forward to compare. */
+function bindMaps(panel: HTMLElement, scene: AtlasScene, card: MapCard) {
+  const toggle = panel.querySelector<HTMLInputElement>('[data-map="meridians"]')!;
+  const grid = panel.querySelector<HTMLElement>('[data-channel-grid]')!;
+  const chips = [...grid.querySelectorAll<HTMLButtonElement>('[data-ch]')];
+  let solo = -1;
+  toggle.addEventListener('change', () => {
+    scene.setMap('meridians', toggle.checked);
+    grid.hidden = !toggle.checked;
+    if (toggle.checked) scene.meridians!.solo(solo);
+  });
+  const setSolo = (i: number) => {
+    solo = i;
+    scene.meridians?.solo(i);
+    chips.forEach((c) => c.classList.toggle('is-active', Number(c.dataset.ch) === i));
+    if (i >= 0) card.set(describeChannel(i));
+  };
+  chips.forEach((c) => {
+    const i = Number(c.dataset.ch);
+    c.addEventListener('click', () => setSolo(i === solo || i < 0 ? -1 : i));
+    c.addEventListener('mouseenter', () => {
+      if (i < 0 || !scene.meridians) return;
+      scene.meridians.highlight(-1, i);
+      card.set(describeChannel(i));
+    });
+    c.addEventListener('mouseleave', () => scene.meridians?.highlight(-1, -1));
+  });
+  panel.querySelectorAll<HTMLButtonElement>('[data-compare]').forEach((b) =>
+    b.addEventListener('click', () => {
+      const on = !b.classList.contains('is-active');
+      b.classList.toggle('is-active', on);
+      scene.setCompare(b.dataset.compare as 'knots' | 'perforators' | 'vessels' | 'channels', on);
+    }),
+  );
 }

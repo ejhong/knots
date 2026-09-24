@@ -35,6 +35,8 @@ import {
 } from './body/skeleton';
 import { LAYER_UNIFORMS, WINDOW_UNIFORMS } from './body/layerModel';
 import { KnotEmbers } from './perforators/KnotEmbers';
+import { MERIDIANS } from './data/meridians';
+import { MeridianMap, type MapLine, type MapPoint } from './maps/MeridianMap';
 import { TreeLines } from './perforators/TreeLines';
 
 export interface RootInstance {
@@ -70,6 +72,13 @@ export class AtlasScene {
   channels!: Channels;
   graph!: MeshGraph;
   latch!: LatchKnots;
+  /** Chinese medicine's channels and points, built the first time they are shown. */
+  meridians?: MeridianMap;
+  /** Skin positions of the reference figure (where every locator is resolved). */
+  private refSkin!: Float32Array;
+  /** A traditional map in front: the anatomy recedes, except the layers being compared. */
+  private quiet = false;
+  private compare = new Set<string>();
   /** Susceptibility of a skin point to holding knots (the stress zones). */
   zoneField!: (x: number, y: number, z: number) => number;
   /** The hypothesis whose knots are drawn. */
@@ -122,8 +131,9 @@ export class AtlasScene {
     this.body = body;
     body.setShape(REFERENCE_SHAPE);
 
+    this.refSkin = Float32Array.from(body.positions);
     this.locator = new Locator3D(
-      Float32Array.from(body.positions),
+      this.refSkin,
       Float32Array.from(body.normals),
       body.triangles,
       (n) => body.joint(n),
@@ -242,6 +252,7 @@ export class AtlasScene {
       this.embers.applyTheme(t);
       this.channels.applyTheme(t);
       this.latch.applyTheme(t);
+      this.meridians?.applyTheme(t);
     });
     this.engine.onFrame(({ time, dt }) => {
       this.interaction.update(dt);
@@ -477,6 +488,7 @@ export class AtlasScene {
     this.trees.refresh(this.body);
     this.channels?.refresh(this.body, this.depth);
     this.latch?.refresh(this.body);
+    this.meridians?.refresh(this.body);
     this.updateWindow();
     for (const cb of this.shapeListeners) cb();
   }
@@ -515,6 +527,7 @@ export class AtlasScene {
       this.rootMarkers.material,
       this.layers.floorMaterial,
       this.layers.sheetMaterial,
+      ...(this.meridians ? [this.meridians.lineMaterial, this.meridians.pointMaterial] : []),
     ];
     for (const m of mats) {
       m.uniforms.uClipOn.value = plane ? 1 : 0;
@@ -603,6 +616,107 @@ export class AtlasScene {
     this.latch.pointMaterial.uniforms.uProjScale.value = projScale;
     this.latch.pointMaterial.uniforms.uPixelRatio.value = pr;
     this.channels.beadMaterial.uniforms.uPixelRatio.value = pr;
+    if (this.meridians) {
+      this.meridians.pointMaterial.uniforms.uProjScale.value = projScale;
+      this.meridians.pointMaterial.uniforms.uPixelRatio.value = pr;
+    }
+  }
+
+  /**
+   * Builds the channels and points of Chinese medicine: every point resolved
+   * on the reference figure (mirrored for the right side), and each channel
+   * drawn point to point along the skin — straight segments snapped to the
+   * nearest skin every 6 mm, smoothed when drawn.
+   */
+  ensureMeridians(): MeridianMap {
+    if (this.meridians) return this.meridians;
+    const T = this.body.triangles;
+    const R = this.refSkin;
+    const posOf = (a: Anchor): Vec3 => {
+      const t = a.tri * 3;
+      const w = 1 - a.u - a.v;
+      return [0, 1, 2].map((k) => R[T[t] * 3 + k] * w + R[T[t + 1] * 3 + k] * a.u + R[T[t + 2] * 3 + k] * a.v) as Vec3;
+    };
+    const points: MapPoint[] = [];
+    const lines: MapLine[] = [];
+    MERIDIANS.forEach((m, ch) => {
+      const sides: Array<'l' | 'r' | 'm'> = m.bilateral ? ['l', 'r'] : ['m'];
+      for (const side of sides) {
+        const byN = new Map<number, Anchor>();
+        for (const p of m.points) {
+          const a = this.locator.resolve(side === 'r' ? mirrorLocator(p.at) : p.at);
+          if (!a) {
+            console.warn('acupoint did not resolve', `${m.code}${p.n}`, side);
+            continue;
+          }
+          byN.set(p.n, a);
+          points.push({ code: `${m.code}${p.n}`, channel: ch, n: p.n, side, anchor: a, where: p.where });
+        }
+        for (const spec of m.lines ?? [m.points.map((p) => p.n)]) {
+          const anchors: Anchor[] = [];
+          for (const n of spec) {
+            const a = byN.get(n);
+            if (!a) continue;
+            if (anchors.length) {
+              const p0 = posOf(anchors[anchors.length - 1]);
+              const p1 = posOf(a);
+              const d = Math.hypot(p1[0] - p0[0], p1[1] - p0[1], p1[2] - p0[2]);
+              const steps = Math.max(1, Math.ceil(d / 0.006));
+              for (let k = 1; k < steps; k++) {
+                const f = k / steps;
+                const c = this.locator.closest([p0[0] + (p1[0] - p0[0]) * f, p0[1] + (p1[1] - p0[1]) * f, p0[2] + (p1[2] - p0[2]) * f]);
+                if (c) anchors.push(c);
+              }
+            }
+            anchors.push(a);
+          }
+          if (anchors.length >= 2) lines.push({ channel: ch, side, anchors });
+        }
+      }
+    });
+    const map = new MeridianMap(points, lines, T, this.liftWeight);
+    map.refresh(this.body);
+    map.applyTheme(this.engine.theme);
+    this.engine.scene.add(map.lines, map.points);
+    this.meridians = map;
+    return map;
+  }
+
+  /** Shows or hides a traditional map, quieting the anatomy while it is on. */
+  setMap(id: 'meridians', on: boolean) {
+    if (id === 'meridians') {
+      if (on) this.ensureMeridians().setVisible(true);
+      else this.meridians?.setVisible(false);
+    }
+    this.quiet = on;
+    this.applyQuiet();
+  }
+
+  /** Brings one anatomical layer back to full strength while a map is on. */
+  setCompare(layer: 'knots' | 'perforators' | 'vessels' | 'channels', on: boolean) {
+    if (on) this.compare.add(layer);
+    else this.compare.delete(layer);
+    this.applyQuiet();
+  }
+
+  private applyQuiet() {
+    const d = (layer: string, q: number) => (!this.quiet || this.compare.has(layer) ? 1 : q);
+    const perforators = d('perforators', 0.3);
+    const knots = d('knots', 0.28);
+    const vessels = d('vessels', 0.12);
+    const channels = d('channels', 0.14);
+    const u = (m: { uniforms: Record<string, { value: unknown }> }, v: number) => (m.uniforms.uDim.value = v);
+    u(this.cloud.material, perforators);
+    this.cloud.material.uniforms.uKnotDim.value = knots;
+    u(this.stalks.lineMaterial, perforators);
+    u(this.stalks.collarMaterial, perforators);
+    u(this.embers.material, knots);
+    u(this.latch.pointMaterial, knots);
+    u(this.latch.lineMaterial, knots);
+    u(this.trees.material, vessels);
+    u(this.rootMarkers.material, vessels);
+    u(this.channels.lineMaterial, channels);
+    u(this.channels.beadMaterial, channels);
   }
 
   /** Where a root sits on the current figure. */

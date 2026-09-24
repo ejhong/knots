@@ -51,6 +51,7 @@ export class RootMarkers {
         uProjScale: { value: 800 },
         uSize: { value: 0.011 },
         uAlpha: { value: 0.7 },
+        uDim: { value: 1 },
         uGlowMode: { value: 1 },
         uTime: { value: 0 },
         uKnotAlpha: { value: 1 },
@@ -84,6 +85,7 @@ export class RootMarkers {
         uniform vec3 uKnot;
         uniform vec3 uStar;
         uniform float uAlpha;
+        uniform float uDim;
         uniform float uGlowMode;
         uniform float uTime;
         uniform float uKnotAlpha;
@@ -105,7 +107,7 @@ export class RootMarkers {
           float pulse = 0.85 + 0.15 * sin(uTime * 1.3);
           float glow = exp(-r * r * 6.0) * (k * 0.5 * pulse + vFlash);
           vec3 col = uRing * ring * (0.55 + vHover * 0.45) + uKnot * (core + glow * 0.6) + uStar * vFlash * (ring + glow);
-          float a = max(max(ring * (0.55 + vHover * 0.45), core), glow) * uAlpha;
+          float a = max(max(ring * (0.55 + vHover * 0.45), core), glow) * uAlpha * uDim;
           if (uGlowMode > 0.5) gl_FragColor = vec4(col * a, 1.0);
           else {
             if (a < 0.01) discard;

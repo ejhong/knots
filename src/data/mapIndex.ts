@@ -26,8 +26,7 @@ export const MAP_GROUPS: MapGroup[] = [
   {
     tradition: 'Chinese medicine',
     maps: [
-      { id: 'meridians', name: 'Channels (jing luo)', color: 'ai', ready: false },
-      { id: 'acupoints', name: 'Acupoints', color: 'ai', ready: false },
+      { id: 'meridians', name: 'Channels and points', color: 'fuji', ready: true },
       { id: 'sinew', name: 'Sinew channels & their knots', color: 'moegi', ready: false },
     ],
   },

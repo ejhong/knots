@@ -25,9 +25,35 @@ export type PointExpr =
   | { lerp: [string, string, number]; o?: Vec3 }
   | { mid: [string, string]; o?: Vec3 };
 
+/**
+ * A limb in its own frame: `t` along the segment (0 at its proximal joint,
+ * 1 at its distal one) and `deg` around it — 0 the front (palmar on the
+ * forearm and hand; the dorsum on the foot), 90 the lateral side (radial on
+ * the forearm and hand), 180 the back, 270 the medial side. A ray leaves the
+ * bone's axis in that direction; the anchor is where it meets the skin.
+ */
+export type LimbSegment =
+  | 'upper-arm'
+  | 'forearm'
+  | 'hand'
+  | 'thigh'
+  | 'leg'
+  | 'foot'
+  | 'finger-1'
+  | 'finger-2'
+  | 'finger-3'
+  | 'finger-4'
+  | 'finger-5'
+  | 'toe-1'
+  | 'toe-2'
+  | 'toe-3'
+  | 'toe-4'
+  | 'toe-5';
+
 export type Locator =
   | { ray: PointExpr; dir: Vec3; o?: Vec3 }
-  | { near: PointExpr; dir?: Vec3; o?: Vec3 };
+  | { near: PointExpr; dir?: Vec3; o?: Vec3; reach?: number }
+  | { limb: LimbSegment; t: number; deg: number; side?: 'l' | 'r' };
 
 export type JointLookup = (name: string) => Vec3;
 
@@ -47,8 +73,9 @@ function mirrorPoint(p: PointExpr): PointExpr {
 }
 
 export function mirrorLocator(l: Locator): Locator {
+  if ('limb' in l) return { ...l, side: l.side === 'r' ? 'l' : 'r' };
   if ('ray' in l) return { ray: mirrorPoint(l.ray), dir: mirrorVec(l.dir)!, o: mirrorVec(l.o) };
-  return { near: mirrorPoint(l.near), dir: mirrorVec(l.dir), o: mirrorVec(l.o) };
+  return { near: mirrorPoint(l.near), dir: mirrorVec(l.dir), o: mirrorVec(l.o), reach: l.reach };
 }
 
 export function evalPoint(p: PointExpr, joint: JointLookup): Vec3 {
@@ -101,6 +128,13 @@ export class Locator3D {
   }
 
   resolve(l: Locator): Anchor | null {
+    if ('limb' in l) {
+      const { origin, dir } = limbRay(l, this.joint);
+      this.ray.set(origin, dir);
+      const hit = this.bvh.raycastFirst(this.ray, DoubleSide);
+      if (!hit || hit.faceIndex == null) return null;
+      return this.anchorAt(hit.faceIndex, hit.point);
+    }
     if ('ray' in l) {
       const o = this.point(l.ray);
       const origin = l.o ? new Vector3(o[0] + l.o[0], o[1] + l.o[1], o[2] + l.o[2]) : new Vector3(...o);
@@ -117,9 +151,10 @@ export class Locator3D {
       if (!hit || hit.faceIndex == null) return null;
       return this.anchorAt(hit.faceIndex, hit.point);
     }
-    // Facing constraint: step outward from the target along `dir` and ray back in.
+    // Facing constraint: step outward from the target along `dir` and ray back
+    // in. `reach` keeps the step short where another limb lies beyond.
     const dir = new Vector3(...l.dir).normalize();
-    this.ray.set(target.clone().addScaledVector(dir, 0.5), dir.clone().negate());
+    this.ray.set(target.clone().addScaledVector(dir, l.reach ?? 0.5), dir.clone().negate());
     const hit = this.bvh.raycastFirst(this.ray, DoubleSide);
     if (!hit || hit.faceIndex == null) return null;
     return this.anchorAt(hit.faceIndex, hit.point);
@@ -161,4 +196,71 @@ export class Locator3D {
   dispose() {
     this.geometry.dispose();
   }
+}
+
+const SEGMENTS: Record<LimbSegment, [string, string]> = {
+  'upper-arm': ['shoulder', 'elbow'],
+  forearm: ['elbow', 'hand'],
+  hand: ['hand', 'finger-3-1'],
+  thigh: ['upper-leg', 'knee'],
+  leg: ['knee', 'ankle'],
+  foot: ['ankle', 'foot-1'],
+  'finger-1': ['finger-1-2', 'finger-1-4'],
+  'finger-2': ['finger-2-1', 'finger-2-4'],
+  'finger-3': ['finger-3-1', 'finger-3-4'],
+  'finger-4': ['finger-4-1', 'finger-4-4'],
+  'finger-5': ['finger-5-1', 'finger-5-4'],
+  'toe-1': ['toe-1-1', 'toe-1-3'],
+  'toe-2': ['toe-2-1', 'toe-2-4'],
+  'toe-3': ['toe-3-1', 'toe-3-4'],
+  'toe-4': ['toe-4-1', 'toe-4-4'],
+  'toe-5': ['toe-5-1', 'toe-5-4'],
+};
+
+/** The limb's own frame at a point on its axis, and the ray for a locator. */
+export function limbRay(l: { limb: LimbSegment; t: number; deg: number; side?: 'l' | 'r' }, joint: JointLookup) {
+  const s = l.side ?? 'l';
+  const j = (n: string) => new Vector3(...joint(`${s}-${n}`));
+  const [pa, pb] = SEGMENTS[l.limb];
+  const a = j(pa);
+  const b = j(pb);
+  const axis = b.clone().sub(a).normalize();
+  const origin = a.clone().lerp(b, l.t);
+  const away = new Vector3(s === 'l' ? 1 : -1, 0, 0);
+  const perp = (v: Vector3) => v.clone().addScaledVector(axis, -v.dot(axis)).normalize();
+  let front: Vector3;
+  let lateral: Vector3;
+  const handFrame = () => {
+    // Palmar and radial come from the hand itself: the radial side is toward
+    // the index knuckle from the little one; the palm faces across them.
+    const radial = j('finger-2-1').sub(j('finger-5-1')).normalize();
+    const handAxis = j('finger-3-1').sub(j('hand')).normalize();
+    const palm = handAxis.clone().cross(radial).normalize().multiplyScalar(s === 'l' ? 1 : -1);
+    return { palm, radial };
+  };
+  const ortho = (f: Vector3, lat: Vector3) => {
+    const F = perp(f);
+    const L = lat.clone().addScaledVector(axis, -lat.dot(axis));
+    L.addScaledVector(F, -L.dot(F)).normalize();
+    return [F, L] as const;
+  };
+  if (l.limb === 'hand' || l.limb.startsWith('finger-')) {
+    const { palm, radial } = handFrame();
+    [front, lateral] = ortho(palm, radial);
+  } else if (l.limb === 'forearm') {
+    // The forearm turns between the elbow (front forward, radial side
+    // lateral) and the wrist (the hand's own palmar and radial directions).
+    const { palm, radial } = handFrame();
+    const [fe, le] = ortho(new Vector3(0, 0, 1), away);
+    const [fw, lw] = ortho(palm, radial);
+    [front, lateral] = ortho(fe.lerp(fw, l.t), le.lerp(lw, l.t));
+  } else {
+    const up = l.limb === 'foot' || l.limb.startsWith('toe-');
+    front = perp(up ? new Vector3(0, 1, 0) : new Vector3(0, 0, 1));
+    lateral = axis.clone().cross(front).normalize();
+    if (lateral.dot(away) < 0) lateral.negate();
+  }
+  const r = (l.deg * Math.PI) / 180;
+  const dir = front.multiplyScalar(Math.cos(r)).addScaledVector(lateral, Math.sin(r)).normalize();
+  return { origin, dir };
 }

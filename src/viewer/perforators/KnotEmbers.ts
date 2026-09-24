@@ -41,6 +41,7 @@ export class KnotEmbers {
         ...WINDOW_UNIFORMS,
         uKnot: { value: new Color() },
         uKnotCore: { value: new Color() },
+        uDim: { value: 1 },
         uProjScale: { value: 800 },
         uPixelRatio: { value: 1 },
         uTime: { value: 0 },
@@ -89,6 +90,7 @@ export class KnotEmbers {
         uniform vec3 uKnot;
         uniform vec3 uKnotCore;
         uniform float uGlowMode;
+        uniform float uDim;
         uniform vec4 uClip;
         uniform float uClipOn;
         varying float vKnot;
@@ -102,7 +104,7 @@ export class KnotEmbers {
           float halo = exp(-r * r * 4.5);
           float big = vLevel / 2.0;
           vec3 col = mix(uKnot, uKnotCore, core * (0.3 + 0.5 * big));
-          float a = (core * 0.9 + halo * (0.35 + 0.35 * big)) * clamp(vKnot * 1.3, 0.0, 1.0) * (vLevel > 1.5 ? 1.0 : 0.82);
+          float a = (core * 0.9 + halo * (0.35 + 0.35 * big)) * clamp(vKnot * 1.3, 0.0, 1.0) * (vLevel > 1.5 ? 1.0 : 0.82) * uDim;
           if (uGlowMode > 0.5) gl_FragColor = vec4(col * a, 1.0);
           else {
             if (a < 0.02) discard;

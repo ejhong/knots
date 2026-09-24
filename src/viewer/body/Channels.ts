@@ -181,6 +181,7 @@ function material(points: boolean) {
     uniforms: {
       uColor: { value: new Color() },
       uGlowMode: { value: 1 },
+      uDim: { value: 1 },
       uProjScale: { value: 800 },
       uPixelRatio: { value: 1 },
       uClip: { value: new Vector4() },
@@ -203,6 +204,7 @@ function material(points: boolean) {
     fragmentShader: /* glsl */ `
       uniform vec3 uColor;
       uniform float uGlowMode;
+      uniform float uDim;
       uniform vec4 uClip;
       uniform float uClipOn;
       varying float vHi;
@@ -210,6 +212,7 @@ function material(points: boolean) {
       void main() {
         if (uClipOn > 0.5 && dot(vClipPos, uClip.xyz) > uClip.w) discard;
         ${points ? 'float r = length(gl_PointCoord * 2.0 - 1.0); if (r > 1.0) discard; float a = (1.0 - smoothstep(0.35, 1.0, r)) * (0.55 + vHi * 0.45);' : 'float a = 0.38 + vHi * 0.6;'}
+        a *= uDim;
         if (uGlowMode > 0.5) gl_FragColor = vec4(uColor * a, 1.0);
         else gl_FragColor = vec4(uColor, a);
       }

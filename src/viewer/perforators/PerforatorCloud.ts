@@ -135,6 +135,9 @@ export function createCloudMaterial() {
       uLevelTone: { value: new Vector3(0.34, 0.8, 1.0) },
       /** 1: draw every perforator; 0: only the small knots (perforators hidden). */
       uPlain: { value: 1 },
+      /** Quieting when a traditional map is in front (1 = full). */
+      uDim: { value: 1 },
+      uKnotDim: { value: 1 },
       uGlowMode: { value: 1 },
       uTime: { value: 0 },
       uBreath: { value: 0 },
@@ -159,6 +162,8 @@ export function createCloudMaterial() {
       uniform vec3 uLevelAlpha;
       uniform vec3 uLevelTone;
       uniform float uPlain;
+      uniform float uDim;
+      uniform float uKnotDim;
       uniform float uTime;
       uniform float uBreath;
       ${LAYERS_GLSL}
@@ -215,7 +220,7 @@ export function createCloudMaterial() {
         vShade = clamp(pow(smoothstep(-0.2, 1.0, ndl), 1.35) * 0.9 + sky * 0.1, 0.0, 1.0);
         // Twinkle: slow, per-point, breath-coupled.
         float tw = 0.88 + 0.12 * sin(uTime * (0.6 + aSeed * 0.8) + aSeed * 40.0);
-        vAlpha = a * tw * (0.92 + 0.08 * uBreath) * (1.0 + k * 1.1);
+        vAlpha = a * tw * (0.92 + 0.08 * uBreath) * (1.0 + k * 1.1) * mix(uDim, uKnotDim, clamp(k * 1.5, 0.0, 1.0));
         vKnot = k;
         vFlash = aFlash;
         vGlow = aGlow;

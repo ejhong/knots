@@ -40,7 +40,7 @@ A living list. Checked items are live.
 - [ ] Perception (sensitisation and attention): widespread lowered thresholds; knots follow attention; overbreathing sparks everywhere
 
 ## Maps
-- [ ] Channels (12 + Du/Ren) and acupoints (WHO 2008), placed by proportional cun on landmarks
+- [x] Channels (12 + Du/Ren) and all 361 acupoints (WHO 2008), placed by proportional cun on landmarks; hover card with names, place and nearest anatomy; solo a channel; the anatomy quiets when a map is on (compare chips bring a layer back)
 - [ ] Sinew channels and their knots (jie)
 - [ ] Microcosmic orbit; three dantian
 - [ ] Cakras, nāḍīs, granthis, kuṇḍalinī

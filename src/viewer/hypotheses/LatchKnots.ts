@@ -241,6 +241,7 @@ export class LatchKnots {
 const COMMON_UNIFORMS = () => ({
   uColor: { value: new Color() },
   uCore: { value: new Color() },
+  uDim: { value: 1 },
   uGlowMode: { value: 1 },
   uProjScale: { value: 800 },
   uPixelRatio: { value: 1 },
@@ -300,6 +301,7 @@ function createPointMaterial() {
       uniform vec3 uColor;
       uniform vec3 uCore;
       uniform float uGlowMode;
+      uniform float uDim;
       uniform vec4 uClip;
       uniform float uClipOn;
       varying float vA;
@@ -312,7 +314,7 @@ function createPointMaterial() {
         float core = 1.0 - smoothstep(0.22, 0.4, r);
         float halo = exp(-r * r * 4.5);
         vec3 col = mix(uColor, uCore, core * 0.55);
-        float a = (core * 0.9 + halo * 0.5) * vA;
+        float a = (core * 0.9 + halo * 0.5) * vA * uDim;
         if (uGlowMode > 0.5) gl_FragColor = vec4(col * a, 1.0);
         else {
           if (a < 0.02) discard;
@@ -347,6 +349,7 @@ function createLineMaterial() {
     fragmentShader: /* glsl */ `
       uniform vec3 uColor;
       uniform float uGlowMode;
+      uniform float uDim;
       uniform vec4 uClip;
       uniform float uClipOn;
       varying float vA;
@@ -354,8 +357,9 @@ function createLineMaterial() {
       void main() {
         if (vA < 0.01) discard;
         if (uClipOn > 0.5 && dot(vClipPos, uClip.xyz) > uClip.w) discard;
-        if (uGlowMode > 0.5) gl_FragColor = vec4(uColor * vA, 1.0);
-        else gl_FragColor = vec4(uColor, vA);
+        float a = vA * uDim;
+        if (uGlowMode > 0.5) gl_FragColor = vec4(uColor * a, 1.0);
+        else gl_FragColor = vec4(uColor, a);
       }
     `,
   });

@@ -28,6 +28,9 @@ export interface SceneTheme {
   pulse: Color;
   gold: Color;
   halo: Color;
+  /** Traditional maps (wisteria): their lines, and their points. */
+  map: Color;
+  mapPoint: Color;
   /** 0 for paper (ink on light), 1 for ink stone (light on dark). */
   glow: number;
 }
@@ -57,6 +60,8 @@ export const THEMES: Record<ThemeName, SceneTheme> = {
     pulse: c('#5f935f'),
     gold: c('#9a8a78'),
     halo: c('#eadcc0'),
+    map: c('#7a5588'),
+    mapPoint: c('#5b3a69'),
     glow: 0,
   },
   night: {
@@ -76,6 +81,8 @@ export const THEMES: Record<ThemeName, SceneTheme> = {
     pulse: c('#9dcc9a'),
     gold: c('#c9a45f'),
     halo: c('#c4b8a8'),
+    map: c('#c3a1d4'),
+    mapPoint: c('#f0e2f7'),
     glow: 1,
   },
 };
