@@ -50,11 +50,12 @@ export const CHAPTERS: Chapter[] = [
 <li><b>Breath.</b> Knots seem to answer to the breath. They let go on a slow out-breath, and a single relaxing breath — the long exhale that comes on its own in a hot shower — can soften many small knots at once. Some knots seem to come and go with breath and mood, and some may even be held from moment to moment; deeper, persistent knots let go only to focused attention and breath.</li>
 <li><b>Attention.</b> Pressure and focused attention — a foam roller, a patient hand — release knots one place at a time.</li>
 <li><b>Stress.</b> Knots seem to worsen under stress, and gather where it is held: neck and shoulders, jaw, belly, low back.</li>
+<li><b>Stiffness.</b> As knots gather they seem to limit movement: dull blocks that a stretch lengthens around but cannot reach.</li>
 <li><b>Sparks.</b> A knot goes with a small pop, sometimes a star of tingling across a patch of skin.</li>
 <li><b>Euphoria.</b> A release can bring a wave of well-being — at times a euphoria some compare to MDMA.</li>
 <li><b>Migration.</b> When one knot lets go, others move in to fill the gap and settle into new places, as if the body were evening itself out.</li>
-<li><b>Fascia.</b> Other reports involve the fascia beneath the skin, and unfold over hours or days: layers that seem to peel apart, places that feel hollow.</li>
-<li><b>Filling.</b> Then a filling-in, felt as re-stitching, that can move like a snake along a limb, up the body, or up into the head.</li>
+<li><b>Fascia.</b> Other reports involve the fascia beneath the skin and unfold more slowly, over days to months: layers that seem to peel apart, places that feel hollow.</li>
+<li><b>Filling.</b> Then a filling-in, felt as re-stitching: quick lines, each crossing in seconds, that move like snakes along a limb, up the body, or up into the head.</li>
 </ul>
 <p>The contemplative traditions describe much of this in their own words.</p>`,
     refs: ['bolton1936', 'lindahl2017'],
@@ -90,7 +91,7 @@ export const CHAPTERS: Chapter[] = [
     title: 'The fascia',
     seconds: 24,
     html: `<p>The superficial fascia runs unbroken from scalp to sole — the galea over the skull, the SMAS of the face, the platysma of the neck, the membranous layers of the trunk and limbs — and glides over the deep fascia on a plane of loose, hyaluronan-rich tissue. It is not free everywhere: it is anchored to bone along particular lines, and tethered by fibrous strands and by the perforators that pass through it. Deeper down, the fascia is built more like channels — walls between the muscles, and sleeves around the vessels and nerves, drawn here in gold.</p>
-<p>The slower reports seem to belong to this layer: fascia that peels and separates, places that feel hollow, and then a gradual filling-in, felt strand by strand as re-stitching. Separated layers are known to rejoin in just that way — fibrin bridging the gap within days, collagen within weeks.</p>`,
+<p>The slower reports seem to belong to this layer: fascia that peels and separates, and places that feel hollow. The filling-in that follows is quick — lines that cross in seconds, like snakes, felt as re-stitching. Separated layers can close that fast, the way two wet surfaces meet and hold when pressed together; the lasting bond comes after, fibrin bridging the gap within days and collagen within weeks. Seconds is also the pace at which acupuncture research has recorded sensation travelling along the channels — one to ten centimetres a second.</p>`,
     refs: ['gray2020', 'benias2018', 'guimberteau2015', 'langevin2011'],
     scene: { pose: { p: [1.07, 0.66, -1.05], t: [0.05, 0.61, -0.02] }, age: 46, layers: true, lift: 1, channels: true },
   },
@@ -122,9 +123,9 @@ export const CHAPTERS: Chapter[] = [
     title: 'What the traditions knew',
     seconds: 24,
     html: `<p>Nearly every tradition that mapped the inner body arrived at three claims: <em>there are knots, breath is the tool, and untying them changes the mind.</em> Tibetan practice works the winds with the breath to loosen knots in the channels. Yoga names three knots, the granthis, along the central channel, and describes kuṇḍalinī rising like a serpent, with heat, currents and involuntary movement. The Buddha likened the rapture of deep concentration to water kneaded into a ball of bath powder until the whole of it is soaked through.</p>
-<p>Chinese medicine mapped both layers. There are the tender <em>ashi</em> points and the acupoints — about eighty percent of which lie where a vessel–nerve bundle pierces the superficial fascia (Heine, 1988) — and there are the sinew channels, each of which <em>knots</em> (結) at the bony prominences where the fascia is anchored. Correspondence found after the fact is weak evidence, but it is now specific enough to check.</p>`,
-    refs: ['heine1988', 'lingshu', 'hyp', 'mullin1996', 'dn2'],
-    scene: { pose: { p: [1.2, 0.72, 1.6], t: [0, 0.55, 0] }, age: 46, turntable: true },
+<p>Chinese medicine mapped both layers. There are the tender <em>ashi</em> points and the acupoints — about eighty percent of which lie where a vessel–nerve bundle pierces the superficial fascia (Heine, 1988) — and the channels between them, which may follow the connective-tissue planes between the muscles (Langevin, 2002): the deep channels drawn here in gold. The sinew channels, each of which <em>knots</em> (結) at the bony prominences where the fascia is anchored, belong to the same layer. Correspondence found after the fact is weak evidence, but it is now specific enough to check.</p>`,
+    refs: ['heine1988', 'langevin2002', 'lingshu', 'hyp', 'mullin1996', 'dn2'],
+    scene: { pose: { p: [1.2, 0.72, 1.6], t: [0, 0.55, 0] }, age: 46, turntable: true, channels: true },
   },
   {
     id: 'theories',

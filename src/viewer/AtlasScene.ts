@@ -75,6 +75,7 @@ export class AtlasScene {
   /** The hypothesis whose knots are drawn. */
   hypothesis = 'perforator';
   private knotsOn = true;
+  private perforatorsOn = true;
   segmentation!: Segmentation;
   /** Per-fine-vertex depth of the deep fascia and of the superficial fascia (m), and explode weight. */
   depth!: Float32Array;
@@ -353,6 +354,9 @@ export class AtlasScene {
     if (!this.zeroKnots) this.zeroKnots = new Float32Array(this.ladder.count);
     this.stalks.setKnots(this.knotsOn && perf ? this.sim.knot : this.zeroKnots);
     this.cloud.material.uniforms.uKnotScale.value = this.knotsOn && perf ? 1 : 0;
+    // Small knots are drawn by the cloud, so it stays up for them even when
+    // the perforators themselves are hidden.
+    this.cloud.points.visible = this.perforatorsOn || (this.knotsOn && perf);
     this.embers.points.visible = this.knotsOn && perf;
     this.rootMarkers.material.uniforms.uKnotAlpha.value = this.knotsOn && perf ? 1 : 0;
     this.latch.setVisible(this.knotsOn && this.hypothesis === 'latch');
@@ -530,9 +534,11 @@ export class AtlasScene {
   setVisible(layer: 'perforators' | 'knots' | 'fascia' | 'vessels' | 'territories' | 'channels', on: boolean) {
     switch (layer) {
       case 'perforators':
-        this.cloud.points.visible = on;
+        this.perforatorsOn = on;
+        this.cloud.material.uniforms.uPlain.value = on ? 1 : 0;
         this.stalks.lines.visible = on;
         this.stalks.collars.visible = on;
+        this.applyKnotVisibility();
         break;
       case 'knots':
         this.knotsOn = on;

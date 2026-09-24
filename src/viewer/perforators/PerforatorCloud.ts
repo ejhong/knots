@@ -133,6 +133,8 @@ export function createCloudMaterial() {
       uLevelAlpha: { value: new Vector3(1, 1, 1) },
       /** Brightness by rung: small, medium, major. */
       uLevelTone: { value: new Vector3(0.34, 0.8, 1.0) },
+      /** 1: draw every perforator; 0: only the small knots (perforators hidden). */
+      uPlain: { value: 1 },
       uGlowMode: { value: 1 },
       uTime: { value: 0 },
       uBreath: { value: 0 },
@@ -156,6 +158,7 @@ export function createCloudMaterial() {
       uniform vec3 uSize;
       uniform vec3 uLevelAlpha;
       uniform vec3 uLevelTone;
+      uniform float uPlain;
       uniform float uTime;
       uniform float uBreath;
       ${LAYERS_GLSL}
@@ -187,10 +190,16 @@ export function createCloudMaterial() {
         float base = lvl < 0.5 ? uSize.x : (lvl < 1.5 ? uSize.y : uSize.z);
         float la = lvl < 0.5 ? uLevelAlpha.x : (lvl < 1.5 ? uLevelAlpha.y : uLevelAlpha.z);
         la *= lvl < 0.5 ? uLevelTone.x : (lvl < 1.5 ? uLevelTone.y : uLevelTone.z);
-        // Micro-knots read as a warm tint; medium and major knots swell.
         // Small knots are drawn here, as a warm tint on their own dot (there
         // are tens of thousands); medium and major knots are embers (KnotEmbers).
         float k = lvl < 0.5 ? aKnot * uKnotScale : 0.0;
+        // With the perforators layer off, only knots (and release stars) remain.
+        if (uPlain < 0.5 && k < 0.02 && aFlash < 0.02) {
+          gl_Position = vec4(2.0, 2.0, 2.0, 1.0);
+          gl_PointSize = 0.0;
+          return;
+        }
+        if (uPlain < 0.5) la = mix(0.45, 1.0, k);
         float halo = 1.0 + k * 0.6 + aFlash * (5.0 + lvl * 4.0) + aGlow * 1.5;
         float px = base * halo * uProjScale / max(0.05, -mv.z);
         // Keep distant points as fine dust rather than vanishing.
@@ -221,6 +230,7 @@ export function createCloudMaterial() {
       uniform vec3 uStar;
       uniform float uGlowMode;
       uniform float uBrightness;
+      uniform float uPlain;
       varying float vShade;
       varying float vKnot;
       varying float vFlash;
@@ -253,7 +263,7 @@ export function createCloudMaterial() {
           vec3 dust = uPoint * light * uBrightness;
           float big = vLevel / 2.0;
           vec3 warm = uKnot * (0.6 + 0.45 * light);
-          col = mix(dust, warm, clamp(vKnot * 1.1, 0.0, 1.0)) * core;
+          col = mix(dust, warm, uPlain > 0.5 ? clamp(vKnot * 1.1, 0.0, 1.0) : 1.0) * core;
           col += uKnot * halo * vKnot * 0.3;
           col += uStar * (star + halo * vFlash * 1.2 + core * vFlash);
           col += uPoint * halo * vGlow * 0.8;
@@ -263,7 +273,7 @@ export function createCloudMaterial() {
           // Paper: ink stipple; knots as seal-red dots with a wash.
           float ink = mix(1.0, 0.35, vShade);
           vec3 inkCol = uPoint;
-          col = mix(inkCol, uKnot, clamp(vKnot * 1.4, 0.0, 1.0));
+          col = mix(inkCol, uKnot, uPlain > 0.5 ? clamp(vKnot * 1.4, 0.0, 1.0) : 1.0);
           col = mix(col, uStar, clamp(vFlash * 1.2, 0.0, 1.0));
           alpha = core * vAlpha * mix(ink, 1.0, clamp(vKnot + vFlash, 0.0, 1.0));
           alpha += halo * (vKnot * 0.35 + vFlash * 0.6 + vGlow * 0.3);
