@@ -54,7 +54,7 @@ export const CHAPTERS: Chapter[] = [
 <li><b>Sparks.</b> A knot goes with a small pop, sometimes a star of tingling across a patch of skin.</li>
 <li><b>Euphoria.</b> A release can bring a wave of well-being — at times a euphoria some compare to MDMA.</li>
 <li><b>Migration.</b> When one knot lets go, others move in to fill the gap and settle into new places, as if the body were evening itself out.</li>
-<li><b>Fascia.</b> Other reports involve the fascia beneath the skin and unfold more slowly, over days to months: layers that seem to peel apart, places that feel hollow.</li>
+<li><b>Fascia.</b> Other reports involve the fascia beneath the skin: layers that seem to peel apart along lines, each line moving quickly and in time with the breath, leaving places that feel hollow. Each peel is quick; working through the whole body takes months or years.</li>
 <li><b>Filling.</b> Then a filling-in, felt as re-stitching: quick lines, each crossing in seconds, that move like snakes along a limb, up the body, or up into the head.</li>
 </ul>
 <p>The contemplative traditions describe much of this in their own words.</p>`,
@@ -91,7 +91,7 @@ export const CHAPTERS: Chapter[] = [
     title: 'The fascia',
     seconds: 24,
     html: `<p>The superficial fascia runs unbroken from scalp to sole — the galea over the skull, the SMAS of the face, the platysma of the neck, the membranous layers of the trunk and limbs — and glides over the deep fascia on a plane of loose, hyaluronan-rich tissue. It is not free everywhere: it is anchored to bone along particular lines, and tethered by fibrous strands and by the perforators that pass through it. Deeper down, the fascia is built more like channels — walls between the muscles, and sleeves around the vessels and nerves, drawn here in gold.</p>
-<p>The slower reports seem to belong to this layer: fascia that peels and separates, and places that feel hollow. The filling-in that follows is quick — lines that cross in seconds, like snakes, felt as re-stitching. Separated layers can close that fast, the way two wet surfaces meet and hold when pressed together; the lasting bond comes after, fibrin bridging the gap within days and collagen within weeks. Seconds is also the pace at which acupuncture research has recorded sensation travelling along the channels — one to ten centimetres a second.</p>`,
+<p>The reports about the fascia seem to belong to this layer: layers that peel apart along lines, each moving quickly in time with the breath; places left feeling hollow; and a filling-in felt as re-stitching — quick lines, like snakes. Each of these takes seconds; working through the whole body takes months or years. Separated layers can close that fast, the way two wet surfaces meet and hold when pressed together; the lasting bond comes after, fibrin bridging the gap within days and collagen within weeks. Seconds is also the pace at which acupuncture research has recorded sensation travelling along the channels — one to ten centimetres a second.</p>`,
     refs: ['gray2020', 'benias2018', 'guimberteau2015', 'langevin2011'],
     scene: { pose: { p: [1.07, 0.66, -1.05], t: [0.05, 0.61, -0.02] }, age: 46, layers: true, lift: 1, channels: true },
   },
