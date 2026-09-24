@@ -31,8 +31,8 @@ const MAP_COLORS: Record<string, string> = {
       <div class="overlay tr legend">
         <span><i style="background:#e6dccd"></i>perforator</span>
         <span><i style="background:#d9826d"></i>knot</span>
-        <span><i style="background:#9dcc9a"></i>release</span>
-        <span><i style="background:#9aa2a8"></i>tree</span>
+        <span><i style="background:#9aa2a8"></i>vessel</span>
+        <span><i style="background:#d8b775"></i>channel</span>
       </div>
       <div class="overlay bl" data-hint>drag to turn · scroll to zoom · hover to inspect · double-click to move the window</div>
       <div class="overlay br">© 2026 Eugene Jhong</div>
@@ -112,6 +112,8 @@ const MAP_COLORS: Record<string, string> = {
         <p class="sub">superficial fascia · interstitial plane · deep fascia</p>
         <label class="row"><input type="checkbox" data-layer="vessels" checked /> source vessels <span class="n" data-count="roots"></span></label>
         <p class="sub">the arteries feeding each tree, and their branches</p>
+        <label class="row"><input type="checkbox" data-layer="channels" checked /> deep channels <span class="n" data-count="channels"></span></label>
+        <p class="sub">septa, raphes and neurovascular sheaths of the deep fascia</p>
         <label class="row"><input type="checkbox" data-window checked /> dissection window</label>
         <p class="sub">skin cut back, superficial fascia removed — double-click the body to move it</p>
         <label class="row"><input type="checkbox" data-layer="territories" /> angiosomes</label>

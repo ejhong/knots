@@ -9,7 +9,10 @@ import { Engine } from './engine/Engine';
 import type { ThemeName } from './engine/theme';
 import { majorDensity } from './data/perforatorDensity';
 import { ROOTS, type RootDef } from './data/roots';
-import { buildLadder, DEFAULT_LADDER, type Ladder, type LadderParams } from './perforators/generate';
+import { buildLadder, DEFAULT_LADDER, withDiagonals, type Ladder, type LadderParams } from './perforators/generate';
+import { buildMeshGraph, dijkstra, tracePath, type MeshGraph } from './lib/graph';
+import { Channels, type ChannelInstance } from './body/Channels';
+import { CHANNELS } from './data/channels';
 import { PerforatorCloud } from './perforators/PerforatorCloud';
 import { KNOT_ZONES } from './data/zones';
 import { PointGrid } from './lib/spatial';
@@ -65,6 +68,8 @@ export class AtlasScene {
   stalks!: Stalks;
   interstitium!: Interstitium;
   embers!: KnotEmbers;
+  channels!: Channels;
+  graph!: MeshGraph;
   segmentation!: Segmentation;
   /** Per-fine-vertex depth of the deep fascia and of the superficial fascia (m), and explode weight. */
   depth!: Float32Array;
@@ -202,6 +207,8 @@ export class AtlasScene {
       this.supDepth,
       this.liftWeight,
     );
+    this.graph = buildMeshGraph(body.positions, withDiagonals(body.triangles, body.subdivision.fineQuads));
+    this.channels = new Channels(this.resolveChannels());
     this.trees = new TreeLines(this.ladder);
     this.rootMarkers = new RootMarkers(this.roots.length);
     this.picker = new Picker(this.layers.floorGeometry, body.normals, body.triangles);
@@ -215,6 +222,8 @@ export class AtlasScene {
     const scene = this.engine.scene;
     scene.add(
       this.layers.floor,
+      this.channels.lines,
+      this.channels.beads,
       this.trees.lines,
       this.interstitium.points,
       this.stalks.lines,
@@ -236,6 +245,7 @@ export class AtlasScene {
       this.stalks.applyTheme(t);
       this.interstitium.applyTheme(t);
       this.embers.applyTheme(t);
+      this.channels.applyTheme(t);
     });
     this.engine.onFrame(({ time, dt }) => {
       this.interaction.update(dt);
@@ -249,6 +259,41 @@ export class AtlasScene {
     this.refreshShape();
     this.setLift(this.lift);
     this.syncKnots();
+  }
+
+  /** Resolves the deep channels' landmark paths into skin paths (reference shape). */
+  private resolveChannels(): ChannelInstance[] {
+    const out: ChannelInstance[] = [];
+    const T = this.body.triangles;
+    const P = this.body.positions;
+    for (const def of CHANNELS) {
+      const variants: Array<['l' | 'r' | 'm', typeof def.path]> = def.bilateral
+        ? [
+            ['l', def.path],
+            ['r', def.path.map((l) => mirrorLocator(l))],
+          ]
+        : [['m', def.path]];
+      for (const [side, locs] of variants) {
+        const verts: number[] = [];
+        for (const l of locs) {
+          const a = this.locator.resolve(l);
+          if (a) verts.push(anchorVertex(a, T));
+          else console.warn('channel waypoint did not resolve', def.id, side);
+        }
+        if (verts.length < 2) continue;
+        const path: number[] = [verts[0]];
+        for (let i = 1; i < verts.length; i++) {
+          const s = verts[i - 1];
+          const t = verts[i];
+          const d = Math.hypot(P[s * 3] - P[t * 3], P[s * 3 + 1] - P[t * 3 + 1], P[s * 3 + 2] - P[t * 3 + 2]);
+          const res = dijkstra(this.graph, [s], { maxDist: d * 1.8 + 0.02 });
+          const seg = res.dist[t] < Infinity ? tracePath(res.pred, t).reverse() : [s, t];
+          for (let k = 1; k < seg.length; k++) path.push(seg[k]);
+        }
+        out.push({ def, side, path });
+      }
+    }
+    return out;
   }
 
   /** Places the dissection window at a skin point (triangle + position). */
@@ -408,6 +453,7 @@ export class AtlasScene {
       this.rootMarkers.update();
     }
     this.trees.refresh(this.body);
+    this.channels?.refresh(this.body, this.depth);
     this.updateWindow();
     for (const cb of this.shapeListeners) cb();
   }
@@ -436,6 +482,8 @@ export class AtlasScene {
     const mats = [
       this.cloud.material,
       this.embers.material,
+      this.channels.lineMaterial,
+      this.channels.beadMaterial,
       this.trees.material,
       this.stalks.lineMaterial,
       this.stalks.collarMaterial,
@@ -459,7 +507,7 @@ export class AtlasScene {
   }
 
   /** Shows or hides a family of layers. */
-  setVisible(layer: 'perforators' | 'knots' | 'fascia' | 'vessels' | 'territories', on: boolean) {
+  setVisible(layer: 'perforators' | 'knots' | 'fascia' | 'vessels' | 'territories' | 'channels', on: boolean) {
     switch (layer) {
       case 'perforators':
         this.cloud.points.visible = on;
@@ -481,6 +529,9 @@ export class AtlasScene {
         break;
       case 'territories':
         this.layers.floorMaterial.uniforms.uTerritory.value = on ? 1 : 0;
+        break;
+      case 'channels':
+        this.channels.setVisible(on);
         break;
     }
   }
@@ -527,6 +578,8 @@ export class AtlasScene {
     iu.uProjScale.value = projScale;
     iu.uPixelRatio.value = pr;
     this.trees.material.uniforms.uInsetScale.value = 1;
+    this.channels.beadMaterial.uniforms.uProjScale.value = projScale;
+    this.channels.beadMaterial.uniforms.uPixelRatio.value = pr;
   }
 
   /** Where a root sits on the current figure. */

@@ -369,7 +369,7 @@ export function buildLadder(input: LadderInput, params: LadderParams = DEFAULT_L
   };
 }
 
-function withDiagonals(triangles: Uint32Array, quads: Uint32Array): Uint32Array {
+export function withDiagonals(triangles: Uint32Array, quads: Uint32Array): Uint32Array {
   // Add the second diagonal of every quad as a degenerate triangle pair so
   // buildMeshGraph picks up the extra edge.
   const extra = new Uint32Array((quads.length / 4) * 3);

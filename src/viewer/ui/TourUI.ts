@@ -40,6 +40,7 @@ export function mountTour(viz: HTMLElement, panel: HTMLElement) {
     ready = true;
     const engine = scene.engine;
     scene.setLift(0);
+    scene.setVisible('channels', false);
     engine.start();
     engine.onFrame(({ dt }) => {
       // Ease the sheet's lift.

@@ -119,6 +119,7 @@ function bindLayers(panel: HTMLElement, scene: AtlasScene) {
   };
   count('perforators', scene.ladder.count);
   count('roots', scene.roots.length);
+  count('channels', scene.channels.channels.length);
 
   const lift = panel.querySelector<HTMLInputElement>('[data-lift]')!;
   lift.addEventListener('input', () => scene.setLift(Number(lift.value)));
@@ -227,8 +228,23 @@ function bindTooltip(viz: HTMLElement, scene: AtlasScene) {
     current = h;
     tip.hidden = !h || (h.node < 0 && h.root < 0);
   });
+  let lit = -1;
   setInterval(() => {
     const h = current;
+    // Channels take precedence when the pointer is right on one.
+    const ch = h && scene.channels.lines.visible ? scene.channels.nearest(h.hit.point.x, h.hit.point.y, h.hit.point.z) : -1;
+    if (ch !== lit) {
+      scene.channels.highlight(ch);
+      lit = ch;
+    }
+    if (h && ch >= 0) {
+      const c = scene.channels.channels[ch];
+      tip.hidden = false;
+      tip.innerHTML = `<div class="t-kicker">deep channel · ${c.def.kind}${c.side === 'm' ? ' · midline' : c.side === 'l' ? ' · left' : ' · right'}</div>
+        <div class="t-title">${c.def.name}</div>
+        <div class="t-note">${c.def.note}</div>`;
+      return;
+    }
     if (!h || tip.hidden) return;
     const sim = scene.sim;
     const L = scene.ladder;
