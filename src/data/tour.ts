@@ -47,7 +47,7 @@ export const CHAPTERS: Chapter[] = [
     html: `<p>Press into a knot, breathe out slowly, and it often lets go within seconds. That speed is the first clue. Tissue does not remodel in seconds — collagen, scar and adhesion change over days and weeks — so whatever lets go on an out-breath must be a <strong>state</strong>: something the body is doing, and can stop doing.</p>
 <p>Reports from contemplative practice and bodywork include:</p>
 <ul class="obs">
-<li><b>Breath.</b> Knots seem to answer to the breath. They let go on a slow out-breath, and a single relaxing breath — the long exhale that comes on its own in a hot shower — can soften many small knots at once. Some knots seem to depend on breath and mood; some may even be held from moment to moment.</li>
+<li><b>Breath.</b> Knots seem to answer to the breath. They let go on a slow out-breath, and a single relaxing breath — the long exhale that comes on its own in a hot shower — can soften many small knots at once. Some knots seem to come and go with breath and mood, and some may even be held from moment to moment; deeper, persistent knots let go only to focused attention and breath.</li>
 <li><b>Attention.</b> Pressure and focused attention — a foam roller, a patient hand — release knots one place at a time.</li>
 <li><b>Stress.</b> Knots seem to worsen under stress, and gather where it is held: neck and shoulders, jaw, belly, low back.</li>
 <li><b>Sparks.</b> A knot goes with a small pop, sometimes a star of tingling across a patch of skin.</li>

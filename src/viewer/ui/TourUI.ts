@@ -121,7 +121,7 @@ export function mountTour(viz: HTMLElement, panel: HTMLElement) {
     const cu = scene.cloud.material.uniforms;
     cu.uLevelAlpha.value.set(1, 1, 1);
     scene.rootMarkers.points.visible = true;
-    scene.trees.material.uniforms.uAlpha.value = 0.34 * (s.trees ?? 1);
+    scene.trees.material.uniforms.uAlpha.value = 0.45 * (s.trees ?? 1);
     if (s.age !== undefined && Math.abs(scene.body.shape.age - s.age) > 0.01) scene.setShape({ age: s.age });
     // Every chapter starts from the same held state: releases shown in one
     // chapter do not carry into the next.

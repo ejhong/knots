@@ -119,11 +119,11 @@ function createTreeMaterial() {
     uniforms: {
       uColor: { value: new Color() },
       uPulseColor: { value: new Color() },
-      uAlpha: { value: 0.34 },
+      uAlpha: { value: 0.62 },
       uOffset: { value: 0.0006 },
       uLift: { value: 0 },
       uGlowMode: { value: 1 },
-      uBranchAlpha: { value: 0.45 },
+      uBranchAlpha: { value: 0.55 },
       uTime: { value: 0 },
       uFlow: { value: 0.45 },
       uInsetScale: { value: 0 },
@@ -171,11 +171,12 @@ function createTreeMaterial() {
       void main() {
         if (uClipOn > 0.5 && dot(vClipPos, uClip.xyz) > uClip.w) discard;
         float a = uAlpha * (vLevel > 1.5 ? mix(0.35, 1.0, vFlow) : uBranchAlpha * mix(0.4, 0.8, vFlow));
-        // Light drifting up the tree toward the root (arc length decreases).
+        // A slow shimmer drifting along the tree, in the vessel's own colour;
+        // the release colour is kept for releases (vPulse).
         float wave = fract(vArc * 9.0 + uTime * 0.11);
         float bead = smoothstep(0.86, 1.0, wave) * uFlow * (vLevel > 1.5 ? 1.0 : 0.6);
-        vec3 col = mix(uColor, uPulseColor, clamp(vPulse + bead * 0.5, 0.0, 1.0));
-        a = max(a * (1.0 + bead * 1.6), vPulse * 0.95);
+        vec3 col = mix(uColor * (1.0 + bead * 0.7), uPulseColor, clamp(vPulse, 0.0, 1.0));
+        a = max(a * (1.0 + bead * 1.2), vPulse * 0.95);
         if (uGlowMode > 0.5) gl_FragColor = vec4(col * a, 1.0);
         else gl_FragColor = vec4(col, a);
       }

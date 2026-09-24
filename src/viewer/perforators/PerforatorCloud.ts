@@ -108,6 +108,8 @@ export class PerforatorCloud {
     u.uKnotCore.value.copy(t.knotCore);
     u.uStar.value.copy(t.star);
     u.uGlowMode.value = t.glow;
+    // Light on ink stone can afford a faint dust; ink on paper needs more.
+    u.uLevelTone.value.set(t.glow ? 0.34 : 0.62, t.glow ? 0.8 : 0.9, 1);
     this.material.blending = t.glow ? AdditiveBlending : NormalBlending;
     this.material.needsUpdate = true;
   }

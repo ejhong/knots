@@ -255,7 +255,9 @@ function createCollarMaterial() {
       varying float vLevel;
       varying vec3 vClipPos;
       void main() {
-        if (uWindowOn > 0.5 && windowR(position) > 1.0) {
+        // Inside the dissection window the superficial fascia is cut away, so
+        // the collars that sit on it go with it; elsewhere nothing changes.
+        if (aLevel < 1.5 && windowR(position) < SUP_FRAC) {
           gl_Position = vec4(2.0, 2.0, 2.0, 1.0);
           gl_PointSize = 0.0;
           return;
