@@ -7,17 +7,22 @@ import {
   NormalBlending,
   Points,
   ShaderMaterial,
+  Vector3,
   Vector4,
 } from 'three';
+import { LAYERS_GLSL, LAYER_UNIFORMS, WINDOW_GLSL, WINDOW_UNIFORMS } from '../body/layerModel';
 import type { SceneTheme } from '../engine/theme';
 import type { Ladder } from './generate';
 
 /**
- * Perforators seen from the side: when the sheet is lifted off the floor,
- * each staple becomes a stalk crossing the interstitial plane — major ones
- * bright, medium quieter, the hundred thousand small ones a fine rain — with
- * a collar where it pierces the sheet. A stuck staple's stalk and collar
- * burn vermilion.
+ * The perforators seen from the side, each at its true depth:
+ *   major  — up from the source vessel in muscle, through the deep fascia,
+ *            to the superficial fascia (a collar at the deep fascia);
+ *   medium — from the plexus above the deep fascia, across the gliding
+ *            plane, through the superficial fascia (a collar there);
+ *   small  — from the plexus under the superficial fascia up through the
+ *            superficial fat to the skin (the fine rain).
+ * A stuck perforator's stalk and collar burn terracotta.
  */
 export class Stalks {
   readonly lines: LineSegments;
@@ -38,9 +43,10 @@ export class Stalks {
 
   constructor(
     readonly ladder: Ladder,
-    /** Per-perforator floor depth (m) and lift weight. */
-    readonly inset: Float32Array,
-    readonly liftWeight: Float32Array,
+    /** Per-perforator depth of the deep and superficial fascia (m), and explode weight. */
+    deep: Float32Array,
+    sup: Float32Array,
+    liftWeight: Float32Array,
   ) {
     const N = ladder.count;
     this.pos = new Float32Array(N * 6);
@@ -48,24 +54,28 @@ export class Stalks {
     this.knot = new Float32Array(N * 2);
     const end = new Float32Array(N * 2);
     const level = new Float32Array(N * 2);
-    const ins = new Float32Array(N * 2);
+    const dDeep = new Float32Array(N * 2);
+    const dSup = new Float32Array(N * 2);
     const lw = new Float32Array(N * 2);
     for (let i = 0; i < N; i++) {
       end[i * 2 + 1] = 1;
       level[i * 2] = level[i * 2 + 1] = ladder.level[i];
-      ins[i * 2] = ins[i * 2 + 1] = inset[i];
+      dDeep[i * 2] = dDeep[i * 2 + 1] = deep[i];
+      dSup[i * 2] = dSup[i * 2 + 1] = sup[i];
       lw[i * 2] = lw[i * 2 + 1] = liftWeight[i];
     }
-    this.lineGeo.setAttribute('position', new BufferAttribute(this.pos, 3));
-    this.lineGeo.setAttribute('normal', new BufferAttribute(this.nrm, 3));
-    this.lineGeo.setAttribute('aEnd', new BufferAttribute(end, 1));
-    this.lineGeo.setAttribute('aLevel', new BufferAttribute(level, 1));
-    this.lineGeo.setAttribute('aInset', new BufferAttribute(ins, 1));
-    this.lineGeo.setAttribute('aLiftW', new BufferAttribute(lw, 1));
+    const g = this.lineGeo;
+    g.setAttribute('position', new BufferAttribute(this.pos, 3));
+    g.setAttribute('normal', new BufferAttribute(this.nrm, 3));
+    g.setAttribute('aEnd', new BufferAttribute(end, 1));
+    g.setAttribute('aLevel', new BufferAttribute(level, 1));
+    g.setAttribute('aDeep', new BufferAttribute(dDeep, 1));
+    g.setAttribute('aSup', new BufferAttribute(dSup, 1));
+    g.setAttribute('aLiftW', new BufferAttribute(lw, 1));
     this.knotAttr = new BufferAttribute(this.knot, 1);
-    this.lineGeo.setAttribute('aKnot', this.knotAttr);
+    g.setAttribute('aKnot', this.knotAttr);
     this.lineMaterial = createStalkMaterial();
-    this.lines = new LineSegments(this.lineGeo, this.lineMaterial);
+    this.lines = new LineSegments(g, this.lineMaterial);
     this.lines.frustumCulled = false;
     this.lines.renderOrder = 2;
 
@@ -79,23 +89,30 @@ export class Stalks {
     this.cKnot = new Float32Array(M);
     const cLevel = new Float32Array(M);
     const cLw = new Float32Array(M);
+    const cDeep = new Float32Array(M);
+    const cSup = new Float32Array(M);
     idx.forEach((i, k) => {
       cLevel[k] = ladder.level[i];
       cLw[k] = liftWeight[i];
+      cDeep[k] = deep[i];
+      cSup[k] = sup[i];
     });
-    this.collarGeo.setAttribute('position', new BufferAttribute(this.cPos, 3));
-    this.collarGeo.setAttribute('normal', new BufferAttribute(this.cNrm, 3));
-    this.collarGeo.setAttribute('aLevel', new BufferAttribute(cLevel, 1));
-    this.collarGeo.setAttribute('aLiftW', new BufferAttribute(cLw, 1));
+    const cg = this.collarGeo;
+    cg.setAttribute('position', new BufferAttribute(this.cPos, 3));
+    cg.setAttribute('normal', new BufferAttribute(this.cNrm, 3));
+    cg.setAttribute('aLevel', new BufferAttribute(cLevel, 1));
+    cg.setAttribute('aLiftW', new BufferAttribute(cLw, 1));
+    cg.setAttribute('aDeep', new BufferAttribute(cDeep, 1));
+    cg.setAttribute('aSup', new BufferAttribute(cSup, 1));
     this.cKnotAttr = new BufferAttribute(this.cKnot, 1);
-    this.collarGeo.setAttribute('aKnot', this.cKnotAttr);
+    cg.setAttribute('aKnot', this.cKnotAttr);
     this.collarMaterial = createCollarMaterial();
-    this.collars = new Points(this.collarGeo, this.collarMaterial);
+    this.collars = new Points(cg, this.collarMaterial);
     this.collars.frustumCulled = false;
     this.collars.renderOrder = 3;
   }
 
-  /** Positions/normals of perforators on the current figure. */
+  /** Skin positions/normals of perforators on the current figure. */
   refresh(positions: Float32Array, normals: Float32Array) {
     const N = this.ladder.count;
     for (let i = 0; i < N; i++)
@@ -127,16 +144,6 @@ export class Stalks {
     this.cKnotAttr.needsUpdate = true;
   }
 
-  setLift(lift: number, maxLift: number) {
-    for (const m of [this.lineMaterial, this.collarMaterial]) {
-      m.uniforms.uLift.value = lift;
-      m.uniforms.uMaxLift.value = maxLift;
-    }
-    const visible = lift > 0.01;
-    this.lines.visible = visible;
-    this.collars.visible = visible;
-  }
-
   applyTheme(t: SceneTheme) {
     for (const m of [this.lineMaterial, this.collarMaterial]) {
       m.uniforms.uColor.value.copy(t.point);
@@ -145,6 +152,8 @@ export class Stalks {
       m.blending = t.glow ? AdditiveBlending : NormalBlending;
       m.needsUpdate = true;
     }
+    const a = t.glow ? [0.034, 0.16, 0.5] : [0.05, 0.2, 0.55];
+    this.lineMaterial.uniforms.uAlpha.value.set(a[0], a[1], a[2]);
   }
 }
 
@@ -153,38 +162,47 @@ function createStalkMaterial() {
     transparent: true,
     depthWrite: false,
     uniforms: {
+      ...LAYER_UNIFORMS,
+      ...WINDOW_UNIFORMS,
       uColor: { value: new Color() },
       uKnot: { value: new Color() },
-      uLift: { value: 0 },
-      uMaxLift: { value: 0.03 },
-      uInsetScale: { value: 1 },
       uGlowMode: { value: 1 },
-      uAlpha: { value: new Color(0.028, 0.13, 0.42) },
+      uAlpha: { value: new Vector3(0.034, 0.16, 0.5) },
       uClip: { value: new Vector4() },
       uClipOn: { value: 0 },
     },
     vertexShader: /* glsl */ `
       attribute float aEnd;
       attribute float aLevel;
-      attribute float aInset;
+      attribute float aDeep;
+      attribute float aSup;
       attribute float aLiftW;
       attribute float aKnot;
-      uniform float uLift;
-      uniform float uMaxLift;
-      uniform float uInsetScale;
       uniform vec3 uAlpha;
+      ${LAYERS_GLSL}
+      ${WINDOW_GLSL}
       varying float vA;
       varying float vKnot;
       varying float vEnd;
       varying vec3 vClipPos;
       void main() {
+        if (aLevel < 0.5 && windowR(position) < SUP_FRAC) {
+          gl_Position = vec4(2.0, 2.0, 2.0, 1.0);
+          return;
+        }
         vec3 n = normalize(normal);
-        float out_ = uLift * uMaxLift * aLiftW;
-        vec3 p = position + n * mix(-aInset * uInsetScale, out_, aEnd);
+        float deep = deepOffset(aDeep);
+        float sup = supOffset(aSup, aLiftW);
+        float skin = skinOffset(aLiftW);
+        float lo;
+        float hi;
+        if (aLevel > 1.5) { lo = deep - 0.006; hi = sup; }
+        else if (aLevel > 0.5) { lo = deep + 0.0005; hi = sup + 0.0015; }
+        else { lo = sup; hi = skin; }
+        vec3 p = position + n * mix(lo, hi, aEnd);
         vClipPos = p;
         gl_Position = projectionMatrix * modelViewMatrix * vec4(p, 1.0);
-        float la = aLevel < 0.5 ? uAlpha.x : (aLevel < 1.5 ? uAlpha.y : uAlpha.z);
-        vA = la * smoothstep(0.0, 0.25, uLift);
+        vA = aLevel < 0.5 ? uAlpha.x : (aLevel < 1.5 ? uAlpha.y : uAlpha.z);
         vKnot = aKnot;
         vEnd = aEnd;
       }
@@ -193,18 +211,16 @@ function createStalkMaterial() {
       uniform vec3 uColor;
       uniform vec3 uKnot;
       uniform float uGlowMode;
+      uniform vec4 uClip;
+      uniform float uClipOn;
       varying float vA;
       varying float vKnot;
       varying float vEnd;
-      uniform vec4 uClip;
-      uniform float uClipOn;
       varying vec3 vClipPos;
       void main() {
         if (uClipOn > 0.5 && dot(vClipPos, uClip.xyz) > uClip.w) discard;
-        // Brighter where it meets the sheet; a stuck staple burns.
-        float a = vA * mix(0.25, 1.0, vEnd);
+        float a = vA * mix(0.45, 1.0, vEnd) * (1.0 + vKnot * 1.4);
         vec3 col = mix(uColor, uKnot, clamp(vKnot * 1.3, 0.0, 1.0));
-        a *= 1.0 + vKnot * 1.2;
         if (uGlowMode > 0.5) gl_FragColor = vec4(col * a, 1.0);
         else gl_FragColor = vec4(col, clamp(a, 0.0, 1.0));
       }
@@ -217,10 +233,10 @@ function createCollarMaterial() {
     transparent: true,
     depthWrite: false,
     uniforms: {
+      ...LAYER_UNIFORMS,
+      ...WINDOW_UNIFORMS,
       uColor: { value: new Color() },
       uKnot: { value: new Color() },
-      uLift: { value: 0 },
-      uMaxLift: { value: 0.03 },
       uProjScale: { value: 800 },
       uGlowMode: { value: 1 },
       uClip: { value: new Vector4() },
@@ -228,24 +244,30 @@ function createCollarMaterial() {
     },
     vertexShader: /* glsl */ `
       attribute float aLevel;
+      attribute float aDeep;
+      attribute float aSup;
       attribute float aLiftW;
       attribute float aKnot;
-      uniform float uLift;
-      uniform float uMaxLift;
       uniform float uProjScale;
-      varying float vA;
+      ${LAYERS_GLSL}
+      ${WINDOW_GLSL}
       varying float vKnot;
       varying float vLevel;
       varying vec3 vClipPos;
       void main() {
+        if (uWindowOn > 0.5 && windowR(position) > 1.0) {
+          gl_Position = vec4(2.0, 2.0, 2.0, 1.0);
+          gl_PointSize = 0.0;
+          return;
+        }
         vec3 n = normalize(normal);
-        vec3 p = position + n * uLift * uMaxLift * aLiftW;
+        float off = aLevel > 1.5 ? deepOffset(aDeep) + 0.0006 : supOffset(aSup, aLiftW);
+        vec3 p = position + n * off;
         vClipPos = p;
         vec4 mv = modelViewMatrix * vec4(p, 1.0);
         gl_Position = projectionMatrix * mv;
         float size = (aLevel > 1.5 ? 0.0075 : 0.0042) * (1.0 + aKnot * 0.6);
         gl_PointSize = clamp(size * uProjScale / max(0.05, -mv.z), 2.0, 64.0);
-        vA = smoothstep(0.1, 0.4, uLift);
         vKnot = aKnot;
         vLevel = aLevel;
       }
@@ -254,11 +276,10 @@ function createCollarMaterial() {
       uniform vec3 uColor;
       uniform vec3 uKnot;
       uniform float uGlowMode;
-      varying float vA;
-      varying float vKnot;
-      varying float vLevel;
       uniform vec4 uClip;
       uniform float uClipOn;
+      varying float vKnot;
+      varying float vLevel;
       varying vec3 vClipPos;
       void main() {
         if (uClipOn > 0.5 && dot(vClipPos, uClip.xyz) > uClip.w) discard;
@@ -271,7 +292,7 @@ function createCollarMaterial() {
         float ring = 1.0 - smoothstep(width, width + px * 1.5, abs(r - 0.66));
         float fill = (1.0 - smoothstep(0.62, 0.66, r)) * vKnot * 0.35;
         vec3 col = mix(uColor, uKnot, vKnot);
-        float a = (ring * (vLevel > 1.5 ? 0.9 : 0.6) + fill) * vA;
+        float a = ring * (vLevel > 1.5 ? 0.85 : 0.5) + fill;
         if (uGlowMode > 0.5) gl_FragColor = vec4(col * a, 1.0);
         else {
           if (a < 0.01) discard;

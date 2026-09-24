@@ -1,13 +1,16 @@
 import { Color, Vector3 } from 'three';
 import { AtlasScene } from '../AtlasScene';
 import { preferredTheme, rememberTheme, type ThemeName } from '../engine/theme';
-import type { HoverInfo, Tool } from '../interaction/Interaction';
-import { applyScenario, SCENARIOS } from '../sim/scenarios';
+import type { HoverInfo } from '../interaction/Interaction';
 import { hypothesisById } from '../../data/hypotheses';
 
 const fmt = new Intl.NumberFormat('en-US');
 const LEVEL_NAME = ['small perforator', 'medium perforator', 'major perforator', 'root'];
-const LEVEL_COLOR = ['#cdb9a7', '#e0a58f', '#f08f73', '#ffb199'];
+const LEVEL_DEPTH = [
+  'pierces the superficial fascia',
+  'crosses the gliding plane; pierces the superficial fascia',
+  'pierces the deep fascia',
+];
 
 const SECTIONS: Record<string, { normal: [number, number, number]; d: (s: AtlasScene) => number; pose: (s: AtlasScene) => [number[], number[]] } | null> = {
   none: null,
@@ -46,6 +49,11 @@ const SECTIONS: Record<string, { normal: [number, number, number]; d: (s: AtlasS
   },
 };
 
+/**
+ * The atlas, for looking: turn the figure, set the age, choose layers and
+ * sections, hover to inspect. (Tools for pressing and releasing knots will
+ * return later.)
+ */
 export function mountAtlas(viz: HTMLElement, panel: HTMLElement) {
   const stage = viz.querySelector<HTMLElement>('[data-stage]')!;
   const canvas = viz.querySelector<HTMLCanvasElement>('#atlas-canvas')!;
@@ -57,7 +65,12 @@ export function mountAtlas(viz: HTMLElement, panel: HTMLElement) {
 
   scene.ready.then(() => {
     const engine = scene.engine;
-    engine.setPose({ position: [-1.55, 1.3, -3.2], target: [0, 0.9, 0], fov: 30 });
+    scene.simRunning = false;
+    scene.interaction.tool = 'look';
+    canvas.style.cursor = 'grab';
+    scene.settle(34);
+    scene.setWindowOn(true);
+    engine.setPose({ position: [-1.02, 1.42, -1.95], target: [0.03, 1.16, -0.02], fov: 30 });
     engine.autoRotate = true;
     engine.start();
     requestAnimationFrame(() => {
@@ -66,19 +79,14 @@ export function mountAtlas(viz: HTMLElement, panel: HTMLElement) {
     });
     bindTabs(panel);
     bindLayers(panel, scene);
-    bindTools(viz, scene);
-    bindBreath(viz, scene);
     bindAge(viz, scene);
-    bindScenarios(panel, scene);
     bindCensus(panel, scene);
-    bindLog(panel, scene);
     bindTooltip(viz, scene);
     bindSettings(viz, stage, scene);
     bindHypotheses(viz, panel);
-    bindKeys(viz, scene);
     const q = new URLSearchParams(location.search);
-    if (q.get('lift')) {
-      const v = Number(q.get('lift'));
+    if (q.get('depth')) {
+      const v = Number(q.get('depth'));
       scene.setLift(v);
       const el = panel.querySelector<HTMLInputElement>('[data-lift]');
       if (el) el.value = String(v);
@@ -98,27 +106,12 @@ function bindTabs(panel: HTMLElement) {
 }
 
 function bindLayers(panel: HTMLElement, scene: AtlasScene) {
-  const set = (layer: string, on: boolean) => {
-    switch (layer) {
-      case 'perforators':
-        scene.cloud.points.visible = on;
-        break;
-      case 'trees':
-        scene.trees.lines.visible = on;
-        break;
-      case 'roots':
-        scene.rootMarkers.points.visible = on;
-        break;
-      case 'knots':
-        scene.cloud.material.uniforms.uKnotScale.value = on ? 1 : 0;
-        break;
-      case 'territories':
-        showTerritories(scene, on);
-        break;
-    }
-  };
   panel.querySelectorAll<HTMLInputElement>('[data-layer]').forEach((el) => {
-    el.addEventListener('change', () => set(el.dataset.layer!, el.checked));
+    el.addEventListener('change', () => {
+      const layer = el.dataset.layer as Parameters<AtlasScene['setVisible']>[0];
+      if (layer === 'territories' && el.checked) ensureTerritoryColors(scene);
+      scene.setVisible(layer, el.checked);
+    });
   });
   const count = (k: string, n: number) => {
     const el = panel.querySelector(`[data-count="${k}"]`);
@@ -128,11 +121,18 @@ function bindLayers(panel: HTMLElement, scene: AtlasScene) {
   count('roots', scene.roots.length);
 
   const lift = panel.querySelector<HTMLInputElement>('[data-lift]')!;
-  const liftOut = panel.querySelector<HTMLElement>('[data-lift-out]')!;
-  lift.addEventListener('input', () => {
-    const v = Number(lift.value);
-    scene.setLift(v);
-    liftOut.textContent = v.toFixed(2);
+  lift.addEventListener('input', () => scene.setLift(Number(lift.value)));
+
+  // The dissection window: toggle, and double-click the body to move it.
+  const win = panel.querySelector<HTMLInputElement>('[data-window]')!;
+  win.addEventListener('change', () => scene.setWindowOn(win.checked));
+  scene.engine.canvas.addEventListener('dblclick', (e) => {
+    const r = scene.engine.canvas.getBoundingClientRect();
+    const hit = scene.picker.pick(e.clientX - r.left, e.clientY - r.top, r.width, r.height, scene.engine.camera);
+    if (!hit) return;
+    scene.setWindowAt(hit.tri, hit.point);
+    win.checked = true;
+    scene.setWindowOn(true);
   });
 
   panel.querySelectorAll<HTMLInputElement>('input[name="section"]').forEach((r) =>
@@ -147,62 +147,26 @@ function bindLayers(panel: HTMLElement, scene: AtlasScene) {
       const [pos, target] = sec.pose(scene);
       scene.engine.autoRotate = false;
       scene.engine.flyTo({ position: pos as [number, number, number], target: target as [number, number, number], fov: 30 }, 1.6);
-      if (scene.lift < 0.3) {
-        scene.setLift(0.6);
-        lift.value = '0.6';
-        liftOut.textContent = '0.60';
-      }
     }),
   );
 }
 
 let territoryColors: Float32Array | null = null;
-function showTerritories(scene: AtlasScene, on: boolean) {
-  if (on && !territoryColors) {
-    const t = scene.ladder.territory;
-    territoryColors = new Float32Array(t.length * 3);
-    const c = new Color();
-    const n = scene.roots.length;
-    for (let v = 0; v < t.length; v++) {
-      const r = t[v];
-      c.setHSL((((r * 0.618034) % 1) + 1) % 1, 0.28, scene.engine.theme.glow ? 0.34 : 0.74);
-      if (r < 0 || r >= n) c.setRGB(0.5, 0.5, 0.5);
-      territoryColors[v * 3] = c.r;
-      territoryColors[v * 3 + 1] = c.g;
-      territoryColors[v * 3 + 2] = c.b;
-    }
-    scene.layers.setTerritoryColors(territoryColors);
+function ensureTerritoryColors(scene: AtlasScene) {
+  if (territoryColors) return;
+  const t = scene.ladder.territory;
+  territoryColors = new Float32Array(t.length * 3);
+  const c = new Color();
+  const n = scene.roots.length;
+  for (let v = 0; v < t.length; v++) {
+    const r = t[v];
+    c.setHSL((((r * 0.618034) % 1) + 1) % 1, 0.28, scene.engine.theme.glow ? 0.34 : 0.74);
+    if (r < 0 || r >= n) c.setRGB(0.5, 0.5, 0.5);
+    territoryColors[v * 3] = c.r;
+    territoryColors[v * 3 + 1] = c.g;
+    territoryColors[v * 3 + 2] = c.b;
   }
-  scene.layers.floorMaterial.uniforms.uTerritory.value = on ? 1 : 0;
-}
-
-function bindTools(viz: HTMLElement, scene: AtlasScene) {
-  const buttons = viz.querySelectorAll<HTMLButtonElement>('[data-tool]');
-  const setTool = (t: Tool) => {
-    scene.interaction.tool = t;
-    buttons.forEach((b) => b.classList.toggle('is-active', b.dataset.tool === t));
-    scene.engine.canvas.style.cursor = t === 'look' ? 'grab' : 'crosshair';
-  };
-  buttons.forEach((b) => b.addEventListener('click', () => setTool(b.dataset.tool as Tool)));
-  setTool('press');
-  (viz as HTMLElement & { setTool?: (t: Tool) => void }).setTool = setTool;
-}
-
-function bindBreath(viz: HTMLElement, scene: AtlasScene) {
-  const btn = viz.querySelector<HTMLButtonElement>('[data-breath]')!;
-  const enso = btn.querySelector<SVGElement>('.enso')!;
-  const label = viz.querySelector<HTMLElement>('[data-breath-label]')!;
-  const breath = scene.sim.breath;
-  btn.addEventListener('click', () => {
-    breath.setPaced(!breath.paced);
-    btn.classList.toggle('manual', !breath.paced);
-  });
-  scene.engine.onFrame(() => {
-    const s = 0.78 + 0.34 * breath.volume;
-    enso.style.transform = `scale(${s.toFixed(3)}) rotate(${(-breath.volume * 18).toFixed(1)}deg)`;
-    const text = breath.holding ? 'hold' : breath.phase === 'inhale' ? 'inhale' : breath.phase === 'rest' ? 'rest' : 'exhale';
-    if (label.textContent !== text) label.textContent = text;
-  });
+  scene.layers.setTerritoryColors(territoryColors);
 }
 
 function bindAge(viz: HTMLElement, scene: AtlasScene) {
@@ -210,11 +174,10 @@ function bindAge(viz: HTMLElement, scene: AtlasScene) {
   const out = viz.querySelector<HTMLElement>('[data-age-out]')!;
   let pending: number | null = null;
   let lastFit = scene.body.height();
-
   const apply = (age: number) => {
     out.textContent = `${age < 2 ? age.toFixed(1) : Math.round(age)} y`;
     scene.setShape({ age });
-    scene.sim.settle(age);
+    scene.settle(age);
     fitCamera(scene, lastFit);
     lastFit = scene.body.height();
   };
@@ -242,53 +205,6 @@ function fitCamera(scene: AtlasScene, previousHeight: number) {
   engine.camera.position.copy(newTarget).add(off);
 }
 
-function bindScenarios(panel: HTMLElement, scene: AtlasScene) {
-  const active = new Set<string>();
-  const chips = panel.querySelectorAll<HTMLButtonElement>('[data-scenario]');
-  const note = panel.querySelector<HTMLElement>('[data-scene-note]')!;
-  const reapply = () => {
-    scene.sim.stress.fill(0);
-    scene.sim.globalStress = 0;
-    for (const id of active) {
-      const s = SCENARIOS.find((x) => x.id === id);
-      if (s) applyScenario(scene, s);
-    }
-  };
-  chips.forEach((c) =>
-    c.addEventListener('click', () => {
-      const id = c.dataset.scenario!;
-      if (active.has(id)) active.delete(id);
-      else active.add(id);
-      c.classList.toggle('is-active', active.has(id));
-      reapply();
-      const s = SCENARIOS.find((x) => x.id === id)!;
-      if (active.has(id))
-        note.innerHTML = `<p><strong>${s.label}.</strong> ${s.note}</p><p>Drive rises; knots swell and multiply over sim-minutes. Lift it and the drive goes — but the knots it wrote stay until released.</p>`;
-    }),
-  );
-  const warm = panel.querySelector<HTMLButtonElement>('[data-warmth]')!;
-  warm.addEventListener('click', () => {
-    const on = !warm.classList.contains('is-active');
-    warm.classList.toggle('is-active', on);
-    scene.sim.warmth = on ? 1 : 0;
-    if (on)
-      note.innerHTML =
-        '<p><strong>Sauna.</strong> Heat opens the cutaneous bed more completely than anything else the body does. The knots soften — and return when you step out: the collar, the tether and the writer are still in place.</p>';
-  });
-  panel.querySelector<HTMLButtonElement>('[data-rest]')!.addEventListener('click', (e) => {
-    active.clear();
-    chips.forEach((c) => c.classList.remove('is-active'));
-    warm.classList.remove('is-active');
-    scene.sim.warmth = 0;
-    scene.sim.clearStress();
-    const b = e.currentTarget as HTMLButtonElement;
-    b.classList.add('is-active');
-    setTimeout(() => b.classList.remove('is-active'), 900);
-    note.innerHTML =
-      '<p><strong>Rest.</strong> The drive is lifted. What it wrote remains: a knot is a loop that holds itself. Press a knot and breathe out to release it.</p>';
-  });
-}
-
 function bindCensus(panel: HTMLElement, scene: AtlasScene) {
   const els = [0, 1, 2, 3].map((i) => panel.querySelector<HTMLElement>(`[data-c="${i}"]`)!);
   const update = () => {
@@ -299,36 +215,7 @@ function bindCensus(panel: HTMLElement, scene: AtlasScene) {
     });
   };
   update();
-  setInterval(update, 400);
-}
-
-/** A running log of releases, newest first — like OM's note stream. */
-function bindLog(panel: HTMLElement, scene: AtlasScene) {
-  const log = panel.querySelector<HTMLElement>('[data-log]')!;
-  const countEl = panel.querySelector<HTMLElement>('[data-log-count]')!;
-  let n = 0;
-  let started = false;
-  const t0 = performance.now();
-  scene.sim.onRelease((e) => {
-    if (!started) {
-      log.innerHTML = '';
-      started = true;
-    }
-    n++;
-    countEl.textContent = `(${fmt.format(n)})`;
-    const L = scene.ladder;
-    const isRoot = e.node >= L.count;
-    const root = isRoot ? scene.roots[e.node - L.count] : scene.roots[L.root[e.node]];
-    const secs = (performance.now() - t0) / 1000;
-    const stamp = `${Math.floor(secs / 60)}:${String(Math.floor(secs % 60)).padStart(2, '0')}`;
-    const where = root ? `${root.def.id}-${root.side}` : '—';
-    const div = document.createElement('div');
-    div.className = 'item';
-    div.style.color = LEVEL_COLOR[e.level];
-    div.textContent = `${stamp} ✦ ${LEVEL_NAME[e.level].split(' ')[0]}/${where}${isRoot ? ' · root opens' : ''}`;
-    log.prepend(div);
-    while (log.childElementCount > 80) log.lastElementChild?.remove();
-  });
+  setInterval(update, 500);
 }
 
 function bindTooltip(viz: HTMLElement, scene: AtlasScene) {
@@ -349,7 +236,7 @@ function bindTooltip(viz: HTMLElement, scene: AtlasScene) {
       const r = scene.roots[h.root];
       const i = L.count + h.root;
       const stuck = sim.stuck[i] === 1;
-      tip.innerHTML = `<div class="t-kicker">root · ${r.side === 'l' ? 'left' : r.side === 'r' ? 'right' : 'midline'}${r.def.gate ? ' · gate' : ''}</div>
+      tip.innerHTML = `<div class="t-kicker">source vessel · ${r.side === 'l' ? 'left' : r.side === 'r' ? 'right' : 'midline'}${r.def.gate ? ' · at an attachment line' : ''}</div>
         <div class="t-title">${r.def.name}</div>
         <div class="t-state ${stuck ? 'stuck' : 'open'}">${stuck ? 'held — a root knot' : 'open'}</div>
         <div class="bars">${bar('vessel', sim.tone[i], sim.tone[i] > 0.6)}${bar('collar', sim.gel[i], sim.gel[i] > 0.5)}${bar('nerve', sim.nerve[i], sim.nerve[i] > 0.5)}</div>
@@ -364,7 +251,7 @@ function bindTooltip(viz: HTMLElement, scene: AtlasScene) {
       <div class="t-title">${rootDef ? rootDef.def.name.split(' ·')[0] : '—'} tree${rootDef ? `, ${rootDef.side === 'l' ? 'left' : 'right'}` : ''}</div>
       <div class="t-state ${stuck ? 'stuck' : 'open'}">${stuck ? 'stuck — a knot' : 'open'}</div>
       <div class="bars">${bar('vessel', sim.tone[i], sim.tone[i] > 0.6)}${bar('collar', sim.gel[i], sim.gel[i] > 0.5)}${bar('nerve', sim.nerve[i], sim.nerve[i] > 0.5)}</div>
-      <div class="t-note">${(L.depth[i] * 100).toFixed(0)} cm along the skin from its root</div>`;
+      <div class="t-note">${LEVEL_DEPTH[lvl]} · ${(L.depth[i] * 100).toFixed(0)} cm from its source along the skin</div>`;
   }, 120);
   scene.engine.onFrame(() => {
     const h = current;
@@ -398,8 +285,6 @@ function bindSettings(viz: HTMLElement, stage: HTMLElement, scene: AtlasScene) {
   });
   const sex = pop.querySelector<HTMLInputElement>('[data-sex]')!;
   sex.addEventListener('input', () => scene.setShape({ sex: Number(sex.value) }));
-  const speed = pop.querySelector<HTMLSelectElement>('[data-speed]')!;
-  speed.addEventListener('change', () => (scene.sim.params.timeScale = Number(speed.value)));
   const turn = pop.querySelector<HTMLInputElement>('[data-turntable]')!;
   turn.addEventListener('change', () => (scene.engine.autoRotate = turn.checked));
 }
@@ -412,47 +297,9 @@ function bindHypotheses(viz: HTMLElement, panel: HTMLElement) {
   const show = () => {
     const h = hypothesisById(sel.value)!;
     who.textContent = h.who;
-    showHypothesis(panel, h.id);
+    panel.querySelector('[data-card-kicker]')!.textContent = h.name;
+    panel.querySelector('[data-card-body]')!.innerHTML = `<p>${h.short}</p><p><em>Where.</em> ${h.layer}</p><p><em>Holds.</em> ${h.holds}</p>`;
   };
   sel.addEventListener('change', show);
   show();
-}
-
-function setCard(panel: HTMLElement, kicker: string, html: string) {
-  panel.querySelector('[data-card-kicker]')!.textContent = kicker;
-  panel.querySelector('[data-card-body]')!.innerHTML = html;
-}
-
-function showHypothesis(panel: HTMLElement, id: string) {
-  const h = hypothesisById(id);
-  if (!h) return;
-  setCard(
-    panel,
-    `${h.name}`,
-    `<p>${h.short}</p>
-     <p><em>Holds.</em> ${h.holds}</p>
-     <p><em>Releases.</em> ${h.releases}</p>`,
-  );
-}
-
-function bindKeys(viz: HTMLElement, scene: AtlasScene) {
-  const setTool = (viz as HTMLElement & { setTool?: (t: Tool) => void }).setTool!;
-  const breathBtn = viz.querySelector<HTMLButtonElement>('[data-breath]')!;
-  window.addEventListener('keydown', (e) => {
-    if (e.target instanceof HTMLInputElement || e.target instanceof HTMLSelectElement || e.metaKey || e.ctrlKey) return;
-    if (e.code === 'Space') {
-      e.preventDefault();
-      if (!e.repeat) {
-        scene.sim.breath.setManual(true);
-        breathBtn.classList.add('manual');
-      }
-      return;
-    }
-    const map: Record<string, Tool> = { l: 'look', p: 'press', r: 'roll', h: 'hydro', s: 'stress' };
-    const t = map[e.key.toLowerCase()];
-    if (t) setTool(t);
-  });
-  window.addEventListener('keyup', (e) => {
-    if (e.code === 'Space') scene.sim.breath.setManual(false);
-  });
 }

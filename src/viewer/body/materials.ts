@@ -1,5 +1,6 @@
 import { AdditiveBlending, Color, DoubleSide, FrontSide, NormalBlending, ShaderMaterial, Vector3, Vector4, type Side } from 'three';
 import type { SceneTheme } from '../engine/theme';
+import { LAYERS_GLSL, LAYER_UNIFORMS, WINDOW_GLSL, WINDOW_UNIFORMS } from './layerModel';
 
 /**
  * Shared GLSL helpers: anti-aliased iso-lines with density fade, so the
@@ -42,7 +43,8 @@ export function createSheetMaterial() {
       uGlow: { value: 0 },
       uLens: { value: new Vector4(0, 0, 0, 0) },
       uTime: { value: 0 },
-      uLift: { value: 0 },
+      ...LAYER_UNIFORMS,
+      ...WINDOW_UNIFORMS,
       uClip: { value: new Vector4() },
       uClipOn: { value: 0 },
     },
@@ -50,13 +52,16 @@ export function createSheetMaterial() {
       attribute vec3 aStone;
       attribute float aStoneWeight;
       attribute float aLift;
-      uniform float uLift;
+      attribute float aSup;
+      ${LAYERS_GLSL}
+      varying vec3 vSkin;
       varying vec3 vWorld;
       varying vec3 vNormal;
       varying vec3 vStone;
       varying float vStoneWeight;
       void main() {
-        vec3 p = position + normal * aLift * uLift;
+        vSkin = position;
+        vec3 p = position + normal * supOffset(aSup, aLift);
         vec4 w = modelMatrix * vec4(p, 1.0);
         vWorld = w.xyz;
         vNormal = normalize(mat3(modelMatrix) * normal);
@@ -85,11 +90,15 @@ export function createSheetMaterial() {
       varying vec3 vNormal;
       varying vec3 vStone;
       varying float vStoneWeight;
+      varying vec3 vSkin;
       uniform vec4 uClip;
       uniform float uClipOn;
+      ${WINDOW_GLSL}
       ${GLSL_LINES}
       void main() {
         if (uClipOn > 0.5 && dot(vWorld, uClip.xyz) > uClip.w) discard;
+        float wr = windowR(vSkin);
+        if (wr < SUP_FRAC) discard;
         vec3 N = normalize(vNormal);
         if (!gl_FrontFacing) N = -N;
         vec3 V = normalize(cameraPosition - vWorld);
@@ -115,6 +124,11 @@ export function createSheetMaterial() {
         col = mix(col, uRim, rim * uRimAlpha);
 
         float alpha = uOpacity;
+        // The cut edges — fascia inside, skin outside — drawn like lines on a plate.
+        float edge = max(1.0 - smoothstep(0.0, 0.035, abs(wr - SUP_FRAC - 0.01)),
+                         0.7 * (1.0 - smoothstep(0.0, 0.03, abs(wr - 1.0))));
+        col = mix(col, uRim, edge * 0.8);
+        alpha = max(alpha, edge * 0.8);
         if (uLens.w > 0.0) {
           float dl = distance(vWorld, uLens.xyz);
           float edge = smoothstep(uLens.w * 0.9, uLens.w, dl);
@@ -151,6 +165,8 @@ export function createFloorMaterial() {
       uClip: { value: new Vector4() },
       uClipOn: { value: 0 },
       uInterior: { value: new Color() },
+      uPearl: { value: new Color() },
+      ...WINDOW_UNIFORMS,
     },
     vertexShader: /* glsl */ `
       attribute float aInset;
@@ -159,7 +175,9 @@ export function createFloorMaterial() {
       varying vec3 vWorld;
       varying vec3 vNormal;
       varying vec3 vTerritory;
+      varying vec3 vSkin;
       void main() {
+        vSkin = position;
         vec3 p = position - normal * aInset * uInsetScale;
         vec4 w = modelMatrix * vec4(p, 1.0);
         vWorld = w.xyz;
@@ -179,9 +197,12 @@ export function createFloorMaterial() {
       uniform vec4 uClip;
       uniform float uClipOn;
       uniform vec3 uInterior;
+      uniform vec3 uPearl;
       varying vec3 vWorld;
       varying vec3 vNormal;
       varying vec3 vTerritory;
+      varying vec3 vSkin;
+      ${WINDOW_GLSL}
       ${GLSL_LINES}
       void main() {
         if (uClipOn > 0.5 && dot(vWorld, uClip.xyz) > uClip.w) discard;
@@ -195,10 +216,16 @@ export function createFloorMaterial() {
         float tone = smoothstep(-0.4, 1.0, dot(N, uLight));
         vec3 col = mix(uShadow, uFloor, tone);
         col = mix(col, vTerritory, uTerritory * 0.55);
+        // Inside the dissection window the deep fascia is exposed: pearly,
+        // its crossed collagen fibres visible.
+        float wr = windowR(vSkin);
+        float exposed = 1.0 - smoothstep(SUP_FRAC - 0.04, SUP_FRAC + 0.02, wr);
+        col = mix(col, uPearl * mix(0.55, 1.0, tone), exposed * 0.75);
         // crossed fibres
         float a = isoLine((vWorld.x + vWorld.y) / uSpacing, 0.8);
         float b = isoLine((vWorld.y - vWorld.x + vWorld.z * 0.5) / uSpacing, 0.8);
-        col = mix(col, uLine, max(a, b) * uLineAlpha * mix(0.5, 1.0, 1.0 - tone));
+        float la = uLineAlpha * (1.0 + exposed * 1.2);
+        col = mix(col, uLine, max(a, b) * la * mix(0.5, 1.0, 1.0 - tone));
         gl_FragColor = vec4(col, 1.0);
       }
     `,
@@ -218,6 +245,7 @@ export function applySheetTheme(m: ShaderMaterial, t: SceneTheme) {
 }
 
 export function applyFloorTheme(m: ShaderMaterial, t: SceneTheme) {
+  m.uniforms.uPearl.value.copy(t.glow ? new Color('#6f675e') : new Color('#f4efe6'));
   m.uniforms.uInterior.value.copy(t.glow ? new Color('#2a1714') : new Color('#d9c4b8'));
   m.uniforms.uFloor.value.copy(t.floor);
   m.uniforms.uShadow.value.copy(t.bodyShadow).lerp(t.floor, 0.4);

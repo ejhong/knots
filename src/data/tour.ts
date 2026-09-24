@@ -11,6 +11,10 @@ export interface TourScene {
   section?: 'sagittal' | 'coronal' | 'neck' | null;
   /** Special behaviours. */
   demo?: 'release' | 'pulse-occiput' | 'ladder' | 'life' | 'aggravate' | 'orbit' | 'gate';
+  /** Show the fascial layers and the perforators' stalks (opened by `lift`). */
+  layers?: boolean;
+  /** Open the dissection window on the upper back. */
+  window?: boolean;
   turntable?: boolean;
   trees?: number;
 }
@@ -46,7 +50,7 @@ export const CHAPTERS: Chapter[] = [
     seconds: 20,
     html: `<p>Go further — more hours, more breath, more attention, over months — and a second set of reports appears. Layers separate strand by strand, with a crackle. A layer at the back of the head peels and spreads forward over the face. Regions feel hollowed. Something air-like moves through connected pockets and vents at the back of the mouth. Long chains slide back into place over days; the hollows fill, as if stitched.</p>
 <p>Read as one story the reports are baffling; read as two, they organise themselves. The <strong>knots</strong> answer pressure and breath in seconds. The <strong>sheet</strong> unfolds over hours and days and does not answer rolling at all. And the order is strict: the knots go first. Two timescales, two triggers, a strict order — two systems, meeting at one anatomical fact.</p>`,
-    scene: { pose: { p: [-0.72, 0.78, -1.5], t: [0, 0.58, 0] }, age: 46, lift: 0.45, turntable: true },
+    scene: { pose: { p: [-0.72, 0.78, -1.5], t: [0, 0.58, 0] }, age: 46, layers: true, lift: 0.6, turntable: true },
   },
   {
     id: 'staple',
@@ -56,9 +60,9 @@ export const CHAPTERS: Chapter[] = [
     seconds: 26,
     html: `<p>The superficial fascia — under the skin, above the muscle — is fixed to the layer beneath in two ways: passive fibrous septa, and the places where something passes through. A small artery with its veins, a cutaneous nerve and a lymphatic rise together through a fibrous ring. Surgeons call these <em>perforators</em> and find them with a pencil Doppler before raising a flap, because a flap will not lift until they are dealt with.</p>
 <p>Suppose the knots are these staples, held stuck. <strong>The artery is the smooth muscle:</strong> a deep inhale reflexly constricts skin arterioles within about two seconds; a slow exhale lets them open. <strong>The nerve is the star:</strong> when the vessel opens, the starved nerve reperfuses and its patch of skin lights up — a foot waking, in miniature. <strong>The collar is the order:</strong> hyaluronan around the bundle gels when the tissue turns acidic and cool, and melts with warmth, washout and shear; only then can the sheet slide.</p>
-<p>Here the sheet is lifted to show them: stalks crossing the interstitial plane, a collar where each pierces the sheet, the stuck ones burning.</p>`,
+<p>Here the layers are opened to show them: major perforators rising through the deep fascia, smaller ones through the superficial fascia, a collar where each pierces, the stuck ones burning.</p>`,
     refs: ['taylor1987', 'bolton1936', 'stecco2011'],
-    scene: { pose: { p: [0.46, 0.88, -0.42], t: [0.03, 0.82, -0.05] }, age: 46, lift: 0.85 },
+    scene: { pose: { p: [0.34, 0.9, -0.5], t: [0.03, 0.8, -0.04] }, age: 46, layers: true, lift: 1, window: true },
   },
   {
     id: 'trees',
@@ -80,7 +84,7 @@ export const CHAPTERS: Chapter[] = [
     html: `<p>The scalp and face are covered by one continuous sheet — the galea aponeurotica, becoming the temporoparietal fascia, becoming the SMAS of the face — over a plane of loose tissue anatomists call the danger area of the scalp, because anything introduced into it spreads over the whole cranium. Below the neck the same arrangement continues over the entire body, pinned to bone along particular lines: nuchal line, mastoid, cheekbone, jaw, collarbone, iliac crest, inguinal ligament.</p>
 <p>On this reading the second family is the sheet behaving once its staples are free. Separation is septa giving way. The chains are folds propagating along a loosened membrane — nothing is pulled; a fold advances. The gates are attachment lines where folds pile up. Hollowing is a freed pocket; filling is re-adhesion, fibrin bridging within days and collagen within two weeks — strand by strand, which is why it is felt as stitching.</p>`,
     refs: ['gray2020', 'benias2018', 'guimberteau2015'],
-    scene: { pose: { p: [0.5, 0.9, 0.06], t: [0, 0.86, -0.01] }, age: 46, lift: 0.7, section: 'sagittal' },
+    scene: { pose: { p: [0.5, 0.9, 0.06], t: [0, 0.86, -0.01] }, age: 46, layers: true, lift: 1, section: 'sagittal' },
   },
   {
     id: 'ladder',

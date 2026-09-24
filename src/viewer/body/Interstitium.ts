@@ -12,6 +12,7 @@ import {
   Vector4,
 } from 'three';
 import { evalAnchors, type AnchorSet } from '../anchors/anchors';
+import { LAYERS_GLSL, LAYER_UNIFORMS } from './layerModel';
 import type { SceneTheme } from '../engine/theme';
 import { mulberry32 } from '../lib/random';
 import type { BodyModel } from './BodyModel';
@@ -41,6 +42,7 @@ export class Interstitium {
     nearestPerforator: (x: number, y: number, z: number) => number,
     perforatorCount: number,
     inset: Float32Array,
+    sup: Float32Array,
     liftWeight: Float32Array,
     seed = 17,
   ) {
@@ -69,6 +71,7 @@ export class Interstitium {
     const depth = new Float32Array(count);
     const seedA = new Float32Array(count);
     const ins = new Float32Array(count);
+    const sp = new Float32Array(count);
     const lw = new Float32Array(count);
     this.perf = new Int32Array(count);
     const perfIdx = new Float32Array(count);
@@ -90,6 +93,7 @@ export class Interstitium {
       seedA[i] = rng();
       const v0 = T[lo * 3];
       ins[i] = inset[v0];
+      sp[i] = sup[v0];
       lw[i] = liftWeight[v0];
     }
     this.anchors = { tri, uv, count };
@@ -115,13 +119,13 @@ export class Interstitium {
     this.geo.setAttribute('aDepth', new BufferAttribute(depth, 1));
     this.geo.setAttribute('aSeed', new BufferAttribute(seedA, 1));
     this.geo.setAttribute('aInset', new BufferAttribute(ins, 1));
+    this.geo.setAttribute('aSup', new BufferAttribute(sp, 1));
     this.geo.setAttribute('aLiftW', new BufferAttribute(lw, 1));
     this.geo.setAttribute('aPerf', new BufferAttribute(perfIdx, 1));
     this.material = createMaterial(this.knotTex, W);
     this.points = new Points(this.geo, this.material);
     this.points.frustumCulled = false;
     this.points.renderOrder = 1;
-    this.points.visible = false;
   }
 
   refresh(body: BodyModel, perforatorPositions: Float32Array) {
@@ -136,12 +140,6 @@ export class Interstitium {
   setKnots(knot: Float32Array) {
     this.texData.set(knot.subarray(0, Math.min(knot.length, this.texData.length)));
     this.knotTex.needsUpdate = true;
-  }
-
-  setLift(lift: number, maxLift: number) {
-    this.material.uniforms.uLift.value = lift;
-    this.material.uniforms.uMaxLift.value = maxLift;
-    this.points.visible = lift > 0.01;
   }
 
   applyTheme(t: SceneTheme) {
@@ -163,8 +161,7 @@ function createMaterial(tex: DataTexture, width: number) {
       uGel: { value: new Color() },
       uKnots: { value: tex },
       uTexWidth: { value: width },
-      uLift: { value: 0 },
-      uMaxLift: { value: 0.03 },
+      ...LAYER_UNIFORMS,
       uTime: { value: 0 },
       uPixelRatio: { value: 1 },
       uProjScale: { value: 800 },
@@ -177,12 +174,12 @@ function createMaterial(tex: DataTexture, width: number) {
       attribute float aDepth;
       attribute float aSeed;
       attribute float aInset;
+      attribute float aSup;
       attribute float aLiftW;
       attribute float aPerf;
       uniform sampler2D uKnots;
       uniform float uTexWidth;
-      uniform float uLift;
-      uniform float uMaxLift;
+      ${LAYERS_GLSL}
       uniform float uTime;
       uniform float uProjScale;
       uniform float uPixelRatio;
@@ -194,23 +191,24 @@ function createMaterial(tex: DataTexture, width: number) {
         int idx = int(aPerf + 0.5);
         int w = int(uTexWidth);
         float knot = texelFetch(uKnots, ivec2(idx - (idx / w) * w, idx / w), 0).r;
-        float out_ = uLift * uMaxLift * aLiftW;
-        // Depth within the plane drifts slowly.
-        float d = clamp(aDepth + 0.08 * sin(uTime * (0.2 + aSeed * 0.3) + aSeed * 31.0), 0.02, 0.98);
-        vec3 p = position + n * mix(-aInset, out_, d);
+        float lo = deepOffset(aInset);
+        float hi = supOffset(aSup, aLiftW);
+        // Depth within the gliding plane drifts slowly.
+        float d = clamp(aDepth + 0.08 * sin(uTime * (0.2 + aSeed * 0.3) + aSeed * 31.0), 0.03, 0.97);
+        vec3 p = position + n * mix(lo, hi, d);
         // Tangential drift.
         vec3 t1 = normalize(cross(n, vec3(0.0, 1.0, 0.0)) + vec3(1e-4));
         vec3 t2 = cross(n, t1);
         p += (t1 * sin(uTime * 0.13 + aSeed * 50.0) + t2 * cos(uTime * 0.11 + aSeed * 70.0)) * 0.0035;
         // Gel: hyaluronan gathers around a stuck staple — the collar.
-        vec3 axis = aPerfPos + n * mix(-aInset, out_, d);
+        vec3 axis = aPerfPos + n * mix(lo, hi, d);
         p = mix(p, axis, knot * 0.62);
         vClipPos = p;
         vec4 mv = modelViewMatrix * vec4(p, 1.0);
         gl_Position = projectionMatrix * mv;
         float size = (0.0011 + knot * 0.0012) * uProjScale / max(0.05, -mv.z);
         gl_PointSize = clamp(size, 1.0 * uPixelRatio, 7.0 * uPixelRatio);
-        vA = smoothstep(0.02, 0.3, uLift) * (0.35 + 0.65 * fract(aSeed * 7.3)) * (1.0 + knot * 1.4);
+        vA = (0.35 + 0.65 * fract(aSeed * 7.3)) * (1.0 + knot * 1.4);
         vGel = knot;
       }
     `,

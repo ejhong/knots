@@ -39,6 +39,7 @@ export function mountTour(viz: HTMLElement, panel: HTMLElement) {
   scene.ready.then(() => {
     ready = true;
     const engine = scene.engine;
+    scene.setLift(0);
     engine.start();
     engine.onFrame(({ dt }) => {
       // Ease the sheet's lift.
@@ -116,9 +117,16 @@ export function mountTour(viz: HTMLElement, panel: HTMLElement) {
     scene.trees.material.uniforms.uAlpha.value = 0.34 * (s.trees ?? 1);
     if (s.age !== undefined && Math.abs(scene.body.shape.age - s.age) > 0.01) {
       scene.setShape({ age: s.age });
-      scene.sim.settle(s.age);
+      scene.settle(s.age);
     }
-    liftTarget = s.lift ?? 0;
+    // The fascial layers and the perforators' stalks appear only in the
+    // chapters about them; elsewhere the figure is its skin of staples.
+    const layers = !!s.layers;
+    scene.setVisible('fascia', layers);
+    scene.stalks.lines.visible = layers;
+    scene.stalks.collars.visible = layers;
+    scene.setWindowOn(!!s.window);
+    liftTarget = layers ? (s.lift ?? 1) : 0;
     if (s.section === 'sagittal') scene.setClip({ normal: [1, 0, 0], d: 0 });
     else scene.setClip(null);
     scene.engine.autoRotate = !!s.turntable;
@@ -255,7 +263,7 @@ export function mountTour(viz: HTMLElement, panel: HTMLElement) {
             const eased = k < 0.5 ? 2 * k * k : 1 - Math.pow(-2 * k + 2, 2) / 2;
             const age = 1 + 89 * eased;
             scene.setShape({ age });
-            scene.sim.settle(age);
+            scene.settle(age);
             // Keep the figure framed as it grows.
             const h = scene.body.height();
             const tg = scene.engine.controls.target;

@@ -50,7 +50,7 @@ export const HYPOTHESES: Hypothesis[] = [
     year: '2026',
     color: '#ff5b3d',
     short: 'A knot is a perforator — artery, veins, nerve and lymphatic through a ring in the fascia — held stuck: vessel shut, collar gelled, nerve pressed.',
-    layer: 'Where a neurovascular bundle perforates the superficial fascia — the interface between the sheet and the floor.',
+    layer: 'Where a neurovascular bundle pierces a fascia — the deep fascia for major perforators, the superficial fascia for the smaller ones.',
     substance: 'Three things in one bundle: a sympathetically constricted arteriole, a gelled hyaluronan collar, a compressed cutaneous nerve.',
     holds: 'A loop: constriction → ischaemia → acidic, cool, gelled collar → tether → sensitised nerve → sympathetic drive → constriction. Three memories at three timescales.',
     releases: 'Pressure as the address, the exhale as the permission: the vessel opens in seconds, the collar melts in minutes with warmth and shear, the nerve flashes — a star.',

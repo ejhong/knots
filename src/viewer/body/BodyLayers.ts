@@ -21,8 +21,10 @@ export class BodyLayers {
   private nrmAttr: BufferAttribute;
   /** Per-vertex floor inset (m). */
   readonly inset: Float32Array;
-  /** Per-vertex lift weight (0 fingers … 1 broad surfaces). */
+  /** Per-vertex explode weight (0 fingers … 1 broad surfaces). */
   readonly liftWeight: Float32Array;
+  /** Per-vertex depth of the superficial fascia below the skin (m). */
+  readonly sup: Float32Array;
 
   constructor(readonly body: BodyModel) {
     const n = body.fineCount;
@@ -31,6 +33,7 @@ export class BodyLayers {
     const index = new BufferAttribute(body.triangles, 1);
     this.inset = new Float32Array(n).fill(0.0022);
     this.liftWeight = new Float32Array(n).fill(1);
+    this.sup = new Float32Array(n).fill(0.001);
 
     for (const g of [this.floorGeometry, this.sheetGeometry]) {
       g.setAttribute('position', this.posAttr);
@@ -40,6 +43,7 @@ export class BodyLayers {
     this.floorGeometry.setAttribute('aInset', new BufferAttribute(this.inset, 1));
     this.floorGeometry.setAttribute('aTerritory', new BufferAttribute(new Float32Array(n * 3), 3));
     this.sheetGeometry.setAttribute('aLift', new BufferAttribute(this.liftWeight, 1));
+    this.sheetGeometry.setAttribute('aSup', new BufferAttribute(this.sup, 1));
     this.sheetGeometry.setAttribute('aStone', new BufferAttribute(new Float32Array(n * 3), 3));
     this.sheetGeometry.setAttribute('aStoneWeight', new BufferAttribute(new Float32Array(n), 1));
 

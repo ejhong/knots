@@ -64,6 +64,50 @@ export const SUBCUTANEOUS_DEPTH: Record<Region, number> = {
   foot: 0.004,
 };
 
+/**
+ * Where the superficial fascia (the membranous layer) lies within the
+ * subcutaneous tissue, as a fraction of skin-to-deep-fascia depth. On the
+ * trunk and limbs it divides superficial from deep fat, nearer the skin; on
+ * the scalp the galea lies beneath the dense vascular layer; on the face the
+ * SMAS sits about midway. Rough, for a lean adult.
+ */
+export const SUPERFICIAL_FASCIA_FRACTION: Record<Region, number> = {
+  head: 0.7,
+  face: 0.5,
+  neck: 0.45,
+  chest: 0.42,
+  'upper-back': 0.42,
+  abdomen: 0.4,
+  'lower-back': 0.4,
+  pelvis: 0.38,
+  buttock: 0.35,
+  'upper-arm': 0.45,
+  forearm: 0.5,
+  hand: 0.55,
+  thigh: 0.42,
+  leg: 0.5,
+  foot: 0.55,
+};
+
+/** How far each region may be exploded (keeps the head and hands from ballooning). */
+export const EXPLODE_WEIGHT: Record<Region, number> = {
+  head: 0.55,
+  face: 0.45,
+  neck: 0.75,
+  chest: 1,
+  'upper-back': 1,
+  abdomen: 1,
+  'lower-back': 1,
+  pelvis: 1,
+  buttock: 1,
+  'upper-arm': 0.85,
+  forearm: 0.7,
+  hand: 0.3,
+  thigh: 1,
+  leg: 0.85,
+  foot: 0.35,
+};
+
 interface Segment {
   a: string;
   b: string;

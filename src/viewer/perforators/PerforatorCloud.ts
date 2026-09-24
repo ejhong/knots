@@ -14,6 +14,7 @@ import type { BodyModel } from '../body/BodyModel';
 import type { SceneTheme } from '../engine/theme';
 import { hash01 } from '../lib/random';
 import type { Ladder } from './generate';
+import { LAYERS_GLSL, LAYER_UNIFORMS, WINDOW_GLSL, WINDOW_UNIFORMS } from '../body/layerModel';
 
 /**
  * The figure as a constellation: every point is a perforator. Points are
@@ -128,8 +129,9 @@ export function createCloudMaterial() {
       uGlowMode: { value: 1 },
       uTime: { value: 0 },
       uBreath: { value: 0 },
-      uLift: { value: 0 },
-      uKnotScale: { value: 1 },
+      ...LAYER_UNIFORMS,
+      ...WINDOW_UNIFORMS,
+      uKnotScale: { value: 0 },
       uBrightness: { value: 1 },
       uClip: { value: new Vector4() },
       uClipOn: { value: 0 },
@@ -148,7 +150,8 @@ export function createCloudMaterial() {
       uniform vec3 uLevelAlpha;
       uniform float uTime;
       uniform float uBreath;
-      uniform float uLift;
+      ${LAYERS_GLSL}
+      ${WINDOW_GLSL}
       uniform float uKnotScale;
       uniform float uGlowMode;
       varying float vShade;
@@ -161,8 +164,13 @@ export function createCloudMaterial() {
       varying float vCore;
       varying vec3 vClipPos;
       void main() {
+        if (windowR(position) < 1.0) {
+          gl_Position = vec4(2.0, 2.0, 2.0, 1.0);
+          gl_PointSize = 0.0;
+          return;
+        }
         vec3 n = normalize(normal);
-        vec3 p = position + n * aLift * uLift;
+        vec3 p = position + n * skinOffset(aLift);
         vClipPos = p;
         vec4 mv = modelViewMatrix * vec4(p, 1.0);
         gl_Position = projectionMatrix * mv;

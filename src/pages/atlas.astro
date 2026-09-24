@@ -34,7 +34,7 @@ const MAP_COLORS: Record<string, string> = {
         <span><i style="background:#9dcc9a"></i>release</span>
         <span><i style="background:#9aa2a8"></i>tree</span>
       </div>
-      <div class="overlay bl" data-hint>drag to turn · hold a knot and breathe out · hold space to inhale</div>
+      <div class="overlay bl" data-hint>drag to turn · scroll to zoom · hover to inspect · double-click to move the window</div>
       <div class="overlay br">© 2026 Eugene Jhong</div>
       <div class="tip" data-tip hidden></div>
       <div class="loading" data-loading>
@@ -52,17 +52,6 @@ const MAP_COLORS: Record<string, string> = {
           <input class="timeline" type="range" min="1" max="90" step="0.5" value="34" data-age aria-label="Age in years" />
         </div>
         <span class="time" data-age-out>34 y</span>
-      </div>
-      <button class="breath" type="button" data-breath title="Breath — paced at six a minute. Click for manual; hold Space to inhale, release to exhale.">
-        <Enso size={22} seed={9} />
-        <span class="breath-label" data-breath-label>exhale</span>
-      </button>
-      <div class="ctrl-group" role="toolbar" aria-label="Tools">
-        <button class="seg" type="button" data-tool="look" title="Look (L): drag to turn">look</button>
-        <button class="seg is-active" type="button" data-tool="press" title="Press (P): hold on a knot; release comes on the out-breath">press</button>
-        <button class="seg" type="button" data-tool="roll" title="Roll (R): drag across the body — pressure and shear">roll</button>
-        <button class="seg" type="button" data-tool="hydro" title="Hydrodissect (H): free a collar with fluid, no breath needed">hydro</button>
-        <button class="seg" type="button" data-tool="stress" title="Stress (S): paint sympathetic drive">stress</button>
       </div>
       <div class="settings-container">
         <button class="settings-btn" type="button" data-settings aria-label="Settings" aria-expanded="false">
@@ -85,14 +74,6 @@ const MAP_COLORS: Record<string, string> = {
             </span>
           </div>
           <div class="settings-row">
-            <span class="k">Speed</span>
-            <select class="mono-select" data-speed>
-              <option value="3">slow</option>
-              <option value="6" selected>normal</option>
-              <option value="14">fast</option>
-            </select>
-          </div>
-          <div class="settings-row">
             <span class="k">Turntable</span>
             <input type="checkbox" data-turntable checked />
           </div>
@@ -104,10 +85,9 @@ const MAP_COLORS: Record<string, string> = {
   <aside class="notes-panel panel" aria-label="Atlas panel">
     <div class="panel-head tabbed">
       <div class="tabs" role="tablist">
-        <button class="tab is-active" role="tab" data-tab="notes">notes</button>
+        <button class="tab is-active" role="tab" data-tab="notes">overview</button>
         <button class="tab" role="tab" data-tab="layers">layers</button>
         <button class="tab" role="tab" data-tab="maps">maps</button>
-        <button class="tab" role="tab" data-tab="scenes">scenes</button>
       </div>
     </div>
     <div class="panel-body">
@@ -121,28 +101,32 @@ const MAP_COLORS: Record<string, string> = {
           <div><span class="v" data-c="2">—</span><span class="k">major</span></div>
           <div><span class="v" data-c="3">—</span><span class="k">roots</span></div>
         </div>
-        <div class="segment">Releases <span class="faint" data-log-count></span></div>
-        <div class="log" data-log><div class="item" style="color:#8f857a">press a knot and breathe out…</div></div>
       </div>
 
       <div class="tab-page" data-page="layers" hidden>
-        <div class="segment">Layers</div>
+        <div class="segment">Show</div>
         <label class="row"><input type="checkbox" data-layer="perforators" checked /> perforators <span class="n" data-count="perforators"></span></label>
-        <label class="row"><input type="checkbox" data-layer="trees" checked /> vessel trees</label>
-        <label class="row"><input type="checkbox" data-layer="roots" checked /> roots · gates <span class="n" data-count="roots"></span></label>
-        <label class="row"><input type="checkbox" data-layer="knots" checked /> knots</label>
-        <label class="row"><input type="checkbox" data-layer="territories" /> angiosomes (territories)</label>
-        <div class="segment">The sheet — fascia &amp; interstitial space</div>
+        <p class="sub">major, medium and small — each at its depth</p>
+        <label class="row"><input type="checkbox" data-layer="knots" checked /> knots — perforators held stuck</label>
+        <label class="row"><input type="checkbox" data-layer="fascia" checked /> fascia &amp; gliding plane</label>
+        <p class="sub">superficial fascia · interstitial plane · deep fascia</p>
+        <label class="row"><input type="checkbox" data-layer="vessels" checked /> source vessels <span class="n" data-count="roots"></span></label>
+        <p class="sub">the arteries feeding each tree, and their branches</p>
+        <label class="row"><input type="checkbox" data-window checked /> dissection window</label>
+        <p class="sub">skin cut back, superficial fascia removed — double-click the body to move it</p>
+        <label class="row"><input type="checkbox" data-layer="territories" /> angiosomes</label>
+        <p class="sub">approximate territory of each source vessel</p>
+        <div class="segment">Depth</div>
         <div class="slider-row">
-          <span>lift the sheet off the floor <span class="faint" data-lift-out>0</span></span>
-          <input type="range" min="0" max="1" step="0.01" value="0" data-lift aria-label="Lift the sheet" />
+          <span class="ends"><span>anatomical</span><span>exploded</span></span>
+          <input type="range" min="0" max="1" step="0.01" value="1" data-lift aria-label="Layers: anatomical to exploded" />
         </div>
         <div class="segment">Section</div>
         <label class="row"><input type="radio" name="section" value="none" checked /> none</label>
         <label class="row"><input type="radio" name="section" value="sagittal" /> sagittal — through the midline</label>
         <label class="row"><input type="radio" name="section" value="coronal" /> coronal — front removed</label>
         <label class="row"><input type="radio" name="section" value="neck" /> transverse — through the neck</label>
-        <p class="hint">Lifting exaggerates the interstitial plane so the staples show as stalks. At zero the layers sit at typical anatomical depths for each region.</p>
+        <p class="hint">Exploded opens the gliding plane and the superficial fat by fixed gaps so the layers can be seen; anatomical draws typical depths for each region. Major perforators pierce the deep fascia; smaller ones branch above it and pierce the superficial fascia.</p>
       </div>
 
       <div class="tab-page" data-page="maps" hidden>
@@ -162,21 +146,6 @@ const MAP_COLORS: Record<string, string> = {
           ))
         }
       </div>
-
-      <div class="tab-page" data-page="scenes" hidden>
-        <div class="segment">Aggravate</div>
-        <div class="chipset">
-          {SCENARIOS.map((s) => <button class="chip" type="button" data-scenario={s.id} title={s.note}>{s.label}</button>)}
-        </div>
-        <div class="segment">Relieve</div>
-        <div class="chipset">
-          <button class="chip relief" type="button" data-warmth title="Heat opens the whole bed — until you step out">sauna</button>
-          <button class="chip relief" type="button" data-rest title="Lift the drive; the knots it wrote remain">rest</button>
-        </div>
-        <div class="prose-dark" data-scene-note>
-          <p>An aggravation raises sympathetic drive where a posture or a mood loads the body; knots swell and multiply over sim-minutes. Lift it and the drive goes — but what it wrote stays until released.</p>
-        </div>
-      </div>
     </div>
   </aside>
 </Base>
@@ -189,6 +158,20 @@ const MAP_COLORS: Record<string, string> = {
   }
   .form-range input {
     width: 84px;
+  }
+  .notes-panel :global(.sub) {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 10.5px;
+    color: var(--panel-faint);
+    padding: 0 12px 4px 31px;
+    margin-top: -3px;
+  }
+  .notes-panel :global(.ends) {
+    display: flex;
+    justify-content: space-between;
+    color: var(--panel-faint);
+    font-size: 9px;
   }
   .form-range .end {
     font-family: var(--font-mono);
