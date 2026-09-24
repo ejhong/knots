@@ -1,0 +1,17 @@
+# build output
+dist/
+.astro/
+
+# dependencies
+node_modules/
+
+# local caches and artefacts
+scripts/body/.cache/
+test-results/
+playwright-report/
+shots/
+*.log
+.DS_Store
+
+# the essay PDF is archived locally only (the Substack post is canonical)
+docs/source/*.pdf

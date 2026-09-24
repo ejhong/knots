@@ -1,0 +1,9 @@
+The writing, data files (src/data/, src/viewer/data/) and generated figure data
+in this repository are licensed under the Creative Commons Attribution 4.0
+International License (CC BY 4.0): https://creativecommons.org/licenses/by/4.0/
+
+Exceptions:
+- public/models/body.* is derived from MakeHuman assets released under CC0 1.0.
+- docs/source/*.md are the author's essays, © Eugene Jhong, archived for reference;
+  the Substack posts are canonical.
+- Referenced works belong to their authors; the library lists citations only.

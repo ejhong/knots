@@ -1,0 +1,9 @@
+{
+  "extends": "astro/tsconfigs/strict",
+  "include": [".astro/types.d.ts", "**/*"],
+  "exclude": ["dist", "node_modules", "scripts/body/.cache"],
+  "compilerOptions": {
+    "types": ["vite/client"],
+    "noUnusedLocals": false
+  }
+}

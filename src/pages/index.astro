@@ -1,0 +1,559 @@
+---
+import Base from '../layouts/Base.astro';
+import Enso from '../components/Enso.astro';
+import Seal from '../components/Seal.astro';
+import { HYPOTHESES } from '../data/hypotheses';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const ESSAY = 'https://ejhong.substack.com/p/knots-of-existence-hypotheses';
+const ORIGINAL = 'https://ejhong.substack.com/p/knots-of-existence-and-vasocomputation';
+---
+<Base current="intro">
+  <section class="hero">
+    <div class="hero-canvas" aria-hidden="true">
+      <canvas id="hero-canvas"></canvas>
+    </div>
+    <div class="hero-text">
+      <p class="eyebrow">An atlas of the body’s held places</p>
+      <h1>Knots</h1>
+      <p class="lede">Press into one, and breathe out slowly. Something lets go in seconds.</p>
+      <p class="intro">
+        Anyone who has lain on a foam roller has met them. Medicine has argued for a century about whether they exist.
+        This is a visual introduction to one answer — that a knot is a staple in the fascia, held stuck — to its rivals,
+        and to the maps the contemplative traditions drew of the same ground.
+      </p>
+      <div class="cta">
+        <a class="btn accent" href={`${base}/atlas/`}>Enter the atlas</a>
+        <a class="btn" href="#observation">Read on</a>
+      </div>
+    </div>
+    <p class="hero-note mono lower">Every point of light is one of ~100,000 perforators. The red ones are stuck.</p>
+  </section>
+
+  <article class="chapters">
+    <section id="observation" class="chapter">
+      <aside class="glyph cjk" aria-hidden="true">息</aside>
+      <p class="num-label mono">01 · The observation</p>
+      <h2>A change of state, not of structure</h2>
+      <p>
+        The whole subject rests on one observation available to anyone: <em>pressure locates a knot, and a slow exhale releases it, in seconds.</em>
+        Tissue does not remodel in five seconds. Collagen, scar and adhesion change over days to weeks. Whatever lets go mid-exhale must be a
+        <strong>state</strong> — something the body is actively doing, and can stop doing quickly.
+      </p>
+      <p>
+        Knots accumulate with age. They cluster at the junctions — the base of the skull, the neck, the shoulder blades, the low back, the hips — and
+        in the brace muscles of jaw, throat and belly. They answer to breath. And the people who take release work furthest report something the
+        trigger-point literature does not describe: the knots go with a small pop, felt as a spark or a <em>star</em>; they release along paths, and the
+        paths converge on the back of the skull, where released knots are replaced by others, <em>as if from a queue</em>.
+      </p>
+    </section>
+
+    <section class="chapter">
+      <aside class="glyph cjk" aria-hidden="true">二</aside>
+      <p class="num-label mono">02 · Two families</p>
+      <h2>Knots first, then the sheet</h2>
+      <p>
+        Go further with the same work — more hours, more breath, more attention, over months — and a second set of reports appears. Layers
+        separate, strand by strand, with a crackle. A layer at the back of the head peels and spreads forward over the face. Regions feel hollowed
+        and unsupported. Something air-like moves through connected pockets and vents at the back of the mouth. Long chains slide back into place
+        over days. The hollows fill, as if stitched.
+      </p>
+      <p>
+        Read as one story, the reports are baffling. Read as two, they organise themselves. The <strong>knots</strong> respond to pressure and breath
+        in seconds. The <strong>sheet</strong> — the separating, hollowing, filling and chains — unfolds over hours and days and does not respond to
+        rolling at all. And the order is strict: the knots go first, and the separating cannot begin at a site until its knots are gone. Two
+        timescales, two triggers, a strict order: two systems, meeting at one anatomical fact.
+      </p>
+    </section>
+
+    <section class="chapter wide">
+      <aside class="glyph cjk" aria-hidden="true">結</aside>
+      <p class="num-label mono">03 · The staple</p>
+      <h2>Where something passes through</h2>
+      <p class="measure">
+        The superficial fascia — the layer under the skin, above the muscle — is fixed to the layer beneath in two ways. There are passive fibrous
+        septa. And there are the places where something passes through: a small artery with its veins, a cutaneous nerve and a lymphatic, rising
+        together through a fibrous ring. Anatomists call it the perforating triad; surgeons call the sites <em>perforators</em>, and find them with a
+        pencil Doppler before raising a flap, because a flap will not lift until the perforators tethering it are dealt with.
+      </p>
+      <p class="measure">Suppose the knots are these staples, held stuck. Each part of the bundle then explains one thing reported about a knot.</p>
+      <div class="triad">
+        <div>
+          <p class="eyebrow">The artery</p>
+          <h3>is the smooth muscle</h3>
+          <p>
+            Skin arterioles are the most sympathetically governed vessels in the body. A deep inhale constricts them within about two seconds — an
+            autonomic test for decades — and a slow exhale lets them open. Release on the out-breath is simply what this vessel does.
+          </p>
+        </div>
+        <div>
+          <p class="eyebrow">The nerve</p>
+          <h3>is the star</h3>
+          <p>
+            A constricted perforator starves its own nerve. When the vessel opens, the nerve reperfuses and its patch of skin lights up — a foot
+            waking up, miniaturised to one territory. The sensation belongs to the nerve, not the muscle.
+          </p>
+        </div>
+        <div>
+          <p class="eyebrow">The collar</p>
+          <h3>is the order</h3>
+          <p>
+            Hyaluronan around the bundle gels when the tissue turns acidic and cool, and melts with warmth, washout and shear. A shut vessel makes its
+            own collar. Open it and the collar melts; only then can the sheet slide. The reported order is a mechanical requirement.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <section class="chapter">
+      <aside class="glyph cjk" aria-hidden="true">根</aside>
+      <p class="num-label mono">04 · Trees and roots</p>
+      <h2>Why the knots go to the ridge</h2>
+      <p>
+        Perforators do not move. But every perforator belongs to a tree, and every tree has a root. Arterioles <em>conduct</em>: a dilation that
+        starts at a branch propagates along the vessel wall toward its feeding vessel at millimetres to centimetres a second (Segal &amp; Duling, 1986).
+        And a downstream vessel cannot stay open while the trunk that feeds it is shut — which is why cleared areas come back until something upstream
+        clears too.
+      </p>
+      <p>
+        So the felt release climbs the tree and queues at the trunk’s entry. On the back of the head that entry is a real gate: the occipital artery
+        emerges through the deep fascia between trapezius and sternocleidomastoid at the superior nuchal line, a few centimetres from the midline, with
+        the greater occipital nerve beside it. Every perforator of the posterior scalp is downstream of it. In the atlas, releases send light up their
+        trees toward these roots.
+      </p>
+    </section>
+
+    <section class="chapter">
+      <aside class="glyph cjk" aria-hidden="true">膜</aside>
+      <p class="num-label mono">05 · The sheet</p>
+      <h2>One sheet, built as rooms with doors</h2>
+      <p>
+        The scalp and face are covered by one continuous sheet — the galea aponeurotica, becoming the temporoparietal fascia, becoming the SMAS of the
+        face — over a plane of loose tissue that anatomists call the danger area of the scalp, because anything introduced into it spreads over the
+        whole cranium. Below the neck the same arrangement continues over the entire body, pinned to bone along particular lines: the nuchal line,
+        mastoid, cheekbone, jaw, collarbone, the iliac crest and inguinal ligament.
+      </p>
+      <p>
+        On this reading the second family is the sheet behaving once its staples are free. Separation is septa giving way, one at a time. The chains
+        are folds propagating along a loosened membrane — nothing is pulled; a fold advances. The gates are attachment lines where folds pile up.
+        Hollowing is a freed pocket. Filling is re-adhesion — fibrin strands bridging within days, collagen within two weeks — literally strand by
+        strand, which is why it is felt as stitching.
+      </p>
+    </section>
+
+    <section class="chapter wide">
+      <aside class="glyph cjk" aria-hidden="true">数</aside>
+      <p class="num-label mono">06 · A ladder of a hundred thousand</p>
+      <h2>What a branching tree looks like from the skin</h2>
+      <p class="measure">
+        Practitioners who count report a hierarchy: a handful of roots at the ridges, big knots that take sessions to clear, and micro-knots at dozens
+        per square inch — hundreds of thousands in a body, by their own estimate. That is the vascular ladder.
+      </p>
+      <div class="ladder">
+        <div><span class="big num">~40</span><span class="mono lower">source arteries · angiosomes</span><span class="desc">Taylor &amp; Palmer’s vascular territories; the roots.</span></div>
+        <div><span class="big num">374</span><span class="mono lower">major perforators</span><span class="desc">Average count of perforators ≥ 0.5 mm plotted per subject (1987).</span></div>
+        <div><span class="big num">~4,000</span><span class="mono lower">medium perforators</span><span class="desc">The branching middle, where most big knots would sit.</span></div>
+        <div><span class="big num">~100,000</span><span class="mono lower">small perforators</span><span class="desc">One every 4–5 mm across ~1.8 m² of skin: the micro-knots.</span></div>
+      </div>
+    </section>
+
+    <section class="chapter">
+      <aside class="glyph cjk" aria-hidden="true">齢</aside>
+      <p class="num-label mono">07 · Across a life</p>
+      <h2>Children are nearly clean</h2>
+      <p>
+        Knots accumulate with age; the young have few. Cutaneous microvascular function declines with age and resting sympathetic tone rises. The two
+        curves have never been laid on top of each other, and on this hypothesis they should match site by site. In the atlas, drag the age from one
+        to ninety — or play a life — and watch the ladder fill from the roots down.
+      </p>
+    </section>
+
+    <section class="chapter">
+      <aside class="glyph cjk" aria-hidden="true">枕</aside>
+      <p class="num-label mono">08 · The knot at the base of the brain</p>
+      <h2>The master tether</h2>
+      <p>
+        Accounts of awakening, across traditions, often place the decisive moment low at the back of the head, where the brain meets the neck. The
+        anatomy there is a ring. Behind, the nuchal ligament anchors the whole posterior sheet and the two occipital trees meet. Beneath, in the
+        suboccipital triangle, the densest muscle spindles in the body report where the head is — and a band of tissue discovered in 1995, the
+        myodural bridge, ties those muscles to the dura around the brainstem. In front, the throat’s constrictors hang from the base of the skull.
+      </p>
+      <p>
+        A release here would change everything at once. The traditions put it here too: Fengfu, the Wind Palace, at the midline seam; Naohu, the
+        Brain’s Door, on the bump; and for the Daoist alchemists the whole region was the <em>Jade Pillow</em> — the third and hardest gate.
+      </p>
+    </section>
+
+    <section class="chapter">
+      <aside class="glyph cjk" aria-hidden="true">経</aside>
+      <p class="num-label mono">09 · What the traditions knew</p>
+      <h2>There are knots; breath is the tool; untying them changes consciousness</h2>
+      <p>
+        Nearly every tradition that mapped the inner body arrived at those three claims. Tibetan tsa lung describes channel-knots untied by working
+        the winds with breath; yoga names three granthis along the central channel; the kuṇḍalinī literature describes energy travelling and
+        involuntary movement. Chinese medicine turns out to have described <em>both</em> systems: tender <em>ashi</em> points and acupoints — about
+        eighty percent of which sit where a neurovascular bundle perforates the superficial fascia (Heine, 1988) — and the sinew channels, whose
+        defining feature is that each one <em>knots</em> (結, jié) at bony prominences: the attachment lines of the sheet.
+      </p>
+      <p>
+        Correspondence found after the fact is the weakest kind of evidence. But it is now specific enough to be coded blind and tested. The atlas
+        overlays these maps on the same body so they can be compared.
+      </p>
+    </section>
+
+    <section class="chapter wide">
+      <aside class="glyph cjk" aria-hidden="true">説</aside>
+      <p class="num-label mono">10 · Rival answers</p>
+      <h2>What else a knot could be</h2>
+      <div class="rivals">
+        {
+          HYPOTHESES.map((h) => (
+            <a class="rival" href={`${base}/hypotheses/#${h.id}`}>
+              <span class="dot" style={`--c:${h.color}`} />
+              <span class="r-name">{h.name}</span>
+              <span class="r-who mono lower">{h.who}</span>
+              <span class="r-short">{h.short}</span>
+            </a>
+          ))
+        }
+      </div>
+    </section>
+
+    <section class="chapter">
+      <aside class="glyph cjk" aria-hidden="true">験</aside>
+      <p class="num-label mono">11 · What would show it</p>
+      <h2>An afternoon with a Doppler pen</h2>
+      <ol class="tests">
+        <li><strong>Map the staples.</strong> One blinded examiner marks tender points; another maps perforators with a pencil Doppler; a third computes coincidence against chance.</li>
+        <li><strong>Film a star.</strong> Laser speckle over a knot and a sham site: a local perfusion flash on the exhale, time-locked to the felt release — and absent during an inhale-hold.</li>
+        <li><strong>Free a collar without breath.</strong> Hydrodissect a perforator under ultrasound. If the knot is a collared perforator, it lets go with the fluid.</li>
+        <li><strong>Time the chains.</strong> Does a travelling sensation ride a travelling perfusion wave at the speed of conducted vasodilation?</li>
+        <li><strong>Lay the curves together.</strong> Knot burden and cutaneous microvascular reactivity, site by site, across the life span.</li>
+        <li><strong>Image the seam.</strong> Before and after a base-of-skull release: suboccipital muscles, dural displacement, cervical rotation.</li>
+      </ol>
+    </section>
+
+    <section class="chapter caution">
+      <aside class="glyph cjk" aria-hidden="true">慎</aside>
+      <p class="num-label mono">12 · A caution</p>
+      <h2>The gate is anatomy, not a target</h2>
+      <p>
+        Everything that admits air into the body, separates a plane or stretches a nerve is an injury, and the practices that would do it are
+        documented hazards. The suboccipital triangle sits over the vertebral artery; deep pressure there is a known stroke risk. Forceful blowing,
+        breath-holds and straining cause emphysema of the face and chest. The traditions preserved a warning about untying too fast; the modern
+        literature on intensive practice records destabilisation lasting months to years. Nothing here is a protocol. The benefits are slow; the
+        dangers concentrate in speed.
+      </p>
+    </section>
+
+    <section class="chapter coda">
+      <Enso size={120} seed={21} class="coda-enso" />
+      <p class="lede">Someone should put a Doppler pen there and press.</p>
+      <p class="mono lower">— the last line of <a href={ESSAY}>Knots of Existence Hypotheses</a> (2026), from which this site is drawn. See also <a href={ORIGINAL}>Knots of Existence and Vasocomputation</a>.</p>
+      <div class="cta center">
+        <a class="btn accent" href={`${base}/atlas/`}>Enter the atlas</a>
+        <a class="btn" href={`${base}/library/`}>The library</a>
+      </div>
+      <Seal size={30} class="coda-seal" />
+    </section>
+  </article>
+</Base>
+
+<script>
+  import { mountHero } from '../viewer/ui/HeroScene';
+  const c = document.getElementById('hero-canvas') as HTMLCanvasElement;
+  mountHero(c);
+</script>
+
+<style>
+  .hero {
+    position: relative;
+    min-height: calc(100dvh - 4rem);
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
+    align-items: center;
+    padding: 0 var(--gutter);
+    overflow: hidden;
+  }
+  .hero-canvas {
+    position: absolute;
+    inset: 0;
+  }
+  .hero-canvas canvas {
+    width: 100%;
+    height: 100%;
+    opacity: 0;
+    transition: opacity 2.4s var(--ease);
+  }
+  .hero-canvas :global(canvas.ready) {
+    opacity: 1;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    inset: auto 0 0 0;
+    height: 22%;
+    background: linear-gradient(to bottom, transparent, var(--bg));
+    pointer-events: none;
+    z-index: 1;
+  }
+  .hero-text {
+    position: relative;
+    z-index: 2;
+    max-width: 34rem;
+    padding: 4rem 0 6rem;
+  }
+  .hero h1 {
+    font-size: clamp(5rem, 13vw, 11rem);
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    line-height: 0.9;
+    margin: 1.2rem 0 1.6rem -0.05em;
+  }
+  .lede {
+    font-family: var(--font-display);
+    font-style: italic;
+    font-weight: 300;
+    font-size: clamp(1.5rem, 2.6vw, 2.2rem);
+    line-height: 1.25;
+    color: var(--ink);
+    margin: 0 0 1.4rem;
+  }
+  .intro {
+    color: var(--ink-2);
+    max-width: 30rem;
+  }
+  .cta {
+    display: flex;
+    gap: 0.8rem;
+    margin-top: 2rem;
+    flex-wrap: wrap;
+  }
+  .cta a {
+    text-decoration: none;
+  }
+  .cta.center {
+    justify-content: center;
+  }
+  .hero-note {
+    z-index: 2;
+    position: absolute;
+    right: var(--gutter);
+    bottom: 1.6rem;
+    font-size: 0.66rem;
+    color: var(--ink-3);
+    margin: 0;
+  }
+
+  .chapters {
+    padding: 0 var(--gutter);
+    counter-reset: ch;
+  }
+  .chapter {
+    position: relative;
+    max-width: 40rem;
+    margin: 0 auto;
+    padding: 9rem 0 0;
+  }
+  .chapter.wide {
+    max-width: 68rem;
+  }
+  .chapter .measure {
+    max-width: 40rem;
+  }
+  .chapter h2 {
+    font-size: clamp(2.2rem, 4.2vw, 3.4rem);
+    margin: 0.9rem 0 1.8rem;
+  }
+  .chapter h3 {
+    font-size: 1.55rem;
+    margin: 0.3rem 0 0.8rem;
+  }
+  .num-label {
+    color: var(--ink-3);
+    margin: 0;
+  }
+  .glyph {
+    position: absolute;
+    left: -9rem;
+    top: 8.4rem;
+    font-size: 4.2rem;
+    color: var(--ink-4);
+    opacity: 0.55;
+    line-height: 1;
+    writing-mode: vertical-rl;
+    user-select: none;
+  }
+  .chapter.wide .glyph {
+    left: -6rem;
+  }
+  .chapter p {
+    color: var(--ink-2);
+  }
+  .chapter strong {
+    color: var(--ink);
+    font-weight: 500;
+  }
+  .chapter em {
+    color: var(--ink);
+  }
+
+  .triad {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 2.5rem;
+    margin-top: 3rem;
+    padding-top: 2.2rem;
+    border-top: 1px solid var(--hair);
+  }
+  .triad p:last-child {
+    font-size: 1.02rem;
+  }
+
+  .ladder {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 2rem;
+    margin-top: 3rem;
+    border-top: 1px solid var(--hair);
+    padding-top: 2.2rem;
+  }
+  .ladder div {
+    display: grid;
+    gap: 0.4rem;
+    align-content: start;
+  }
+  .ladder .big {
+    font-family: var(--font-display);
+    font-feature-settings: 'lnum';
+    font-size: clamp(2.6rem, 4.6vw, 4.2rem);
+    font-weight: 300;
+    color: var(--ink);
+    line-height: 1;
+  }
+  .ladder div:last-child .big {
+    color: var(--shu);
+  }
+  .ladder .mono {
+    font-size: 0.7rem;
+    color: var(--ink-3);
+  }
+  .ladder .desc {
+    font-size: 0.98rem;
+    color: var(--ink-2);
+  }
+
+  .rivals {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(18rem, 1fr));
+    gap: 0;
+    margin-top: 2rem;
+    border-top: 1px solid var(--hair);
+  }
+  .rival {
+    display: grid;
+    grid-template-columns: 0.9rem 1fr;
+    gap: 0.2rem 0.7rem;
+    padding: 1.4rem 1.2rem 1.5rem 0;
+    border-bottom: 1px solid var(--hair);
+    text-decoration: none;
+    color: inherit;
+  }
+  .rival .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--c);
+    margin-top: 0.62rem;
+  }
+  .r-name {
+    font-family: var(--font-display);
+    font-size: 1.45rem;
+    line-height: 1.2;
+  }
+  .r-who {
+    grid-column: 2;
+    font-size: 0.66rem;
+    color: var(--ink-3);
+  }
+  .r-short {
+    grid-column: 2;
+    font-size: 0.98rem;
+    color: var(--ink-2);
+    line-height: 1.5;
+    margin-top: 0.4rem;
+  }
+  .rival:hover .r-name {
+    color: var(--ink);
+    text-decoration: underline;
+    text-decoration-color: var(--c);
+    text-underline-offset: 0.2em;
+  }
+
+  .tests {
+    padding-left: 1.2rem;
+    color: var(--ink-2);
+  }
+  .tests li {
+    margin-bottom: 0.9rem;
+    padding-left: 0.4rem;
+  }
+  .tests li::marker {
+    font-family: var(--font-mono);
+    font-size: 0.8rem;
+    color: var(--ink-3);
+  }
+
+  .caution h2 {
+    color: var(--ink);
+  }
+  .coda {
+    text-align: center;
+    display: grid;
+    justify-items: center;
+    gap: 1.2rem;
+    padding-top: 10rem;
+  }
+  .coda :global(.coda-enso) {
+    color: var(--ink-3);
+  }
+  .coda .lede {
+    font-size: clamp(1.8rem, 3.4vw, 2.8rem);
+    max-width: 30rem;
+  }
+  .coda :global(.coda-seal) {
+    margin-top: 3rem;
+  }
+
+  @media (max-width: 1180px) {
+    .glyph {
+      display: none;
+    }
+  }
+  @media (max-width: 900px) {
+    .hero {
+      grid-template-columns: 1fr;
+      align-items: end;
+      min-height: 100dvh;
+    }
+    .hero-canvas {
+      inset: 0;
+      opacity: 0.75;
+    }
+    .hero-text {
+      padding-bottom: 5rem;
+    }
+    .triad,
+    .ladder {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+  @media (max-width: 600px) {
+    .triad,
+    .ladder {
+      grid-template-columns: 1fr;
+    }
+    .chapter {
+      padding-top: 6rem;
+    }
+  }
+</style>

@@ -1,0 +1,652 @@
+[
+ {
+  "id": "alvarezprats2019",
+  "authors": "Álvarez-Prats D, Carvajal-Fernández O, Valera Garrido F et al.",
+  "year": 2019,
+  "title": "Acupuncture Points and Perforating Cutaneous Vessels Identified Using Infrared Thermography: A Cross-Sectional Pilot Study",
+  "venue": "Evid Based Complement Alternat Med 2019:7126439",
+  "url": "https://doi.org/10.1155/2019/7126439",
+  "pmid": "31015854",
+  "kind": "paper",
+  "tags": [
+   "acupuncture",
+   "perforators"
+  ],
+  "note": "Infrared thermography finds perforating cutaneous vessels at acupuncture points."
+ },
+ {
+  "id": "benias2018",
+  "authors": "Benias PC, Wells RG, Sackey-Aboagye B et al.",
+  "year": 2018,
+  "title": "Structure and Distribution of an Unrecognized Interstitium in Human Tissues",
+  "venue": "Sci Rep 8:4947",
+  "url": "https://doi.org/10.1038/s41598-018-23062-6",
+  "pmid": "29588511",
+  "kind": "paper",
+  "tags": [
+   "fascia",
+   "anatomy"
+  ],
+  "note": "Fluid-filled spaces supported by collagen bundles in submucosae, dermis, fasciae and perivascular tissue — a body-wide interstitium."
+ },
+ {
+  "id": "bolton1936",
+  "authors": "Bolton B, Carmichael EA, Stürup G",
+  "year": 1936,
+  "title": "Vaso-constriction following deep inspiration",
+  "venue": "J Physiol 86:83-94",
+  "url": "https://doi.org/10.1113/jphysiol.1936.sp003345",
+  "pmid": "16994738",
+  "kind": "paper",
+  "tags": [
+   "vascular",
+   "breath"
+  ],
+  "note": "The inspiratory gasp reflex: a deep breath constricts the skin’s vessels within seconds."
+ },
+ {
+  "id": "cagnie2012",
+  "authors": "Cagnie B, Barbe T, De Ridder E et al.",
+  "year": 2012,
+  "title": "The influence of dry needling of the trapezius muscle on muscle blood flow and oxygenation",
+  "venue": "J Manipulative Physiol Ther 35:685-91",
+  "url": "https://doi.org/10.1016/j.jmpt.2012.10.005",
+  "pmid": "23206963",
+  "kind": "paper",
+  "tags": [
+   "trigger-points",
+   "vascular"
+  ],
+  "note": "A single dry-needling stimulus raises local blood flow and oxygenation in the trapezius for fifteen minutes."
+ },
+ {
+  "id": "chen2007",
+  "authors": "Chen Q, Bensamoun S, Basford JR et al.",
+  "year": 2007,
+  "title": "Identification and quantification of myofascial taut bands with magnetic resonance elastography",
+  "venue": "Arch Phys Med Rehabil 88:1658-61",
+  "url": "https://doi.org/10.1016/j.apmr.2007.07.020",
+  "pmid": "18047882",
+  "kind": "paper",
+  "tags": [
+   "trigger-points",
+   "imaging"
+  ],
+  "note": "Taut bands identified and quantified with magnetic resonance elastography."
+ },
+ {
+  "id": "dorsher2009",
+  "authors": "Dorsher PT",
+  "year": 2009,
+  "title": "Myofascial referred-pain data provide physiologic evidence of acupuncture meridians",
+  "venue": "J Pain 10:723-31",
+  "url": "https://doi.org/10.1016/j.jpain.2008.12.010",
+  "pmid": "19409857",
+  "kind": "paper",
+  "tags": [
+   "acupuncture",
+   "trigger-points"
+  ],
+  "note": "Trigger-point referred-pain patterns track the acupuncture meridians."
+ },
+ {
+  "id": "fede2022",
+  "authors": "Fede C, Petrelli L, Pirri C et al.",
+  "year": 2022,
+  "title": "Innervation of human superficial fascia",
+  "venue": "Front Neuroanat 16:981426",
+  "url": "https://doi.org/10.3389/fnana.2022.981426",
+  "pmid": "36106154",
+  "kind": "paper",
+  "tags": [
+   "fascia",
+   "nerve"
+  ],
+  "note": "The superficial fascia is richly innervated; about a third of its fibres are autonomic, concentrated around vessels."
+ },
+ {
+  "id": "gerwin2004",
+  "authors": "Gerwin RD, Dommerholt J, Shah JP",
+  "year": 2004,
+  "title": "An expansion of Simons' integrated hypothesis of trigger point formation",
+  "venue": "Curr Pain Headache Rep 8:468-75",
+  "url": "https://doi.org/10.1007/s11916-004-0069-x",
+  "pmid": "15509461",
+  "kind": "paper",
+  "tags": [
+   "trigger-points"
+  ],
+  "note": "The integrated hypothesis of trigger-point formation, expanded."
+ },
+ {
+  "id": "gilliatt1948",
+  "authors": "Gilliatt RW, Guttmann L, Whitteridge D",
+  "year": 1948,
+  "title": "Inspiratory vaso-constriction in patients after spinal injuries",
+  "venue": "J Physiol 107:67-75",
+  "url": "https://doi.org/10.1113/jphysiol.1948.sp004250",
+  "pmid": "16991787",
+  "kind": "paper",
+  "tags": [
+   "vascular",
+   "breath"
+  ],
+  "note": "The inspiratory vasoconstriction reflex studied after spinal injury — the pathway runs through the sympathetic outflow."
+ },
+ {
+  "id": "hack1995",
+  "authors": "Hack GD, Koritzer RT, Robinson WL et al.",
+  "year": 1995,
+  "title": "Anatomic relation between the rectus capitis posterior minor muscle and the dura mater",
+  "venue": "Spine (Phila Pa 1976) 20:2484-6",
+  "url": "https://doi.org/10.1097/00007632-199512000-00003",
+  "pmid": "8610241",
+  "kind": "paper",
+  "tags": [
+   "anatomy",
+   "base-of-skull"
+  ],
+  "note": "The myodural bridge: a band of tissue from rectus capitis posterior minor to the dura at the base of the skull."
+ },
+ {
+  "id": "hai1988",
+  "authors": "Hai CM, Murphy RA",
+  "year": 1988,
+  "title": "Cross-bridge phosphorylation and regulation of latch state in smooth muscle",
+  "venue": "Am J Physiol 254:C99-106",
+  "url": "https://doi.org/10.1152/ajpcell.1988.254.1.C99",
+  "pmid": "3337223",
+  "kind": "paper",
+  "tags": [
+   "vascular"
+  ],
+  "note": "The latch-bridge model: dephosphorylated cross-bridges that hold smooth-muscle tension cheaply."
+ },
+ {
+  "id": "heine1988",
+  "authors": "Heine H",
+  "year": 1988,
+  "title": "Anatomical structure of acupoints",
+  "venue": "J Tradit Chin Med 8:207-12",
+  "url": "https://pubmed.ncbi.nlm.nih.gov/3216666/",
+  "pmid": "3216666",
+  "kind": "paper",
+  "tags": [
+   "acupuncture",
+   "perforators"
+  ],
+  "note": "About 80% of classical acupoints coincide with perforations of the superficial fascia by a vessel–nerve bundle."
+ },
+ {
+  "id": "hong1998",
+  "authors": "Hong CZ, Simons DG",
+  "year": 1998,
+  "title": "Pathophysiologic and electrophysiologic mechanisms of myofascial trigger points",
+  "venue": "Arch Phys Med Rehabil 79:863-72",
+  "url": "https://doi.org/10.1016/s0003-9993(98)90371-9",
+  "pmid": "9685106",
+  "kind": "paper",
+  "tags": [
+   "trigger-points"
+  ],
+  "note": "Pathophysiological and electrophysiological mechanisms of trigger points; satellites and key points."
+ },
+ {
+  "id": "hubbard1993",
+  "authors": "Hubbard DR, Berkoff GM",
+  "year": 1993,
+  "title": "Myofascial trigger points show spontaneous needle EMG activity",
+  "venue": "Spine (Phila Pa 1976) 18:1803-7",
+  "url": "https://doi.org/10.1097/00007632-199310000-00015",
+  "pmid": "8235865",
+  "kind": "paper",
+  "tags": [
+   "trigger-points"
+  ],
+  "note": "Spontaneous needle-EMG activity at the trigger-point nidus."
+ },
+ {
+  "id": "langevin2002",
+  "authors": "Langevin HM, Yandow JA",
+  "year": 2002,
+  "title": "Relationship of acupuncture points and meridians to connective tissue planes",
+  "venue": "Anat Rec 269:257-65",
+  "url": "https://doi.org/10.1002/ar.10185",
+  "pmid": "12467083",
+  "kind": "paper",
+  "tags": [
+   "acupuncture",
+   "fascia"
+  ],
+  "note": "Eighty percent of acupuncture points, and half the meridian intersections, lie on connective-tissue planes."
+ },
+ {
+  "id": "langevin2006",
+  "authors": "Langevin HM",
+  "year": 2006,
+  "title": "Connective tissue: a body-wide signaling network?",
+  "venue": "Med Hypotheses 66:1074-7",
+  "url": "https://doi.org/10.1016/j.mehy.2005.12.032",
+  "pmid": "16483726",
+  "kind": "paper",
+  "tags": [
+   "fascia"
+  ],
+  "note": "Connective tissue as a body-wide signalling network."
+ },
+ {
+  "id": "langevin2011",
+  "authors": "Langevin HM, Fox JR, Koptiuch C et al.",
+  "year": 2011,
+  "title": "Reduced thoracolumbar fascia shear strain in human chronic low back pain",
+  "venue": "BMC Musculoskelet Disord 12:203",
+  "url": "https://doi.org/10.1186/1471-2474-12-203",
+  "pmid": "21929806",
+  "kind": "paper",
+  "tags": [
+   "fascia",
+   "imaging"
+  ],
+  "note": "About 20% less shear glide between thoracolumbar fascia layers in chronic low back pain."
+ },
+ {
+  "id": "lindahl2017",
+  "authors": "Lindahl JR, Fisher NE, Cooper DJ et al.",
+  "year": 2017,
+  "title": "The varieties of contemplative experience: A mixed-methods study of meditation-related challenges in Western Buddhists",
+  "venue": "PLoS One 12:e0176239",
+  "url": "https://doi.org/10.1371/journal.pone.0176239",
+  "pmid": "28542181",
+  "kind": "paper",
+  "tags": [
+   "contemplative",
+   "safety"
+  ],
+  "note": "The largest study of meditation-related challenges: pressure or tension that builds and releases, energy, currents, involuntary movement."
+ },
+ {
+  "id": "macgregor2006",
+  "authors": "Macgregor J, Graf von Schweinitz D",
+  "year": 2006,
+  "title": "Needle electromyographic activity of myofascial trigger points and control sites in equine cleidobrachialis muscle--an observational study",
+  "venue": "Acupunct Med 24:61-70",
+  "url": "https://doi.org/10.1136/aim.24.2.61",
+  "pmid": "16783281",
+  "kind": "paper",
+  "tags": [
+   "animals",
+   "trigger-points"
+  ],
+  "note": "Horses have trigger points too: the same spontaneous electrical activity found in humans and rabbits."
+ },
+ {
+  "id": "maurer2019",
+  "authors": "Maurer N, Nissel H, Egerbacher M et al.",
+  "year": 2019,
+  "title": "Anatomical Evidence of Acupuncture Meridians in the Human Extracellular Matrix: Results from a Macroscopic and Microscopic Interdisciplinary Multicentre Study on Human Corpses",
+  "venue": "Evid Based Complement Alternat Med 2019:6976892",
+  "url": "https://doi.org/10.1155/2019/6976892",
+  "pmid": "31015853",
+  "kind": "paper",
+  "tags": [
+   "acupuncture",
+   "fascia"
+  ],
+  "note": "Dissection of meridians: tracks in the extracellular matrix, but vessel–nerve bundles at only a few points."
+ },
+ {
+  "id": "mcnulty1994",
+  "authors": "McNulty WH, Gevirtz RN, Hubbard DR et al.",
+  "year": 1994,
+  "title": "Needle electromyographic evaluation of trigger point response to a psychological stressor",
+  "venue": "Psychophysiology 31:313-6",
+  "url": "https://doi.org/10.1111/j.1469-8986.1994.tb02220.x",
+  "pmid": "8008795",
+  "kind": "paper",
+  "tags": [
+   "trigger-points",
+   "mind"
+  ],
+  "note": "Mental arithmetic turned up the electrical activity at a trigger point but not at an adjacent control site — the writer has the address."
+ },
+ {
+  "id": "melzack1977",
+  "authors": "Melzack R, Stillwell DM, Fox EJ",
+  "year": 1977,
+  "title": "Trigger points and acupuncture points for pain: correlations and implications",
+  "venue": "Pain 3:3-23",
+  "url": "https://doi.org/10.1016/0304-3959(77)90032-X",
+  "pmid": "69288",
+  "kind": "paper",
+  "tags": [
+   "acupuncture",
+   "trigger-points",
+   "history"
+  ],
+  "note": "The first systematic comparison: a 71% correspondence between trigger points and acupuncture points for pain."
+ },
+ {
+  "id": "meng2024",
+  "authors": "Meng S, Tang Z, Zhu M et al.",
+  "year": 2024,
+  "title": "Perforating cutaneous vessels: A key feature of acupoints - Anatomical evidence from five-Shu acupoints in the upper limbs",
+  "venue": "Clin Anat 37:33-42",
+  "url": "https://doi.org/10.1002/ca.24077",
+  "pmid": "37340879",
+  "kind": "paper",
+  "tags": [
+   "acupuncture",
+   "perforators"
+  ],
+  "note": "Dissection of the five-shu points of the arm: perforating cutaneous vessels are a key feature of acupoints."
+ },
+ {
+  "id": "moraska2013",
+  "authors": "Moraska AF, Hickner RC, Kohrt WM et al.",
+  "year": 2013,
+  "title": "Changes in blood flow and cellular metabolism at a myofascial trigger point with trigger point release (ischemic compression): a proof-of-principle pilot study",
+  "venue": "Arch Phys Med Rehabil 94:196-200",
+  "url": "https://doi.org/10.1016/j.apmr.2012.08.216",
+  "pmid": "22975226",
+  "kind": "paper",
+  "tags": [
+   "trigger-points",
+   "vascular"
+  ],
+  "note": "Microdialysis inside an active trigger point: ischaemic compression brings a transient rise in local blood flow."
+ },
+ {
+  "id": "morris2010",
+  "authors": "Morris SF, Tang M, Almutari K et al.",
+  "year": 2010,
+  "title": "The anatomic basis of perforator flaps",
+  "venue": "Clin Plast Surg 37:553-70, xi",
+  "url": "https://doi.org/10.1016/j.cps.2010.06.006",
+  "pmid": "20816512",
+  "kind": "paper",
+  "tags": [
+   "perforators",
+   "anatomy"
+  ],
+  "note": "A modern synthesis of perforator anatomy region by region."
+ },
+ {
+  "id": "quintner1994",
+  "authors": "Quintner JL, Cohen ML",
+  "year": 1994,
+  "title": "Referred pain of peripheral nerve origin: an alternative to the \"myofascial pain\" construct",
+  "venue": "Clin J Pain 10:243-51",
+  "url": "https://doi.org/10.1097/00002508-199409000-00012",
+  "pmid": "7833584",
+  "kind": "paper",
+  "tags": [
+   "critique",
+   "nerve"
+  ],
+  "note": "The alternative: tender points as referred pain of peripheral nerve origin."
+ },
+ {
+  "id": "quintner2015",
+  "authors": "Quintner JL, Bove GM, Cohen ML",
+  "year": 2015,
+  "title": "A critical evaluation of the trigger point phenomenon",
+  "venue": "Rheumatology (Oxford) 54:392-9",
+  "url": "https://doi.org/10.1093/rheumatology/keu471",
+  "pmid": "25477053",
+  "kind": "paper",
+  "tags": [
+   "critique",
+   "trigger-points"
+  ],
+  "note": "A sceptical review of the trigger-point construct and its circularity."
+ },
+ {
+  "id": "rivner2001",
+  "authors": "Rivner MH",
+  "year": 2001,
+  "title": "The neurophysiology of myofascial pain syndrome",
+  "venue": "Curr Pain Headache Rep 5:432-40",
+  "url": "https://doi.org/10.1007/s11916-001-0054-6",
+  "pmid": "11560808",
+  "kind": "paper",
+  "tags": [
+   "trigger-points"
+  ],
+  "note": "Review of trigger-point neurophysiology, including the rabbit work in which the alpha-blocker phentolamine reduces spontaneous activity."
+ },
+ {
+  "id": "saintcyr2009",
+  "authors": "Saint-Cyr M, Wong C, Schaverien M et al.",
+  "year": 2009,
+  "title": "The perforasome theory: vascular anatomy and clinical implications",
+  "venue": "Plast Reconstr Surg 124:1529-1544",
+  "url": "https://doi.org/10.1097/PRS.0b013e3181b98a6c",
+  "pmid": "20009839",
+  "kind": "paper",
+  "tags": [
+   "perforators",
+   "anatomy"
+  ],
+  "note": "Each perforator supplies its own territory — a perforasome — linked to its neighbours by direct and indirect vessels."
+ },
+ {
+  "id": "schleip2005",
+  "authors": "Schleip R, Naylor IL, Ursu D et al.",
+  "year": 2006,
+  "title": "Passive muscle stiffness may be influenced by active contractility of intramuscular connective tissue",
+  "venue": "Med Hypotheses 66:66-71",
+  "url": "https://doi.org/10.1016/j.mehy.2005.08.025",
+  "pmid": "16209907",
+  "kind": "paper",
+  "tags": [
+   "fascia"
+  ],
+  "note": "Fascia can contract on its own, via myofibroblasts."
+ },
+ {
+  "id": "segal1986",
+  "authors": "Segal SS, Duling BR",
+  "year": 1986,
+  "title": "Flow control among microvessels coordinated by intercellular conduction",
+  "venue": "Science 234:868-70",
+  "url": "https://doi.org/10.1126/science.3775368",
+  "pmid": "3775368",
+  "kind": "paper",
+  "tags": [
+   "vascular"
+  ],
+  "note": "A dilation started at one point on an arteriole propagates along its wall, upstream, independently of flow."
+ },
+ {
+  "id": "shah2005",
+  "authors": "Shah JP, Phillips TM, Danoff JV et al.",
+  "year": 2005,
+  "title": "An in vivo microanalytical technique for measuring the local biochemical milieu of human skeletal muscle",
+  "venue": "J Appl Physiol (1985) 99:1977-84",
+  "url": "https://doi.org/10.1152/japplphysiol.00419.2005",
+  "pmid": "16037403",
+  "kind": "paper",
+  "tags": [
+   "trigger-points"
+  ],
+  "note": "The acidic, mediator-rich milieu of active trigger points, sampled by microdialysis."
+ },
+ {
+  "id": "shah2015",
+  "authors": "Shah JP, Thaker N, Heimur J et al.",
+  "year": 2015,
+  "title": "Myofascial Trigger Points Then and Now: A Historical and Scientific Perspective",
+  "venue": "PM R 7:746-761",
+  "url": "https://doi.org/10.1016/j.pmrj.2015.01.024",
+  "pmid": "25724849",
+  "kind": "paper",
+  "tags": [
+   "trigger-points",
+   "history"
+  ],
+  "note": "Trigger points then and now: a history from 19th-century “nodules” to microdialysis."
+ },
+ {
+  "id": "sikdar2009",
+  "authors": "Sikdar S, Shah JP, Gebreab T et al.",
+  "year": 2009,
+  "title": "Novel applications of ultrasound technology to visualize and characterize myofascial trigger points and surrounding soft tissue",
+  "venue": "Arch Phys Med Rehabil 90:1829-38",
+  "url": "https://doi.org/10.1016/j.apmr.2009.04.015",
+  "pmid": "19887205",
+  "kind": "paper",
+  "tags": [
+   "trigger-points",
+   "imaging"
+  ],
+  "note": "Trigger points imaged: discrete hypoechoic nodules, stiffer than surroundings, with abnormal flow."
+ },
+ {
+  "id": "stecco2011",
+  "authors": "Stecco C, Stern R, Porzionato A et al.",
+  "year": 2011,
+  "title": "Hyaluronan within fascia in the etiology of myofascial pain",
+  "venue": "Surg Radiol Anat 33:891-6",
+  "url": "https://doi.org/10.1007/s00276-011-0876-9",
+  "pmid": "21964857",
+  "kind": "paper",
+  "tags": [
+   "fascia"
+  ],
+  "note": "Hyaluronan-rich loose tissue between fascial layers, and its densification as a substrate of myofascial pain."
+ },
+ {
+  "id": "stecco2014",
+  "authors": "Stecco A, Meneghini A, Stern R et al.",
+  "year": 2014,
+  "title": "Ultrasonography in myofascial neck pain: randomized clinical trial for diagnosis and follow-up",
+  "venue": "Surg Radiol Anat 36:243-53",
+  "url": "https://doi.org/10.1007/s00276-013-1185-2",
+  "pmid": "23975091",
+  "kind": "paper",
+  "tags": [
+   "fascia",
+   "imaging"
+  ],
+  "note": "The loose-connective-tissue sublayers of neck fascia are thicker in chronic neck pain and thin with treatment."
+ },
+ {
+  "id": "taylor1987",
+  "authors": "Taylor GI, Palmer JH",
+  "year": 1987,
+  "title": "The vascular territories (angiosomes) of the body: experimental study and clinical applications",
+  "venue": "Br J Plast Surg 40:113-41",
+  "url": "https://doi.org/10.1016/0007-1226(87)90185-8",
+  "pmid": "3567445",
+  "kind": "paper",
+  "tags": [
+   "perforators",
+   "anatomy"
+  ],
+  "note": "The arterial road map of the body: ~40 source-artery territories and an average of 374 major perforators per subject. “Arteries follow closely the connective tissue framework of the body.”"
+ },
+ {
+  "id": "taylor2011",
+  "authors": "Taylor GI, Corlett RJ, Dhar SC et al.",
+  "year": 2011,
+  "title": "The anatomical (angiosome) and clinical territories of cutaneous perforating arteries: development of the concept and designing safe flaps",
+  "venue": "Plast Reconstr Surg 127:1447-1459",
+  "url": "https://doi.org/10.1097/PRS.0b013e318208d21b",
+  "pmid": "21460653",
+  "kind": "paper",
+  "tags": [
+   "perforators",
+   "anatomy"
+  ],
+  "note": "The anatomical territory of one cutaneous perforator, bounded by the anastomoses that link it to its neighbours."
+ },
+ {
+  "id": "tesarz2011",
+  "authors": "Tesarz J, Hoheisel U, Wiedenhöfer B et al.",
+  "year": 2011,
+  "title": "Sensory innervation of the thoracolumbar fascia in rats and humans",
+  "venue": "Neuroscience 194:302-8",
+  "url": "https://doi.org/10.1016/j.neuroscience.2011.07.066",
+  "pmid": "21839150",
+  "kind": "paper",
+  "tags": [
+   "fascia",
+   "nerve"
+  ],
+  "note": "The thoracolumbar fascia is densely innervated, including nociceptors."
+ },
+ {
+  "id": "travell1952",
+  "authors": "TRAVELL J, RINZLER SH",
+  "year": 1952,
+  "title": "The myofascial genesis of pain",
+  "venue": "Postgrad Med 11:425-34",
+  "url": "https://doi.org/10.1080/00325481.1952.11694280",
+  "pmid": "14920327",
+  "kind": "paper",
+  "tags": [
+   "trigger-points",
+   "history"
+  ],
+  "note": "The first maps of myofascial referred-pain patterns."
+ },
+ {
+  "id": "willard2012",
+  "authors": "Willard FH, Vleeming A, Schuenke MD et al.",
+  "year": 2012,
+  "title": "The thoracolumbar fascia: anatomy, function and clinical considerations",
+  "venue": "J Anat 221:507-36",
+  "url": "https://doi.org/10.1111/j.1469-7580.2012.01511.x",
+  "pmid": "22630613",
+  "kind": "paper",
+  "tags": [
+   "fascia",
+   "anatomy"
+  ],
+  "note": "The thoracolumbar fascia: anatomy, function and clinical considerations."
+ },
+ {
+  "id": "wolfe1990",
+  "authors": "Wolfe F, Smythe HA, Yunus MB et al.",
+  "year": 1990,
+  "title": "The American College of Rheumatology 1990 Criteria for the Classification of Fibromyalgia. Report of the Multicenter Criteria Committee",
+  "venue": "Arthritis Rheum 33:160-72",
+  "url": "https://doi.org/10.1002/art.1780330203",
+  "pmid": "2306288",
+  "kind": "paper",
+  "tags": [
+   "history"
+  ],
+  "note": "The eighteen tender points of the 1990 fibromyalgia criteria."
+ },
+ {
+  "id": "woolf2011",
+  "authors": "Woolf CJ",
+  "year": 2011,
+  "title": "Central sensitization: implications for the diagnosis and treatment of pain",
+  "venue": "Pain 152:S2-S15",
+  "url": "https://doi.org/10.1016/j.pain.2010.09.030",
+  "pmid": "20961685",
+  "kind": "paper",
+  "tags": [
+   "nerve",
+   "critique"
+  ],
+  "note": "Central sensitisation: the central amplifier of chronic pain."
+ },
+ {
+  "id": "yoshinaga2025",
+  "authors": "Yoshinaga T, Koga T, Koga H",
+  "year": 2025,
+  "title": "Effectiveness of Ultrasound-Guided Hydrodissection for Atypical Anterior Cutaneous Nerve Entrapment Syndrome Presenting as Lower Back Pain Due to Retrograde Neuropathic Pain",
+  "venue": "Cureus 17:e94871",
+  "url": "https://doi.org/10.7759/cureus.94871",
+  "pmid": "41262803",
+  "kind": "paper",
+  "tags": [
+   "perforators",
+   "nerve"
+  ],
+  "note": "The whole model in one case: a tender point, a pulsating perforating artery beneath it on Doppler, resolution with hydrodissection."
+ }
+]

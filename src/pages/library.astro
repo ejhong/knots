@@ -1,0 +1,286 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import { REFERENCES, TAG_LABELS, type Tag } from '../data/references';
+import { TIMELINE } from '../data/timeline';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const tagCounts = new Map<Tag, number>();
+for (const r of REFERENCES) for (const t of r.tags) tagCounts.set(t, (tagCounts.get(t) ?? 0) + 1);
+const tags = [...tagCounts.entries()].sort((a, b) => b[1] - a[1]).map(([t]) => t);
+const KIND: Record<string, string> = { paper: 'Paper', book: 'Book', text: 'Text', web: 'Web', essay: 'Essay' };
+const yearLabel = (y: number) => (y < 0 ? `c. ${-y} BCE` : String(y));
+---
+<Base title="Library" current="library" description="The research on knots — trigger points, fascia, perforators, vessels — alongside the classical texts of Chinese medicine, yoga, Daoist alchemy and Tibetan practice, and a short history of how they met.">
+  <PageHead kicker="Library" title="What has been measured, argued and handed down" glyph="典">
+    The papers behind each link in the chain, the critiques, and the texts in which the traditions mapped the same ground.
+  </PageHead>
+
+  <section class="history">
+    <p class="eyebrow">A short history of knots</p>
+    <ol class="timeline">
+      {
+        TIMELINE.map((m) => (
+          <li class:list={[m.kind]}>
+            <span class="year num">{m.year}</span>
+            <span class="text">
+              {m.text}
+              {m.ref && (
+                <a class="mono lower cite" href={`#${m.ref}`}>
+                  ↓
+                </a>
+              )}
+            </span>
+          </li>
+        ))
+      }
+    </ol>
+  </section>
+
+  <section class="refs" data-library>
+    <div class="controls">
+      <p class="eyebrow">{REFERENCES.length} sources</p>
+      <div class="filters" role="group" aria-label="Filter by theme">
+        <button class="chip is-active" type="button" data-tag="all">All</button>
+        {tags.map((t) => <button class="chip" type="button" data-tag={t}>{TAG_LABELS[t]}</button>)}
+      </div>
+      <label class="search">
+        <span class="visually-hidden">Search the library</span>
+        <input type="search" placeholder="Search authors, titles, notes" data-search />
+      </label>
+    </div>
+    <ol class="entries">
+      {
+        REFERENCES.map((r) => (
+          <li id={r.id} data-tags={r.tags.join(' ')} data-text={`${r.authors} ${r.title} ${r.venue} ${r.note}`.toLowerCase()}>
+            <span class="year num">{yearLabel(r.year)}</span>
+            <div class="body">
+              <p class="title">
+                {r.url ? (
+                  <a href={r.url} rel="noopener">
+                    {r.title}
+                  </a>
+                ) : (
+                  r.title
+                )}
+              </p>
+              <p class="by">
+                {r.authors} · <span class="venue">{r.venue}</span>
+              </p>
+              <p class="note">{r.note}</p>
+              <p class="mono lower kind">
+                {KIND[r.kind]}
+                {r.tags.map((t) => ` · ${TAG_LABELS[t]}`)}
+              </p>
+            </div>
+          </li>
+        ))
+      }
+    </ol>
+    <p class="empty mono lower" hidden data-empty>Nothing matches.</p>
+  </section>
+
+  <section class="contribute">
+    <p>
+      Missing something? The library is a data file —
+      <a href="https://github.com/ejhong/knots/blob/main/src/data/references.ts">src/data/references.ts</a> — and papers are
+      verified against PubMed before they are added. See <a href={`${base}/about/`}>About</a> for how to contribute.
+    </p>
+  </section>
+</Base>
+
+<script>
+  const root = document.querySelector<HTMLElement>('[data-library]')!;
+  const chips = root.querySelectorAll<HTMLButtonElement>('[data-tag]');
+  const items = [...root.querySelectorAll<HTMLLIElement>('.entries li')];
+  const search = root.querySelector<HTMLInputElement>('[data-search]')!;
+  const empty = root.querySelector<HTMLElement>('[data-empty]')!;
+  let tag = 'all';
+  const apply = () => {
+    const q = search.value.trim().toLowerCase();
+    let shown = 0;
+    for (const li of items) {
+      const okTag = tag === 'all' || (li.dataset.tags ?? '').split(' ').includes(tag);
+      const okText = !q || (li.dataset.text ?? '').includes(q);
+      li.hidden = !(okTag && okText);
+      if (!li.hidden) shown++;
+    }
+    empty.hidden = shown > 0;
+  };
+  chips.forEach((c) =>
+    c.addEventListener('click', () => {
+      tag = c.dataset.tag!;
+      chips.forEach((x) => x.classList.toggle('is-active', x === c));
+      apply();
+    }),
+  );
+  search.addEventListener('input', apply);
+</script>
+
+<style>
+  .history,
+  .refs,
+  .contribute {
+    max-width: 68rem;
+    margin: 0 auto;
+    padding: 0 var(--gutter);
+  }
+  .timeline {
+    list-style: none;
+    margin: 1.4rem 0 0;
+    padding: 0;
+    border-top: 1px solid var(--hair);
+  }
+  .timeline li {
+    display: grid;
+    grid-template-columns: 7.5rem minmax(0, 1fr);
+    gap: 1.5rem;
+    padding: 0.95rem 0;
+    border-bottom: 1px solid var(--hair);
+    color: var(--ink-2);
+    font-size: 1.02rem;
+    line-height: 1.5;
+  }
+  .timeline .year {
+    font-size: 0.78rem;
+    color: var(--ink-3);
+    padding-top: 0.2rem;
+  }
+  .timeline li.tradition .year {
+    color: var(--fuji);
+  }
+  .timeline li.essay .year {
+    color: var(--shu);
+  }
+  .timeline li.anatomy .year {
+    color: var(--silver);
+  }
+  .cite {
+    margin-left: 0.4rem;
+    text-decoration: none;
+    color: var(--ink-3);
+  }
+  .refs {
+    margin-top: 6rem;
+  }
+  .controls {
+    display: grid;
+    gap: 1rem;
+    padding-bottom: 1.4rem;
+    border-bottom: 1px solid var(--hair-2);
+    position: sticky;
+    top: 3.6rem;
+    z-index: 5;
+    background: color-mix(in srgb, var(--bg) 92%, transparent);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    padding-top: 1rem;
+  }
+  .filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.2rem;
+  }
+  .chip {
+    appearance: none;
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    padding: 0.4em 0.8em;
+    cursor: pointer;
+  }
+  .chip:hover {
+    color: var(--ink);
+  }
+  .chip.is-active {
+    color: var(--ink);
+    border-color: var(--hair-2);
+  }
+  .search input {
+    width: min(26rem, 100%);
+    background: transparent;
+    border: 0;
+    border-bottom: 1px solid var(--hair-2);
+    color: var(--ink);
+    font-family: var(--font-text);
+    font-size: 1.05rem;
+    padding: 0.4rem 0;
+  }
+  .search input:focus {
+    outline: none;
+    border-bottom-color: var(--ink-2);
+  }
+  .entries {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
+  .entries li {
+    display: grid;
+    grid-template-columns: 7.5rem minmax(0, 1fr);
+    gap: 1.5rem;
+    padding: 1.6rem 0;
+    border-bottom: 1px solid var(--hair);
+    scroll-margin-top: 14rem;
+  }
+  .entries li:target {
+    background: linear-gradient(90deg, color-mix(in srgb, var(--shu) 8%, transparent), transparent 60%);
+  }
+  .entries .year {
+    font-size: 0.8rem;
+    color: var(--ink-3);
+    padding-top: 0.25rem;
+  }
+  .title {
+    font-family: var(--font-display);
+    font-size: 1.32rem;
+    line-height: 1.25;
+    margin: 0 0 0.35rem;
+    color: var(--ink);
+  }
+  .title a {
+    text-decoration-color: var(--hair-2);
+  }
+  .by {
+    margin: 0 0 0.5rem;
+    color: var(--ink-2);
+    font-size: 0.98rem;
+  }
+  .venue {
+    font-style: italic;
+  }
+  .note {
+    margin: 0 0 0.5rem;
+    color: var(--ink-2);
+    font-size: 1rem;
+    max-width: 44rem;
+  }
+  .kind {
+    margin: 0;
+    font-size: 0.66rem;
+    color: var(--ink-4);
+  }
+  .empty {
+    padding: 2rem 0;
+    color: var(--ink-3);
+  }
+  .contribute {
+    margin-top: 4rem;
+    color: var(--ink-3);
+    font-size: 0.98rem;
+  }
+  @media (max-width: 700px) {
+    .timeline li,
+    .entries li {
+      grid-template-columns: 1fr;
+      gap: 0.3rem;
+    }
+    .controls {
+      position: static;
+    }
+  }
+</style>

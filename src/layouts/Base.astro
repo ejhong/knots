@@ -1,0 +1,86 @@
+---
+import '@fontsource/cormorant-garamond/300.css';
+import '@fontsource/cormorant-garamond/300-italic.css';
+import '@fontsource/cormorant-garamond/400.css';
+import '@fontsource/cormorant-garamond/400-italic.css';
+import '@fontsource/cormorant-garamond/500.css';
+import '@fontsource-variable/eb-garamond/wght.css';
+import '@fontsource-variable/eb-garamond/wght-italic.css';
+import '@fontsource/ibm-plex-mono/300.css';
+import '@fontsource/ibm-plex-mono/400.css';
+import '@fontsource/ibm-plex-mono/500.css';
+import '@fontsource/shippori-mincho/400.css';
+import '@fontsource/shippori-mincho/500.css';
+import '../styles/global.css';
+import SiteHeader from '../components/SiteHeader.astro';
+import SiteFooter from '../components/SiteFooter.astro';
+
+interface Props {
+  title?: string;
+  description?: string;
+  /** Full-bleed app pages (the atlas) hide the footer and lock scrolling. */
+  app?: boolean;
+  current?: string;
+}
+const {
+  title,
+  description = 'An atlas of the body’s held places: a three-dimensional introduction to knots, the perforator-and-sheet hypothesis, its rivals, and the maps the contemplative traditions drew of the same ground.',
+  app = false,
+  current = '',
+} = Astro.props;
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const fullTitle = title ? `${title} · Knots` : 'Knots — an atlas of the body’s held places';
+const canonical = new URL(Astro.url.pathname, Astro.site);
+---
+<!doctype html>
+<html lang="en" data-theme="night">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <title>{fullTitle}</title>
+    <meta name="description" content={description} />
+    <link rel="canonical" href={canonical} />
+    <link rel="icon" type="image/svg+xml" href={`${base}/favicon.svg`} />
+    <meta name="theme-color" content="#0e0f12" />
+    <meta property="og:title" content={fullTitle} />
+    <meta property="og:description" content={description} />
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content={canonical} />
+    <meta property="og:image" content={new URL(`${base}/og.png`, Astro.site)} />
+    <meta name="twitter:card" content="summary_large_image" />
+    <script is:inline>
+      (function () {
+        try {
+          var t = localStorage.getItem('knots-theme');
+          if (t === 'paper' || t === 'night') document.documentElement.dataset.theme = t;
+        } catch (e) {}
+      })();
+    </script>
+  </head>
+  <body class:list={[{ app }]}>
+    <a class="skip visually-hidden" href="#main">Skip to content</a>
+    <SiteHeader current={current} overlay={app} />
+    <main id="main">
+      <slot />
+    </main>
+    {!app && <SiteFooter />}
+  </body>
+</html>
+
+<style is:global>
+  body.app {
+    overflow: hidden;
+    height: 100dvh;
+  }
+  .skip:focus {
+    position: fixed !important;
+    top: 1rem;
+    left: 1rem;
+    width: auto;
+    height: auto;
+    clip: auto;
+    z-index: 2000;
+    background: var(--bg);
+    padding: 0.5rem 1rem;
+  }
+</style>

@@ -1,0 +1,595 @@
+---
+import Base from '../layouts/Base.astro';
+import Enso from '../components/Enso.astro';
+import { HYPOTHESES } from '../data/hypotheses';
+import { MAP_GROUPS } from '../data/mapIndex';
+import { SCENARIOS } from '../viewer/sim/scenarios';
+---
+<Base title="Atlas" app current="atlas" description="An interactive three-dimensional atlas of the body’s perforators, fascia and knots, with rival hypotheses and traditional maps for comparison.">
+  <div class="atlas" data-atlas>
+    <canvas id="atlas-canvas" aria-label="Three-dimensional figure made of the body's perforators. Drag to turn; press a knot and breathe out to release it."></canvas>
+
+    <div class="loading" data-loading>
+      <Enso size={72} seed={5} class="breathe" />
+      <p class="mono">Drawing a hundred thousand staples</p>
+    </div>
+
+    <aside class="panel left" data-panel="left" aria-label="Hypotheses, layers and maps">
+      <section>
+        <h2 class="eyebrow">Hypothesis</h2>
+        <ul class="hyp-list" role="radiogroup" aria-label="Hypothesis">
+          {
+            HYPOTHESES.map((h, i) => (
+              <li>
+                <button
+                  type="button"
+                  role="radio"
+                  aria-checked={i === 0 ? 'true' : 'false'}
+                  data-hyp={h.id}
+                  disabled={!h.ready}
+                  title={h.ready ? h.short : 'In preparation'}
+                >
+                  <span class="dot" style={`--c:${h.color}`} />
+                  <span class="name">{h.name}</span>
+                  <span class="who">{h.ready ? h.who : 'soon'}</span>
+                </button>
+              </li>
+            ))
+          }
+        </ul>
+      </section>
+
+      <section>
+        <h2 class="eyebrow">Layers</h2>
+        <ul class="toggles">
+          <li><label><input type="checkbox" data-layer="perforators" checked /> <span>Perforators</span> <span class="num faint" data-count="perforators"></span></label></li>
+          <li><label><input type="checkbox" data-layer="trees" checked /> <span>Trees</span></label></li>
+          <li><label><input type="checkbox" data-layer="roots" checked /> <span>Roots · gates</span> <span class="num faint" data-count="roots"></span></label></li>
+          <li><label><input type="checkbox" data-layer="knots" checked /> <span>Knots</span></label></li>
+          <li><label><input type="checkbox" data-layer="territories" /> <span>Angiosomes</span></label></li>
+        </ul>
+      </section>
+
+      <section>
+        <h2 class="eyebrow">Maps</h2>
+        {
+          MAP_GROUPS.map((g) => (
+            <div class="map-group">
+              <h3 class="mono lower">{g.tradition}</h3>
+              <ul class="toggles">
+                {g.maps.map((m) => (
+                  <li>
+                    <label class:list={[{ soon: !m.ready }]}>
+                      <input type="checkbox" data-map={m.id} disabled={!m.ready} />
+                      <span class="swatch" style={`--c:var(--${m.color})`} />
+                      <span>{m.name}</span>
+                      {!m.ready && <span class="mono lower faint">soon</span>}
+                    </label>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          ))
+        }
+      </section>
+    </aside>
+
+    <aside class="panel right" data-info aria-live="polite">
+      <div class="card" data-card>
+        <p class="eyebrow" data-card-kicker>Hypothesis</p>
+        <h2 data-card-title>Stuck perforators &amp; the sheet</h2>
+        <div class="card-body" data-card-body></div>
+      </div>
+    </aside>
+
+    <div class="tip" data-tip hidden></div>
+
+    <div class="dock" role="group" aria-label="Controls">
+      <button class="breath" type="button" data-breath aria-label="Breath: paced. Hold space to breathe by hand." title="Breath — paced at six a minute. Hold Space to inhale, release to exhale.">
+        <Enso size={38} seed={9} class="breath-enso" />
+        <span class="breath-label mono" data-breath-label>exhale</span>
+      </button>
+
+      <div class="tools" role="toolbar" aria-label="Tools">
+        <button class="tool" type="button" data-tool="look" title="Look (L): drag to turn">Look</button>
+        <button class="tool is-active" type="button" data-tool="press" title="Press (P): hold on a knot; release comes on the out-breath">Press</button>
+        <button class="tool" type="button" data-tool="roll" title="Roll (R): drag across the body — pressure and shear">Roll</button>
+        <button class="tool" type="button" data-tool="hydro" title="Hydrodissect (H): free a collar with fluid, no breath needed">Hydro</button>
+        <button class="tool" type="button" data-tool="stress" title="Stress (S): paint sympathetic drive">Stress</button>
+      </div>
+
+      <div class="age">
+        <div class="age-row">
+          <span class="eyebrow">Age</span>
+          <span class="num age-out" data-age-out>34</span>
+          <button class="btn ghost life" type="button" data-life title="Play a life, from infancy to ninety">
+            <svg viewBox="0 0 10 10" width="8" height="8" aria-hidden="true"><path d="M2 1 L9 5 L2 9 Z" fill="currentColor"></path></svg>
+            A life
+          </button>
+        </div>
+        <input type="range" min="1" max="90" step="0.5" value="34" data-age aria-label="Age in years" />
+      </div>
+
+      <div class="scenarios" role="group" aria-label="Aggravations and reliefs">
+        {SCENARIOS.map((s) => <button class="chip" type="button" data-scenario={s.id} title={s.note}>{s.label}</button>)}
+        <button class="chip" type="button" data-warmth title="Sauna: heat opens the whole bed — until you step out">Sauna</button>
+        <button class="chip" type="button" data-rest title="Rest: lift the drive (the knots it wrote stay)">Rest</button>
+      </div>
+
+      <div class="census" data-census aria-label="Knot census">
+        <div><span class="num" data-c="0">—</span><span class="mono lower">micro</span></div>
+        <div><span class="num" data-c="1">—</span><span class="mono lower">medium</span></div>
+        <div><span class="num" data-c="2">—</span><span class="mono lower">major</span></div>
+        <div><span class="num" data-c="3">—</span><span class="mono lower">roots</span></div>
+      </div>
+    </div>
+  </div>
+</Base>
+
+<script>
+  import { mountAtlas } from '../viewer/ui/AtlasUI';
+  mountAtlas(document.querySelector('[data-atlas]') as HTMLElement);
+</script>
+
+<style>
+  .atlas {
+    position: fixed;
+    inset: 0;
+    overflow: hidden;
+    background: var(--bg);
+  }
+  canvas {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    touch-action: none;
+  }
+  .loading {
+    position: absolute;
+    inset: 0;
+    display: grid;
+    place-content: center;
+    justify-items: center;
+    gap: 1.25rem;
+    color: var(--ink-3);
+    transition: opacity 1.4s var(--ease);
+    pointer-events: none;
+  }
+  .loading.done {
+    opacity: 0;
+  }
+  .loading :global(.breathe) {
+    color: var(--ink-3);
+    animation: breathe 10s var(--ease) infinite;
+  }
+  @keyframes breathe {
+    0%, 100% { transform: scale(0.92); opacity: 0.5; }
+    40% { transform: scale(1.04); opacity: 1; }
+  }
+
+  .panel {
+    position: absolute;
+    top: 5.2rem;
+    z-index: 5;
+    max-height: calc(100dvh - 13rem);
+    overflow: auto;
+    scrollbar-width: none;
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 1.2s var(--ease) 0.3s, transform 1.2s var(--ease) 0.3s;
+  }
+  .ready .panel {
+    opacity: 1;
+    transform: none;
+  }
+  .panel.left {
+    left: var(--gutter);
+    width: 16.5rem;
+  }
+  .panel.right {
+    right: var(--gutter);
+    width: 20rem;
+  }
+  .panel section + section {
+    margin-top: 1.9rem;
+  }
+  .panel .eyebrow {
+    margin: 0 0 0.8rem;
+    padding-bottom: 0.55rem;
+    border-bottom: 1px solid var(--hair);
+  }
+
+  .hyp-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.1rem;
+  }
+  .hyp-list button {
+    appearance: none;
+    width: 100%;
+    display: grid;
+    grid-template-columns: 0.8rem 1fr auto;
+    align-items: baseline;
+    gap: 0.6rem;
+    background: none;
+    border: 0;
+    padding: 0.38rem 0;
+    color: var(--ink-3);
+    text-align: left;
+    cursor: pointer;
+    font-family: var(--font-text);
+    font-size: 0.98rem;
+    line-height: 1.3;
+    transition: color 300ms var(--ease);
+  }
+  .hyp-list button:hover:not(:disabled),
+  .hyp-list button[aria-checked='true'] {
+    color: var(--ink);
+  }
+  .hyp-list button:disabled {
+    cursor: default;
+    opacity: 0.55;
+  }
+  .hyp-list .dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    border: 1px solid var(--c);
+    transform: translateY(-1px);
+  }
+  .hyp-list [aria-checked='true'] .dot {
+    background: var(--c);
+    box-shadow: 0 0 10px var(--c);
+  }
+  .hyp-list .who {
+    font-family: var(--font-mono);
+    font-size: 0.62rem;
+    letter-spacing: 0.04em;
+    color: var(--ink-4);
+  }
+
+  .toggles {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 0.05rem;
+  }
+  .toggles label {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+    padding: 0.28rem 0;
+    font-size: 0.95rem;
+    color: var(--ink-2);
+    cursor: pointer;
+  }
+  .toggles label.soon {
+    color: var(--ink-4);
+    cursor: default;
+  }
+  .toggles label .num {
+    margin-left: auto;
+    font-size: 0.66rem;
+  }
+  .toggles label .mono {
+    margin-left: auto;
+    font-size: 0.6rem;
+  }
+  .toggles input {
+    appearance: none;
+    width: 9px;
+    height: 9px;
+    margin: 0;
+    border: 1px solid var(--ink-3);
+    border-radius: 50%;
+    flex: none;
+    cursor: inherit;
+    transition: background 250ms var(--ease), border-color 250ms var(--ease);
+  }
+  .toggles input:checked {
+    background: var(--ink);
+    border-color: var(--ink);
+  }
+  .toggles input:disabled {
+    border-color: var(--ink-4);
+  }
+  .swatch {
+    width: 14px;
+    height: 1px;
+    background: var(--c);
+    flex: none;
+  }
+  .map-group + .map-group {
+    margin-top: 0.9rem;
+  }
+  .map-group h3 {
+    font-size: 0.66rem;
+    color: var(--ink-3);
+    margin: 0 0 0.25rem;
+  }
+
+  .card h2 {
+    font-size: 1.75rem;
+    line-height: 1.1;
+    margin: 0 0 0.9rem;
+  }
+  .card-body {
+    font-size: 0.97rem;
+    line-height: 1.58;
+    color: var(--ink-2);
+  }
+  .card-body :global(p) {
+    margin: 0 0 0.8em;
+  }
+  .card-body :global(.hint) {
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.06em;
+    color: var(--ink-3);
+    border-top: 1px solid var(--hair);
+    padding-top: 0.8rem;
+    margin-top: 1rem;
+  }
+  .card-body :global(dl) {
+    display: grid;
+    grid-template-columns: auto 1fr;
+    gap: 0.35rem 0.9rem;
+    margin: 1rem 0 0;
+    font-size: 0.9rem;
+  }
+  .card-body :global(dt) {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    padding-top: 0.2rem;
+  }
+  .card-body :global(dd) {
+    margin: 0;
+    color: var(--ink-2);
+  }
+
+  .tip {
+    position: absolute;
+    z-index: 8;
+    pointer-events: none;
+    min-width: 13rem;
+    max-width: 18rem;
+    padding: 0.8rem 0.95rem 0.85rem;
+    background: var(--glass-strong);
+    border: 1px solid var(--hair);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    box-shadow: var(--shadow);
+    font-size: 0.9rem;
+    line-height: 1.4;
+    transform: translate(18px, -50%);
+  }
+  .tip :global(.t-kicker) {
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+  }
+  .tip :global(.t-title) {
+    font-family: var(--font-display);
+    font-size: 1.2rem;
+    margin: 0.15rem 0 0.35rem;
+    color: var(--ink);
+  }
+  .tip :global(.t-state) {
+    font-family: var(--font-mono);
+    font-size: 0.66rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+  }
+  .tip :global(.t-state.stuck) {
+    color: var(--shu);
+  }
+  .tip :global(.t-state.open) {
+    color: var(--gold);
+  }
+  .tip :global(.bars) {
+    display: grid;
+    grid-template-columns: 3.6rem 1fr 2rem;
+    gap: 0.25rem 0.6rem;
+    align-items: center;
+    margin-top: 0.55rem;
+    font-family: var(--font-mono);
+    font-size: 0.6rem;
+    color: var(--ink-3);
+    letter-spacing: 0.06em;
+  }
+  .tip :global(.bar) {
+    height: 1px;
+    background: var(--hair-2);
+    position: relative;
+  }
+  .tip :global(.bar i) {
+    position: absolute;
+    inset: -0.5px auto -0.5px 0;
+    background: var(--ink-2);
+  }
+  .tip :global(.bar.hot i) {
+    background: var(--shu);
+  }
+  .tip :global(.t-note) {
+    color: var(--ink-3);
+    font-size: 0.85rem;
+    margin-top: 0.4rem;
+  }
+
+  .dock {
+    position: absolute;
+    left: 50%;
+    bottom: calc(1.1rem + env(safe-area-inset-bottom));
+    transform: translate(-50%, 10px);
+    z-index: 6;
+    width: min(1120px, calc(100vw - 2 * var(--gutter)));
+    display: grid;
+    grid-template-columns: auto auto 1fr auto;
+    grid-template-rows: auto auto;
+    align-items: center;
+    gap: 0.7rem 1.4rem;
+    padding: 0.8rem 1.1rem 0.85rem;
+    background: var(--glass);
+    border: 1px solid var(--hair);
+    backdrop-filter: blur(16px) saturate(1.1);
+    -webkit-backdrop-filter: blur(16px) saturate(1.1);
+    opacity: 0;
+    transition: opacity 1.2s var(--ease) 0.5s, transform 1.2s var(--ease) 0.5s;
+  }
+  .ready .dock {
+    opacity: 1;
+    transform: translate(-50%, 0);
+  }
+  .breath {
+    grid-row: span 2;
+    appearance: none;
+    background: none;
+    border: 0;
+    color: var(--ink-2);
+    display: grid;
+    justify-items: center;
+    gap: 0.2rem;
+    cursor: pointer;
+    padding: 0 0.3rem;
+    width: 4.2rem;
+  }
+  .breath :global(.breath-enso) {
+    transition: transform 120ms linear;
+    transform-origin: 50% 50%;
+  }
+  .breath-label {
+    font-size: 0.58rem;
+  }
+  .breath.manual .breath-label {
+    color: var(--gold);
+  }
+  .tools {
+    display: flex;
+    gap: 0.15rem;
+  }
+  .tool,
+  .chip {
+    appearance: none;
+    font-family: var(--font-mono);
+    font-size: 0.64rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    background: transparent;
+    border: 1px solid transparent;
+    border-radius: 999px;
+    padding: 0.42em 0.85em;
+    cursor: pointer;
+    transition: color 250ms var(--ease), border-color 250ms var(--ease), background 250ms var(--ease);
+    white-space: nowrap;
+  }
+  .tool:hover,
+  .chip:hover {
+    color: var(--ink);
+  }
+  .tool.is-active,
+  .chip.is-active {
+    color: var(--ink);
+    border-color: var(--hair-2);
+    background: color-mix(in srgb, var(--ink) 6%, transparent);
+  }
+  .chip.is-active {
+    color: var(--shu);
+    border-color: color-mix(in srgb, var(--shu) 45%, transparent);
+  }
+  .chip[data-warmth].is-active,
+  .chip[data-rest].is-active {
+    color: var(--gold);
+    border-color: color-mix(in srgb, var(--gold) 45%, transparent);
+  }
+  .age {
+    grid-column: 3;
+    grid-row: 1 / span 2;
+    padding: 0 0.4rem;
+  }
+  .age-row {
+    display: flex;
+    align-items: baseline;
+    gap: 0.8rem;
+  }
+  .age-out {
+    font-size: 1rem;
+    color: var(--ink);
+    min-width: 2.2rem;
+  }
+  .life {
+    margin-left: auto;
+    padding: 0.3em 0.6em;
+  }
+  .scenarios {
+    grid-column: 2;
+    grid-row: 2;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.1rem;
+  }
+  .census {
+    grid-column: 4;
+    grid-row: 1 / span 2;
+    display: grid;
+    grid-template-columns: repeat(2, auto);
+    gap: 0.2rem 1rem;
+    border-left: 1px solid var(--hair);
+    padding-left: 1.2rem;
+  }
+  .census div {
+    display: grid;
+  }
+  .census .num {
+    font-size: 0.95rem;
+    color: var(--shu);
+    line-height: 1.1;
+  }
+  .census .mono {
+    font-size: 0.56rem;
+    color: var(--ink-3);
+  }
+
+  @media (max-width: 1100px) {
+    .panel.right {
+      display: none;
+    }
+    .dock {
+      grid-template-columns: auto 1fr;
+    }
+    .tools,
+    .scenarios {
+      grid-column: 2;
+    }
+    .age {
+      grid-column: 1 / -1;
+      grid-row: 3;
+    }
+    .census {
+      display: none;
+    }
+  }
+  @media (max-width: 760px) {
+    .panel.left {
+      display: none;
+    }
+    .dock {
+      padding: 0.6rem 0.7rem;
+      gap: 0.4rem 0.6rem;
+    }
+    .scenarios {
+      overflow-x: auto;
+      flex-wrap: nowrap;
+      scrollbar-width: none;
+    }
+  }
+</style>

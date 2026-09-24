@@ -1,0 +1,21 @@
+---
+import { ensoPath } from '../lib/enso';
+interface Props {
+  size?: number;
+  seed?: number;
+  weight?: number;
+  class?: string;
+  label?: string;
+}
+const { size = 40, seed = 3, weight = 0.085, class: cls = '', label } = Astro.props;
+const d = ensoPath({ size: 100, seed, weight });
+---
+<svg
+  class:list={['enso', cls]}
+  width={size}
+  height={size}
+  viewBox="0 0 100 100"
+  role={label ? 'img' : 'presentation'}
+  aria-label={label}
+  aria-hidden={label ? undefined : 'true'}
+><path d={d} fill="currentColor"></path></svg>

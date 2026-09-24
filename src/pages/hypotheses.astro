@@ -1,0 +1,278 @@
+---
+import Base from '../layouts/Base.astro';
+import PageHead from '../components/PageHead.astro';
+import { HYPOTHESES } from '../data/hypotheses';
+import { refById } from '../data/references';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const ROWS: [keyof (typeof HYPOTHESES)[number], string][] = [
+  ['layer', 'Where is it?'],
+  ['substance', 'What is it made of?'],
+  ['holds', 'What holds it?'],
+  ['releases', 'What releases it?'],
+  ['timescale', 'On what timescale?'],
+  ['breath', 'Why does breath work?'],
+  ['travel', 'Why does it travel?'],
+  ['age', 'Why more with age?'],
+  ['test', 'Its sharpest test'],
+  ['status', 'Where the evidence stands'],
+];
+---
+<Base title="Hypotheses" current="hypotheses" description="What is a knot? Seven candidate answers — stuck perforators, the vascular latch, the integrated trigger point, fascial densification, nerve sensitivity, central sensitisation, and attention — each at its strongest.">
+  <PageHead kicker="Hypotheses" title="What is a knot?" glyph="説">
+    Seven answers, each given at its strongest — with its own best evidence and its own sharpest test.
+  </PageHead>
+
+  <div class="hyps">
+    {
+      HYPOTHESES.map((h, i) => (
+        <section class="hyp" id={h.id} style={`--c:${h.color}`}>
+          <div class="meta">
+            <span class="n mono">{String(i + 1).padStart(2, '0')}</span>
+            <span class="dot" />
+            <p class="who mono lower">
+              {h.who} · {h.year}
+            </p>
+            {h.ready ? (
+              <a class="btn" href={`${base}/atlas/?h=${h.id}`}>
+                View in atlas
+              </a>
+            ) : (
+              <span class="mono lower faint">atlas view in preparation</span>
+            )}
+          </div>
+          <div class="main">
+            <h2>{h.name}</h2>
+            <p class="short">{h.short}</p>
+            {h.body.map((p) => (
+              <p set:html={p} />
+            ))}
+            <dl>
+              {ROWS.map(([k, label]) => (
+                <>
+                  <dt>{label}</dt>
+                  <dd>{h[k] as string}</dd>
+                </>
+              ))}
+            </dl>
+            <p class="refs mono lower">
+              {h.refs
+                .map((r) => refById(r))
+                .filter(Boolean)
+                .map((r) => (
+                  <a href={`${base}/library/#${r!.id}`}>
+                    {r!.authors.split(',')[0].split(' (')[0]} {r!.year > 0 ? r!.year : ''}
+                  </a>
+                ))}
+            </p>
+          </div>
+        </section>
+      ))
+    }
+  </div>
+
+  <section class="compare">
+    <p class="eyebrow">Side by side</p>
+    <h2>The same questions, seven ways</h2>
+    <div class="table-wrap" role="region" aria-label="Comparison of hypotheses" tabindex="0">
+      <table>
+        <thead>
+          <tr>
+            <th scope="col"><span class="visually-hidden">Question</span></th>
+            {
+              HYPOTHESES.map((h) => (
+                <th scope="col" style={`--c:${h.color}`}>
+                  <span class="dot" />
+                  {h.name}
+                </th>
+              ))
+            }
+          </tr>
+        </thead>
+        <tbody>
+          {
+            ROWS.map(([k, label]) => (
+              <tr>
+                <th scope="row">{label}</th>
+                {HYPOTHESES.map((h) => (
+                  <td>{h[k] as string}</td>
+                ))}
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+    <p class="note">
+      The positions are not all rivals. The perforator essay itself reads Johnson’s latch as the live form of the same clinging
+      whose stored form is a stuck perforator, and agrees with the nerve and densification views about two of the three parts of
+      its bundle. Where they part is testable.
+    </p>
+  </section>
+</Base>
+
+<style>
+  .hyps {
+    max-width: 68rem;
+    margin: 0 auto;
+    padding: 0 var(--gutter);
+  }
+  .hyp {
+    display: grid;
+    grid-template-columns: 12rem minmax(0, 1fr);
+    gap: 2.5rem;
+    padding: 4.5rem 0;
+    border-top: 1px solid var(--hair);
+    scroll-margin-top: 5rem;
+  }
+  .meta {
+    display: grid;
+    align-content: start;
+    justify-items: start;
+    gap: 0.9rem;
+  }
+  .n {
+    color: var(--ink-3);
+  }
+  .dot {
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    background: var(--c);
+    box-shadow: 0 0 14px color-mix(in srgb, var(--c) 70%, transparent);
+  }
+  .who {
+    margin: 0;
+    font-size: 0.72rem;
+    color: var(--ink-3);
+  }
+  .meta .btn {
+    text-decoration: none;
+  }
+  .main h2 {
+    font-size: clamp(2rem, 3.6vw, 3rem);
+    margin-bottom: 1.2rem;
+  }
+  .short {
+    font-family: var(--font-display);
+    font-size: 1.45rem;
+    font-style: italic;
+    font-weight: 300;
+    line-height: 1.35;
+    color: var(--ink);
+    max-width: 40rem;
+  }
+  .main > p {
+    color: var(--ink-2);
+    max-width: 42rem;
+  }
+  dl {
+    display: grid;
+    grid-template-columns: 11rem minmax(0, 1fr);
+    gap: 0.9rem 1.5rem;
+    margin: 2.2rem 0 1.6rem;
+    padding-top: 1.6rem;
+    border-top: 1px solid var(--hair);
+    max-width: 48rem;
+  }
+  dt {
+    font-family: var(--font-mono);
+    font-size: 0.64rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    padding-top: 0.35rem;
+  }
+  dd {
+    margin: 0;
+    color: var(--ink-2);
+    font-size: 1.02rem;
+    line-height: 1.55;
+  }
+  .refs {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.4rem 1.2rem;
+    font-size: 0.72rem;
+    color: var(--ink-3);
+  }
+  .refs a {
+    color: var(--ink-3);
+  }
+  .compare {
+    max-width: 96rem;
+    margin: 4rem auto 0;
+    padding: 5rem var(--gutter) 0;
+    border-top: 1px solid var(--hair);
+  }
+  .compare h2 {
+    font-size: clamp(2rem, 3.6vw, 3rem);
+    margin: 0.8rem 0 2rem;
+  }
+  .table-wrap {
+    overflow-x: auto;
+    border-top: 1px solid var(--hair-2);
+  }
+  table {
+    border-collapse: collapse;
+    min-width: 88rem;
+    font-size: 0.9rem;
+    line-height: 1.45;
+  }
+  th,
+  td {
+    text-align: left;
+    vertical-align: top;
+    padding: 1rem 1rem 1rem 0;
+    border-bottom: 1px solid var(--hair);
+  }
+  thead th {
+    font-family: var(--font-display);
+    font-weight: 400;
+    font-size: 1.1rem;
+    line-height: 1.2;
+    color: var(--ink);
+    width: 12rem;
+  }
+  thead th .dot {
+    display: block;
+    margin-bottom: 0.6rem;
+    width: 7px;
+    height: 7px;
+  }
+  tbody th {
+    font-family: var(--font-mono);
+    font-weight: 400;
+    font-size: 0.62rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    width: 9rem;
+  }
+  td {
+    color: var(--ink-2);
+  }
+  .note {
+    max-width: 44rem;
+    color: var(--ink-2);
+    margin-top: 2rem;
+  }
+  @media (max-width: 860px) {
+    .hyp {
+      grid-template-columns: 1fr;
+      gap: 1.2rem;
+    }
+    .meta {
+      grid-auto-flow: column;
+      align-items: center;
+      justify-content: start;
+    }
+    dl {
+      grid-template-columns: 1fr;
+      gap: 0.3rem;
+    }
+    dd {
+      margin-bottom: 0.8rem;
+    }
+  }
+</style>

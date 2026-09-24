@@ -1,0 +1,72 @@
+---
+import Enso from './Enso.astro';
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+---
+<footer class="site-footer">
+  <div class="inner">
+    <Enso size={44} seed={11} class="mark" />
+    <p class="line">
+      An atlas of the body’s held places. A hypothesis, drawn carefully; not medical advice.
+    </p>
+    <ul class="links">
+      <li><a href="https://ejhong.substack.com/p/knots-of-existence-hypotheses">The essay</a></li>
+      <li><a href="https://ejhong.substack.com/p/knots-of-existence-and-vasocomputation">The original essay</a></li>
+      <li><a href={`${base}/library/`}>Library</a></li>
+      <li><a href={`${base}/about/`}>About &amp; credits</a></li>
+      <li><a href="https://github.com/ejhong/knots">Source</a></li>
+    </ul>
+    <p class="fine mono lower">
+      Body: MakeHuman (CC0). Perforator positions are representative, not a map of any one person.
+    </p>
+  </div>
+</footer>
+<style>
+  .site-footer {
+    border-top: 1px solid var(--hair);
+    margin-top: 8rem;
+    padding: 4rem var(--gutter) 5rem;
+  }
+  .inner {
+    max-width: 72rem;
+    margin: 0 auto;
+    display: grid;
+    gap: 1.5rem;
+    justify-items: start;
+  }
+  .site-footer :global(.mark) {
+    color: var(--ink-3);
+  }
+  .line {
+    font-family: var(--font-display);
+    font-size: 1.5rem;
+    font-weight: 300;
+    font-style: italic;
+    color: var(--ink-2);
+    margin: 0;
+    max-width: 34rem;
+  }
+  .links {
+    list-style: none;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.75rem;
+    padding: 0;
+    margin: 0;
+  }
+  .links a {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    text-decoration: none;
+  }
+  .links a:hover {
+    color: var(--ink);
+  }
+  .fine {
+    color: var(--ink-4);
+    font-size: 0.72rem;
+    margin: 0;
+  }
+</style>
