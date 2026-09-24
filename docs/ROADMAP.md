@@ -34,10 +34,11 @@ A living list. Checked items are live.
 ## Hypotheses in the atlas
 - [x] Vascular latch (Johnson): latched arterioles inside muscle (same zones/age curve as perforator knots)
 - [x] True-scale cross-section showing where each hypothesis puts the knot (atlas + Hypotheses page)
-- [ ] Integrated trigger point: taut bands at endplate zones; referred-pain zones; local twitch
-- [ ] Fascial densification (Stecco): patches in the loose layer; friction and heat
-- [ ] Peripheral nerve: sensitised trunks and entrapment sites
-- [ ] Perception (sensitisation and attention): widespread lowered thresholds; knots follow attention; overbreathing sparks everywhere
+- [x] Integrated trigger point: knots in taut bands of the muscles Travell and Simons mapped (46 muscles, both sides)
+- [x] Fascial densification: soft patches in the gliding plane, gathered in the stress zones
+- [x] Peripheral nerve: sensitised nerves where they pierce the fascia, beside every medium and major perforator
+- [x] Perception: places felt on the skin with nothing beneath, coming and going
+- [ ] Referred-pain zones for trigger points; entrapment sites named for nerves
 
 ## Maps
 - [x] Channels (12 + Du/Ren) and all 361 acupoints (WHO 2008), placed by proportional cun on landmarks; hover card with names, place and nearest anatomy; solo a channel; the anatomy quiets when a map is on (compare chips bring a layer back)

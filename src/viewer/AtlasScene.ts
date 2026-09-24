@@ -37,6 +37,17 @@ import { LAYER_UNIFORMS, WINDOW_UNIFORMS } from './body/layerModel';
 import { KnotEmbers } from './perforators/KnotEmbers';
 import { MERIDIANS } from './data/meridians';
 import { interiorSites } from './data/viscera';
+import { TRIGGER_CLUSTERS } from './data/triggerPoints';
+import { SiteKnots, type KnotSite, type SiteStyle } from './hypotheses/SiteKnots';
+import { mulberry32 } from './lib/random';
+
+/** Theories whose knots sit at sites, and how each is drawn. */
+const SITE_STYLES: Record<string, SiteStyle> = {
+  'trigger-point': { size: 0.0095, band: 0.016 },
+  densification: { size: 0.036, patch: true },
+  nerve: { size: 0.0095 },
+  central: { size: 0.011, twinkle: true },
+};
 import { MeridianMap, type MapLine, type MapPoint } from './maps/MeridianMap';
 import { TreeLines } from './perforators/TreeLines';
 
@@ -73,6 +84,8 @@ export class AtlasScene {
   channels!: Channels;
   graph!: MeshGraph;
   latch!: LatchKnots;
+  /** Knots of the site theories (trigger points, densification, nerves, perception), built when first chosen. */
+  theories: Partial<Record<string, SiteKnots>> = {};
   /** Chinese medicine's channels and points, built the first time they are shown. */
   meridians?: MeridianMap;
   /** Skin positions of the reference figure (where every locator is resolved). */
@@ -254,6 +267,7 @@ export class AtlasScene {
       this.channels.applyTheme(t);
       this.latch.applyTheme(t);
       this.meridians?.applyTheme(t);
+      for (const k of Object.values(this.theories)) k!.applyTheme(t);
     });
     this.engine.onFrame(({ time, dt }) => {
       this.interaction.update(dt);
@@ -348,13 +362,135 @@ export class AtlasScene {
   settle(age: number) {
     this.sim.settle(age);
     this.latch.settle(age);
+    for (const t of Object.values(this.theories)) t!.settle(age);
     this.syncKnots();
   }
 
-  /** Chooses whose knots are drawn: 'perforator' or 'latch' (others to come). */
+  /** Chooses whose knots are drawn: a theory's id (see src/data/hypotheses.ts). */
   setHypothesis(id: string) {
     this.hypothesis = id;
+    if (SITE_STYLES[id]) this.ensureTheory(id);
     this.applyKnotVisibility();
+  }
+
+  /** Builds a site theory's knots: sampled where that theory says knots are. */
+  private ensureTheory(id: string): SiteKnots {
+    const built = this.theories[id];
+    if (built) return built;
+    const k = new SiteKnots(this.theorySites(id), SITE_STYLES[id], this.body.triangles, this.depth, this.supDepth, this.liftWeight);
+    k.refresh(this.body);
+    k.settle(this.sim.age);
+    k.applyTheme(this.engine.theme);
+    this.engine.scene.add(k.lines, k.points);
+    this.theories[id] = k;
+    this.applyQuiet();
+    return k;
+  }
+
+  private theorySites(id: string): KnotSite[] {
+    const zone = (p: Vec3) => this.zoneField(p[0], p[1], p[2]);
+    switch (id) {
+      case 'trigger-point': {
+        // Travell and Simons' muscles: candidate sites scattered around each
+        // muscle's usual region, each with its taut band along the fibres.
+        const rng = mulberry32(41);
+        const sites: KnotSite[] = [];
+        for (const c of TRIGGER_CLUSTERS)
+          for (const side of ['l', 'r'] as const) {
+            const a = this.locator.resolve(side === 'r' ? mirrorLocator(c.at) : c.at);
+            if (!a) {
+              console.warn('trigger point did not resolve', c.muscle, side);
+              continue;
+            }
+            const { p, n } = this.refPoint(a);
+            const u = new Vector3(0, 1, 0).cross(n);
+            if (u.lengthSq() < 1e-4) u.set(1, 0, 0).cross(n);
+            u.normalize();
+            const v = n.clone().cross(u).normalize();
+            const dir: Vec3 = side === 'r' ? [-c.dir[0], c.dir[1], c.dir[2]] : c.dir;
+            for (let k = 0; k < c.n; k++) {
+              const r = Math.sqrt(rng()) * c.spread;
+              const t = rng() * Math.PI * 2;
+              const q = p.clone().addScaledVector(u, Math.cos(t) * r).addScaledVector(v, Math.sin(t) * r);
+              const anchor = this.locator.closest([q.x, q.y, q.z]);
+              if (anchor) sites.push({ anchor, mode: 'muscle', extra: c.deep, band: dir, weight: 0.35 + 0.65 * zone([q.x, q.y, q.z]) });
+            }
+          }
+        return sites;
+      }
+      case 'densification':
+        // Patches of thickened hyaluronan in the gliding plane, gathered where stress is held.
+        return this.sampleSkin(900, 43, (p) => 0.15 + 0.85 * zone(p)).map(({ anchor, w }) => ({ anchor, mode: 'plane' as const, weight: w }));
+      case 'nerve': {
+        // The nerve of every medium and major perforator, where it pierces its fascia.
+        const L = this.ladder;
+        const sites: KnotSite[] = [];
+        for (let i = 0; i < L.count; i++) {
+          if (L.level[i] < 1) continue;
+          sites.push({
+            anchor: { tri: L.tri[i], u: L.uv[i * 2], v: L.uv[i * 2 + 1] },
+            mode: L.level[i] === 2 ? 'deep' : 'sup',
+            // The nerve drawn rising through the deep fascia at the major sites only.
+            nerve: L.level[i] === 2,
+            weight: this.sim.susc[i],
+          });
+        }
+        return sites;
+      }
+      default:
+        // Percepts on the skin, nothing beneath: where attention and threat gather.
+        return this.sampleSkin(2600, 47, (p) => 0.2 + 0.8 * zone(p)).map(({ anchor, w }) => ({ anchor, mode: 'skin' as const, weight: w }));
+    }
+  }
+
+  /** A reference-figure position and surface normal for an anchor. */
+  private refPoint(a: Anchor): { p: Vector3; n: Vector3 } {
+    const T = this.body.triangles;
+    const R = this.refSkin;
+    const A = new Vector3().fromArray(R, T[a.tri * 3] * 3);
+    const Bv = new Vector3().fromArray(R, T[a.tri * 3 + 1] * 3);
+    const C = new Vector3().fromArray(R, T[a.tri * 3 + 2] * 3);
+    const w = 1 - a.u - a.v;
+    const p = A.clone().multiplyScalar(w).addScaledVector(Bv, a.u).addScaledVector(C, a.v);
+    const n = Bv.clone().sub(A).cross(C.clone().sub(A)).normalize();
+    return { p, n };
+  }
+
+  /** Skin anchors spread by area and kept with probability `weight`. */
+  private sampleSkin(count: number, seed: number, weight: (p: Vec3) => number): { anchor: Anchor; w: number }[] {
+    const T = this.body.triangles;
+    const R = this.refSkin;
+    const nt = T.length / 3;
+    const cdf = new Float64Array(nt);
+    let acc = 0;
+    const e1 = new Vector3();
+    const e2 = new Vector3();
+    for (let t = 0; t < nt; t++) {
+      const a = new Vector3().fromArray(R, T[t * 3] * 3);
+      e1.fromArray(R, T[t * 3 + 1] * 3).sub(a);
+      e2.fromArray(R, T[t * 3 + 2] * 3).sub(a);
+      acc += 0.5 * e1.cross(e2).length();
+      cdf[t] = acc;
+    }
+    const rng = mulberry32(seed);
+    const out: { anchor: Anchor; w: number }[] = [];
+    for (let tries = 0; out.length < count && tries < count * 40; tries++) {
+      const r = rng() * acc;
+      let lo = 0;
+      let hi = nt - 1;
+      while (lo < hi) {
+        const mid = (lo + hi) >> 1;
+        if (cdf[mid] < r) lo = mid + 1;
+        else hi = mid;
+      }
+      const r1 = Math.sqrt(rng());
+      const r2 = rng();
+      const anchor = { tri: lo, u: r1 * (1 - r2), v: r1 * r2 };
+      const { p } = this.refPoint(anchor);
+      const w = weight([p.x, p.y, p.z]);
+      if (rng() < w) out.push({ anchor, w });
+    }
+    return out;
   }
 
   private zeroKnots?: Float32Array;
@@ -370,6 +506,7 @@ export class AtlasScene {
     // the perforators themselves are hidden.
     this.cloud.points.visible = this.perforatorsOn || (this.knotsOn && perf);
     this.embers.points.visible = this.knotsOn && perf;
+    for (const [id, t] of Object.entries(this.theories)) t!.setVisible(this.knotsOn && this.hypothesis === id);
     this.rootMarkers.material.uniforms.uKnotAlpha.value = this.knotsOn && perf ? 1 : 0;
     this.latch.setVisible(this.knotsOn && this.hypothesis === 'latch');
   }
@@ -490,6 +627,7 @@ export class AtlasScene {
     this.channels?.refresh(this.body, this.depth);
     this.latch?.refresh(this.body);
     this.meridians?.refresh(this.body);
+    for (const k of Object.values(this.theories)) k!.refresh(this.body);
     this.updateWindow();
     for (const cb of this.shapeListeners) cb();
   }
@@ -529,6 +667,7 @@ export class AtlasScene {
       this.layers.floorMaterial,
       this.layers.sheetMaterial,
       ...(this.meridians ? [this.meridians.lineMaterial, this.meridians.pointMaterial] : []),
+      ...Object.values(this.theories).flatMap((k) => [k!.pointMaterial, k!.lineMaterial]),
     ];
     for (const m of mats) {
       m.uniforms.uClipOn.value = plane ? 1 : 0;
@@ -620,6 +759,12 @@ export class AtlasScene {
     if (this.meridians) {
       this.meridians.pointMaterial.uniforms.uProjScale.value = projScale;
       this.meridians.pointMaterial.uniforms.uPixelRatio.value = pr;
+    }
+    for (const k of Object.values(this.theories)) {
+      const tu = k!.pointMaterial.uniforms;
+      tu.uProjScale.value = projScale;
+      tu.uPixelRatio.value = pr;
+      tu.uTime.value = time;
     }
   }
 
@@ -730,6 +875,10 @@ export class AtlasScene {
     u(this.rootMarkers.material, vessels);
     u(this.channels.lineMaterial, channels);
     u(this.channels.beadMaterial, channels);
+    for (const k of Object.values(this.theories)) {
+      u(k!.pointMaterial, knots);
+      u(k!.lineMaterial, knots);
+    }
   }
 
   /** Where a root sits on the current figure. */

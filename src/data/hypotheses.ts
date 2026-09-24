@@ -114,7 +114,7 @@ export const HYPOTHESES: Hypothesis[] = [
       'Its strongest support: ultrasound and elastography show discrete, stiff, hypoechoic nodules with abnormal blood flow (Sikdar 2009); microdialysis finds an acidic, mediator-rich milieu at active points (Shah 2005); and needle recordings show spontaneous activity at the nidus that mental stress turns up (Hubbard & Berkoff 1993; McNulty 1994).',
     ],
     refs: ['travell1983', 'gerwin2004', 'sikdar2009', 'shah2005', 'hubbard1993', 'mcnulty1994'],
-    ready: false,
+    ready: true,
   },
   {
     id: 'densification',
@@ -137,7 +137,7 @@ export const HYPOTHESES: Hypothesis[] = [
       'The Steccos’ group in Padua described the hyaluronan-rich loose tissue between fascial layers and proposed its densification as a source of myofascial pain (2011). On the perforator view the same densification is the collar around each perforator: the two agree about the gel, and differ about where it matters.',
     ],
     refs: ['stecco2011', 'stecco2014', 'langevin2011'],
-    ready: false,
+    ready: true,
   },
   {
     id: 'nerve',
@@ -160,7 +160,7 @@ export const HYPOTHESES: Hypothesis[] = [
       'John Quintner and Milton Cohen (1994) argued that the idea of myofascial pain misattributes to muscle what arises in peripheral nerves, and with Geoffrey Bove (2015) they criticised the circularity of trigger-point theory. The perforator view agrees about the nerve, and adds the vessel and the collar that travel with it.',
     ],
     refs: ['quintner1994', 'quintner2015', 'yoshinaga2025'],
-    ready: false,
+    ready: true,
   },
   {
     id: 'central',
@@ -184,7 +184,7 @@ export const HYPOTHESES: Hypothesis[] = [
       'The same view answers the stranger reports. Overbreathing produces exactly the tingling sparks people describe; attention amplifies whatever it rests on; a muscle inhibited by pain feels detached; sleep loss distorts the body map. None of this makes the sensations imaginary: they are real, made by ordinary physiology rather than by a hidden structure. It is the physician’s first answer, and the account every other view has to beat.',
     ],
     refs: ['woolf2011', 'lindahl2017'],
-    ready: false,
+    ready: true,
   },
 ];
 

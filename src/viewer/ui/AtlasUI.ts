@@ -232,10 +232,19 @@ function fitCamera(scene: AtlasScene, previousHeight: number) {
 function bindCensus(panel: HTMLElement, scene: AtlasScene) {
   const els = [0, 1, 2, 3].map((i) => panel.querySelector<HTMLElement>(`[data-c="${i}"]`)!);
   const keys = [0, 1, 2, 3].map((i) => els[i].nextElementSibling as HTMLElement);
+  // What each theory counts, when it isn't the perforators' four rungs.
+  const SINGLE: Record<string, [() => number, string]> = {
+    latch: [() => scene.latch.census(), 'latched'],
+    'trigger-point': [() => scene.theories['trigger-point']?.census() ?? 0, 'trigger points'],
+    densification: [() => scene.theories.densification?.census() ?? 0, 'densified patches'],
+    nerve: [() => scene.theories.nerve?.census() ?? 0, 'sensitised nerves'],
+    central: [() => scene.theories.central?.census() ?? 0, 'places felt'],
+  };
   const update = () => {
-    if (scene.hypothesis === 'latch') {
-      const vals = [fmt.format(scene.latch.census()), '—', '—', '—'];
-      const names = ['latched', '', '', ''];
+    const single = SINGLE[scene.hypothesis];
+    if (single) {
+      const vals = [fmt.format(single[0]()), '—', '—', '—'];
+      const names = [single[1], '', '', ''];
       vals.forEach((v, i) => {
         els[i].textContent = v;
         keys[i].textContent = names[i];
