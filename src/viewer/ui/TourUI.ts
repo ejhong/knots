@@ -45,6 +45,8 @@ export function mountTour(viz: HTMLElement, panel: HTMLElement) {
   scene.ready.then(() => {
     ready = true;
     const engine = scene.engine;
+    // The introduction is for looking: the chapters play their own scenes.
+    scene.interaction.tool = 'look';
     scene.setLift(0);
     scene.setVisible('channels', false);
     engine.start();

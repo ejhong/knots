@@ -35,6 +35,8 @@ import {
 } from './body/skeleton';
 import { LAYER_UNIFORMS, WINDOW_UNIFORMS } from './body/layerModel';
 import { KnotEmbers } from './perforators/KnotEmbers';
+import { MoveTrails } from './perforators/MoveTrails';
+import { layerOffsets } from './body/layerModel';
 import { MERIDIANS, ORGAN, pointName } from './data/meridians';
 import { SINEWS } from './data/sinew';
 import { interiorSites } from './data/viscera';
@@ -88,6 +90,9 @@ export class AtlasScene {
   channels!: Channels;
   graph!: MeshGraph;
   latch!: LatchKnots;
+  private rng = mulberry32(97);
+  /** Lines from released knots to where their hold went. */
+  readonly trails = new MoveTrails();
   /** Knots of the site theories (trigger points, densification, nerves, perception), built when first chosen. */
   theories: Partial<Record<string, SiteKnots>> = {};
   /** Traditional (and clinical) maps, each built the first time it is shown. */
@@ -257,6 +262,7 @@ export class AtlasScene {
       this.layers.sheet,
       this.latch.lines,
       this.latch.points,
+      this.trails.lines,
     );
     this.layers.sheet.visible = true;
     this.trees.setInsets(this.depth);
@@ -271,6 +277,7 @@ export class AtlasScene {
       this.embers.applyTheme(t);
       this.channels.applyTheme(t);
       this.latch.applyTheme(t);
+      this.trails.applyTheme(t);
       for (const m of Object.values(this.maps)) m!.applyTheme(t);
       for (const k of Object.values(this.theories)) k!.applyTheme(t);
     });
@@ -278,6 +285,7 @@ export class AtlasScene {
       this.interaction.update(dt);
       this.stepSim(dt);
       this.pulses.update(dt);
+      this.trails.update(dt);
       this.frame(time);
     });
     // A dissection window on the upper back, between the shoulder blades.
@@ -643,7 +651,11 @@ export class AtlasScene {
   }
 
   private stepSim(dt: number) {
-    if (!this.simRunning) return;
+    if (!this.simRunning) {
+      // Looking only: just let release stars and arrivals fade.
+      if (this.sim.tickEffects(dt)) this.syncKnots();
+      return;
+    }
     this.simAccumulator += dt;
     if (this.simAccumulator < 1 / 30) return;
     const step = this.simAccumulator;
@@ -665,6 +677,7 @@ export class AtlasScene {
       this.channels.beadMaterial,
       this.latch.pointMaterial,
       this.latch.lineMaterial,
+      this.trails.material,
       this.trees.material,
       this.stalks.lineMaterial,
       this.stalks.collarMaterial,
@@ -999,6 +1012,82 @@ export class AtlasScene {
       u(k!.pointMaterial, knots);
       u(k!.lineMaterial, knots);
     }
+  }
+
+  /**
+   * Releases knots under a point on the skin: `amount` of pressure at the
+   * centre (1 ≈ one click), falling off over `radius`. What happens next is
+   * what the chosen theory predicts.
+   */
+  releaseAt(p: Vector3, radius: number, amount: number) {
+    if (!this.knotsOn) return;
+    if (this.hypothesis === 'perforator') this.releasePerforators(p, radius, amount);
+    else if (this.hypothesis === 'latch') this.latch.releaseAt(p, radius, amount);
+    else this.theories[this.hypothesis]?.releaseAt(p, radius, amount, this.rng);
+  }
+
+  /** What a released knot passes on, how weak it may get before it dissolves, and how far it reaches, by rung. */
+  private static REPLACE = 0.8;
+  private static MIN_HOLD = 0.18;
+  private static REACH = [0.012, 0.035, 0.08];
+
+  /**
+   * The perforator view. A released knot's hold passes at once, a little
+   * weaker, to a nearby perforator of its size — on its own tree by
+   * preference — which becomes a knot or grows: so knots move, stay local,
+   * and thin out as an area is worked. A release never sets off another.
+   */
+  private releasePerforators(p: Vector3, radius: number, amount: number) {
+    const sim = this.sim;
+    const s2 = 2 * (radius * 0.6) ** 2;
+    const released: [number, number][] = [];
+    this.grid.query(p.x, p.y, p.z, radius, (i, d) => {
+      if (sim.hold[i] <= 0) return;
+      const h = sim.pressKnot(i, amount * Math.exp(-(d * d) / s2));
+      if (h > 0) released.push([i, h]);
+    });
+    if (!released.length) return;
+    const gone = new Set(released.map(([i]) => i));
+    for (const [i, h] of released) this.replaceKnot(i, h, gone);
+    sim.computeOutputs();
+    this.syncKnots();
+  }
+
+  private replaceKnot(i: number, h: number, gone: Set<number>) {
+    const h2 = h * AtlasScene.REPLACE;
+    if (h2 < AtlasScene.MIN_HOLD) return;
+    const L = this.ladder;
+    const lvl = L.level[i];
+    const P = this.cloud.positions;
+    const R = AtlasScene.REACH[lvl];
+    const s2 = 2 * (R * 0.55) ** 2;
+    const cand: number[] = [];
+    const w: number[] = [];
+    let total = 0;
+    this.grid.query(P[i * 3], P[i * 3 + 1], P[i * 3 + 2], R, (j, d) => {
+      if (j === i || L.level[j] !== lvl || gone.has(j)) return;
+      let wt = (0.2 + 0.8 * this.sim.susc[j]) * Math.exp(-(d * d) / s2);
+      if (L.root[j] === L.root[i]) wt *= 1.6;
+      if (this.sim.hold[j] <= 0) wt *= 1.3;
+      cand.push(j);
+      w.push(wt);
+      total += wt;
+    });
+    if (!cand.length || total <= 0) return;
+    let r = this.rng() * total;
+    let k = 0;
+    while (k < cand.length - 1 && (r -= w[k]) > 0) k++;
+    const j = cand[k];
+    const cur = this.sim.hold[j];
+    this.sim.setHold(j, Math.min(1, cur > 0 ? Math.max(cur, h2) + 0.3 * Math.min(cur, h2) : h2));
+    this.sim.arrive[j] = 1;
+    // A trail between the two, where they are drawn (lifted with the skin).
+    const N = this.cloud.normals;
+    const at = (k: number) => {
+      const off = layerOffsets(0, 0, this.perfLift[k]).skin + 0.0006;
+      return [0, 1, 2].map((c) => P[k * 3 + c] + N[k * 3 + c] * off);
+    };
+    this.trails.add(at(i), at(j));
   }
 
   /** Where a root sits on the current figure. */

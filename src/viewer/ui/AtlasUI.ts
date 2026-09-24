@@ -89,8 +89,8 @@ export function mountAtlas(viz: HTMLElement, panel: HTMLElement) {
   scene.ready.then(() => {
     const engine = scene.engine;
     scene.simRunning = false;
-    scene.interaction.tool = 'look';
-    canvas.style.cursor = 'grab';
+    scene.interaction.tool = 'release';
+    canvas.style.cursor = ringCursor(theme === 'paper');
     scene.settle(34);
     scene.setWindowOn(false);
     engine.setPose({ position: [-1.02, 1.42, -1.95], target: [0.03, 1.16, -0.02], fov: 30 });
@@ -149,13 +149,10 @@ function bindLayers(panel: HTMLElement, scene: AtlasScene) {
   const lift = panel.querySelector<HTMLInputElement>('[data-lift]')!;
   lift.addEventListener('input', () => scene.setLift(Number(lift.value)));
 
-  // The dissection window: toggle, and double-click the body to move it.
+  // The dissection window: toggle, and shift-click the body to open it there.
   const win = panel.querySelector<HTMLInputElement>('[data-window]')!;
   win.addEventListener('change', () => scene.setWindowOn(win.checked));
-  scene.engine.canvas.addEventListener('dblclick', (e) => {
-    const r = scene.engine.canvas.getBoundingClientRect();
-    const hit = scene.picker.pick(e.clientX - r.left, e.clientY - r.top, r.width, r.height, scene.engine.camera);
-    if (!hit) return;
+  scene.interaction.onPlace((hit) => {
     scene.setWindowAt(hit.tri, hit.point);
     win.checked = true;
     scene.setWindowOn(true);
@@ -204,6 +201,8 @@ function bindAge(viz: HTMLElement, scene: AtlasScene) {
     out.textContent = `${age < 2 ? age.toFixed(1) : Math.round(age)} y`;
     scene.setShape({ age });
     scene.settle(age);
+    const restore = document.querySelector<HTMLElement>('[data-restore]');
+    if (restore) restore.hidden = true;
     fitCamera(scene, lastFit);
     lastFit = scene.body.height();
   };
@@ -231,7 +230,25 @@ function fitCamera(scene: AtlasScene, previousHeight: number) {
   engine.camera.position.copy(newTarget).add(off);
 }
 
+/**
+ * A thin ring the size of a press (26 px): where a click will release. An SVG
+ * cursor, so it needs no drawing of its own; a crosshair where unsupported.
+ */
+function ringCursor(paper: boolean) {
+  const stroke = paper ? '#3a3632' : '#efe7da';
+  const halo = paper ? '#faf7f2' : '#1d1b19';
+  const svg = `<svg xmlns='http://www.w3.org/2000/svg' width='56' height='56'><circle cx='28' cy='28' r='26' fill='none' stroke='${halo}' stroke-opacity='0.5' stroke-width='2.5'/><circle cx='28' cy='28' r='26' fill='none' stroke='${stroke}' stroke-opacity='0.75' stroke-width='1'/><circle cx='28' cy='28' r='1.2' fill='${stroke}'/></svg>`;
+  return `url("data:image/svg+xml,${encodeURIComponent(svg)}") 28 28, crosshair`;
+}
+
 function bindCensus(panel: HTMLElement, scene: AtlasScene) {
+  // After any release, a way back to the knots of this age.
+  const restore = panel.querySelector<HTMLButtonElement>('[data-restore]')!;
+  scene.interaction.onRelease(() => (restore.hidden = false));
+  restore.addEventListener('click', () => {
+    scene.settle(scene.sim.age);
+    restore.hidden = true;
+  });
   const els = [0, 1, 2, 3].map((i) => panel.querySelector<HTMLElement>(`[data-c="${i}"]`)!);
   const keys = [0, 1, 2, 3].map((i) => els[i].nextElementSibling as HTMLElement);
   // What each theory counts, when it isn't the perforators' four rungs.
@@ -277,18 +294,24 @@ function bindTooltip(viz: HTMLElement, scene: AtlasScene, card: MapCard) {
     `<span>${label}</span><span class="bar${hot ? ' hot' : ''}"><i style="width:${(v * 100).toFixed(0)}%"></i></span><span>${v.toFixed(2)}</span>`;
   let current: HoverInfo | null = null;
   let lastSeen = 0;
+  /** A clicked place stays inspected (the way a phone, with no hover, inspects). */
+  let pinned: HoverInfo | null = null;
   scene.interaction.onHover((h) => {
     if (h && (h.node >= 0 || h.root >= 0)) {
       current = h;
       lastSeen = performance.now();
     }
   });
+  scene.interaction.onSelect((h) => {
+    pinned = h;
+    current = null;
+  });
   let lit = -1;
   let mapLit: [number, number] = [-1, -1];
   setInterval(() => {
-    const h = current;
-    const stale = performance.now() - lastSeen > 900;
-    if (!h || stale) {
+    const fresh = current && performance.now() - lastSeen <= 900 ? current : null;
+    const h = fresh ?? pinned;
+    if (!h) {
       tip.classList.remove('on');
       if (mapLit[0] !== -1 || mapLit[1] !== -1) {
         scene.activeMap?.highlight(-1, -1);
@@ -384,8 +407,16 @@ function bindSettings(viz: HTMLElement, stage: HTMLElement, scene: AtlasScene) {
   });
   const sex = pop.querySelector<HTMLInputElement>('[data-sex]')!;
   sex.addEventListener('input', () => scene.setShape({ sex: Number(sex.value) }));
+  // The ring cursor follows the ground.
+  ground.addEventListener('change', () => (scene.engine.canvas.style.cursor = ringCursor(ground.value === 'paper')));
   const turn = pop.querySelector<HTMLInputElement>('[data-turntable]')!;
   turn.addEventListener('change', () => (scene.engine.autoRotate = turn.checked));
+  // Pressing on the body stops the turntable, so the place pressed stays put.
+  scene.interaction.onRelease(() => {
+    if (!scene.engine.autoRotate) return;
+    scene.engine.autoRotate = false;
+    turn.checked = false;
+  });
 }
 
 function bindHypotheses(viz: HTMLElement, panel: HTMLElement, scene: AtlasScene) {

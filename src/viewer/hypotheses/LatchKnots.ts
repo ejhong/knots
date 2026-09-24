@@ -228,6 +228,7 @@ export class LatchKnots {
   private onset?: Float32Array;
 
   settle(age: number) {
+    this.resist?.fill(-1);
     if (!this.onset) {
       const risk = Float32Array.from(this.weight, (w, i) => 0.7 * w + 0.3 * this.personal[i]);
       const order = Array.from({ length: this.count }, (_, i) => i).sort((a, b) => risk[b] - risk[a]);
@@ -242,6 +243,41 @@ export class LatchKnots {
     }
     (this.pGeo.getAttribute('aKnot') as BufferAttribute).needsUpdate = true;
     (this.lGeo.getAttribute('aKnot') as BufferAttribute).needsUpdate = true;
+  }
+
+  private resist?: Float32Array;
+
+  /**
+   * Pressure at a point: latches within reach let go (the larger, the more
+   * pressure they take). Nothing moves in: on this view a latch dissolves as
+   * the prediction it holds loosens.
+   */
+  releaseAt(p: { x: number; y: number; z: number }, radius: number, amount: number) {
+    if (!this.resist) this.resist = new Float32Array(this.count).fill(-1);
+    const P = this.pGeo.getAttribute('position').array as Float32Array;
+    const reach = radius * 1.5;
+    const s2 = 2 * (reach * 0.6) ** 2;
+    let changed = false;
+    for (let i = 0; i < this.count; i++) {
+      const k = this.knot[i];
+      if (k <= 0) continue;
+      const dx = P[i * 3] - p.x;
+      const dy = P[i * 3 + 1] - p.y;
+      const dz = P[i * 3 + 2] - p.z;
+      const d2 = dx * dx + dy * dy + dz * dz;
+      if (d2 > reach * reach) continue;
+      if (this.resist[i] < 0) this.resist[i] = 0.5 + 1.2 * k;
+      this.resist[i] -= amount * Math.exp(-d2 / s2);
+      if (this.resist[i] <= 0) {
+        this.knot[i] = 0;
+        if (i < this.surface) this.lKnot[i * 2] = this.lKnot[i * 2 + 1] = 0;
+        changed = true;
+      }
+    }
+    if (changed) {
+      (this.pGeo.getAttribute('aKnot') as BufferAttribute).needsUpdate = true;
+      (this.lGeo.getAttribute('aKnot') as BufferAttribute).needsUpdate = true;
+    }
   }
 
   census(): number {

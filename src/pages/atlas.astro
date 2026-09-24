@@ -10,7 +10,7 @@ const pct = (a: number) => ((a - 1) / 89) * 100;
 <Base title="Atlas" app current="atlas" description="An interactive three-dimensional atlas of the body’s perforators, fascia and knots, with alternate theories and traditional maps for comparison.">
   <section class="visualization" data-atlas>
     <div class="canvas-container frame-marks" data-stage>
-      <canvas id="atlas-canvas" aria-label="Three-dimensional figure made of the body's perforators, with its fascia and knots. Drag to turn; hover to inspect."></canvas>
+      <canvas id="atlas-canvas" aria-label="Three-dimensional figure made of the body's perforators, with its fascia and knots. Drag to turn; hover or click to inspect; double-click or hold to release knots."></canvas>
 
       <div class="overlay tl">
         <select class="mono-select" data-hyp-select aria-label="Theory">
@@ -23,7 +23,7 @@ const pct = (a: number) => ((a - 1) / 89) * 100;
         <span><i class="sw sw-vessel"></i>vessel</span>
         <span><i class="sw sw-channel"></i>channel</span>
       </div>
-      <div class="overlay bl" data-hint>drag to turn · scroll to zoom · hover to inspect · double-click to open a window</div>
+      <div class="overlay bl" data-hint>drag to turn · click to select · double-click or hold to release knots · shift-click for a window</div>
       <div class="overlay br">© 2026 Eugene Jhong</div>
       <div class="tip" data-tip hidden aria-live="polite"></div>
       <div class="loading" data-loading>
@@ -93,6 +93,7 @@ const pct = (a: number) => ((a - 1) / 89) * 100;
           <div><span class="v" data-c="3">—</span><span class="k">roots</span></div>
         </div>
         <p class="sub census-note" data-census-note></p>
+        <button class="restore" type="button" data-restore hidden>restore the knots</button>
       </div>
 
       <div class="tab-page" data-page="layers" hidden>
@@ -108,7 +109,7 @@ const pct = (a: number) => ((a - 1) / 89) * 100;
         <label class="row"><input type="checkbox" data-layer="channels" checked /> deep channels <span class="n" data-count="channels"></span></label>
         <p class="sub">septa, raphes and neurovascular sheaths of the deep fascia — candidates for the acupuncture channels</p>
         <label class="row"><input type="checkbox" data-window /> dissection window</label>
-        <p class="sub">skin cut back, superficial fascia removed — or double-click the body to open one there</p>
+        <p class="sub">skin cut back, superficial fascia removed — or shift-click the body to open one there</p>
         <label class="row"><input type="checkbox" data-layer="territories" /> angiosomes</label>
         <p class="sub">approximate territory of each source vessel</p>
         <div class="segment">Depth</div>
@@ -189,6 +190,21 @@ const pct = (a: number) => ((a - 1) / 89) * 100;
     color: var(--panel-faint);
     padding: 0 12px 4px 31px;
     margin-top: -3px;
+  }
+  .restore {
+    margin: 0 14px 12px;
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    color: var(--panel-muted);
+    background: transparent;
+    border: 1px solid var(--panel-line);
+    border-radius: 4px;
+    padding: 3px 8px;
+    cursor: pointer;
+  }
+  .restore:hover {
+    color: #f2ebe0;
+    border-color: #6f665c;
   }
   .census-note {
     padding: 2px 14px 10px !important;

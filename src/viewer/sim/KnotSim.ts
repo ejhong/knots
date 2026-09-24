@@ -53,6 +53,16 @@ export class KnotSim {
   readonly flash: Float32Array;
   readonly rootKnot: Float32Array;
   readonly rootFlash: Float32Array;
+  /**
+   * How firmly each site holds (0 open … 1 a full, long-held knot) — the
+   * quantity pressure works against and that passes to a neighbour when a
+   * knot lets go. Set by settle; changed by pressKnot and setHold.
+   */
+  readonly hold: Float32Array;
+  /** Pressure still needed before a knot lets go (−1: untouched). */
+  readonly resist: Float32Array;
+  /** A brief brightening where a knot has just arrived (decays). */
+  readonly arrive: Float32Array;
   readonly personal: Float32Array;
   /** Age at which each site first holds (Infinity: never, within 90 years). */
   readonly onset: Float32Array;
@@ -140,6 +150,9 @@ export class KnotSim {
     this.flash = new Float32Array(N);
     this.rootKnot = new Float32Array(rootCount);
     this.rootFlash = new Float32Array(rootCount);
+    this.hold = new Float32Array(M);
+    this.resist = new Float32Array(M).fill(-1);
+    this.arrive = new Float32Array(N);
   }
 
   onRelease(cb: (e: ReleaseEvent) => void) {
@@ -185,24 +198,72 @@ export class KnotSim {
       const s = this.susc[i];
       this.drive[i] = 0.1 + 0.3 * body * (0.4 + s);
       const years = age - this.onset[i];
-      if (years >= 0) {
-        const h = (0.2 + 0.8 * (1 - Math.exp(-years / 14))) * (0.8 + 0.2 * s);
-        this.tone[i] = 0.7 + 0.25 * h;
-        this.gel[i] = 0.3 + 0.7 * h;
-        this.nerve[i] = this.tone[i] * this.gel[i];
-        this.stuck[i] = 1;
-      } else {
-        this.tone[i] = 0.2 + this.drive[i] * 0.4;
-        this.gel[i] = 0;
-        this.nerve[i] = 0;
-        this.stuck[i] = 0;
-      }
+      this.setHold(i, years >= 0 ? (0.2 + 0.8 * (1 - Math.exp(-years / 14))) * (0.8 + 0.2 * s) : 0);
       this.press[i] = 0;
       this.shear[i] = 0;
       this.stress[i] = 0;
     }
     this.pendingConduction.length = 0;
+    this.arrive.fill(0);
+    this.flash.fill(0);
+    this.rootFlash.fill(0);
     this.computeOutputs();
+  }
+
+  /** Sets how firmly a site holds, with its vessel, collar and nerve to match (0 opens it). */
+  setHold(i: number, h: number) {
+    this.hold[i] = h;
+    this.resist[i] = -1;
+    if (h > 0) {
+      this.tone[i] = 0.7 + 0.25 * h;
+      this.gel[i] = 0.3 + 0.7 * h;
+      this.nerve[i] = this.tone[i] * this.gel[i];
+      this.stuck[i] = 1;
+    } else {
+      this.tone[i] = 0.2 + this.drive[i] * 0.4;
+      this.gel[i] = 0;
+      this.nerve[i] = 0;
+      this.stuck[i] = 0;
+    }
+  }
+
+  /** Pressure a knot takes before it lets go, by rung, growing with how firmly it holds. */
+  private static RESIST = [0.4, 1.3, 2.8, 4];
+
+  /**
+   * Pressure on a knot (1 ≈ one click at its centre). Small knots let go at
+   * once; medium ones take a few presses; major, long-held ones need
+   * holding. Returns the hold it let go of (0 if it holds on).
+   */
+  pressKnot(i: number, amount: number): number {
+    const h = this.hold[i];
+    if (h <= 0) return 0;
+    if (this.resist[i] < 0) this.resist[i] = KnotSim.RESIST[this.level[i]] * (0.6 + 0.6 * h);
+    this.resist[i] -= amount;
+    if (this.resist[i] > 0) return 0;
+    this.setHold(i, 0);
+    this.release(i);
+    return h;
+  }
+
+  /** Decays stars and arrivals when the full dynamics are not running; true while any show. */
+  tickEffects(realDt: number): boolean {
+    const fk = Math.exp(-realDt / 0.55);
+    const ak = Math.exp(-realDt / 0.35);
+    let active = false;
+    for (let i = 0; i < this.N; i++) {
+      if (this.flash[i] > 0.001) {
+        this.flash[i] *= fk;
+        active = true;
+      } else this.flash[i] = 0;
+      if (this.arrive[i] > 0.001) {
+        this.arrive[i] *= ak;
+        active = true;
+      } else this.arrive[i] = 0;
+    }
+    for (let r = 0; r < this.R; r++) if (this.rootFlash[r] > 0.001) (this.rootFlash[r] *= fk), (active = true);
+    if (active) this.computeOutputs();
+    return active;
   }
 
   /** Current knot count by level [small, medium, major, root]. */
@@ -295,12 +356,14 @@ export class KnotSim {
     for (const cb of this.listeners) cb(e);
   }
 
-  private computeOutputs() {
+  computeOutputs() {
     const N = this.N;
     for (let i = 0; i < N; i++) {
       const k = 0.42 * this.tone[i] + 0.42 * this.gel[i] + 0.16 * this.nerve[i];
       const v = (k - 0.42) / 0.45;
-      this.knot[i] = v <= 0 ? 0 : v >= 1 ? 1 : v * v * (3 - 2 * v);
+      const base = v <= 0 ? 0 : v >= 1 ? 1 : v * v * (3 - 2 * v);
+      // A knot that has just arrived shows a moment brighter.
+      this.knot[i] = this.arrive[i] > 0 && base > 0 ? Math.min(1, base + this.arrive[i] * 0.35) : base;
     }
     for (let r = 0; r < this.R; r++) {
       const i = N + r;

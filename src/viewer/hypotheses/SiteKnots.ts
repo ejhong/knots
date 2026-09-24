@@ -190,6 +190,7 @@ export class SiteKnots {
 
   /** Which sites a life has held by this age, and how long (same curve as the perforator knots). */
   settle(age: number) {
+    this.resist?.fill(-1);
     if (!this.onset) {
       const risk = Float32Array.from(this.weight, (w, i) => 0.7 * w + 0.3 * this.personal[i]);
       const order = Array.from({ length: this.count }, (_, i) => i).sort((a, b) => risk[b] - risk[a]);
@@ -201,6 +202,56 @@ export class SiteKnots {
       this.knot[i] = years < 0 ? 0 : (0.2 + 0.8 * (1 - Math.exp(-years / 14))) * (0.8 + 0.2 * this.weight[i]);
     }
     for (let k = 0; k < this.lSite.length; k++) this.lKnot[k] = this.knot[this.lSite[k]];
+    this.pGeo.getAttribute('aKnot').needsUpdate = true;
+    this.lGeo.getAttribute('aKnot').needsUpdate = true;
+  }
+
+  private resist?: Float32Array;
+
+  /**
+   * Pressure at a point. Trigger points, patches and nerves within reach let
+   * go where they are (the larger, the more pressure they take); nothing
+   * moves in. A percept (twinkle) is not released but moves: it shows up at
+   * once somewhere else nearby.
+   */
+  releaseAt(p: { x: number; y: number; z: number }, radius: number, amount: number, rng: () => number) {
+    if (!this.resist) this.resist = new Float32Array(this.count).fill(-1);
+    const P = this.pos;
+    const reach = this.style.patch ? radius + 0.02 : radius;
+    const s2 = 2 * (reach * 0.6) ** 2;
+    const moved: number[] = [];
+    let changed = false;
+    for (let i = 0; i < this.count; i++) {
+      const k = this.knot[i];
+      if (k <= 0) continue;
+      const dx = P[i * 3] - p.x;
+      const dy = P[i * 3 + 1] - p.y;
+      const dz = P[i * 3 + 2] - p.z;
+      const d2 = dx * dx + dy * dy + dz * dz;
+      if (d2 > reach * reach) continue;
+      if (this.resist[i] < 0) this.resist[i] = (this.style.patch ? 2.2 : 0.6) * (0.6 + 0.6 * k);
+      this.resist[i] -= amount * Math.exp(-d2 / s2);
+      if (this.resist[i] > 0) continue;
+      this.resist[i] = -1;
+      if (this.style.twinkle) moved.push(i);
+      else this.knot[i] = 0;
+      changed = true;
+    }
+    // Percepts jump: each to a quiet place 5–25 cm away.
+    for (const i of moved) {
+      const k = this.knot[i];
+      this.knot[i] = 0;
+      for (let tries = 0; tries < 60; tries++) {
+        const j = Math.floor(rng() * this.count);
+        if (this.knot[j] > 0) continue;
+        const d = Math.hypot(P[j * 3] - P[i * 3], P[j * 3 + 1] - P[i * 3 + 1], P[j * 3 + 2] - P[i * 3 + 2]);
+        if (d < 0.05 || d > 0.25) continue;
+        this.knot[j] = k;
+        break;
+      }
+    }
+    if (!changed) return;
+    for (let q = 0; q < this.lSite.length; q++) this.lKnot[q] = this.knot[this.lSite[q]];
     this.pGeo.getAttribute('aKnot').needsUpdate = true;
     this.lGeo.getAttribute('aKnot').needsUpdate = true;
   }

@@ -2,7 +2,7 @@ import { Vector3 } from 'three';
 import type { AtlasScene } from '../AtlasScene';
 import type { SurfaceHit } from './Picker';
 
-export type Tool = 'look' | 'press' | 'roll' | 'hydro' | 'stress';
+export type Tool = 'look' | 'release' | 'press' | 'roll' | 'hydro' | 'stress';
 
 export interface HoverInfo {
   hit: SurfaceHit;
@@ -14,8 +14,12 @@ export interface HoverInfo {
 }
 
 /**
- * Pointer → body. Hovering finds the nearest perforator; pressing applies the
- * chosen tool where the finger lands. Dragging off the body orbits.
+ * Pointer → body. Hovering finds the nearest perforator. With the release
+ * tool: a click (a tap) selects — the place stays inspected, which is how a
+ * phone, with no hover, inspects; a double-click releases the knots under
+ * the pointer, and holding still keeps pressing; dragging turns the body as
+ * usual; a shift-click places the dissection window. (The older tools press,
+ * roll, hydrodissect or aggravate while the pointer is down.)
  */
 export class Interaction {
   tool: Tool = 'press';
@@ -27,6 +31,15 @@ export class Interaction {
   private lastHit: Vector3 | null = null;
   private listeners = new Set<(h: HoverInfo | null) => void>();
   private pointerId = -1;
+  /** A press that has not (yet) become a drag. */
+  private down: { x: number; y: number; t: number; still: boolean; place: boolean } | null = null;
+  private releaseListeners = new Set<() => void>();
+  private placeListeners = new Set<(hit: SurfaceHit) => void>();
+  private selectListeners = new Set<(h: HoverInfo | null) => void>();
+  /** The last plain click, to recognise a second one as a double-click. */
+  private lastClick: { x: number; y: number; t: number } | null = null;
+  /** A press held this long without moving keeps releasing (ms). */
+  private static HOLD_MS = 350;
 
   constructor(private scene: AtlasScene) {
     const el = scene.engine.canvas;
@@ -45,6 +58,24 @@ export class Interaction {
     return () => this.listeners.delete(cb);
   }
 
+  /** Called whenever knots are pressed with the release tool. */
+  onRelease(cb: () => void) {
+    this.releaseListeners.add(cb);
+    return () => this.releaseListeners.delete(cb);
+  }
+
+  /** Called on a click: the place selected, or null for a click off the body. */
+  onSelect(cb: (h: HoverInfo | null) => void) {
+    this.selectListeners.add(cb);
+    return () => this.selectListeners.delete(cb);
+  }
+
+  /** Called on a shift-click on the body (to place the dissection window). */
+  onPlace(cb: (hit: SurfaceHit) => void) {
+    this.placeListeners.add(cb);
+    return () => this.placeListeners.delete(cb);
+  }
+
   private rel(e: PointerEvent) {
     const r = this.scene.engine.canvas.getBoundingClientRect();
     return { x: e.clientX - r.left, y: e.clientY - r.top, w: r.width, h: r.height };
@@ -57,11 +88,17 @@ export class Interaction {
   private onMove = (e: PointerEvent) => {
     const p = this.rel(e);
     this.pointer = { x: p.x, y: p.y, inside: true };
+    if (this.down && Math.hypot(p.x - this.down.x, p.y - this.down.y) > 6) this.down.still = false;
     this.scene.engine.poke();
   };
 
   private onDown = (e: PointerEvent) => {
     if (e.button !== 0 || this.tool === 'look') return;
+    if (this.tool === 'release') {
+      const p = this.rel(e);
+      this.down = { x: p.x, y: p.y, t: performance.now(), still: true, place: e.shiftKey };
+      return;
+    }
     const p = this.rel(e);
     const hit = this.cast(p.x, p.y, p.w, p.h);
     if (!hit) return;
@@ -74,6 +111,30 @@ export class Interaction {
   };
 
   private onUp = (e: PointerEvent) => {
+    if (this.down) {
+      const d = this.down;
+      this.down = null;
+      if (!d.still) return;
+      const p = this.rel(e);
+      const hit = this.cast(p.x, p.y, p.w, p.h);
+      if (d.place) {
+        if (hit) for (const cb of this.placeListeners) cb(hit);
+        return;
+      }
+      const now = performance.now();
+      if (now - d.t >= Interaction.HOLD_MS) return; // a hold: it pressed while held
+      const last = this.lastClick;
+      if (last && now - last.t < 340 && Math.hypot(p.x - last.x, p.y - last.y) < 14) {
+        // The second click of a double-click: release.
+        this.lastClick = null;
+        if (hit) this.releaseHere(hit, 1.2);
+        return;
+      }
+      this.lastClick = { x: p.x, y: p.y, t: now };
+      const info = hit ? { hit, node: this.nearestNode(hit.point), root: this.nearestRoot(hit.point), screen: { x: p.x, y: p.y } } : null;
+      for (const cb of this.selectListeners) cb(info);
+      return;
+    }
     if (!this.pressing) return;
     this.pressing = false;
     this.scene.engine.controls.enabled = true;
@@ -108,6 +169,19 @@ export class Interaction {
     const root = this.nearestRoot(hit.point);
     this.setHover({ hit, node, root, screen: { x: this.pointer.x, y: this.pointer.y } });
     if (this.pressing) this.applyAt(hit, dt);
+    // Holding still keeps pressing: about two clicks' worth a second.
+    const d = this.down;
+    if (d && d.still && !d.place && performance.now() - d.t > Interaction.HOLD_MS) this.releaseHere(hit, dt * 2.2);
+  }
+
+  /** Releases under a hit, over a patch that looks the same size on screen at any zoom. */
+  private releaseHere(hit: SurfaceHit, amount: number) {
+    const cam = this.scene.engine.camera;
+    const h = this.scene.engine.canvas.getBoundingClientRect().height || 1;
+    const perPx = (2 * cam.position.distanceTo(hit.point) * Math.tan((cam.fov * Math.PI) / 360)) / h;
+    const radius = Math.min(0.06, Math.max(0.008, 26 * perPx));
+    this.scene.releaseAt(hit.point, radius, amount);
+    for (const cb of this.releaseListeners) cb();
   }
 
   private nearestNode(p: Vector3): number {
