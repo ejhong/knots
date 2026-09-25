@@ -105,6 +105,21 @@
   "note": "Trigger-point referred-pain patterns track the acupuncture meridians."
  },
  {
+  "id": "farias2020",
+  "authors": "Farias M, Maraldi E, Wallenkampf KC et al.",
+  "year": 2020,
+  "title": "Adverse events in meditation practices and meditation-based therapies: a systematic review",
+  "venue": "Acta Psychiatr Scand 142:374-393",
+  "url": "https://doi.org/10.1111/acps.13225",
+  "pmid": "32820538",
+  "kind": "paper",
+  "tags": [
+   "contemplative",
+   "safety"
+  ],
+  "note": "Across 83 studies, adverse events in about 8% of those who meditated — anxiety and depression most often, suicidal behaviour among them — sometimes in people with no previous mental-health problems."
+ },
+ {
   "id": "fede2022",
   "authors": "Fede C, Petrelli L, Pirri C et al.",
   "year": 2022,

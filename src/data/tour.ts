@@ -43,6 +43,7 @@ export interface Chapter {
 
 const VCE = 'https://sites.brown.edu/britton/research/the-varieties-of-contemplative-experience/';
 const CHEETAH = 'https://www.cheetahhouse.org';
+const HELPLINE = 'https://findahelpline.com';
 
 export const CHAPTERS: Chapter[] = [
   {
@@ -63,7 +64,7 @@ export const CHAPTERS: Chapter[] = [
 <li><b>Euphoria.</b> A release can bring a wave of well-being — at times a euphoria some compare to MDMA.</li>
 <li><b>Migration.</b> When one knot lets go, others move in to fill the gap and settle into new places, as if the body were evening itself out.</li>
 <li><b>Mirroring.</b> Working the knots on one side can ease the other side as well. Foam-rolling studies measure something like it — the crossover effect: rolling one leg adds range of motion to the other, untouched one.</li>
-<li><b>Peeling.</b> Layers of the fascia beneath the skin seem to peel apart along lines, leaving places that feel hollow.</li>
+<li><b>Peeling.</b> Some have reported layers of the fascia beneath the skin peeling apart along lines, leaving places that feel hollow. It is rare and little understood — one reason for <a href="#moderation">the caution at the end</a>.</li>
 <li><b>Filling.</b> Then a filling-in, felt as re-stitching, that can move like a snake along a limb, up the body, or up into the head.</li>
 </ul>
 <p>The contemplative traditions describe much of this in their own words.</p>`,
@@ -152,10 +153,10 @@ export const CHAPTERS: Chapter[] = [
     n: '09',
     glyph: '中',
     title: 'Moderation',
-    seconds: 22,
-    html: `<p>Go gently. Deep somatic work and intensive meditation carry real dangers, and people have been harmed by doing too much, too fast: forceful breathing and breath-holding, hard pressure held too long, long retreats with little sleep. Difficulties can last months or years — anxiety and panic, insomnia, pain, involuntary movements, a disturbed sense of self, energy that will not settle. Never press hard into the neck, where the arteries to the brain lie close beneath the surface.</p>
-<p>Nothing here is a protocol. Work in moderation, rest often, and stop when something feels wrong. If you are struggling, you are not alone: the <a href="${VCE}">Varieties of Contemplative Experience</a> project at Brown documents these difficulties, and <a href="${CHEETAH}">Cheetah House</a> supports meditators in distress. For anything physical, see a physician.</p>`,
-    refs: ['lindahl2017', 'britton', 'cheetah'],
+    seconds: 28,
+    html: `<p><strong>Extreme practice can cause severe, lasting harm, including suicide.</strong> Adverse effects of meditation are not rare. They include anxiety, depression and suicidal behaviour, sometimes severe and enduring, and sometimes in people with no history of mental illness. People have been harmed by doing too much, too fast: forceful breathing and breath-holding, hard pressure held too long, long retreats with little sleep. Difficulties can last months or years — panic, insomnia, pain, involuntary movements, a disturbed sense of self, energy that will not settle. Never press hard into the neck, where the arteries to the brain lie close beneath the surface.</p>
+<p>Nothing here is a protocol. Go gently: work in moderation, rest often, and stop when something feels wrong. If you are struggling, you are not alone: the <a href="${VCE}">Varieties of Contemplative Experience</a> project at Brown documents these difficulties, and <a href="${CHEETAH}">Cheetah House</a> supports meditators in distress. If you are thinking about suicide, reach out now: in the US, call or text 988; elsewhere, find a line at <a href="${HELPLINE}">findahelpline.com</a>. For anything physical, see a physician.</p>`,
+    refs: ['farias2020', 'lindahl2017', 'britton', 'cheetah'],
     scene: { pose: { p: [0, 0.62, 2.6], t: [0, 0.56, 0] }, age: 46, turntable: true },
   },
 ];
