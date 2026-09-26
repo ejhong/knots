@@ -23,9 +23,9 @@ from pathlib import Path
 
 import numpy as np
 
-from . import checks, codegen, robustness, scenarios
+from . import breath, checks, codegen, robustness, scenarios
 from .findings import write_findings
-from .models import vessel
+from .models import tree, vessel
 from .params import load, papers
 
 SIM = Path(__file__).resolve().parents[1]
@@ -34,6 +34,9 @@ FITTED = {
     "gasp_gain": "the fall in fingertip flow after a deep gasp (gasp_drop)",
     "tau_down": "the recovery of flow about 34 s after a gasp",
     "tau_nerve": "the timing of reactive hyperaemia (porh_peak_time)",
+    "k_mv": "the widening of squeezed arteries after one squeeze, one long squeeze and five (clifford2006)",
+    "tau_w": "the same widenings and when each peaks",
+    "tau_z": "the same widenings and when each peaks",
 }
 
 
@@ -81,7 +84,11 @@ def main() -> dict:
     fitted = {k: p[k] for k in FITTED}
     low, when, back = vessel.gasp_response(p)
     rise, peak = vessel.hyperaemia(p)
+    squeezed = {name: vessel.squeeze_response(p, pulses) for name, pulses in vessel.SQUEEZES.items()}
     robust = robustness.run()
+    breath_maps = breath.maps(p)
+    trees = {"figure": tree.figure(), "robustness": tree.robustness(), "siblings": tree.siblings(),
+             "params": param_table("tree", {})}
     runs = scenarios.all_runs(p)
     sc = scenarios.scores(p)
     data = {
@@ -94,7 +101,7 @@ def main() -> dict:
         },
         "params": {
             "values": {**{k: p[k] for k in vessel.PARAMS}, **{k: p[k] for k in (
-                "porh_rise", "gasp_drop", "gasp_gain", "latency", "gasp_duration", "breath_swing")}},
+                "porh_rise", "gasp_drop", "gasp_gain", "latency", "gasp_duration", "breath_swing", "breath_move")}},
             "vessel": param_table("vessel", fitted),
             "checks": param_table("checks", {}),
             "fitted": [{"key": k, "value": p[k], "target": t} for k, t in FITTED.items()],
@@ -104,12 +111,15 @@ def main() -> dict:
             "gasp": {"lowest_flow": low, "at_s": when, "recovered_s": back,
                      "measured": {"lowest_flow": [0.286, 0.406], "at_s": [4.6, 5.2], "recovered_s": 34}},
             "flush": {"rise": rise, "peak_s": peak, "measured": {"rise": [1.26, 2.48], "peak_s": [6.0, 16.2]}},
+            "squeeze": {name: {"rise": r, "peak_s": t, "measured": {"rise": p[f"squeeze_rise_{name}"],
+                                                                     "peak_s": p[f"squeeze_peak_{name}"]}}
+                        for name, (r, t) in squeezed.items()},
         },
+        "breath": breath_maps,
+        "tree": trees,
         "robustness": robust,
         "scenarios": {
-            name: {"score": {"duration": x.duration, "stress": x.stress, "gasps": x.gasps, "presses": x.presses,
-                             "breathing": x.breathing, "relaxing": x.relaxing},
-                   "summary": runs[name][1]}
+            name: {"score": asdict(x), "summary": runs[name][1]}
             for name, x in sc.items()
         },
         "checks": {"collar": checks.collar(p), "cooling": checks.cooling()},
@@ -126,7 +136,7 @@ def main() -> dict:
 
     # Golden trajectories: the site's stepper must reproduce these (fixed step, same inputs).
     golden = {"dt": 0.02, "every": 25, "params": data["params"]["values"], "runs": {}}
-    for name in ("press_and_release", "relaxing_breath_at_threshold"):
+    for name in ("press_and_release", "relaxing_breath_at_threshold", "moving_breath"):
         r = runs[name][0]
         idx = np.arange(0, len(r["t"]), golden["every"])
         golden["runs"][name] = {

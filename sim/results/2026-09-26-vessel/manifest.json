@@ -1,8 +1,8 @@
 {
  "run": {
   "date": "2026-09-26",
-  "inputs": "8f44c2acf6ff",
-  "commit": "8d6175f",
+  "inputs": "201441efd4f6",
+  "commit": "285678b",
   "dirty": true,
   "python": "3.11.15",
   "packages": {
@@ -36,6 +36,21 @@
    "key": "tau_nerve",
    "value": 4.636,
    "target": "the timing of reactive hyperaemia (porh_peak_time)"
+  },
+  {
+   "key": "k_mv",
+   "value": 2.071,
+   "target": "the widening of squeezed arteries after one squeeze, one long squeeze and five (clifford2006)"
+  },
+  {
+   "key": "tau_w",
+   "value": 7.479,
+   "target": "the same widenings and when each peaks"
+  },
+  {
+   "key": "tau_z",
+   "value": 2.385,
+   "target": "the same widenings and when each peaks"
   }
  ],
  "robustness": {

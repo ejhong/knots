@@ -43,9 +43,9 @@ def test_a_shut_vessel_stays_shut_inside_the_band_and_reopens_below_it():
     s = v.calibrate(p)
     inside = s.Aopen + 0.3 * (s.Afold - s.Aopen)
     below = s.Aopen - 0.05
-    shut = np.array([p["xc"], inside, 0.0, 0.0, 0.0])
+    shut = np.array([p["xc"], inside, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
     for tone, stays_shut in ((inside, True), (below, False)):
-        u = np.tile([tone, 0.0], (3000, 1))
+        u = np.tile([tone, 0.0, 0.0], (3000, 1))
         y = v.rk4(p, u, 0.02, y0=shut.copy())
         assert bool(y[-1, 0] < 1.5 * p["xc"]) == stays_shut
 
@@ -53,7 +53,7 @@ def test_a_shut_vessel_stays_shut_inside_the_band_and_reopens_below_it():
 def test_an_open_vessel_snaps_shut_above_the_fold():
     p = v.params(fitted=False)
     s = v.calibrate(p)
-    u = np.tile([s.Afold + 0.05, 0.0], (3000, 1))
+    u = np.tile([s.Afold + 0.05, 0.0, 0.0], (3000, 1))
     y = v.rk4(p, u, 0.02)
     assert y[-1, 0] < 1.5 * p["xc"]
 
@@ -66,6 +66,34 @@ def test_fitted_timings_reproduce_their_targets():
     assert back == pytest.approx(v.GASP_RECOVERY, abs=0.5)
     assert peak == pytest.approx(p["porh_peak_time"], abs=0.3)
     assert 3 <= p["tau_down"] <= 20 and 1 <= p["tau_nerve"] <= 10  # within their stated ranges
+
+
+def test_squeezed_vessels_widen_as_measured():
+    # clifford2006: +16% after one 1 s squeeze (peak 4.1 s), +14% after 5 s (4.6 s), +27% after five (2.8 s).
+    p = v.params()
+    got = {name: v.squeeze_response(p, pulses) for name, pulses in v.SQUEEZES.items()}
+    for name, (rise, when) in got.items():
+        assert rise == pytest.approx(p[f"squeeze_rise_{name}"], abs=0.03), name
+        assert when == pytest.approx(p[f"squeeze_peak_{name}"], abs=0.7), name
+    assert abs(got["long"][0] - got["one"][0]) < 0.03  # the wall answers the change, not how long it lasts
+    assert got["five"][0] > got["one"][0] + 0.05  # several changes add up
+
+
+def test_no_movement_leaves_the_movement_states_at_rest():
+    p = v.params()
+    r = v.run(p, v.Score(duration=60, stress=[(5, 0.1)], gasps=[20], presses=[(30, 40, 80.0)]), 0.02)
+    assert max(abs(r[k]).max() for k in ("ml", "w", "z")) == 0.0
+
+
+def test_the_breath_releases_easy_knots_before_deep_ones():
+    from knots_sim import breath
+
+    p = v.params()
+    easy = breath.release_time(p, breath.score(p, 0.05, "movement", 0.2), "movement", 0.2)
+    deep = breath.release_time(p, breath.score(p, 0.65, "movement", 0.2), "movement", 0.2)
+    even = breath.release_time(p, breath.score(p, 0.05, "even", 0.03), "even", 0.03)
+    assert easy is not None and easy < 100 and deep is None
+    assert even is None  # an even swing in drive holds even an easy knot
 
 
 def test_generated_typescript_is_current():

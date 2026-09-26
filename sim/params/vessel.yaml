@@ -250,3 +250,132 @@ parameters:
     range: [0.0, 0.08]
     confidence: guessed
     note: "How much ordinary slow breathing swings tone (a fraction of maximal activation), rising on the in-breath and falling on the out-breath."
+
+  # Movement: a change of shape loosens the wall's force for a while (clifford2006: squeezed arteries widen after
+  # release, more after several squeezes than one long one; ljung1975: rhythmic stretch cuts active force at once).
+  squeeze_rise_one:
+    symbol: Δd₁
+    label: "widening after one 1 s squeeze"
+    value: 0.16
+    unit: "1"
+    range: [0.14, 0.18]
+    confidence: measured
+    source: clifford2006
+    locator: abstract
+    quote: "the peak increases in diameter were, respectively, (mean +/-s.e.m.) 16 +/- 2, 14 +/- 2 and 27 +/- 3%"
+    note: "Rat soleus feed arteries at 68 mmHg, squeezed shut by 600 mmHg for 1 s; the rise in diameter after release (± s.e.m.)."
+
+  squeeze_rise_long:
+    symbol: Δd₅ₛ
+    label: "widening after one 5 s squeeze"
+    value: 0.14
+    unit: "1"
+    range: [0.12, 0.16]
+    confidence: measured
+    source: clifford2006
+    locator: abstract
+    quote: "the peak increases in diameter were, respectively, (mean +/-s.e.m.) 16 +/- 2, 14 +/- 2 and 27 +/- 3%"
+    note: "The same squeeze held five times longer: no larger. The wall answers the change, not how long it lasts."
+
+  squeeze_rise_five:
+    symbol: Δd₅ₓ
+    label: "widening after five 1 s squeezes"
+    value: 0.27
+    unit: "1"
+    range: [0.24, 0.30]
+    confidence: measured
+    source: clifford2006
+    locator: abstract
+    quote: "the peak increases in diameter were, respectively, (mean +/-s.e.m.) 16 +/- 2, 14 +/- 2 and 27 +/- 3%"
+    note: "Five 1 s squeezes, 1 s apart: the loosening adds up, though less than five times."
+
+  squeeze_peak_one:
+    symbol: t₁
+    label: "peak after one 1 s squeeze"
+    value: 4.1
+    unit: s
+    range: [3.8, 4.4]
+    confidence: measured
+    source: clifford2006
+    locator: abstract
+    quote: "times from release of pressure to peak diameter of 4.1 +/- 0.3, 4.6 +/- 0.7 and 2.8 +/- 0.4 s"
+    note: "From release to the widest diameter (± s.e.m.)."
+
+  squeeze_peak_long:
+    symbol: t₅ₛ
+    label: "peak after one 5 s squeeze"
+    value: 4.6
+    unit: s
+    range: [3.9, 5.3]
+    confidence: measured
+    source: clifford2006
+    locator: abstract
+    quote: "times from release of pressure to peak diameter of 4.1 +/- 0.3, 4.6 +/- 0.7 and 2.8 +/- 0.4 s"
+
+  squeeze_peak_five:
+    symbol: t₅ₓ
+    label: "peak after five 1 s squeezes"
+    value: 2.8
+    unit: s
+    range: [2.4, 3.2]
+    confidence: measured
+    source: clifford2006
+    locator: abstract
+    quote: "times from release of pressure to peak diameter of 4.1 +/- 0.3, 4.6 +/- 0.7 and 2.8 +/- 0.4 s"
+
+  tau_mv:
+    symbol: τ_mv
+    label: "the wall's memory of its shape"
+    value: 0.2
+    unit: s
+    range: [0.05, 1.0]
+    confidence: guessed
+    note: "How long the wall takes to register a change of shape. The squeeze measurements favour a short memory (the fit worsens above about 1 s); while it is short, what a movement does depends on how much the tissue moves, not how fast."
+
+  k_mv:
+    symbol: k_mv
+    label: "loosening per change of shape"
+    value: 2.1
+    unit: 1/s
+    range: [0.1, 20.0]
+    confidence: fitted
+    fit: the widening after one squeeze, one long squeeze and five squeezes, and when each peaks
+    source: clifford2006
+    locator: abstract
+    quote: "The magnitude of dilatation was not affected by increasing the duration of compression but was enhanced by increasing the number of compressions"
+    note: "How much each change of shape (a squeeze, its release, a movement) loosens the wall's force, saturating. Measured in rat muscle feed arteries and applied to a skin perforator: inferred across vessels. Rhythmic stretch cuts vascular smooth muscle's force directly (ljung1975)."
+
+  tau_w:
+    symbol: τ_w
+    label: "how long a loosening lasts"
+    value: 7.5
+    unit: s
+    range: [1.0, 60.0]
+    confidence: fitted
+    fit: the widening after one squeeze, one long squeeze and five squeezes, and when each peaks
+    source: clifford2006
+    locator: abstract
+    quote: "times from release of pressure to peak diameter of 4.1 +/- 0.3, 4.6 +/- 0.7 and 2.8 +/- 0.4 s"
+    note: "How long the loosening from a change of shape lasts before the wall's force returns."
+
+  tau_z:
+    symbol: τ_z
+    label: "how fast a loosening shows"
+    value: 2.4
+    unit: s
+    range: [0.2, 15.0]
+    confidence: fitted
+    fit: the widening after one squeeze, one long squeeze and five squeezes, and when each peaks
+    source: clifford2006
+    locator: abstract
+    quote: "times from release of pressure to peak diameter of 4.1 +/- 0.3, 4.6 +/- 0.7 and 2.8 +/- 0.4 s"
+    note: "The delay between a change of shape and the wall's loosening: why the widening peaks seconds after release."
+
+  breath_move:
+    symbol: δ_move
+    label: "the breath's movement at a knot"
+    value: 0.1
+    unit: "1"
+    range: [0.0, 0.5]
+    confidence: guessed
+    note: "How much each breath deforms the tissue at a knot, as a fraction of a squeeze that shuts the vessel. Unmeasured: ultrasound speckle tracking over a knot during the breath could measure it. The trials sweep it."

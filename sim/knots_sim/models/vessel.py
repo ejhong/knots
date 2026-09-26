@@ -11,9 +11,17 @@ States (all dimensionless):
     m    oxygen debt of the vessel's territory, 0..1, sensed by its sensory nerves (tenderness)
     n    sensory-nerve dilator released when blood returns to a patch in debt (the spark, and the flush)
     my   myogenic relaxation under sustained external pressure, 0..1
+    ml   the shape the wall registers: the local deformation, remembered over tau_mv
+    w    loosening captured from changes of shape (a squeeze, its release, a movement), 0..1
+    z    loosening expressed on the wall's force, 0..1: the muscle pulls with A·(1 − n)·(1 − z)
 Inputs:
     uS   tone command, 0..1: resting tone plus stress, breath and a deep gasp
     Pext external pressure on the tissue (mmHg)
+    mv   local deformation of the tissue, 0..1, as a fraction of a squeeze that shuts the vessel
+
+Movement loosens the wall: a squeezed artery widens seconds after release, and more after several squeezes than
+after one long one (clifford2006); rhythmic stretch cuts vascular smooth muscle's force at once (ljung1975). The
+wall answers changes of shape, not held shapes.
 
 The equations are written once here; `numeric()` gives fast functions for Python, and `knots_sim.codegen` writes the
 same expressions out as TypeScript for the site.
@@ -21,7 +29,7 @@ same expressions out as TypeScript for the site.
 
 from __future__ import annotations
 
-from dataclasses import dataclass
+from dataclasses import dataclass, field
 from functools import lru_cache
 
 import numpy as np
@@ -32,28 +40,29 @@ from ..params import values
 MMHG = 133.322  # Pa
 EPS_FLOOR = 0.01  # width of the soft floor at the shut radius
 
-STATES = ("x", "A", "m", "n", "my")
-INPUTS = ("uS", "Pext")
+STATES = ("x", "A", "m", "n", "my", "ml", "w", "z")
+INPUTS = ("uS", "Pext", "mv")
 # Parameters the equations use: the YAML keys, plus xrest (resting radius, from calibration).
 PARAMS = ("r100", "Tmax", "xopt", "P", "beta", "width", "wall", "xc", "tau_x", "tau_up", "tau_down",
-          "tau_debt", "tau_nerve", "collateral", "myogenic", "tau_myogenic", "xrest")
+          "tau_debt", "tau_nerve", "collateral", "myogenic", "tau_myogenic", "tau_mv", "k_mv", "tau_w", "tau_z",
+          "xrest")
 
 
 @lru_cache
 def laws() -> dict[str, sp.Expr]:
     """The model as symbolic expressions."""
-    x, A, m, n, my = sp.symbols(STATES, real=True)
-    uS, Pext = sp.symbols(INPUTS, real=True)
-    (r100, Tmax, xopt, P, beta, w, aw, xc, tau_x, tau_up, tau_down, tau_debt, tau_n, c, kmy, tau_my,
-     xrest) = sp.symbols(PARAMS, real=True)
+    x, A, m, n, my, ml, lw, z = sp.symbols(STATES, real=True)
+    uS, Pext, mv = sp.symbols(INPUTS, real=True)
+    (r100, Tmax, xopt, P, beta, w, aw, xc, tau_x, tau_up, tau_down, tau_debt, tau_n, c, kmy, tau_my, tau_mv,
+     k_mv, tau_w, tau_z, xrest) = sp.symbols(PARAMS, real=True)
 
     T100 = 100 * MMHG * r100  # passive tension of a relaxed vessel at 100 mmHg, by definition of r100
     Tp = T100 * (sp.exp(beta * (x - 1)) - sp.exp(-beta)) / (1 - sp.exp(-beta))
     ell = sp.sqrt(x**2 + aw / 2) / sp.sqrt(xopt**2 + aw / 2)  # mid-wall muscle length / optimal length
     g = sp.exp(-(((ell - 1) / w) ** 2))  # active length-tension
     Ptm = (P - Pext) * MMHG
-    F = Ptm * r100 * x - Tp - A * (1 - n) * Tmax * g  # net outward force per unit length (N/m)
-    Aeq = (Ptm * r100 * x - Tp) / (Tmax * g)  # effective tone A·(1 − n) that balances radius x
+    F = Ptm * r100 * x - Tp - A * (1 - n) * (1 - z) * Tmax * g  # net outward force per unit length (N/m)
+    Aeq = (Ptm * r100 * x - Tp) / (Tmax * g)  # effective tone A·(1 − n)·(1 − z) that balances radius x
 
     q = (x / xrest) ** 4  # flow relative to rest (Poiseuille)
     press = sp.Min(sp.Max(Pext / P, 0), 1)  # how hard the patch is pressed
@@ -68,7 +77,10 @@ def laws() -> dict[str, sp.Expr]:
     dm = ((1 - supply) - m) / tau_debt
     dn = (m * q1 - n) / tau_n
     dmy = (press - my) / tau_my
-    return {"Tp": Tp, "g": g, "F": F, "Aeq": Aeq, "q": q, "rhs": sp.Matrix([dx, dA, dm, dn, dmy])}
+    dml = (mv - ml) / tau_mv  # the shape the wall registers follows the tissue's
+    dlw = k_mv * sp.Abs(mv - ml) * (1 - lw) - lw / tau_w  # each change of shape adds loosening, saturating
+    dz = (lw - z) / tau_z  # and it reaches the wall's force a few seconds later
+    return {"Tp": Tp, "g": g, "F": F, "Aeq": Aeq, "q": q, "rhs": sp.Matrix([dx, dA, dm, dn, dmy, dml, dlw, dz])}
 
 
 @lru_cache
@@ -91,6 +103,7 @@ def params(fitted: bool = True, **overrides: float) -> dict[str, float]:
     p["xrest"] = calibrate(p).xrest
     if fitted:
         p |= fit(tuple(sorted(p.items())))
+        p |= fit_movement(tuple(sorted(p.items())))
     return p
 
 
@@ -150,31 +163,30 @@ def calibrate(p: dict[str, float]) -> Switch:
 
 
 def rk4(p: dict[str, float], u: np.ndarray, dt: float, y0: np.ndarray | None = None) -> np.ndarray:
-    """Fixed-step RK4 with inputs held over each step (the same stepper the site runs). Plain floats: five states
-    step faster without numpy."""
+    """Fixed-step RK4 with inputs held over each step (the same stepper the site runs). Plain floats: a handful of
+    states step faster without numpy."""
     rhs, _ = numeric()
     pv = vector(p)
     xc = p["xc"]
     y = [float(v) for v in (y0 if y0 is not None else rest_state(p))]
     out = np.empty((len(u), len(STATES)))
     h2, h6 = dt / 2, dt / 6
-    for i, (us, pe) in enumerate(u.tolist()):
+    for i, ui in enumerate(u.tolist()):
         out[i] = y
-        ui = (us, pe)
         k1 = rhs(y, ui, pv)
         k2 = rhs([a + h2 * b for a, b in zip(y, k1)], ui, pv)
         k3 = rhs([a + h2 * b for a, b in zip(y, k2)], ui, pv)
         k4 = rhs([a + dt * b for a, b in zip(y, k3)], ui, pv)
         y = [a + h6 * (b + 2 * c + 2 * d + e) for a, b, c, d, e in zip(y, k1, k2, k3, k4)]
         y[0] = max(y[0], xc)
-        for j in range(1, 5):
+        for j in range(1, len(STATES)):
             y[j] = min(max(y[j], 0.0), 1.0)
     return out
 
 
 def rest_state(p: dict[str, float]) -> np.ndarray:
     s = calibrate(p)
-    return np.array([s.xrest, s.urest, 0.0, 0.0, 0.0])
+    return np.array([s.xrest, s.urest, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0])
 
 
 def flow(p: dict[str, float], x: np.ndarray) -> np.ndarray:
@@ -186,7 +198,8 @@ def flow(p: dict[str, float], x: np.ndarray) -> np.ndarray:
 
 @dataclass
 class Score:
-    """Inputs over time: baseline tone (resting + stress), gasps (times), presses (start, end, mmHg), paced breath."""
+    """Inputs over time: baseline tone (resting + stress), gasps (times), presses (start, end, mmHg), squeezes (start,
+    end, deformation), paced breath, and the breath's movement at the knot."""
 
     duration: float
     stress: list[tuple[float, float]]  # (time, extra tone from then on)
@@ -195,6 +208,11 @@ class Score:
     breath_period: float = 10.0  # 4 s in, 6 s out
     breathing: bool = False
     relaxing: bool = False  # the out-breath lowers drive and the in-breath does not raise it
+    squeezes: list[tuple[float, float, float]] = field(default_factory=list)  # a press also deforms the tissue
+    moving: bool = False  # the breath moves the tissue at the knot (rising on the in-breath)
+    move: float | None = None  # how much, as a fraction of a squeeze that shuts the vessel (default breath_move)
+    move_from: float = 0.0  # when the breath starts to move the tissue (s)
+    settle: tuple[float, float, float] | None = None  # (start, time to settle, drop): drive eases and stays down
 
     def inputs(self, p: dict[str, float], dt: float) -> np.ndarray:
         s = calibrate(p)
@@ -207,10 +225,19 @@ class Score:
         if self.breathing:
             w = breath_wave(t, self.breath_period)
             u += p["breath_swing"] * (np.minimum(w, 0) if self.relaxing else w)
+        if self.settle:
+            t0, span, drop = self.settle
+            u -= drop * np.clip((t - t0) / span, 0, 1)
         pext = np.zeros(len(t))
         for a, b, mmhg in self.presses:
             pext[(t >= a) & (t < b)] = mmhg
-        return np.stack([np.clip(u, 0, 1), pext], axis=1)
+        mv = np.zeros(len(t))
+        for a, b, amount in self.squeezes:
+            mv[(t >= a) & (t < b)] = amount
+        if self.moving:
+            amp = p["breath_move"] if self.move is None else self.move
+            mv = np.maximum(mv, np.where(t >= self.move_from, amp * (1 + breath_wave(t, self.breath_period)) / 2, 0.0))
+        return np.stack([np.clip(u, 0, 1), pext, mv], axis=1)
 
 
 def gasp_wave(t: np.ndarray, p: dict[str, float]) -> np.ndarray:
@@ -229,8 +256,8 @@ def run(p: dict[str, float], score: Score, dt: float = 0.01) -> dict[str, np.nda
     u = score.inputs(p, dt)
     y = rk4(p, u, dt)
     t = np.arange(len(u)) * dt
-    return {"t": t, "uS": u[:, 0], "Pext": u[:, 1], "x": y[:, 0], "A": y[:, 1], "m": y[:, 2], "n": y[:, 3],
-            "my": y[:, 4], "q": flow(p, y[:, 0])}
+    return {"t": t, "uS": u[:, 0], "Pext": u[:, 1], "mv": u[:, 2], **{k: y[:, i] for i, k in enumerate(STATES)},
+            "q": flow(p, y[:, 0])}
 
 
 # ---------- Fitting the timing constants to their measured targets ----------
@@ -275,3 +302,47 @@ def fit(items: tuple[tuple[str, float], ...]) -> dict[str, float]:
         p["tau_down"] = solve(lambda td: gasp_response(p | {"tau_down": td})[2] - GASP_RECOVERY, 2.0, 30.0, p["tau_down"])
         p["tau_nerve"] = solve(lambda tn: hyperaemia(p | {"tau_nerve": tn})[1] - p["porh_peak_time"], 0.5, 15.0, p["tau_nerve"])
     return {k: p[k] for k in ("gasp_gain", "tau_down", "tau_nerve")}
+
+
+# ---------- Fitting the movement route to squeezed arteries (clifford2006) ----------
+
+SQUEEZES = {  # pressure pulses of 600 mmHg that close the lumen; (start, end) in s
+    "one": [(5.0, 6.0)],
+    "long": [(5.0, 10.0)],
+    "five": [(5.0 + 2 * i, 6.0 + 2 * i) for i in range(5)],
+}
+
+
+def squeeze_response(p: dict[str, float], pulses: list[tuple[float, float]], dt: float = 0.02) -> tuple[float, float]:
+    """(peak rise in diameter, seconds from the last release to the peak) after squeezing a vessel at rest shut."""
+    end = pulses[-1][1]
+    r = run(p, Score(duration=end + 20.0, stress=[], gasps=[], presses=[(a, b, 600.0) for a, b in pulses],
+                     squeezes=[(a, b, 1.0) for a, b in pulses]), dt)
+    j = int(np.argmax(np.where(r["t"] >= end, r["x"], -np.inf)))
+    return float(r["x"][j] / p["xrest"] - 1), float(r["t"][j] - end)
+
+
+@lru_cache(maxsize=64)
+def fit_movement(items: tuple[tuple[str, float], ...]) -> dict[str, float]:
+    """Fit how much each change of shape loosens the wall, how long it lasts and how fast it shows, so the model
+    reproduces the widening of squeezed arteries and its timing after one squeeze, one long squeeze and five."""
+    from scipy.optimize import least_squares
+
+    from ..params import load
+
+    p = dict(items)
+    table = load("vessel")
+    sem = lambda k: (table[k].range[1] - table[k].range[0]) / 2
+
+    def resid(v):
+        q = p | {"k_mv": v[0], "tau_w": v[1], "tau_z": v[2]}
+        e = []
+        for name in SQUEEZES:
+            rise, when = squeeze_response(q, SQUEEZES[name])
+            e += [(rise - p[f"squeeze_rise_{name}"]) / sem(f"squeeze_rise_{name}"),
+                  (when - p[f"squeeze_peak_{name}"]) / sem(f"squeeze_peak_{name}")]
+        return e
+
+    best = least_squares(resid, x0=[p["k_mv"], p["tau_w"], p["tau_z"]], bounds=([0.1, 1.0, 0.2], [20.0, 60.0, 15.0]),
+                         diff_step=0.05)
+    return dict(zip(("k_mv", "tau_w", "tau_z"), (float(v) for v in best.x)))

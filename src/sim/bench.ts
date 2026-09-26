@@ -4,7 +4,7 @@
  */
 import data from '../data/sim/vessel.json';
 import { CS, INK, SW, TRACES, swX, swY, traceBox, tracesFrame } from './draw';
-import { breathWave, calibrate, curve, flow, gaspWave, inputAt, restState, scratch, step, type Params, type Score } from './vessel';
+import { breathWave, calibrate, curve, flow, gaspWave, inputAt, restState, scratch, step, type Input, type Params, type Score } from './vessel';
 
 type Breath = 'off' | 'even' | 'relaxing';
 
@@ -31,6 +31,7 @@ export function mountBench(root: HTMLElement): void {
   let t = 0;
   let stress = 0;
   let pressing = false;
+  let moving = 0; // how much the breath moves the tissue at the knot (0: not at all)
   let pressedAt = 0;
   let breath: Breath = 'off';
   let speed = 1;
@@ -40,15 +41,15 @@ export function mountBench(root: HTMLElement): void {
   let nextSample = 0;
   let visible = true;
 
-  const command = (): [number, number] => {
+  const command = (): Input => {
     if (trial) return inputAt(p, trial.score, t - trial.t0, s);
     let u = s.urest + stress;
     for (const g of gasps) u += p.gasp_gain * gaspWave(t - g, p);
-    if (breath !== 'off') {
-      const w = breathWave(t);
-      u += p.breath_swing * (breath === 'relaxing' ? Math.min(w, 0) : w);
-    }
-    return [Math.min(Math.max(u, 0), 1), pressing ? p.P + 10 : 0];
+    const w = breathWave(t);
+    if (breath !== 'off') u += p.breath_swing * (breath === 'relaxing' ? Math.min(w, 0) : w);
+    // A press squeezes the tissue; the breath can also move it here (the movement route).
+    const mv = pressing ? 1 : moving > 0 ? (moving * (1 + w)) / 2 : 0;
+    return [Math.min(Math.max(u, 0), 1), pressing ? p.P + 10 : 0, mv];
   };
 
   // ---- elements ----
@@ -199,11 +200,11 @@ export function mountBench(root: HTMLElement): void {
 
   // ---- drawing ----
   const render = (real: number) => {
-    const [x, A, m, n] = y;
+    const [x, A, m, n, , , , z] = y;
     const shut = x < 1.5 * p.xc;
     const q = flow(p, x);
     const [u] = command();
-    dot.setAttribute('cx', (swX(A * (1 - n))).toFixed(1));
+    dot.setAttribute('cx', (swX(A * (1 - n) * (1 - z))).toFixed(1));
     dot.setAttribute('cy', swY(x).toFixed(1));
     dot.setAttribute('fill', shut ? INK.knot : INK.spark);
     cmd.setAttribute('transform', `translate(${swX(u).toFixed(1)} ${SW.bottom + 1})`);

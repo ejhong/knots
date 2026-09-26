@@ -19,6 +19,7 @@ def scores(p: dict[str, float]) -> dict[str, v.Score]:
     surge = s.Afold + 0.03 - s.urest  # a surge of stress that carries tone just past the fold
     deep = s.Aopen + 0.65 * band - s.urest  # tone two-thirds of the way up the window
     marginal = s.Aopen + 0.004 - s.urest  # tone just above the reopening threshold
+    fifth = s.Aopen + 0.2 * band - s.urest  # a fifth of the way up the window
     press = p["P"] + 10
     formed = [(10, surge), (40, deep)]  # a surge shuts the vessel; stress falls back but stays raised
     return {
@@ -26,12 +27,16 @@ def scores(p: dict[str, float]) -> dict[str, v.Score]:
         "gasp_near_fold": v.Score(duration=90, stress=[(5, deep)], gasps=[30], presses=[]),
         "knot_forms": v.Score(duration=150, stress=formed, gasps=[], presses=[]),
         "stress_eases": v.Score(duration=210, stress=formed + [(110, 0.0)], gasps=[], presses=[]),
-        "press_and_release": v.Score(duration=240, stress=formed, gasps=[], presses=[(110, 150, press)]),
+        "press_and_release": v.Score(duration=240, stress=formed, gasps=[], presses=[(110, 150, press)],
+                                     squeezes=[(110, 150, 1.0)]),
         "even_breath_at_threshold": v.Score(duration=210, stress=formed[:1] + [(40, marginal)], gasps=[], presses=[],
                                             breathing=True),
         "relaxing_breath_at_threshold": v.Score(duration=210, stress=formed[:1] + [(40, marginal)], gasps=[],
                                                 presses=[], breathing=True, relaxing=True),
         "breath_holds_deeper": v.Score(duration=210, stress=formed, gasps=[], presses=[], breathing=True),
+        # The breath's movement at the knot (the movement route), with drive unchanged: a knot a fifth of the way up.
+        "moving_breath": v.Score(duration=240, stress=formed[:1] + [(40, fifth)], gasps=[], presses=[],
+                                 moving=True, move=0.3, move_from=40.0),
     }
 
 

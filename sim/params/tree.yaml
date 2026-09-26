@@ -1,0 +1,42 @@
+# A small tree of perforators: a parent vessel feeding four children, each a vessel switch (params/vessel.yaml),
+# coupled by the pressures they share. The tree's own numbers are guesses, marked as such; the robustness sampling
+# spans their ranges.
+
+model: tree
+title: A parent and its children
+parameters:
+  P_source:
+    symbol: P_s
+    label: "pressure feeding the parent"
+    value: 100.0
+    unit: mmHg
+    range: [80.0, 110.0]
+    confidence: guessed
+    note: "Pressure upstream of the parent vessel. With the resistances below it puts the children near the 60 mmHg the single vessel uses."
+
+  P_bed:
+    symbol: P_v
+    label: "pressure beyond the children's beds"
+    value: 20.0
+    unit: mmHg
+    range: [10.0, 30.0]
+    confidence: guessed
+    note: "Where the children's capillary beds drain."
+
+  ratio:
+    symbol: R_p/R_c
+    label: "parent's resistance over its children's together"
+    value: 1.0
+    unit: "1"
+    range: [0.25, 4.0]
+    confidence: guessed
+    note: "At rest. Each child's resistance includes its bed. Sampled on a log scale."
+
+  children:
+    symbol: K
+    label: "children per parent"
+    value: 4
+    unit: "1"
+    range: [4, 4]
+    confidence: guessed
+    note: "A handful, so each child's state can be followed; a real tree branches further."

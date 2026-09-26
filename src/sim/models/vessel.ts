@@ -2,8 +2,8 @@
 // in Python and run `uv run python -m knots_sim.export`.
 /* eslint-disable */
 
-export const STATES = ["x", "A", "m", "n", "my"] as const;
-export const INPUTS = ["uS", "Pext"] as const;
+export const STATES = ["x", "A", "m", "n", "my", "ml", "w", "z"] as const;
+export const INPUTS = ["uS", "Pext", "mv"] as const;
 export interface VesselParams {
   r100: number;
   Tmax: number;
@@ -21,32 +21,40 @@ export interface VesselParams {
   collateral: number;
   myogenic: number;
   tau_myogenic: number;
+  tau_mv: number;
+  k_mv: number;
+  tau_w: number;
+  tau_z: number;
   xrest: number;
 }
 
-/** d/dt of the state [x, A, m, n, my] given inputs [uS, Pext]; written into `out`. */
+/** d/dt of the state [x, A, m, n, my, ml, w, z] given inputs [uS, Pext, mv]; written into `out`. */
 export function rhs(y: ArrayLike<number>, u: ArrayLike<number>, p: VesselParams, out: number[]): void {
-  const x = y[0], A = y[1], m = y[2], n = y[3], my = y[4];
-  const uS = u[0], Pext = u[1];
-  const { r100, Tmax, xopt, P, beta, width, wall, xc, tau_x, tau_up, tau_down, tau_debt, tau_nerve, collateral, myogenic, tau_myogenic, xrest } = p;
-  let d0: number, d1: number, d2: number, d3: number, d4: number;
+  const x = y[0], A = y[1], m = y[2], n = y[3], my = y[4], ml = y[5], w = y[6], z = y[7];
+  const uS = u[0], Pext = u[1], mv = u[2];
+  const { r100, Tmax, xopt, P, beta, width, wall, xc, tau_x, tau_up, tau_down, tau_debt, tau_nerve, collateral, myogenic, tau_myogenic, tau_mv, k_mv, tau_w, tau_z, xrest } = p;
+  let d0: number, d1: number, d2: number, d3: number, d4: number, d5: number, d6: number, d7: number;
   const c0 = -Math.exp(-beta);
   const c1 = (1/2)*wall;
-  const c2 = 7.50063755419211e-5*(-A*Tmax*(1 - n)*Math.exp(-Math.pow(Math.sqrt(c1 + Math.pow(x, 2))/Math.sqrt(c1 + Math.pow(xopt, 2)) - 1, 2)/Math.pow(width, 2)) + r100*x*(133.322*P - 133.322*Pext) - 13332.2*r100*(c0 + Math.exp(beta*(x - 1)))/(c0 + 1))/r100;
+  const c2 = 7.50063755419211e-5*(-A*Tmax*(1 - n)*(1 - z)*Math.exp(-Math.pow(Math.sqrt(c1 + Math.pow(x, 2))/Math.sqrt(c1 + Math.pow(xopt, 2)) - 1, 2)/Math.pow(width, 2)) + r100*x*(133.322*P - 133.322*Pext) - 13332.2*r100*(c0 + Math.exp(beta*(x - 1)))/(c0 + 1))/r100;
   const c3 = -my*myogenic + 1;
   const c4 = -A + c3*uS;
   const c5 = Math.min(1, Math.pow(x, 4)/Math.pow(xrest, 4));
   const c6 = c5 - 1;
   const c7 = Math.min(1, Math.max(0, Pext/P));
+  const c8 = ml - mv;
   d0 = ((1 - Math.exp(-100.0*Math.max(0, x - xc)))*Math.min(0, c2) + Math.max(0, c2))/tau_x;
   d1 = ((A < c3*uS) ? (c4/tau_up) : (c4/tau_down));
   d2 = (c6*collateral*(1 - c7) - c6 - m)/tau_debt;
   d3 = (c5*m - n)/tau_nerve;
   d4 = (c7 - my)/tau_myogenic;
-  out[0] = d0; out[1] = d1; out[2] = d2; out[3] = d3; out[4] = d4;
+  d5 = -c8/tau_mv;
+  d6 = k_mv*(1 - w)*Math.abs(c8) - w/tau_w;
+  d7 = (w - z)/tau_z;
+  out[0] = d0; out[1] = d1; out[2] = d2; out[3] = d3; out[4] = d4; out[5] = d5; out[6] = d6; out[7] = d7;
 }
 
-/** The effective tone A·(1 − n) that holds the vessel at radius x (the switch's equilibrium curve). */
+/** The effective tone A·(1 − n)·(1 − z) that holds the vessel at radius x (the switch's equilibrium curve). */
 export function aeq(x: number, Pext: number, p: VesselParams): number {
   const { r100, Tmax, xopt, P, beta, width, wall } = p;
   let r: number;

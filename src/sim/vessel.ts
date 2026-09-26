@@ -3,7 +3,7 @@
  * the same stepper, calibration and inputs as sim/knots_sim/models/vessel.py. tests/sim-vessel.test.ts holds the two
  * to the same trajectories.
  */
-import { aeq, rhs, type VesselParams } from './models/vessel';
+import { aeq, rhs, STATES, type VesselParams } from './models/vessel';
 
 export type { VesselParams };
 
@@ -15,6 +15,7 @@ export interface Params extends VesselParams {
   latency: number;
   gasp_duration: number;
   breath_swing: number;
+  breath_move: number;
 }
 
 export interface SwitchInfo {
@@ -66,24 +67,29 @@ export function curve(p: Params, n = 240, Pext = 0): { x: number[]; A: number[] 
   return { x, A: x.map((xi) => aeq(xi, Pext, p)) };
 }
 
+/** Inputs: [tone command, external pressure (mmHg), local deformation (0..1)]. */
+export type Input = [number, number, number];
+
+const N = STATES.length;
+
 /** One RK4 step with inputs held over the step; state written back into y. */
-export function step(y: number[], u: [number, number], p: Params, dt: number, k: number[][] = scratch()): void {
+export function step(y: number[], u: Input, p: Params, dt: number, k: number[][] = scratch()): void {
   const [k1, k2, k3, k4, t] = k;
   rhs(y, u, p, k1);
-  for (let j = 0; j < 5; j++) t[j] = y[j] + (dt / 2) * k1[j];
+  for (let j = 0; j < N; j++) t[j] = y[j] + (dt / 2) * k1[j];
   rhs(t, u, p, k2);
-  for (let j = 0; j < 5; j++) t[j] = y[j] + (dt / 2) * k2[j];
+  for (let j = 0; j < N; j++) t[j] = y[j] + (dt / 2) * k2[j];
   rhs(t, u, p, k3);
-  for (let j = 0; j < 5; j++) t[j] = y[j] + dt * k3[j];
+  for (let j = 0; j < N; j++) t[j] = y[j] + dt * k3[j];
   rhs(t, u, p, k4);
-  for (let j = 0; j < 5; j++) y[j] += (dt / 6) * (k1[j] + 2 * k2[j] + 2 * k3[j] + k4[j]);
+  for (let j = 0; j < N; j++) y[j] += (dt / 6) * (k1[j] + 2 * k2[j] + 2 * k3[j] + k4[j]);
   y[0] = Math.max(y[0], p.xc);
-  for (let j = 1; j < 5; j++) y[j] = Math.min(Math.max(y[j], 0), 1);
+  for (let j = 1; j < N; j++) y[j] = Math.min(Math.max(y[j], 0), 1);
 }
 
-export const scratch = () => Array.from({ length: 5 }, () => [0, 0, 0, 0, 0]);
+export const scratch = () => Array.from({ length: 5 }, () => new Array<number>(N).fill(0));
 
-export const restState = (p: Params, s = calibrate(p)): number[] => [s.xrest, s.urest, 0, 0, 0];
+export const restState = (p: Params, s = calibrate(p)): number[] => [s.xrest, s.urest, ...new Array<number>(N - 2).fill(0)];
 
 export const flow = (p: Params, x: number) => Math.pow(x / p.xrest, 4);
 
@@ -108,23 +114,36 @@ export interface Score {
   breath_period?: number;
   breathing?: boolean;
   relaxing?: boolean;
+  /** (start, end, deformation): a press also deforms the tissue. */
+  squeezes?: [number, number, number][];
+  /** The breath moves the tissue at the knot, by `move` (default breath_move) of a squeeze that shuts the vessel. */
+  moving?: boolean;
+  move?: number | null;
+  move_from?: number;
+  /** (start, time to settle, drop): drive eases and stays down. */
+  settle?: [number, number, number] | null;
 }
 
-/** The inputs [tone command, external pressure] at time t of a score. */
-export function inputAt(p: Params, score: Score, t: number, s: SwitchInfo): [number, number] {
+/** The inputs [tone command, external pressure, local deformation] at time t of a score. */
+export function inputAt(p: Params, score: Score, t: number, s: SwitchInfo): Input {
   let u = s.urest;
   for (const [t0, extra] of score.stress) if (t >= t0) u = s.urest + extra;
   for (const tg of score.gasps) u += p.gasp_gain * gaspWave(t - tg, p);
-  if (score.breathing) {
-    const w = breathWave(t, score.breath_period ?? 10);
-    u += p.breath_swing * (score.relaxing ? Math.min(w, 0) : w);
+  const w = breathWave(t, score.breath_period ?? 10);
+  if (score.breathing) u += p.breath_swing * (score.relaxing ? Math.min(w, 0) : w);
+  if (score.settle) {
+    const [t0, span, drop] = score.settle;
+    u -= drop * Math.min(Math.max((t - t0) / span, 0), 1);
   }
   let pext = 0;
   for (const [a, b, mmhg] of score.presses) if (t >= a && t < b) pext = mmhg;
-  return [Math.min(Math.max(u, 0), 1), pext];
+  let mv = 0;
+  for (const [a, b, amount] of score.squeezes ?? []) if (t >= a && t < b) mv = amount;
+  if (score.moving && t >= (score.move_from ?? 0)) mv = Math.max(mv, ((score.move ?? p.breath_move) * (1 + w)) / 2);
+  return [Math.min(Math.max(u, 0), 1), pext, mv];
 }
 
-export function inputs(p: Params, score: Score, dt: number, s = calibrate(p)): [number, number][] {
+export function inputs(p: Params, score: Score, dt: number, s = calibrate(p)): Input[] {
   const n = Math.ceil(score.duration / dt);
   return Array.from({ length: n }, (_, i) => inputAt(p, score, i * dt, s));
 }
