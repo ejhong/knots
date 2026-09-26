@@ -1,19 +1,34 @@
 # The exam: what people report about knots, as tests every theory sits (sim/PLAN.md §4).
 #
-# DRAFT. The author rewrites these in their own words; then they are frozen with a version and a date (and
-# preregistered on OSF) before any sweep, and change only by a new, dated version. An observation says what happens,
-# never how. Evidence: S, self-report; M, measured in the literature.
+# SEALED. Version 1, 26 Sep 2026, frozen before any sweep. It changes only by a new, dated version: observations/seal.yaml
+# records each version's SHA-256, and a test fails if this file differs from its seal. Every result names the version it
+# used. An observation says what happens, never how.
+#
+# The record is the author's own account: the Observations chapter of the site's introduction (src/data/tour.ts), its
+# chapters on the ladder and on age, and the author's messages (observations/author.md). The author asked that the wording
+# rest on judgment, and that the introduction, not the essays, be the record: the essays' text was generated, and is
+# sometimes off. Reports found only in the essays are listed under `set_aside`, unscored, until the author confirms them.
+# The author's lines are quoted under `words`. Evidence: S, self-report; M, measured in the literature.
 
-version: 0
-status: draft
+version: 1
+status: sealed
+sealed: 2026-09-26
 updated: 2026-09-26
+
+changes:  # from the draft of 26 Sep 2026
+  - "The introduction is the record: each observation takes its words, and the essays are no longer a source."
+  - "O2 is the introduction's: pressure and focused attention release knots one place at a time, and pressed, with a slow out-breath, a knot often lets go within seconds. The draft's 'pressure, then release, lets go faster than calm alone' was the vessel model's trial, not a report."
+  - "O2b (focus alone) is folded into O2, where the introduction puts attention: with pressure."
+  - "O16 is added from the introduction: some knots come and go with breath and mood."
+  - "O14 (clusters at the base of the skull; warmth from an old cluster) is set aside: it is only in the essays. Where knots gather is in O4."
+  - "The readings of the words and the scoring rules are fixed here, so that no reading can be stretched to fit a model."
 
 groups:
   - {id: breath, label: "The breath and the hand"}
   - {id: load, label: "Load"}
   - {id: spark, label: "The spark"}
   - {id: clusters, label: "Clusters and spread"}
-  - {id: where, label: "Where, and how many"}
+  - {id: where, label: "How many"}
   - {id: body, label: "Across the body"}
   - {id: noted, label: "Noted, not modelled yet"}
 
@@ -21,86 +36,165 @@ observations:
   - id: O1
     group: breath
     title: Breath release
-    text: "With the breath, held knots let go. The release can be broad (many at once, across the body) or focused (one region). Easy knots go within a breath or two; hard ones over many breaths, or not at all. The ability grows with practice."
+    text: "Knots answer to the breath: they let go on a slow out-breath. A single relaxing breath, the long exhale that comes on its own in a hot shower, can soften many small knots at once; deeper, persistent knots let go only to focused attention and breath. Release can be broad or focused. Easy knots go within a breath or two; hard ones take many breaths. The breath is a learned skill, proprioceptive and meditative."
     evidence: S
-    note: "How the breath acts is left open: drive, movement, local nerves, attention, chemistry are variants, not assumptions."
+    words:
+      - quote: "Knots seem to answer to the breath. They let go on a slow out-breath, and a single relaxing breath — the long exhale that comes on its own in a hot shower — can soften many small knots at once."
+        from: "the introduction, Observations"
+      - quote: "deeper, persistent knots let go only to focused attention and breath."
+        from: "the introduction, Observations"
+      - quote: "breath (i believe a complex proprioceptive meditative breath that is a learned skill) releases knots and can be broad or focused."
+        from: "the author, 26 Sep 2026"
+      - quote: "who knows if some knots take multiple breaths to work on. Vs other easier ones."
+        from: "the author, 26 Sep 2026"
+    note: "How the breath acts is left open: drive, movement, local nerves, attention and chemistry are variants, not assumptions."
   - id: O2
     group: breath
-    title: Pressure, then release
-    text: "Sustained local pressure for tens of seconds, then release, lets a knot go, faster than calm alone."
+    title: Pressure and attention
+    text: "Pressure and focused attention, a foam roller or a patient hand, release knots one place at a time. Pressed, with a slow out-breath, a knot often lets go within seconds."
     evidence: S
-    note: "Reactive hyperaemia after pressure is measured (M); the knot's release is self-report."
-  - id: O2b
-    group: breath
-    title: Attention
-    text: "Focus alone, without pressure or movement, can let a knot go."
-    evidence: S
-    note: "To define with the author; may belong to O1's focused release."
+    words:
+      - quote: "Press into a knot, breathe out slowly, and it often lets go within seconds."
+        from: "the introduction, Observations"
+      - quote: "Pressure and focused attention — a foam roller, a patient hand — release knots one place at a time."
+        from: "the introduction, Observations"
   - id: O3
     group: breath
     title: Water
-    text: "Hydration lowers the threshold for release, or speeds it."
+    text: "Drinking water seems to ease release, and to speed it."
     evidence: S
+    words:
+      - quote: "Drinking water seems to ease release, and to speed it."
+        from: "the introduction, Observations"
     note: "Most theories are expected to be silent; silence is reported as silence."
   - id: O4
     group: load
     title: Stress
-    text: "Sustained stress raises the number of held knots, most where tone is highest: neck and shoulders, jaw, belly, low back."
+    text: "Knots worsen under stress, and gather where it is held: neck and shoulders, jaw, belly, low back."
     evidence: S
+    words:
+      - quote: "Knots seem to worsen under stress, and gather where it is held: neck and shoulders, jaw, belly, low back."
+        from: "the introduction, Observations"
+  - id: O16
+    group: load
+    title: Coming and going
+    text: "Some knots come and go with breath and mood; some may even be held from moment to moment."
+    evidence: S
+    words:
+      - quote: "Some knots seem to come and go with breath and mood, and some may even be held from moment to moment"
+        from: "the introduction, Observations"
   - id: O5
     group: load
     title: Stiffness
-    text: "Held knots reduce range of motion; a stretch meets them as a dull block."
+    text: "As knots gather they limit movement. A stretch is felt as a clear, sharp pull in the muscle, but it meets the knots as dull, deep blocks it cannot reach."
     evidence: S
+    words:
+      - quote: "As knots gather they seem to limit movement. A stretch is felt as a clear, sharp pull in the muscle, but it meets the knots as dull, deep blocks it cannot reach."
+        from: "the introduction, Observations"
   - id: O6
     group: spark
     title: Sparks
-    text: "Release brings a brief tingle over the knot's own patch of skin."
+    text: "A knot goes with a small pop, sometimes a star of tingling across a patch of skin."
     evidence: S
-    note: "Must be spatial: overbreathing makes tingling anywhere, so only tingling confined to the released patch tells theories apart."
+    words:
+      - quote: "A knot goes with a small pop, sometimes a star of tingling across a patch of skin."
+        from: "the introduction, Observations"
+    note: "The measurement that tells theories apart is spatial: overbreathing makes tingling anywhere, so only tingling confined to the released knot's own patch discriminates."
   - id: O8
     group: clusters
-    title: Migration and the queue
-    text: "Releasing one knot changes others: some let go, some appear; the territory evens out; at some places knots are released and then replaced by others, as if from a queue."
+    title: Migration
+    text: "When one knot lets go, others move in to fill the gap and settle into new places, as if the body were evening itself out."
     evidence: S
+    words:
+      - quote: "When one knot lets go, others move in to fill the gap and settle into new places, as if the body were evening itself out."
+        from: "the introduction, Observations"
   - id: O13
     group: clusters
     title: A parent releases its children
     text: "Releasing one knot (a parent) lets many others (its children) go with it."
     evidence: S
-    note: "The author's own experience, written down on 26 Sep 2026 after the tree simulation had been shared: the model's match is found after the fact, not predicted blind. How many, how soon, where and what stays are the blind tests."
-  - id: O14
-    group: where
-    title: Clusters in place
-    text: "Knots gather in clusters at particular places, the base of the skull most of all; an old, heavily loaded cluster can let go with a wave of warmth spreading from the site."
-    evidence: S
+    words:
+      - quote: "Clustering can be an observation - parent release many children. I’ve felt this."
+        from: "the author, 26 Sep 2026"
+    note: "Written down on 26 Sep 2026, after the tree simulation had been shared: the vascular tree's match is found after the fact, not predicted blind. How many children, how soon, where they lie and what stays are the blind tests."
   - id: O15
     group: where
     title: Sizes and numbers
-    text: "Knots come in a hierarchy: a handful of roots at the ridges, big knots that take sessions to clear, and micro knots at dozens per square inch, hundreds of thousands in a body by practitioners' own estimate."
+    text: "Knots come in a hierarchy: a few large knots that take many sessions to clear, and micro knots at dozens to the square inch, hundreds of thousands in a body by practitioners' own estimate."
     evidence: S
+    words:
+      - quote: "Those who count describe a hierarchy: a few large knots that take many sessions to clear, and micro-knots at dozens to the square inch — hundreds of thousands in a body, by their own estimate."
+        from: "the introduction, A ladder of a hundred thousand"
     note: "The number and density are part of the test: each theory predicts its own, and only a unit that dense can host a micro knot."
   - id: O9
     group: body
     title: Mirroring
-    text: "Releasing on one side increases release or range of motion on the other."
+    text: "Working the knots on one side can ease the other side as well."
     evidence: M
     sources: [kelly2016, konrad2023]
-    note: "The crossover effect of stretching one side is measured; a scoping review puts it down most likely to reduced pain perception."
+    words:
+      - quote: "Working the knots on one side can ease the other side as well."
+        from: "the introduction, Observations"
+    note: "The crossover effect of rolling or stretching one side is measured; a scoping review puts it down most likely to reduced pain perception."
   - id: O10
     group: body
     title: Age
-    text: "Knots accumulate with age: young ones small and transient, old ones large and persistent."
+    text: "Knots accumulate with age, and they grow; the young have few. A young knot is small and comes and goes; an old one is larger and persists, and as they gather the body stiffens."
     evidence: S
+    words:
+      - quote: "Knots accumulate with age, and they grow. The young have few."
+        from: "the introduction, Across a life"
+      - quote: "A young knot is small and comes and goes; an old one is larger and persists, and as they gather the body stiffens."
+        from: "the introduction, Across a life"
   - id: O7
     group: noted
     title: Euphoria
-    text: "A large release can bring a wave of euphoria."
+    text: "A release can bring a wave of well-being, at times a euphoria some compare to MDMA."
     evidence: S
+    words:
+      - quote: "A release can bring a wave of well-being — at times a euphoria some compare to MDMA."
+        from: "the introduction, Observations"
     note: "Out of scope for tissue-level models."
   - id: O11
     group: noted
     title: Peeling and filling
-    text: "Layers of the fascia peel apart along lines, leaving hollows that fill over days."
+    text: "Layers of the fascia beneath the skin can peel apart along lines, leaving places that feel hollow, rarely; then a filling-in, felt as re-stitching, that can move like a snake along a limb, up the body, or up into the head."
     evidence: S
+    words:
+      - quote: "Some have reported layers of the fascia beneath the skin peeling apart along lines, leaving places that feel hollow. It is rare and little understood"
+        from: "the introduction, Observations"
+      - quote: "Then a filling-in, felt as re-stitching, that can move like a snake along a limb, up the body, or up into the head."
+        from: "the introduction, Observations"
     note: "Deferred to the fascia phase."
+
+# Reports that appear only in the essays, whose text was generated and is sometimes off. Not scored, until the author confirms.
+set_aside:
+  - "Releases run along paths that converge on the back of the skull, where knots are released and then replaced, as if from a queue."
+  - "Knots cluster most at the base of the skull, and an old, heavily loaded cluster can let go with a wave of warmth spreading from the site."
+  - "Distant places (the brow, the temple, the jaw, the side of the nose) can unlock a stubborn region at the ridge of the skull."
+  - "Pressure alone does not seem to release a knot."
+  - "Fresh knots yield in a session; old ones take months."
+  - "The knots go first: the fascia's separating cannot begin at a site until its knots are gone."
+
+# How the words are read when a trial is scored: fixed with the seal, so that no reading can be stretched to fit a model.
+readings:
+  - {words: "a breath", reads: "one slow breath: 4 s in, 6 s out"}
+  - {words: "a single relaxing breath", reads: "one slow breath with a long out-breath, with no pressure and no focus on a place"}
+  - {words: "within seconds", reads: "within 10 s, during the out-breath"}
+  - {words: "within a breath or two", reads: "by the end of the second breath"}
+  - {words: "many breaths", reads: "from the third breath to the thirtieth"}
+  - {words: "often", reads: "in at least half of the trials"}
+  - {words: "many (knots, children)", reads: "at least three"}
+  - {words: "at once", reads: "within the same breath"}
+  - {words: "one place at a time", reads: "releases confined to the place pressed or attended"}
+  - {words: "broad", reads: "releases spread across regions, not concentrated at one place"}
+  - {words: "focused", reads: "most releases in one region, few elsewhere"}
+  - {words: "from moment to moment", reads: "formed and let go within a breath"}
+  - {words: "a session", reads: "an hour of the same trial"}
+  - {words: "many sessions", reads: "not within a session: only the same trial repeated over many sessions of model time"}
+
+scoring:
+  - "Each part of an observation is scored on its own: pass, fail, or silent."
+  - "A theory with no account of a part is silent on it. Silence is shown as silence, never counted as a pass or a fail."
+  - "A pass is reported as the share of plausible parameter sets in which the part holds, never as one tuned setting."
+  - "Observations in the group 'noted' are shown and not scored; the set-aside reports are shown and not scored."

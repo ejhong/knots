@@ -169,7 +169,11 @@ def main() -> dict:
     import yaml
 
     exam = yaml.safe_load((SIM / "observations" / "spec.yaml").read_text())
-    exam["updated"] = str(exam["updated"])
+    for k in ("updated", "sealed"):
+        if k in exam:
+            exam[k] = str(exam[k])
+    seal = yaml.safe_load((SIM / "observations" / "seal.yaml").read_text())["seals"][-1]
+    exam["seal"] = {"version": seal["version"], "date": str(seal["date"]), "sha256": seal["sha256"]}
     (SITE_DATA / "exam.json").write_text(json.dumps(exam, ensure_ascii=False, indent=1) + "\n")
 
     # Length adaptation: its own file, stamped with the same run.

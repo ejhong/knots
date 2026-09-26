@@ -321,8 +321,8 @@ way (fitted to the 73% of lost force that pulmonary arterial muscle regained at 
 - Drive is held fixed here: in life, regulation would rein in a flush sooner and resist a narrowing open vessel.
 - The length–tension curve is taken as symmetric about its optimum; how an adapted muscle pulls when stretched past its new
   optimum sets the size of the flush.
-- Two observations bear on this variant and were known when it was added: old knots persist (O10) and an old cluster lets
-  go with warmth (O14). The match is found after the fact; the tests above are the blind ones.
+- One observation bears on this variant and was known when it was added: a young knot comes and goes, an old one persists
+  (O10). The match is found after the fact; the tests above are the blind ones.
 - These are what the mechanism can do with measured numbers. They measure nothing.
 """
     OUT3.parent.mkdir(parents=True, exist_ok=True)

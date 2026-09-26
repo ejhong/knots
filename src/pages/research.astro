@@ -242,11 +242,15 @@ const index = [
   <section id="observations" class="sec full" data-glyph="報">
     <h2>What people report</h2>
     <p class="sub">
-      The observations every theory is tested against, as the author reports them and as the essays collect them.
-      Almost all are self-report; one is measured. They are a <strong>draft</strong>: the author rewrites them in their own words,
-      then they are frozen with a date before any sweep, and change only by a new, dated version.
+      The observations every theory is tested against, in the author's own account (the <a href={`${base}/#observation`}>introduction</a>{' '}
+      and the author's notes). Almost all are self-report; one is measured. They are <strong>sealed</strong>: frozen before any theory
+      sat them, with how each word is read when a trial is scored, and they change only by a new, dated version.
     </p>
-    <p class="seal-line"><span class="seal-draft">draft · v{exam.version} · {exam.updated}</span> <span class="muted">not yet sealed</span></p>
+    <p class="seal-line">
+      <span class="seal-stamp cjk" aria-hidden="true">結</span>
+      <span class="seal-sealed">sealed · v{exam.seal.version} · {exam.seal.date}</span>
+      <a class="seal-hash mono" href={`https://github.com/ejhong/knots/blob/exam-v${exam.seal.version}/sim/observations/spec.yaml`} title={`SHA-256 ${exam.seal.sha256}`}>sha256 {exam.seal.sha256.slice(0, 12)}…</a>
+    </p>
     <div class="obs-groups">
       {
         groups.map((g) => {
@@ -270,6 +274,11 @@ const index = [
           ) : null;
         })
       }
+    </div>
+    <div class="set-aside">
+      <p class="obs-head">Set aside, not scored</p>
+      <p class="set-aside-sub">Reports that appear only in the essays, whose text was generated and is sometimes off, until the author confirms them:</p>
+      <ul>{(exam.set_aside as string[]).map((x) => <li>{x}</li>)}</ul>
     </div>
   </section>
 
@@ -439,8 +448,8 @@ const index = [
       {creep15.mult}× rest), but arterioles held at {Math.round(100 * ad.lab.diameter)}% of their diameter for four hours kept it, where the model's would have
       shut within {(ad.lab.shuts_h ?? NaN).toFixed(1)} h. In an open vessel adaptation seems to make holding cheaper, not narrower, and flow and metabolism push
       back <Fragment set:html={`(${cite('vanbavel2014')})`} />; so stress making knots without a surge is not shown. A shut vessel has no flow, and the results
-      above do not lean on what is missing. That old knots persist (O10) and that an old cluster can let go with warmth (O14) were known when this variant was
-      added, so the match is found after the fact; the blind test is the four-hour closure test, <a href="#asks">below</a>.
+      above do not lean on what is missing. That a young knot comes and goes and an old one persists (O10) was known when this variant was added, so
+      the match is found after the fact; the blind test is the four-hour closure test, <a href="#asks">below</a>.
     </p>
   </section>
 
@@ -643,7 +652,7 @@ const index = [
           before any data.</p>
       </div>
     </div>
-    <p class="stamp mono">run {data.run.date} · inputs {data.run.inputs} · exam draft v{exam.version}</p>
+    <p class="stamp mono">run {data.run.date} · inputs {data.run.inputs} · exam v{exam.seal.version}, sealed {exam.seal.date}</p>
     <p class="links mono">
       <a href={`${base}/simulation/`}>the bench</a>
       <a href={`${repo}/sim/PLAN.md`}>the research plan</a>
@@ -708,13 +717,46 @@ const index = [
     font-size: 10px;
     margin: -4px 0 14px;
   }
-  .seal-draft {
+  .seal-stamp {
+    display: inline-grid;
+    place-items: center;
+    width: 22px;
+    height: 22px;
+    border-radius: 3px;
+    background: var(--seal);
+    color: var(--bg);
+    font-size: 13px;
+    line-height: 1;
+  }
+  .seal-sealed {
     font-family: var(--font-mono);
     font-size: 9.5px;
     color: var(--seal);
-    border: 1px dashed var(--seal);
+    border: 1px solid var(--seal);
     border-radius: 3px;
     padding: 2px 8px;
+  }
+  .seal-hash {
+    font-size: 9px;
+    color: var(--muted);
+  }
+  .set-aside {
+    margin-top: 18px;
+    max-width: 760px;
+  }
+  .set-aside-sub {
+    font-family: var(--font-serif);
+    font-size: 12px;
+    color: var(--muted);
+    margin: 0 0 6px;
+  }
+  .set-aside ul {
+    margin: 0;
+    padding-left: 18px;
+    font-family: var(--font-serif);
+    font-size: 12px;
+    line-height: 1.55;
+    color: var(--muted);
   }
   .obs-groups {
     display: grid;

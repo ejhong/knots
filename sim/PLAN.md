@@ -98,7 +98,7 @@ proponents of each theory, and a lab.
    kept their diameter (the model's would have shut in 1.7 h). In an open vessel adaptation must make holding cheaper, not
    narrower (activation easing, or flow and metabolism; vanbavel2014). So stress making knots without a surge (O4) is not
    shown, and how long a released knot's flush lasts is not known; the shut-vessel results do not depend on the missing loop.
-   It resolves finding 1's tension (a hold that needs 3.4× rest) through time, and bears on O10 and O14, known in advance.
+   It resolves finding 1's tension (a hold that needs 3.4× rest) through time, and bears on O10, known in advance.
 10. **What the perforation adds, if the switch is shared with the latch** (reasoning, not yet run; the author's question).
    The hold is the same smooth muscle either way; the piercing is mechanical and positional. A vessel pinned where it
    pierces the fascia, with the layers sliding past, would take a concentrated share of movement, stretch and a roller's
@@ -181,29 +181,39 @@ in a public table:
 - A plausible, publishable outcome: no single theory passes everything, and a hybrid does: a local switch that holds, with
   the nervous system setting its drive and much of what is felt.
 
-## 4. The exam (draft)
+## 4. The exam (sealed v1, 26 Sep 2026)
 
-The tests are drafts **for the author to rewrite in their own words**, mechanism-neutral: an observation says what happens,
-never how. The author reviews them; then they are **frozen** (`observations/spec.yaml`, with a version and a date, committed
-and preregistered on OSF) before any sweep. After that they change only by a new, dated version, and every result names the
-version it used. Evidence: **M**, measured in the literature; **S**, self-report.
+**Sealed** in `observations/spec.yaml` (version 1, 26 Sep 2026; SHA-256 in `observations/seal.yaml`, tagged `exam-v1`),
+before any sweep. It changes only by a new, dated version; a test fails if the file differs from its seal, and every result
+names the version it used. The author asked that the wording rest on judgment, and that the site's introduction, not the
+essays, be the record (the essays' text was generated and is sometimes off). So each observation takes the introduction's
+words or the author's own (quoted under `words` and checked against `src/data/tour.ts` and `observations/author.md` by a
+test), and reports found only in the essays are **set aside**, shown and unscored, until the author confirms them. The
+readings of the words ("within seconds" is within 10 s, during the out-breath; "many breaths" is the third to the thirtieth;
+and so on) and the scoring rules (pass, fail or silent per part; passes as shares of plausible parameter sets) are sealed
+with it.
 
-| ID | Observation | Draft test | Evidence | Notes |
-|---|---|---|---|---|
-| O1 | Breath release | With the breath, held units let go. The release can be broad (many units at once, across the body) or focused (one region). Easy units go within a breath or two; hard ones over many breaths, or not at all. The ability grows with practice. | S (the breath-linked constriction itself: M, bolton1936) | How the breath acts is left to the routes (§2). The size and difficulty dependence is part of the test. |
-| O2 | Pressure, then release | Sustained local pressure (tens of seconds), then release, flips the unit, faster than calm alone. | S (reactive hyperaemia: M) | |
-| O2b | Attention | Focus alone, without pressure or movement, releases a unit. | S | To define with the author (D4); may belong to O1's focused release. |
-| O3 | Water | Hydration lowers the release threshold or speeds release. | S | Expect most theories to be silent; report silence as silence. |
-| O4 | Stress | Sustained higher drive increases the number of held units, concentrated where baseline tone is higher (neck and shoulders, jaw, belly, low back). | S | |
-| O5 | Stiffness | Held units reduce range of motion; a stretch meets them as a dull block. | S | Partial; mostly the fascia phase. |
-| O6 | Sparks | Release produces a brief burst of afferent firing (tingling) over the unit's own patch of skin. | S (post-ischaemic paraesthesia: M) | Must be spatial: overbreathing makes tingling anywhere (T6), so only tingling confined to the released patch discriminates. |
-| O7 | Euphoria | Out of scope for tissue-level models; noted only. | S | |
-| O8 | Migration and the queue | Releasing one unit changes others: some flip to held, others let go; the territory evens out; at some places knots are released and then replaced by others, as if from a queue. | S | Network stage. Where the new knots appear (siblings, the unit's own branches, anywhere) is part of the test. |
-| O13 | A parent releases its children | Releasing one knot (a parent) lets many others (its children) go with it. | S (the author, first-hand; recorded 26 Sep 2026) | Written down after the exploratory tree runs (finding 8) were shared, so the vascular model's match is found after the fact, not predicted blind. For the author to add in their own words: how many children, how soon after the parent, where they lie relative to it, and whether some stay held. Those details, and measurements at such a release, are the blind tests. |
-| O14 | Clusters in place | Knots come in clusters that gather at particular places (the base of the skull most of all); an old, heavily loaded cluster can let go with a wave of warmth spreading from the site. | S (the essays) | Tests: cluster sizes, where clusters sit, what releases together and in what order. |
-| O9 | Mirroring | Releasing units on one side increases release or range of motion on the other. | M (kelly2016, konrad2023) | konrad2023 puts the effect down most likely to reduced pain perception; take the effect size and its duration (kelly2016: up to 10 min) from the studies themselves. Body stage. |
-| O10 | Age | The held fraction grows with age; young knots small and transient, old ones large and persistent. | S (age changes in sympathetic tone and reactivity: M, verify) | The atlas's age curve is illustrative, not data. |
-| O11–12 | Peeling, filling | Deferred to the fascia phase. | S | |
+| ID | Observation (the introduction's words, or the author's) | Evidence |
+|---|---|---|
+| O1 | Knots answer to the breath: a slow out-breath; one relaxing breath softens many small knots at once, deeper ones go only to focused attention and breath; broad or focused; easy knots in a breath or two, hard ones over many; a learned skill, proprioceptive and meditative | S |
+| O2 | Pressure and focused attention (a foam roller, a patient hand) release knots one place at a time; pressed, with a slow out-breath, a knot often lets go within seconds | S |
+| O3 | Drinking water seems to ease release, and to speed it | S |
+| O4 | Knots worsen under stress, and gather where it is held: neck and shoulders, jaw, belly, low back | S |
+| O16 | Some knots come and go with breath and mood; some may be held from moment to moment | S |
+| O5 | As knots gather they limit movement; a stretch meets them as dull, deep blocks | S |
+| O6 | A knot goes with a small pop, sometimes a star of tingling across a patch of skin | S |
+| O8 | When one knot lets go, others move in to fill the gap: the body evens itself out | S |
+| O13 | Releasing a parent lets many children go with it (the author, written down after the tree runs were shared) | S |
+| O15 | A hierarchy: a few large knots that take many sessions, micro knots at dozens to the square inch | S |
+| O9 | Working one side can ease the other (the crossover effect: kelly2016, konrad2023) | M |
+| O10 | Knots accumulate with age and grow; a young knot comes and goes, an old one persists | S |
+| O7, O11 | Euphoria; peeling and filling: noted, not scored | S |
+
+Changes from the draft: O2 is the introduction's (the draft's "pressure, then release, faster than calm" was the vessel
+model's trial, not a report); O2b folds into O2, where the introduction puts attention; O16 is added; O14 (the base of the
+skull, warmth from an old cluster) is set aside with the other essay-only reports (the paths and queue at the back of the
+skull, distant keys, "pressure alone does not release", fresh knots in a session and old ones in months, the strict order of
+knots before peeling).
 
 **Fair across scales.** A central theory has no "unit" in the tissue. Each test is stated as something that can be felt or
 measured, and each theory maps its own states onto those observables: once, in the interface, reviewed for fairness.
@@ -281,7 +291,7 @@ each theory first.
   sit where perforators and cutaneous nerves pierce the fascia, more often than chance? Tested against *published* perforator
   maps (not the atlas's generated ones, which would be circular) with a proper null. T1 and T5 predict the same places (the
   vessel and the nerve travel together), so this separates them from T3 and T6, not from each other.
-- **Clusters** (O8, O13, O14): how clusters form, what lets go together, the order of release, the queue, cluster sizes, and where
+- **Clusters** (O8, O13): how clusters form, what lets go together, the order of release, the queue, cluster sizes, and where
   clusters sit, run for every theory. The vascular theories get clusters from the tree (finding 8); trigger points from key
   points and their satellites; densification from patches and the folds that travel through them; nerves from a nerve's
   territory; perception from attention moving to the next loudest place. Each predicts a different signature: a flow surge
@@ -316,7 +326,7 @@ Five tracks run together. Each ends in something on the site.
 | Track | What | Done when |
 |---|---|---|
 | A Coverage | the census; each theory by advocate and critic, with variants; the harness (sweep, scoring) | every row of the census is run or excluded with a reason; matrix v2 |
-| B Exam | the author's observations, mechanism-neutral; frozen and sealed | spec v1 sealed (dated, OSF) before the first sweep |
+| B Exam | the author's observations, mechanism-neutral; frozen and sealed | *done:* spec v1 sealed 26 Sep 2026 (hash and tag; OSF optional, D7) |
 | C Decide | instrument models; signatures; discrimination; the decision tree; sealed predictions; the pilot | a lab-ready protocol with predicted outcomes |
 | D Space | the field; existing maps as data; the body; the atlas driven by the model | O8–O10 run; the spatial test reported |
 | E Site and paper | the section built out as the work lands; a preprint | preprint submitted, code and results cited by DOI |
@@ -326,10 +336,10 @@ Five tracks run together. Each ends in something on the site.
 | | Milestone | Needs |
 |---|---|---|
 | M1 | Breath routes in the interface; T1 with movement (B2) and the pulse variant; P10–P12; the field, first version; the exam drafted for the author | nothing new |
-| M2 | T6 and T3 behind the interface; the harness; matrix v1 with T1, T3, T6; the exam sealed | the author's review of the exam |
+| M2 | T6 and T3 behind the interface; the harness; matrix v1 with T1, T3, T6 (the exam is sealed) | nothing new |
 | M3 | T2 live (Hai–Murphy) with the latch-hardening variant; T4, T5, the gamma loop, hybrids; matrix v2 | the papers (§11) |
 | M4 | Instrument models; signatures; the decision tree; sealed predictions | M2 at least |
-| M5 | Clusters and the queue for every theory (O8, O13, O14, P13); the spatial test with published maps; network; body; the atlas driven by the model | digitised perforator maps |
+| M5 | Clusters and migration for every theory (O8, O13, P13); the spatial test with published maps; network; body; the atlas driven by the model | digitised perforator maps |
 | M6 | The preprint; the lab protocol; outreach to labs and proponents | a co-author (D6) |
 
 ## 10. On the site
@@ -361,6 +371,8 @@ M5. The top-bar link comes when the author says (D2); the natural moment is matr
 - **Done after (26 Sep):** the field (240 knots, broad against focused); the findings synthesis on the Research page (what
   the simulations show, and a can / cannot / open verdict per theory); where knots are and how many (the location test,
   O15) as step 0 of the decision tree; Simulation in the top bar; both pages indexed; a sitemap.
+- **Exam sealed (26 Sep):** v1 from the introduction and the author's words, with the readings and the scoring rules; the
+  essay-only reports set aside (§4). The harness can now be built against it.
 - **Done after that (26 Sep):** the measured wall and length–tension width (schiffrin1995, mulvany1979), with every claim
   that rested on the old numbers rewritten from the run; how tightly the lumen closes shown as the guess it is; the switch
   diagram and the bench's stress slider rescaled to the measured band; length adaptation (finding 9, findings 003, the
@@ -423,7 +435,8 @@ Add to this list as the models need more.
   (the bench).
 - **D2** When the section joins the top bar. *Decided 26 Sep 2026:* now, both pages indexed and in the sitemap.
 - **D3** Python with generated TypeScript: built, and held to the same trajectories by a golden test.
-- **D4** What "attention" means in the models (route B4; O2b).
+- **D4** What "attention" means. *Decided 26 Sep 2026 (sealing the exam):* as the introduction puts it, with pressure (O2) and
+  in the breath's skill (O1); in the models it remains a breath route (B4), a variant.
 - **D5** A pilot measurement (§6): whether, how, and under the moderation guidance.
 - **D6** A co-author (physiologist or modeller), and inviting proponents to review their theory's formalisation.
 - **D7** OSF and Zenodo accounts.

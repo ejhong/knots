@@ -1,0 +1,5 @@
+# Each sealed version of the exam (observations/spec.yaml) and the SHA-256 of its file. A test fails if the file differs
+# from its latest seal: the exam changes only by a new, dated version, added here. The git tag exam-v<version> marks the
+# commit that sealed it.
+seals:
+  - {version: 1, date: 2026-09-26, sha256: 5f81bbfc69cebdcf061e1689c4a1e1a37f41c0189323942c1a418cca9344701a}

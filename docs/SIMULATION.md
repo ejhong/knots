@@ -2,7 +2,7 @@
 
 *The site's side of the simulation phase. The research plan is `sim/PLAN.md`; the look is `docs/DESIGN.md`. The section
 now has two pages. `/research/` (in the top bar as Research) is the case for researchers: the problem,
-the observations as a dated draft, the theories, what physics allows, time (how a knot sets), the breath's routes, trees, what each theory
+the observations, sealed, the theories, what physics allows, time (how a knot sets), the breath's routes, trees, what each theory
 predicts a recording would show, the experiment as a decision tree, and what is needed; its figures are drawn at build
 time by `src/sim/figures.ts`. `/simulation/` (in the top bar as Simulation) is the bench. Both are indexed and listed in the sitemap. Built so far at
 `/simulation/`: the switch and the bench for T1 (the vessel switch), the four checks, the
@@ -98,13 +98,14 @@ The model, running live, laid out like the atlas: an ink panel of controls and r
 
 ### 4. The exam
 
-The observations as tests, O1–O10; O11–12 shown faint as deferred.
+The observations as tests (sealed v1: `sim/observations/spec.yaml`); O7 and O11 shown as noted, and the essay-only reports as set aside.
 
 - **Cards.** Each is a small card: the observation in one plain line, the test with its tolerances, an evidence badge (**M**
   measured or **S** self-report, with sources), and notes (for example, *most theories expected to be silent*).
-- **Groups:** the breath and the hand (O1–O3), load (O4–O5), the spark (O6), across the body (O8–O10), noted only (O7).
-- **The seal.** The indigo seal 結 is stamped *sealed v1*, with the date and the OSF link: the exam was written before any theory
-  sat it. Before then it reads *draft*.
+- **Groups:** the breath and the hand (O1–O3), load (O4, O16, O5), the spark (O6), clusters and spread (O8, O13), how many (O15),
+  across the body (O9, O10), noted only (O7, O11).
+- **The seal.** The indigo seal 結 is stamped *sealed v1*, with the date and the file's SHA-256, linked to the tagged file (an OSF
+  link can join it, D7): the exam was written before any theory sat it. *Sealed 26 Sep 2026.*
 
 ### 5. The matrix
 
