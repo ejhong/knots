@@ -249,7 +249,7 @@ const index = [
     <p class="seal-line">
       <span class="seal-stamp cjk" aria-hidden="true">結</span>
       <span class="seal-sealed">sealed · v{exam.seal.version} · {exam.seal.date}</span>
-      <a class="seal-hash mono" href={`https://github.com/ejhong/knots/blob/exam-v${exam.seal.version}/sim/observations/spec.yaml`} title={`SHA-256 ${exam.seal.sha256}`}>sha256 {exam.seal.sha256.slice(0, 12)}…</a>
+      <a class="seal-hash mono" href={`https://github.com/ejhong/knots/blob/${exam.seal.commit ?? 'main'}/sim/observations/spec.yaml`} title={`SHA-256 ${exam.seal.sha256}, sealed in commit ${exam.seal.commit ?? ''}`}>sha256 {exam.seal.sha256.slice(0, 12)}…</a>
     </p>
     <div class="obs-groups">
       {

@@ -183,7 +183,7 @@ in a public table:
 
 ## 4. The exam (sealed v1, 26 Sep 2026)
 
-**Sealed** in `observations/spec.yaml` (version 1, 26 Sep 2026; SHA-256 in `observations/seal.yaml`, tagged `exam-v1`),
+**Sealed** in `observations/spec.yaml` (version 1, 26 Sep 2026; SHA-256 and the sealing commit in `observations/seal.yaml`),
 before any sweep. It changes only by a new, dated version; a test fails if the file differs from its seal, and every result
 names the version it used. The author asked that the wording rest on judgment, and that the site's introduction, not the
 essays, be the record (the essays' text was generated and is sometimes off). So each observation takes the introduction's
@@ -326,7 +326,7 @@ Five tracks run together. Each ends in something on the site.
 | Track | What | Done when |
 |---|---|---|
 | A Coverage | the census; each theory by advocate and critic, with variants; the harness (sweep, scoring) | every row of the census is run or excluded with a reason; matrix v2 |
-| B Exam | the author's observations, mechanism-neutral; frozen and sealed | *done:* spec v1 sealed 26 Sep 2026 (hash and tag; OSF optional, D7) |
+| B Exam | the author's observations, mechanism-neutral; frozen and sealed | *done:* spec v1 sealed 26 Sep 2026 (hash and commit; OSF optional, D7) |
 | C Decide | instrument models; signatures; discrimination; the decision tree; sealed predictions; the pilot | a lab-ready protocol with predicted outcomes |
 | D Space | the field; existing maps as data; the body; the atlas driven by the model | O8–O10 run; the spatial test reported |
 | E Site and paper | the section built out as the work lands; a preprint | preprint submitted, code and results cited by DOI |

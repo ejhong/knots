@@ -104,7 +104,7 @@ The observations as tests (sealed v1: `sim/observations/spec.yaml`); O7 and O11 
   measured or **S** self-report, with sources), and notes (for example, *most theories expected to be silent*).
 - **Groups:** the breath and the hand (O1–O3), load (O4, O16, O5), the spark (O6), clusters and spread (O8, O13), how many (O15),
   across the body (O9, O10), noted only (O7, O11).
-- **The seal.** The indigo seal 結 is stamped *sealed v1*, with the date and the file's SHA-256, linked to the tagged file (an OSF
+- **The seal.** The indigo seal 結 is stamped *sealed v1*, with the date and the file's SHA-256, linked to the file at the commit that sealed it (an OSF
   link can join it, D7): the exam was written before any theory sat it. *Sealed 26 Sep 2026.*
 
 ### 5. The matrix

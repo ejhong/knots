@@ -336,6 +336,7 @@
  "seal": {
   "version": 1,
   "date": "2026-09-26",
-  "sha256": "5f81bbfc69cebdcf061e1689c4a1e1a37f41c0189323942c1a418cca9344701a"
+  "sha256": "5f81bbfc69cebdcf061e1689c4a1e1a37f41c0189323942c1a418cca9344701a",
+  "commit": "9dc8c337c5f7eb76d16794109f42c6a031cdcce0"
  }
 }
