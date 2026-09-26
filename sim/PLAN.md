@@ -76,7 +76,8 @@ proponents of each theory, and a lab.
    and then, as if from a queue, replaced by others") and the release of an old cluster all at once, both from the tree's
    hierarchy, not from anything added for them. Holding spreads downstream (a parent's closure shuts its children); a
    release upstream frees most of what lies below it; conducted dilation (segal1986, not yet run) would carry release
-   upstream, toward the root, where the tree's paths converge.
+   upstream, toward the root, where the tree's paths converge. The author has felt a parent release many children (O13),
+   recorded after these runs were shared.
 
 **A hypothesis these suggest** (to be run through the same exam as everything else, not assumed). Knots form where drive is
 raised and the tissue is still. A shut vessel loses the pulse that stretches its wall with every heartbeat, and so may hold
@@ -163,7 +164,8 @@ version it used. Evidence: **M**, measured in the literature; **S**, self-report
 | O6 | Sparks | Release produces a brief burst of afferent firing (tingling) over the unit's own patch of skin. | S (post-ischaemic paraesthesia: M) | Must be spatial: overbreathing makes tingling anywhere (T6), so only tingling confined to the released patch discriminates. |
 | O7 | Euphoria | Out of scope for tissue-level models; noted only. | S | |
 | O8 | Migration and the queue | Releasing one unit changes others: some flip to held, others let go; the territory evens out; at some places knots are released and then replaced by others, as if from a queue. | S | Network stage. Where the new knots appear (siblings, the unit's own branches, anywhere) is part of the test. |
-| O13 | Clusters | Knots come in clusters; a cluster can let go together, and an old, heavily loaded one with a wave of warmth spreading from the site; clusters gather at particular places (the base of the skull most of all). | S | For the author to write. Tests: cluster sizes, what releases together, the order, and where clusters sit. |
+| O13 | A parent releases its children | Releasing one knot (a parent) lets many others (its children) go with it. | S (the author, first-hand; recorded 26 Sep 2026) | Written down after the exploratory tree runs (finding 8) were shared, so the vascular model's match is found after the fact, not predicted blind. For the author to add in their own words: how many children, how soon after the parent, where they lie relative to it, and whether some stay held. Those details, and measurements at such a release, are the blind tests. |
+| O14 | Clusters in place | Knots come in clusters that gather at particular places (the base of the skull most of all); an old, heavily loaded cluster can let go with a wave of warmth spreading from the site. | S (the essays) | Tests: cluster sizes, where clusters sit, what releases together and in what order. |
 | O9 | Mirroring | Releasing units on one side increases release or range of motion on the other. | M (kelly2016, konrad2023) | konrad2023 puts the effect down most likely to reduced pain perception; take the effect size and its duration (kelly2016: up to 10 min) from the studies themselves. Body stage. |
 | O10 | Age | The held fraction grows with age; young knots small and transient, old ones large and persistent. | S (age changes in sympathetic tone and reactivity: M, verify) | The atlas's age curve is illustrative, not data. |
 | O11–12 | Peeling, filling | Deferred to the fascia phase. | S | |
@@ -237,7 +239,7 @@ each theory first.
   sit where perforators and cutaneous nerves pierce the fascia, more often than chance? Tested against *published* perforator
   maps (not the atlas's generated ones, which would be circular) with a proper null. T1 and T5 predict the same places (the
   vessel and the nerve travel together), so this separates them from T3 and T6, not from each other.
-- **Clusters** (O8, O13): how clusters form, what lets go together, the order of release, the queue, cluster sizes, and where
+- **Clusters** (O8, O13, O14): how clusters form, what lets go together, the order of release, the queue, cluster sizes, and where
   clusters sit, run for every theory. The vascular theories get clusters from the tree (finding 8); trigger points from key
   points and their satellites; densification from patches and the folds that travel through them; nerves from a nerve's
   territory; perception from attention moving to the next loudest place. Each predicts a different signature: a flow surge
@@ -285,7 +287,7 @@ Five tracks run together. Each ends in something on the site.
 | M2 | T6 and T3 behind the interface; the harness; matrix v1 with T1, T3, T6; the exam sealed | the author's review of the exam |
 | M3 | T2 live (Hai–Murphy) with the latch-hardening variant; T4, T5, the gamma loop, hybrids; matrix v2 | the papers (§11) |
 | M4 | Instrument models; signatures; the decision tree; sealed predictions | M2 at least |
-| M5 | Clusters and the queue for every theory (O8, O13, P13); the spatial test with published maps; network; body; the atlas driven by the model | digitised perforator maps |
+| M5 | Clusters and the queue for every theory (O8, O13, O14, P13); the spatial test with published maps; network; body; the atlas driven by the model | digitised perforator maps |
 | M6 | The preprint; the lab protocol; outreach to labs and proponents | a co-author (D6) |
 
 ## 10. On the site
@@ -374,4 +376,5 @@ Add to this list as the models need more.
   `eutils.ncbi.nlm.nih.gov`, `www.ncbi.nlm.nih.gov`, `www.ebi.ac.uk`, `api.crossref.org`, `doi.org`, `api.openalex.org`,
   `api.biorxiv.org` and `api.semanticscholar.org` in the environment's network settings. A session-start hook
   (`.claude/hooks/session-start.sh`) installs the npm and Python dependencies there. A local machine needs neither.
-- **The exploratory breath runs** of 26 Sep (finding 6) were scratch scripts; M1 turns them into trials with tests.
+- **The exploratory runs** of 26 Sep behind findings 6 (breath) and 8 (trees) are kept as run in `sim/exploratory/`; they are
+  not tests. M1 and M5 turn them into trials with tests.

@@ -31,6 +31,7 @@ knots_sim/
   export.py  findings.py run everything; write src/data/sim/*.json, the findings note and the run manifest
 tests/                   physics, calibration, and freshness of what the site shows
 findings/                notes written from a run's numbers (001-can-a-perforator-hold.md)
+exploratory/             quick probes behind the plan's findings, kept as run (not tests)
 results/<run>/           run manifests (committed); raw/ is not
 private/                 papers for reading (ignored by git: never commit PDFs)
 ```
