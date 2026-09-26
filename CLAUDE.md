@@ -3,9 +3,10 @@
 A long-running visualisation project: a static Astro site with a Three.js atlas of the body's perforators and knots.
 Owner: Eugene Jhong. Source essays: `docs/source/*.md` (the Substack posts are canonical).
 
-**Next phase: simulation.** The theories as dynamical models, run against the reported observations, with a new section of the
-site to show them. Read `sim/PLAN.md` (the research plan, with its open decisions) and `docs/SIMULATION.md` (the section's
-design) before any simulation work.
+**Next phase: simulation.** Every theory as a dynamical model, run against the reported observations; from the survivors, what
+an instrument would record at a release under each, and the measurement that would settle it; a new section of the site to
+show all of it. Read `sim/PLAN.md` (the research plan: its path, next steps, papers to get and open decisions) and
+`docs/SIMULATION.md` (the section's design) before any simulation work.
 
 ## Principles
 
@@ -28,7 +29,8 @@ design) before any simulation work.
   variants wherever the equations are a choice. Every parameter carries its source (`papers.json` id, locator, quoted line) or is
   marked as guessed: never a number from memory. The exam (`sim/observations/spec.yaml`) is frozen before any sweep (the site
   shows it sealed) and changes only by a new, dated version. Results are generated, never edited by hand, and each names its
-  run. On the site, simulated inputs are *trials*.
+  run. On the site, simulated inputs are *trials*. How the breath acts is kept open: it enters every model as routes (drive,
+  movement, local nerve, attention, chemistry), each a variant, never one assumed mechanism (`sim/PLAN.md` §2).
 
 ## Layout
 
@@ -71,4 +73,5 @@ design) before any simulation work.
   papers, and `knots_sim.library` adds them to `papers.json` from PubMed's own records.
 - Deploy: push to `main` (GitHub Actions → Pages at https://ejhong.github.io/knots/). Every push also runs `ci.yml`: the sim
   tests, plus the site checks on branches other than `main`.
-- Roadmap and open questions: `docs/ROADMAP.md`; the simulation's open decisions: `sim/PLAN.md` §11.
+- Roadmap and open questions: `docs/ROADMAP.md`; the simulation's next steps and papers to get: `sim/PLAN.md` §11; its open
+  decisions: §13.

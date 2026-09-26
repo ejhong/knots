@@ -35,4 +35,4 @@ results/<run>/           run manifests (committed); raw/ is not
 private/                 papers for reading (ignored by git: never commit PDFs)
 ```
 
-Still to come (PLAN.md §8): `observations/spec.yaml` (the exam), the other theories' models, the sweep harness.
+Still to come (PLAN.md §9–11): `interface.py` (the breath's routes), `observations/spec.yaml` (the exam), the other theories' models, the field, the sweep harness, the instrument models.

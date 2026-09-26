@@ -149,6 +149,21 @@
   "note": "Taut bands identified and quantified with magnetic resonance elastography."
  },
  {
+  "id": "clifford2006",
+  "authors": "Clifford PS, Kluess HA, Hamann JJ et al.",
+  "year": 2006,
+  "title": "Mechanical compression elicits vasodilatation in rat skeletal muscle feed arteries",
+  "venue": "J Physiol 572:561-7",
+  "url": "https://doi.org/10.1113/jphysiol.2005.099507",
+  "pmid": "16497720",
+  "kind": "paper",
+  "tags": [
+   "vascular",
+   "animals"
+  ],
+  "note": "Muscle feed arteries squeezed shut widen within seconds of release: by 16% after one 1 s compression, 14% after one of 5 s, and 27% after five of 1 s. Repeated compressions add up; a longer one does not."
+ },
+ {
   "id": "cutting1982",
   "authors": "Cutting C, Ballantyne D, Shaw W et al.",
   "year": 1982,
@@ -251,6 +266,36 @@
   "note": "The superficial fascia is richly innervated; about a third of its fibres are autonomic, concentrated around vessels."
  },
  {
+  "id": "fredberg1996",
+  "authors": "Fredberg JJ, Jones KA, Nathan M et al.",
+  "year": 1996,
+  "title": "Friction in airway smooth muscle: mechanism, latch, and implications in asthma",
+  "venue": "J Appl Physiol (1985) 81:2703-12",
+  "url": "https://doi.org/10.1152/jappl.1996.81.6.2703",
+  "pmid": "9018525",
+  "kind": "paper",
+  "tags": [
+   "breath",
+   "models"
+  ],
+  "note": "Airway smooth muscle stretched as in breathing: the latch is a low-friction contractile state, which may be why a deep breath fails to reopen the airways in asthma."
+ },
+ {
+  "id": "fredberg1999",
+  "authors": "Fredberg JJ, Inouye DS, Mijailovich SM et al.",
+  "year": 1999,
+  "title": "Perturbed equilibrium of myosin binding in airway smooth muscle and its implications in bronchospasm",
+  "venue": "Am J Respir Crit Care Med 159:959-67",
+  "url": "https://doi.org/10.1164/ajrccm.159.3.9804060",
+  "pmid": "10051279",
+  "kind": "paper",
+  "tags": [
+   "breath",
+   "models"
+  ],
+  "note": "The breath keeps airway smooth muscle from freezing: tidal stretch perturbs myosin binding and biases the muscle toward lengthening; without it the muscle virtually freezes at its static length."
+ },
+ {
   "id": "fronek1975",
   "authors": "Fronek K, Zweifach BW",
   "year": 1975,
@@ -293,6 +338,21 @@
    "breath"
   ],
   "note": "The inspiratory vasoconstriction reflex studied after spinal injury — the pathway runs through the sympathetic outflow."
+ },
+ {
+  "id": "goto1996",
+  "authors": "Goto M, VanBavel E, Giezeman MJ et al.",
+  "year": 1996,
+  "title": "Vasodilatory effect of pulsatile pressure on coronary resistance vessels",
+  "venue": "Circ Res 79:1039-45",
+  "url": "https://doi.org/10.1161/01.res.79.5.1039",
+  "pmid": "8888697",
+  "kind": "paper",
+  "tags": [
+   "vascular",
+   "animals"
+  ],
+  "note": "In toned coronary arterioles, a larger pressure pulse at the same mean pressure widens the lumen: the pulse itself dilates, with or without the endothelium."
  },
  {
   "id": "hack1995",
@@ -365,6 +425,21 @@
    "trigger-points"
   ],
   "note": "Spontaneous needle-EMG activity at the trigger-point nidus."
+ },
+ {
+  "id": "johansson1991",
+  "authors": "Johansson H, Sojka P",
+  "year": 1991,
+  "title": "Pathophysiological mechanisms involved in genesis and spread of muscular tension in occupational muscle pain and in chronic musculoskeletal pain syndromes: a hypothesis",
+  "venue": "Med Hypotheses 35:196-203",
+  "url": "https://doi.org/10.1016/0306-9877(91)90233-o",
+  "pmid": "1943863",
+  "kind": "paper",
+  "tags": [
+   "trigger-points",
+   "nerve"
+  ],
+  "note": "A proposed loop: metabolites of static contraction drive the gamma system and the muscle spindles, raising stiffness and metabolites again, so muscle tension perpetuates itself and spreads to other muscles."
  },
  {
   "id": "kelly2016",
@@ -484,6 +559,21 @@
    "safety"
   ],
   "note": "The largest study of meditation-related challenges: pressure or tension that builds and releases, energy, currents, involuntary movement."
+ },
+ {
+  "id": "ljung1975",
+  "authors": "Ljung B, Sivertsson R",
+  "year": 1975,
+  "title": "Vibration-induced inhibition of vascular smooth muscle contraction",
+  "venue": "Blood Vessels 12:38-52",
+  "url": "https://doi.org/10.1159/000158037",
+  "pmid": "1120194",
+  "kind": "paper",
+  "tags": [
+   "vascular",
+   "animals"
+  ],
+  "note": "Rhythmic stretch of vascular smooth muscle cuts its active force at once, by an amount set by the stretch's size and rate; even the pulse may ease arterial tone."
  },
  {
   "id": "lorenzo2007",
@@ -678,6 +768,21 @@
    "fascia"
   ],
   "note": "Normal knee joint fluid in healthy young adults holds 3.4 mg/ml of hyaluronan: tens to hundreds of times the fascia's."
+ },
+ {
+  "id": "neutel2023",
+  "authors": "Neutel CHG, Weyns AS, Leloup A et al.",
+  "year": 2023,
+  "title": "Increasing pulse pressure ex vivo, mimicking acute physical exercise, induces smooth muscle cell-mediated de-stiffening of murine aortic segments",
+  "venue": "Commun Biol 6:1137",
+  "url": "https://doi.org/10.1038/s42003-023-05530-6",
+  "pmid": "37945735",
+  "kind": "paper",
+  "tags": [
+   "vascular",
+   "animals"
+  ],
+  "note": "Aortic smooth muscle de-stiffens after bouts of high cyclic stretch and re-stiffens slowly; the muscle has to be contracted and stretched for it to happen."
  },
  {
   "id": "nichol1951",
@@ -974,6 +1079,20 @@
    "history"
   ],
   "note": "The first maps of myofascial referred-pain patterns."
+ },
+ {
+  "id": "trepat2007",
+  "authors": "Trepat X, Deng L, An SS et al.",
+  "year": 2007,
+  "title": "Universal physical responses to stretch in the living cell",
+  "venue": "Nature 447:592-5",
+  "url": "https://doi.org/10.1038/nature05824",
+  "pmid": "17538621",
+  "kind": "paper",
+  "tags": [
+   "models"
+  ],
+  "note": "After a transient stretch the living cell's cytoskeleton fluidizes, in the same way across cell types: a universal physical response."
  },
  {
   "id": "whetzel1992",

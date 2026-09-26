@@ -63,7 +63,7 @@ const index = [
         <figure class="section" set:html={crossSectionSVG({ dSup: 0.0042, dDeep: 0.01, hypothesis: h.id, region: 'upper back', tone: 'light', width: 330 })} />
         <div class="prose">
           {h.body.map((p) => (
-            <p set:html={p} />
+            <p set:html={p.replaceAll('href="SIM"', `href="${base}/simulation/"`)} />
           ))}
         </div>
         <dl class="kv">

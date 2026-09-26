@@ -5,10 +5,10 @@
  * gliding plane, deep fascia, muscle — with one perforator's bundle rising
  * through its ring in the deep fascia: the artery (a wall of smooth muscle
  * around the blood), two veins, the nerve and a lymphatic. Held, the artery
- * is narrowed, the collar around the bundle is gelled — the knot, glowing —
- * and the nerve is pressed. On a slow out-breath the artery opens, blood
- * runs, the collar thins, and the starved nerve wakes: a spark runs up it
- * and its patch of skin lights. Then, softly, the plate begins again.
+ * is shut by the muscle of its own wall — the knot, glowing at the ring —
+ * and its patch of skin is short of blood. As its tone eases the artery
+ * snaps open, blood floods back, and the starved nerve wakes: a spark runs
+ * up it and its patch of skin lights. Then, softly, the plate begins again.
  *
  * Plain SVG driven by a clock, so it renders anywhere (the introduction's
  * canvas, a reading page). Not to scale: magnified for legibility.
@@ -162,7 +162,7 @@ export function createKnotPlate(tone: Tone): KnotPlate {
     ${label(Y.deepBottom - 1, 'deep fascia')}
     ${label(Y.deepBottom + 30, 'muscle')}
     ${tag(X0, Y.bottom + 10, 'lymphatic · vein · artery · vein · nerve')}
-    ${tag(X0 + 30, (Y.deep + Y.deepBottom) / 2 + 3, 'collar', 'start')}
+    ${tag(X0 + 30, (Y.deep + Y.deepBottom) / 2 + 3, 'ring', 'start')}
     <text data-caption x="14" y="${Y.bottom + 34}" fill="${c.text}" font-size="9.5" font-family="Georgia, serif" font-style="italic"></text>
     <text data-breath x="14" y="${Y.bottom + 44}" fill="${c.faint}" font-size="7.5" font-family="SF Mono, Menlo, monospace"></text>
   </svg>`;
@@ -184,9 +184,9 @@ export function createKnotPlate(tone: Tone): KnotPlate {
   const nerveLen = () => nerve.getTotalLength?.() ?? 0;
 
   const CAPTIONS: [number, string, string][] = [
-    [0, 'A knot: the artery narrowed, its collar gelled, the nerve pressed.', 'breathing in · held'],
-    [3.2, 'On a slow out-breath the artery opens…', 'breathing out · letting go'],
-    [4.8, '…blood runs, the collar thins, and the waking nerve lights its patch of skin.', 'open'],
+    [0, 'A knot: the artery held shut by its own wall, its skin short of blood.', 'breathing in · held'],
+    [3.2, 'On the out-breath its tone eases, and the artery snaps open…', 'breathing out · letting go'],
+    [4.8, '…blood floods back, and the waking nerve lights its patch of skin.', 'open'],
     [8.6, '', ''],
   ];
 
@@ -210,7 +210,7 @@ export function createKnotPlate(tone: Tone): KnotPlate {
     wall.setAttribute('width', w.toFixed(2));
     lumen.setAttribute('x', (X0 - lum / 2).toFixed(2));
     lumen.setAttribute('width', lum.toFixed(2));
-    // The collar: thick and glowing while held; thin and quiet once open.
+    // The knot at the ring: glowing while held; quiet once open.
     const held = 1 - open;
     collar.setAttribute('rx', mix(15, 24, held).toFixed(2));
     collar.setAttribute('ry', mix(4, 8.5, held).toFixed(2));

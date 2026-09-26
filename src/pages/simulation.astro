@@ -184,7 +184,7 @@ const repo = 'https://github.com/ejhong/knots/blob/main';
       <li><strong>A flush where a knot lets go.</strong> Up to {sc.press_and_release.summary.peak_flow.toFixed(1)}× resting flow within seconds of release, over the spot, where laser speckle imaging would see it. A theory with nothing held in the tissue predicts no local flush.</li>
       <li><strong>Pressure, then release, lets go faster and brighter than calm alone:</strong> {pressed.toFixed(1)} s after the pressure lifts against {Math.round(eased)} s after stress eases, with a spark of {f2(sc.press_and_release.summary.peak_spark)} against {f2(sc.stress_eases.summary.peak_spark)}. The pressure runs up a debt, and returning blood repays it through the nerves.</li>
       <li><strong>Slowing near the edge.</strong> As stress carries a vessel toward its fold, it answers small changes more and more slowly; flow over the spot should flicker more slowly just before a knot forms.</li>
-      <li><strong>Breath lets go of knots only if it is uneven.</strong> Tone rises in about a second and fades over {Math.round(p.tau_down)} s, so an even swing with each breath holds a knot slightly tighter. The out-breath has to lower the skin's sympathetic drive more than the in-breath raises it; laser Doppler over hairy skin can measure whether it does.</li>
+      <li><strong>Through drive, breath lets go of knots only if it is uneven.</strong> Tone rises in about a second and fades over {Math.round(p.tau_down)} s, so an even swing with each breath holds a knot slightly tighter. The out-breath has to lower the skin's sympathetic drive more than the in-breath raises it; laser Doppler over hairy skin can measure whether it does. Breath may also act through movement, which this model does not yet include: rhythmic stretch cuts smooth muscle's force at once <Fragment set:html={`(${cite('ljung1975')})`} />, and small arteries widen after being squeezed <Fragment set:html={`(${cite('clifford2006')})`} />. That route would act where the breath moves the tissue, one place more than another.</li>
       <li><strong>What to measure next:</strong> how much force a small artery's muscle keeps when the vessel is nearly shut, and how thick its wall is. More than anything else, they decide whether a knot can hold at rest.</li>
     </ul>
   </section>
@@ -300,8 +300,9 @@ const repo = 'https://github.com/ejhong/knots/blob/main';
       </p>
       <p>
         Limits: ten parameters are guesses. The reflex timings are from the skin of the hands, while most knots are
-        reported over hairy skin, where the gasp reflex may be weaker. This is one vessel alone, with no tree and no
-        neighbours, and no other theory has yet been run through the same trials. The simulation shows what a
+        reported over hairy skin, where the gasp reflex may be weaker. Breath enters only through drive, not yet through
+        movement. This is one vessel alone, with no tree and no neighbours, and no other theory has yet been run through
+        the same trials. The simulation shows what a
         mechanism can do with measured numbers; it does not show that knots are perforators.
       </p>
       <p class="stamp mono">

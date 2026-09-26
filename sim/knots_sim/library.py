@@ -59,6 +59,24 @@ NEW = [
      "In arterial smooth muscle, relaxation is paced by the fall of calcium, not by latch-bridge detachment: the latch holds only while the calcium signal lasts."),
     ("16333357", "murphy2005", ["vascular", "models"],
      "The latch-bridge hypothesis reviewed: in sustained contractions calcium, phosphorylation and ATP use fall while force is held."),
+    # Movement as a release: stretch, compression and the pulse lower smooth muscle's force.
+    ("1120194", "ljung1975", ["vascular", "animals"],
+     "Rhythmic stretch of vascular smooth muscle cuts its active force at once, by an amount set by the stretch's size and rate; even the pulse may ease arterial tone."),
+    ("16497720", "clifford2006", ["vascular", "animals"],
+     "Muscle feed arteries squeezed shut widen within seconds of release: by 16% after one 1 s compression, 14% after one of 5 s, and 27% after five of 1 s. Repeated compressions add up; a longer one does not."),
+    ("8888697", "goto1996", ["vascular", "animals"],
+     "In toned coronary arterioles, a larger pressure pulse at the same mean pressure widens the lumen: the pulse itself dilates, with or without the endothelium."),
+    ("37945735", "neutel2023", ["vascular", "animals"],
+     "Aortic smooth muscle de-stiffens after bouts of high cyclic stretch and re-stiffens slowly; the muscle has to be contracted and stretched for it to happen."),
+    ("17538621", "trepat2007", ["models"],
+     "After a transient stretch the living cell's cytoskeleton fluidizes, in the same way across cell types: a universal physical response."),
+    ("9018525", "fredberg1996", ["breath", "models"],
+     "Airway smooth muscle stretched as in breathing: the latch is a low-friction contractile state, which may be why a deep breath fails to reopen the airways in asthma."),
+    ("10051279", "fredberg1999", ["breath", "models"],
+     "The breath keeps airway smooth muscle from freezing: tidal stretch perturbs myosin binding and biases the muscle toward lengthening; without it the muscle virtually freezes at its static length."),
+    # Other candidate mechanisms for full coverage.
+    ("1943863", "johansson1991", ["trigger-points", "nerve"],
+     "A proposed loop: metabolites of static contraction drive the gamma system and the muscle spindles, raising stiffness and metabolites again, so muscle tension perpetuates itself and spreads to other muscles."),
 ]
 
 # Existing entries that the simulation also leans on gain the models tag.

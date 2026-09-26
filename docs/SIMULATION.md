@@ -2,8 +2,9 @@
 
 *The site's side of the simulation phase. The research plan is `sim/PLAN.md`; the look is `docs/DESIGN.md`. Built so
 far, at `/simulation/` (unlisted, noindex): the switch and the bench for T1 (the vessel switch), the four checks, the
-predictions, robustness, the model against measurements, and every parameter with its quote. Still to come: the exam and
-the matrix, once there is more than one theory to run. The name is decision D1 in the plan.*
+predictions, robustness, the model against measurements, and every parameter with its quote. Still to come, in the order of
+`sim/PLAN.md` §9–10: the breath's routes and the field, the exam, the matrix, the fingerprints, and the decision tree for labs.
+The name is decision D1 in the plan.*
 
 The atlas shows what each theory says a knot *is*. This section shows what each theory can *do*: every theory put through the
 same trials, scored against the same observations, with every number traceable to its source. It adds to the site; nothing
@@ -78,7 +79,9 @@ The model, running live, laid out like the atlas: an ink panel of controls and r
 - **Traces.** Strip charts of the last minute: S, the vessel's radius or flow, local temperature, pH or O₂, collar viscosity,
   nerve firing. Thin ink lines; a terracotta wash behind them while the knot is held.
 - **Controls** (bronze, the hand):
-  - *breath*: paced by default, or hold to breathe in and let go to breathe out, as in the atlas
+  - *breath*: paced by default, or hold to breathe in and let go to breathe out, as in the atlas; and *how the breath acts*,
+    a selector over its routes (drive, movement, local nerve, attention, chemistry: `sim/PLAN.md` §2), each a variant. How
+    the breath acts is kept open; the page never presents one route as the mechanism
   - *stress*: a slider
   - *press*: hold on the drawing
   - *warmth*: a slider
@@ -128,6 +131,16 @@ The result.
 
 ### 6. What would settle it
 
+The payoff of the section: what a lab should measure first, and what it would see under each theory.
+
+- **Fingerprints.** For each theory and variant, the predicted recording at a release, as an instrument would record it
+  (flow at each depth, skin temperature, stiffness, EMG, sympathetic activity, tissue strain), drawn side by side.
+- **The decision tree.** The cheapest measurement that splits the most theories first, then the next; each branch with the
+  predicted outcomes and the number of release events needed. The predictions are sealed (OSF, dated) before any data, and
+  the tree carries the seal.
+- **For labs.** A one-page summary: the protocol, the instruments, the predicted traces, the controls. It describes a
+  measurement; it gives no technique to anyone practising.
+
 Small multiples, one per discriminating prediction, with the theories that differ drawn side by side:
 
 - skin temperature over the spot at a release (T1 and T2 predict a local rise; T6 predicts none locally)
@@ -137,6 +150,13 @@ Small multiples, one per discriminating prediction, with the theories that diffe
 
 Each says what it would take to measure: the instrument, and the resolution in time and space. This describes; it does not
 instruct.
+
+### 6b. The field
+
+A patch of skin with a few hundred perforators, each with its own wall drawn from the plausible ranges, under one breath:
+easy knots letting go first and hard ones over many breaths or not at all; broad release (drive, everywhere at once) against
+focused release (movement, where the breath moves the tissue, or a touch); neighbours changing as one lets go. The same
+controls as the bench. It is the bridge from one knot to the atlas.
 
 ### 7. How it works
 

@@ -62,26 +62,27 @@ A living list. Checked items are live.
 - [ ] Social image, sitemap
 
 ## Simulation — the theories against the observations
-Plan: `sim/PLAN.md` (stages, method, first tasks). The section's design: `docs/SIMULATION.md`.
+Plan: `sim/PLAN.md`, reassessed 26 Sep 2026: *can* (every theory through the same exam), *signatures* (what an instrument would
+record at a release under each), *decide* (the measurement that settles it, with predictions sealed first). The section's
+design: `docs/SIMULATION.md`.
 - [x] Stage 0: the plan, the section's design, the Python package (`sim/`, uv) and CI
-- [ ] The exam: O1–O10 as tests with tolerances, reviewed by the author, then frozen (dated; OSF) and shown sealed
-- [ ] The shared interface and the trials (P1–P9)
 - [x] PubMed client and library tooling (`knots_sim.pubmed`, `knots_sim.library`); quotes checked word for word (`knots_sim.params --verify`)
 - [x] T1 as the vessel switch: 22 parameters (12 sourced, 10 guessed and marked), fitted to the gasp reflex and reactive hyperaemia
 - [x] T1, one knot: the switch's band, trials (a knot forms, holds, lets go by easing, by pressure, by uneven breath), robustness (Sobol, 49,152 sets)
 - [x] Feasibility checks: hyaluronan cannot hold, cooling cannot release within a breath, the latch does not remember
 - [x] Write once: SymPy → numpy and TypeScript, with golden-trajectory tests
 - [x] The switch and the bench, live on an unlisted page (`/simulation/`); findings note 001
-- [ ] Source the guessed wall parameters: passive stiffness, length–tension width, media thickness, shut radius (myography)
-- [ ] T2, one knot: the Hai–Murphy latch live (needs the 1988 rate constants)
-- [ ] Hairy-skin reflex magnitudes (the gasp and slow breathing over the back and neck)
-- [ ] T3–T6, one knot; the harness (sweep, scoring); the matrix, v1
-- [ ] What would settle it: the discriminating predictions, drawn
-- [ ] Network: synthetic trees, Poiseuille flow, conducted dilation (O8; watershed clustering against digitised angiosome maps)
-- [ ] Body: O9 and O10; the atlas driven by the model
-- [ ] Preprint, with code and results cited by DOI
+- [x] The perforator theory presented as the simulation found it: the vessel holds itself, the collar does not, breath by drive and by movement
+- [ ] M1: the breath's routes, kept open (drive, movement, local nerve, attention, chemistry); T1 with movement and the pulse variant; trials P10–P12; the field (a patch of perforators under one breath); the exam drafted for the author
+- [ ] M2: T6 and T3; the harness (sweep, scoring); matrix v1; the exam frozen (dated; OSF) and shown sealed
+- [ ] M3: T2 live (Hai–Murphy; needs the paper) with latch hardening; T4, T5, the gamma loop, hybrids; matrix v2
+- [ ] M4: instrument models; each theory's fingerprint at a release; the decision tree for labs, its predictions sealed
+- [ ] M5: clusters and the queue for every theory (how clusters form, let go together, and where they sit); the spatial test (the traditions' maps and trigger points against published perforator maps); network (O8); body (O9, O10); the atlas driven by the model
+- [ ] M6: a preprint, with code and results cited by DOI; the lab protocol; outreach to labs and proponents
+- [ ] Measure or source what decides the most: the wall's length–tension width and thickness (whether a knot holds at rest); how fast the skin's small arteries ease when drive falls (one breath or many); hairy-skin reflexes
 
 ## Open questions (for the author)
 - How should manipulation (pressure, breath) return to the atlas, if at all?
-- The simulation's open decisions (`sim/PLAN.md` §11): the section's name, and when `/simulation/` joins the top bar; what
-  "attention" means in the models; a pilot measurement; a co-author; OSF and Zenodo accounts.
+- The simulation's open decisions (`sim/PLAN.md` §13): the section's name, and when `/simulation/` joins the top bar; what
+  "attention" means in the models; a pilot measurement; a co-author; OSF and Zenodo accounts; reports from other practitioners.
+- Papers to get for the simulation: `sim/PLAN.md` §11 (Hai & Murphy 1988; Fredberg 1996 and 1999).

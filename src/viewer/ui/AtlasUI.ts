@@ -369,7 +369,7 @@ function bindTooltip(viz: HTMLElement, scene: AtlasScene, card: MapCard) {
       if (!perf) return '';
       const stuck = sim.stuck[i] === 1;
       return `<div class="t-state ${stuck ? 'stuck' : 'open'}">${stuck ? 'held — a knot' : 'open'}</div>
-        <div class="bars">${bar('vessel', sim.tone[i], sim.tone[i] > 0.6)}${bar('collar', sim.gel[i], sim.gel[i] > 0.5)}${bar('nerve', sim.nerve[i], sim.nerve[i] > 0.5)}</div>`;
+        <div class="bars">${bar('vessel', sim.tone[i], sim.tone[i] > 0.6)}${bar('hold', sim.gel[i], sim.gel[i] > 0.5)}${bar('nerve', sim.nerve[i], sim.nerve[i] > 0.5)}</div>`;
     };
     if (h.root >= 0) {
       const r = scene.roots[h.root];
