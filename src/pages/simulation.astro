@@ -110,7 +110,7 @@ const repo = 'https://github.com/ejhong/knots/blob/main';
         </dl>
         <label class="ctl-row">
           <span class="k">stress</span>
-          <input type="range" data-ctl="stress" min="0" max="0.35" step="0.005" value="0" aria-label="Stress: extra tone above rest" />
+          <input type="range" data-ctl="stress" min="0" max={(1 - s.urest).toFixed(3)} step="0.005" value="0" aria-label="Stress: extra tone above rest" />
         </label>
         <div class="ctl-row buttons">
           <button class="ctl" type="button" data-ctl="gasp">a deep breath</button>

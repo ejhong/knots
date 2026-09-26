@@ -28,7 +28,7 @@ const f1 = (n: number) => n.toFixed(1);
 
 // ---------- The switch: the balance of forces as a diagram ----------
 
-export const SW = { W: 360, H: 236, left: 42, right: 344, top: 18, bottom: 196, Amax: 0.65, xmax: 1.0 };
+export const SW = { W: 360, H: 236, left: 42, right: 344, top: 18, bottom: 196, Amax: 1.0, xmax: 1.0 };
 export const swX = (A: number) => SW.left + (Math.min(Math.max(A, 0), SW.Amax) / SW.Amax) * (SW.right - SW.left);
 export const swY = (x: number) => SW.bottom - (Math.min(Math.max(x, 0), SW.xmax) / SW.xmax) * (SW.bottom - SW.top);
 
@@ -45,7 +45,8 @@ export function switchDiagram(p: Params, s: SwitchInfo): string {
   // Axes: hairlines.
   out.push(`<line x1="${SW.left}" x2="${SW.right}" y1="${SW.bottom}" y2="${SW.bottom}" stroke="${INK.line}" stroke-width="1"/>`);
   out.push(`<line x1="${SW.left}" x2="${SW.left}" y1="${SW.top}" y2="${SW.bottom}" stroke="${INK.line}" stroke-width="1"/>`);
-  for (const A of [0, 0.2, 0.4, 0.6]) {
+  for (const A of [0, 0.2, 0.4, 0.6, 0.8, 1]) {
+    if (Math.abs(swX(A) - swX(s.urest)) < 14) continue; // the rest marker sits there
     out.push(`<text x="${f1(swX(A))}" y="${SW.bottom + 12}" text-anchor="middle" fill="${INK.faint}" font-size="8" ${MONO}>${A.toFixed(1)}</text>`);
   }
   for (const x of [0, 0.5, 1]) {
@@ -63,7 +64,7 @@ export function switchDiagram(p: Params, s: SwitchInfo): string {
   // The snaps: shut at the fold, open at the floor's end.
   const fx = swX(s.Afold);
   out.push(`<path d="M${f1(fx + 7)} ${f1(swY(s.xfold) + 2)} L${f1(fx + 7)} ${f1(swY(p.xc) - 9)}" stroke="${INK.knot}" stroke-width="1" opacity="0.8"/><path d="M${f1(fx + 4)} ${f1(swY(p.xc) - 13)} L${f1(fx + 7)} ${f1(swY(p.xc) - 8)} L${f1(fx + 10)} ${f1(swY(p.xc) - 13)}" fill="none" stroke="${INK.knot}" stroke-width="1"/>`);
-  out.push(`<text x="${f1(fx + 12)}" y="${f1((swY(s.xfold) + swY(p.xc)) / 2)}" fill="${INK.muted}" font-size="8" ${MONO}>shuts</text>`);
+  out.push(`<text x="${f1(Math.min(fx + 11, SW.W - 24))}" y="${f1((swY(s.xfold) + swY(p.xc)) / 2 + 3)}" fill="${INK.muted}" font-size="7.5" ${MONO}>shuts</text>`);
   const ox = swX(s.Aopen);
   const xOpenAt = open.length ? open.reduce((a, b) => (Math.abs(b[0] - s.Aopen) < Math.abs(a[0] - s.Aopen) ? b : a))[1] : s.xrest;
   out.push(`<path d="M${f1(ox - 7)} ${f1(swY(p.xc) - 4)} L${f1(ox - 7)} ${f1(swY(xOpenAt) + 8)}" stroke="${INK.spark}" stroke-width="1" opacity="0.8"/><path d="M${f1(ox - 10)} ${f1(swY(xOpenAt) + 12)} L${f1(ox - 7)} ${f1(swY(xOpenAt) + 7)} L${f1(ox - 4)} ${f1(swY(xOpenAt) + 12)}" fill="none" stroke="${INK.spark}" stroke-width="1"/>`);
@@ -71,9 +72,10 @@ export function switchDiagram(p: Params, s: SwitchInfo): string {
   // Direct labels.
   const lab = open[Math.floor(open.length * 0.55)] ?? open[0];
   out.push(`<text x="${f1(swX(lab[0]) + 8)}" y="${f1(swY(lab[1]) - 6)}" fill="${INK.text}" font-size="9" ${MONO}>open</text>`);
-  out.push(`<text x="${f1(swX(0.5))}" y="${f1(swY(p.xc) - 7)}" fill="${INK.text}" font-size="9" ${MONO}>shut: a knot</text>`);
+  out.push(`<text x="${f1((swX(s.Aopen) + swX(SW.Amax)) / 2)}" y="${f1(swY(p.xc) + 13)}" text-anchor="middle" fill="${INK.text}" font-size="9" ${MONO}>shut: a knot</text>`);
   const e = edge[Math.floor(edge.length * 0.45)] ?? edge[0];
-  if (e) out.push(`<text x="${f1(swX(e[0]) - 6)}" y="${f1(swY(e[1]))}" text-anchor="end" fill="${INK.faint}" font-size="7.5" ${MONO}>the edge</text>`);
+  // Name the unstable edge only where it is tall enough to carry a label.
+  if (e && swY(p.xc) - swY(s.xfold) > 24) out.push(`<text x="${f1(swX(e[0]) - 6)}" y="${f1(swY(e[1]))}" text-anchor="end" fill="${INK.faint}" font-size="7.5" ${MONO}>the edge</text>`);
   // Live layer: where tone is heading, the state now, and a hover readout.
   out.push(`<path id="sw-cmd" d="M0 0 l-4 7 h8 z" fill="${INK.ochre}" transform="translate(${f1(swX(s.urest))} ${SW.bottom + 1})"/>`);
   out.push(`<circle id="sw-dot" cx="${f1(swX(s.urest))}" cy="${f1(swY(s.xrest))}" r="5" fill="${INK.spark}" stroke="${INK.bg}" stroke-width="2"/>`);
@@ -137,7 +139,7 @@ export function sectionDrawing(): string {
 // ---------- Live traces: small multiples, one quantity per strip ----------
 
 export const TRACES = [
-  { key: 'tone', label: 'tone', color: INK.text, max: 0.65, fmt: (v: number) => v.toFixed(2) },
+  { key: 'tone', label: 'tone', color: INK.text, max: 1, fmt: (v: number) => v.toFixed(2) },
   { key: 'flow', label: 'flow', color: INK.vessel, max: 2.5, fmt: (v: number) => `${v.toFixed(2)}×` },
   { key: 'debt', label: 'debt', color: INK.ochre, max: 1, fmt: (v: number) => v.toFixed(2) },
   { key: 'spark', label: 'spark', color: INK.spark, max: 1, fmt: (v: number) => v.toFixed(2) },
