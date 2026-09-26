@@ -1,0 +1,144 @@
+{
+ "version": 0,
+ "status": "draft",
+ "updated": "2026-09-26",
+ "groups": [
+  {
+   "id": "breath",
+   "label": "The breath and the hand"
+  },
+  {
+   "id": "load",
+   "label": "Load"
+  },
+  {
+   "id": "spark",
+   "label": "The spark"
+  },
+  {
+   "id": "clusters",
+   "label": "Clusters and spread"
+  },
+  {
+   "id": "body",
+   "label": "Across the body"
+  },
+  {
+   "id": "noted",
+   "label": "Noted, not modelled yet"
+  }
+ ],
+ "observations": [
+  {
+   "id": "O1",
+   "group": "breath",
+   "title": "Breath release",
+   "text": "With the breath, held knots let go. The release can be broad (many at once, across the body) or focused (one region). Easy knots go within a breath or two; hard ones over many breaths, or not at all. The ability grows with practice.",
+   "evidence": "S",
+   "note": "How the breath acts is left open: drive, movement, local nerves, attention, chemistry are variants, not assumptions."
+  },
+  {
+   "id": "O2",
+   "group": "breath",
+   "title": "Pressure, then release",
+   "text": "Sustained local pressure for tens of seconds, then release, lets a knot go, faster than calm alone.",
+   "evidence": "S",
+   "note": "Reactive hyperaemia after pressure is measured (M); the knot's release is self-report."
+  },
+  {
+   "id": "O2b",
+   "group": "breath",
+   "title": "Attention",
+   "text": "Focus alone, without pressure or movement, can let a knot go.",
+   "evidence": "S",
+   "note": "To define with the author; may belong to O1's focused release."
+  },
+  {
+   "id": "O3",
+   "group": "breath",
+   "title": "Water",
+   "text": "Hydration lowers the threshold for release, or speeds it.",
+   "evidence": "S",
+   "note": "Most theories are expected to be silent; silence is reported as silence."
+  },
+  {
+   "id": "O4",
+   "group": "load",
+   "title": "Stress",
+   "text": "Sustained stress raises the number of held knots, most where tone is highest: neck and shoulders, jaw, belly, low back.",
+   "evidence": "S"
+  },
+  {
+   "id": "O5",
+   "group": "load",
+   "title": "Stiffness",
+   "text": "Held knots reduce range of motion; a stretch meets them as a dull block.",
+   "evidence": "S"
+  },
+  {
+   "id": "O6",
+   "group": "spark",
+   "title": "Sparks",
+   "text": "Release brings a brief tingle over the knot's own patch of skin.",
+   "evidence": "S",
+   "note": "Must be spatial: overbreathing makes tingling anywhere, so only tingling confined to the released patch tells theories apart."
+  },
+  {
+   "id": "O8",
+   "group": "clusters",
+   "title": "Migration and the queue",
+   "text": "Releasing one knot changes others: some let go, some appear; the territory evens out; at some places knots are released and then replaced by others, as if from a queue.",
+   "evidence": "S"
+  },
+  {
+   "id": "O13",
+   "group": "clusters",
+   "title": "A parent releases its children",
+   "text": "Releasing one knot (a parent) lets many others (its children) go with it.",
+   "evidence": "S",
+   "note": "The author's own experience, written down on 26 Sep 2026 after the tree simulation had been shared: the model's match is found after the fact, not predicted blind. How many, how soon, where and what stays are the blind tests."
+  },
+  {
+   "id": "O14",
+   "group": "clusters",
+   "title": "Clusters in place",
+   "text": "Knots gather in clusters at particular places, the base of the skull most of all; an old, heavily loaded cluster can let go with a wave of warmth spreading from the site.",
+   "evidence": "S"
+  },
+  {
+   "id": "O9",
+   "group": "body",
+   "title": "Mirroring",
+   "text": "Releasing on one side increases release or range of motion on the other.",
+   "evidence": "M",
+   "sources": [
+    "kelly2016",
+    "konrad2023"
+   ],
+   "note": "The crossover effect of stretching one side is measured; a scoping review puts it down most likely to reduced pain perception."
+  },
+  {
+   "id": "O10",
+   "group": "body",
+   "title": "Age",
+   "text": "Knots accumulate with age: young ones small and transient, old ones large and persistent.",
+   "evidence": "S"
+  },
+  {
+   "id": "O7",
+   "group": "noted",
+   "title": "Euphoria",
+   "text": "A large release can bring a wave of euphoria.",
+   "evidence": "S",
+   "note": "Out of scope for tissue-level models."
+  },
+  {
+   "id": "O11",
+   "group": "noted",
+   "title": "Peeling and filling",
+   "text": "Layers of the fascia peel apart along lines, leaving hollows that fill over days.",
+   "evidence": "S",
+   "note": "Deferred to the fascia phase."
+  }
+ ]
+}

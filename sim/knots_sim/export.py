@@ -48,7 +48,8 @@ def _git() -> dict:
 def _inputs_hash() -> str:
     """A hash of everything a run depends on: the model code and the parameter tables."""
     h = hashlib.sha256()
-    for f in sorted([*(SIM / "knots_sim").rglob("*.py"), *(SIM / "params").glob("*.yaml")]):
+    for f in sorted([*(SIM / "knots_sim").rglob("*.py"), *(SIM / "params").glob("*.yaml"),
+                     *(SIM / "observations").glob("*.yaml")]):
         h.update(f.relative_to(SIM).as_posix().encode())
         h.update(f.read_bytes())
     return h.hexdigest()[:12]
@@ -144,6 +145,12 @@ def main() -> dict:
             "states": np.stack([r[k][idx] for k in vessel.STATES], axis=1).tolist(),
         }
     (SITE_DATA / "golden-vessel.json").write_text(json.dumps(golden) + "\n")
+
+    import yaml
+
+    exam = yaml.safe_load((SIM / "observations" / "spec.yaml").read_text())
+    exam["updated"] = str(exam["updated"])
+    (SITE_DATA / "exam.json").write_text(json.dumps(exam, ensure_ascii=False, indent=1) + "\n")
 
     codegen.write()
     write_findings(data)

@@ -1,0 +1,858 @@
+---
+import Doc from '../layouts/Doc.astro';
+import data from '../data/sim/vessel.json';
+import exam from '../data/sim/exam.json';
+import { refById } from '../data/references';
+import { switchDiagram } from '../sim/draw';
+import { decisionTree, leastMovement, releaseMap, treeStory, type BreathMaps, type TreeFigure } from '../sim/figures';
+import { calibrate, type Params } from '../sim/vessel';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const repo = 'https://github.com/ejhong/knots/blob/main';
+const p = data.params.values as unknown as Params;
+const s = calibrate(p);
+const r = data.robustness;
+const v = data.validation as typeof data.validation & { squeeze: Record<string, { rise: number; peak_s: number; measured: { rise: number; peak_s: number } }> };
+const col = data.checks.collar;
+const cool = data.checks.cooling;
+const sc = data.scenarios as Record<string, { summary: { events: { t: number; to: string }[]; peak_flow: number; peak_spark: number } }>;
+const opened = (name: string) => sc[name].summary.events.find((e) => e.to === 'open')?.t ?? NaN;
+const pressed = opened('press_and_release') - 150;
+const breath = data.breath as unknown as BreathMaps;
+const tree = data.tree as unknown as { figure: TreeFigure; robustness: Record<string, number>; siblings: { siblings: number; shut_by_surge: number } };
+const tr = tree.robustness;
+const f2 = (x: number) => x.toFixed(2);
+const pct = (x: number) => `${Math.round(100 * x)}%`;
+const guessed = (data.params.vessel as { confidence: string }[]).filter((row) => row.confidence === 'guessed').length;
+const sourced = (data.params.vessel as { confidence: string }[]).length - guessed;
+const need10 = breath.least_movement.within_10;
+const depthAt = (d: number) => breath.depths.indexOf(d);
+
+const cite = (id: string) => {
+  const ref = refById(id);
+  if (!ref) return id;
+  const who = ref.authors.split(',')[0].split(' et al')[0].replace(/\s+\S+$/, '');
+  return `<a class="cite" href="${base}/library/#${id}">${who} ${ref.year}</a>`;
+};
+
+type Obs = { id: string; group: string; title: string; text: string; evidence: string; note?: string; sources?: string[] };
+const groups = exam.groups as { id: string; label: string }[];
+const obs = exam.observations as Obs[];
+
+const THEORIES = [
+  { glyph: '結', id: 'perforator', name: 'Perforators', who: 'proposed here', hold: 'A small artery shut by the muscle of its own wall: a switch, stable open or shut.', release: 'Tone falling below its reopening threshold (calm; a breath that lowers drive more than it raises it), or movement loosening the wall; pressure, then release.', status: 'modelled', statusText: 'one vessel; a tree' },
+  { glyph: '閂', id: 'latch', name: 'Vascular latch', who: 'Johnson', hold: 'Smooth muscle in the latch state, holding tension cheaply; less flow leaves less energy to unlatch.', release: 'Attention to the held tissue, heat and cold, meditation.', status: 'next', statusText: 'needs the Hai–Murphy rate constants' },
+  { glyph: '点', id: 'trigger-point', name: 'Trigger points', who: 'Travell · Simons', hold: 'An energy crisis at an overactive endplate: contracture squeezes the capillaries, and ischaemia withholds the energy to relax.', release: 'Sustained compression, stretch, needling; a local twitch as it goes.', status: 'open', statusText: 'to model' },
+  { glyph: '膠', id: 'densification', name: 'Densification', who: 'Stecco', hold: 'Hyaluronan between the fascial layers turned viscous: the layers stop gliding.', release: 'Friction, heat and movement.', status: 'open', statusText: 'to model' },
+  { glyph: '神経', id: 'nerve', name: 'Nerves', who: 'Quintner · Cohen', hold: 'A sensitised nerve where it pierces the fascia.', release: 'Nerve gliding, desensitisation, freeing it with fluid.', status: 'open', statusText: 'to model' },
+  { glyph: '覚', id: 'central', name: 'Perception', who: 'clinical medicine', hold: 'Raised gain in the pain pathways, kept up by threat, attention and poor sleep.', release: 'Safety, sleep, a change of attention; overbreathing makes tingling anywhere.', status: 'open', statusText: 'to model early: the account to beat' },
+];
+
+const SIGNALS = ['blood flow in the skin over the spot', 'flow or tension in the muscle beneath', 'stiffness and glide', 'muscle activity (EMG)', 'skin temperature', 'where it tingles'];
+const SIGS: { name: string; glyph: string; modelled?: boolean; cells: [string, string][] }[] = [
+  { name: 'Perforators', glyph: '結', modelled: true, cells: [['up', `rises, to ${sc.press_and_release.summary.peak_flow.toFixed(1)}×\u00a0within seconds`], ['none', 'little'], ['none', 'little'], ['none', 'no change'], ['up', `rises, over ≥\u00a0${Math.round(cool.tau_s_at_max_flow)}\u00a0s`], ['here', 'the vessel’s own patch']] },
+  { name: 'Vascular latch', glyph: '閂', cells: [['up', 'rises, if skin vessels latch'], ['up', 'vascular tension falls'], ['none', 'little'], ['none', 'no change'], ['up', 'rises with flow'], ['silent', 'not stated']] },
+  { name: 'Trigger points', glyph: '点', cells: [['none', 'little'], ['up', 'the taut band lets go; flow returns'], ['down', 'the nodule softens'], ['down', 'spontaneous activity falls; a twitch'], ['none', 'little at the skin'], ['here', 'a referred pattern']] },
+  { name: 'Densification', glyph: '膠', cells: [['none', 'not required'], ['none', 'not required'], ['down', 'glide between layers returns'], ['none', 'no change'], ['silent', 'warmth may come first'], ['silent', 'not stated']] },
+  { name: 'Nerves', glyph: '神経', cells: [['none', 'not required'], ['none', 'not required'], ['none', 'no change'], ['none', 'no change'], ['none', 'no change'], ['here', 'along the nerve’s territory']] },
+  { name: 'Perception', glyph: '覚', cells: [['none', 'none locally; any change equal at a sham site'], ['none', 'none locally'], ['none', 'no change'], ['silent', 'may relax everywhere'], ['none', 'none locally'], ['any', 'anywhere; follows CO₂']] },
+];
+const MARK: Record<string, string> = { up: '▲', down: '▼', none: '—', silent: '·', here: '◉', any: '○' };
+
+const index = [
+  { id: 'summary', label: 'summary' },
+  { id: 'observations', label: 'what people report' },
+  { id: 'theories', label: 'the theories' },
+  { id: 'physics', label: 'what physics allows' },
+  { id: 'breath', label: 'breath' },
+  { id: 'trees', label: 'trees' },
+  { id: 'signatures', label: 'what each predicts' },
+  { id: 'experiment', label: 'the experiment' },
+  { id: 'asks', label: 'what we need' },
+  { id: 'method', label: 'method' },
+];
+---
+<Doc
+  title="Knots: an open problem, and the experiment that would settle it"
+  kicker="For researchers"
+  current="research"
+  lede="People who work with the body find places that hold for years and let go in a breath. Six mechanisms could explain them. Here each is being run as a model with measured numbers, to ask what each can do, and what one recording at the moment of release would show under each."
+  description="An open problem in physiology: what holds a knot, and what lets it go. The theories as models with measured numbers, their predictions, and the experiment that would tell them apart."
+  glyph="究"
+  index={index}
+  wide
+  noindex
+>
+  <section id="summary" class="sec full" data-glyph="要">
+    <div class="abstract">
+      <p class="label">Summary</p>
+      <p>
+        <strong>The problem.</strong> Bodyworkers and contemplative practitioners report knots: discrete places in the body
+        that hold, sometimes for years, and let go within seconds, under a hand or with a particular breath, often with a
+        tingle over the spot, sometimes one releasing many others. Nothing about them has been recorded at the moment of
+        release. At least six mechanisms have been proposed: a vessel held shut at a fascial perforation, smooth muscle
+        in the latch state, a myofascial trigger point, densified hyaluronan, a sensitised nerve, and perception.
+      </p>
+      <p>
+        <strong>What is done so far.</strong> Each theory is being written as a dynamical model in its strongest form,
+        every parameter traced to a quoted line of a paper, and run through the same trials. The first is complete. A
+        small artery with tone in its wall holds itself shut over a band of tone and lets go when tone falls below the
+        band: a switch in {pct(r.share_bistable)} of {r.samples.toLocaleString('en-GB')} plausible parameter sets.
+        Hyaluronan cannot hold a vessel, and warming cannot release one within a breath. The breath can release a knot
+        through two routes, drive and movement, both fitted to measurements. A vessel holding a knot upstream shuts the
+        vessels below it, and releasing it frees most of them at once.
+      </p>
+      <p>
+        <strong>What would settle it.</strong> A recording at the moment of release: blood flow in the skin and in the
+        muscle, stiffness, muscle activity and the breath, at the spot and at a sham site. The first question it answers
+        is whether anything changes in the tissue at all. Each theory's predicted recording is set out below, to be
+        sealed before any data.
+      </p>
+      <p>
+        <strong>What we need.</strong> A few measurements that decide the most (small-artery myography; how fast skin
+        arterioles relax), proponents to check how their theory has been formalised, and a laboratory to make the
+        recording. <a href="#asks">Details below.</a>
+      </p>
+    </div>
+  </section>
+
+  <section id="observations" class="sec full" data-glyph="報">
+    <h2>What people report</h2>
+    <p class="sub">
+      The observations every theory is tested against, as the author reports them and as the essays collect them.
+      Almost all are self-report; one is measured. They are a <strong>draft</strong>: the author rewrites them in their own words,
+      then they are frozen with a date before any sweep, and change only by a new, dated version.
+    </p>
+    <p class="seal-line"><span class="seal-draft">draft · v{exam.version} · {exam.updated}</span> <span class="muted">not yet sealed</span></p>
+    <div class="obs-groups">
+      {
+        groups.map((g) => {
+          const items = obs.filter((o) => o.group === g.id);
+          return items.length ? (
+            <div class="obs-group">
+              <p class="obs-head">{g.label}</p>
+              {items.map((o) => (
+                <article class="obs">
+                  <p class="obs-title">
+                    <span class="oid mono">{o.id}</span> {o.title}{' '}
+                    <span class:list={['ev', o.evidence === 'M' ? 'ev-m' : 'ev-s']} title={o.evidence === 'M' ? 'measured in the literature' : 'self-report'}>
+                      {o.evidence === 'M' ? 'measured' : 'self-report'}
+                    </span>
+                  </p>
+                  <p class="obs-text">{o.text}</p>
+                  {o.note && <p class="obs-note">{o.note}</p>}
+                </article>
+              ))}
+            </div>
+          ) : null;
+        })
+      }
+    </div>
+  </section>
+
+  <section id="theories" class="sec full" data-glyph="説">
+    <h2>The theories</h2>
+    <p class="sub">
+      Each at its strongest, as the <a href={`${base}/hypotheses/`}>Hypotheses</a> page states it, with the thing that would hold a
+      knot (its switch) and what would let it go. Every theory will sit the same trials, with variants wherever turning words into
+      equations is a choice, and its proponents are invited to check the formalisation.
+    </p>
+    <div class="table-wrap">
+      <table class="theories">
+        <thead><tr><th scope="col">theory</th><th scope="col">what holds a knot</th><th scope="col">what lets it go</th><th scope="col">model</th></tr></thead>
+        <tbody>
+          {
+            THEORIES.map((t) => (
+              <tr>
+                <th scope="row"><span class="g cjk">{t.glyph}</span> <a href={`${base}/hypotheses/#${t.id}`}>{t.name}</a><span class="who">{t.who}</span></th>
+                <td>{t.hold}</td>
+                <td>{t.release}</td>
+                <td><span class:list={['st', `st-${t.status}`]}>{t.status === 'modelled' ? 'run' : t.status === 'next' ? 'next' : 'to run'}</span><span class="who">{t.statusText}</span></td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+    <p class="fine-print">
+      Also in the census: a spinal loop through the muscle spindles that perpetuates tension and spreads it to other muscles{' '}
+      <Fragment set:html={`(${cite('johansson1991')})`} />, a candidate for spreading knots; fascia contracting like smooth muscle{' '}
+      <Fragment set:html={`(${cite('schleip2005')})`} />, too slow to release within a breath; and adhesions, a control that should
+      fail every fast test.
+    </p>
+    <div class="aside">
+      <p class="aside-h">Perforators and the vascular latch</p>
+      <p>
+        The two share a core: both put the hold in the smooth muscle of a small artery. The first model pushes them closer, since the
+        vessel's own mechanics hold it and the latch does not remember (relaxation follows calcium; <Fragment set:html={cite('rembold1991')} />).
+        They differ in where and why. The perforator view is anatomical: it names the places where a vessel and its nerve pierce the
+        fascia, and predicts a countable ladder of them, the spark from the nerve beside the vessel, clusters under a parent vessel, and a
+        tie to the fascial layers. Johnson's is general: held tension anywhere smooth muscle wraps a tube, the brain's vessels
+        included, as a memory of the mind. A recording can tell them apart by depth (the skin over a perforator, or arterioles in muscle)
+        and by pattern (points on a perforator map, or diffuse).
+      </p>
+    </div>
+  </section>
+
+  <section id="physics" class="sec full" data-glyph="理">
+    <h2>What physics allows: can a vessel hold a knot?</h2>
+    <p class="sub">
+      The first model, run in full on the <a href={`${base}/simulation/`}>simulation page</a>, where it can be played with. A
+      perforator's small artery, with {sourced} parameters taken from or fitted to measurements and {guessed} guesses, each marked.
+    </p>
+    <div class="physics">
+      <figure class="ink-fig" set:html={switchDiagram(p, s)} />
+      <div class="facts">
+        <p class="fact"><span class="big">{f2(s.Aopen)}–{f2(s.Afold)}</span><span class="fl">the band of tone, as a share of maximal, over which a small artery is stable both open and shut (rest: {f2(s.urest)}). Above the band it snaps shut; once shut, it stays shut until tone falls below it. <Fragment set:html={cite('burton1951')} /> described the instability.</span></p>
+        <p class="fact"><span class="big">{pct(r.share_bistable)}</span><span class="fl">of {r.samples.toLocaleString('en-GB')} plausible parameter sets give the switch; in {pct(r.share_holds_at_rest)} it holds even at resting tone. Whether it holds at rest turns mostly on two guesses: how much force the muscle keeps when the vessel is nearly shut, and the wall's thickness.</span></p>
+        <p class="fact"><span class="big">{v.gasp.at_s.toFixed(1)} s</span><span class="fl">when flow is lowest after a deep gasp, the one timing not fitted: measured 4.6–5.2 s <Fragment set:html={`(${cite('mayrovitz2026')})`} />. The fitted ones reproduce the gasp's size and recovery and the timing of reactive hyperaemia.</span></p>
+      </div>
+    </div>
+    <div class="checks">
+      <article class="check">
+        <p class="q">Can hyaluronan hold a vessel shut?</p>
+        <p class="a">No.</p>
+        <p set:html={`A liquid resists motion, not position. At its most viscous (healthy synovial fluid; ${cite('nicholls2018')}), in a collar 20 µm thin, its drag is ${Math.round(col.pressure_over_drag)} times weaker than the pressure holding the vessel open, and fascia holds tens to hundreds of times less hyaluronan (${cite('fede2018')}).`} />
+      </article>
+      <article class="check">
+        <p class="q">Can warming release one within a breath?</p>
+        <p class="a">No.</p>
+        <p>A patch of skin warms with a time constant of at least {Math.round(cool.tau_s_at_max_flow)} s even at maximal skin blood flow. Release within a breath needs something faster than heat.</p>
+      </article>
+      <article class="check">
+        <p class="q">Does the latch remember?</p>
+        <p class="a">It economises.</p>
+        <p set:html={`Relaxation follows the fall of calcium, not latch-bridge detachment (${cite('rembold1991')}): a latch holds cheaply while the drive lasts. It may still harden a held vessel against movement, as it does airway muscle against a deep breath (${cite('fredberg1996')}).`} />
+      </article>
+      <article class="check">
+        <p class="q">Does pressure, then release, let go?</p>
+        <p class="a">Yes, and fastest.</p>
+        <p>After 40 s of pressure the vessel reopens {pressed.toFixed(1)} s after the pressure lifts, with a flush to {sc.press_and_release.summary.peak_flow.toFixed(1)}× resting flow and the brightest burst from the sensory nerves: the pressure ran up a debt, and returning blood repays it.</p>
+      </article>
+    </div>
+  </section>
+
+  <section id="breath" class="sec full" data-glyph="息">
+    <h2>Breath: two routes, kept open</h2>
+    <p class="sub">
+      How the breath acts is not assumed; each route is a variant. <strong>Through drive</strong>, the breath changes the sympathetic
+      drive to the skin's small arteries everywhere at once: a deep in-breath tightens them within seconds <Fragment set:html={`(${cite('bolton1936')}; ${cite('lau1995')})`} />,
+      and they take about half a minute to ease. <strong>Through movement</strong>, the breath deforms the tissue where the knot is: squeezed
+      arteries widen within seconds of release, more after several squeezes than after one long one <Fragment set:html={`(${cite('clifford2006')})`} />,
+      and rhythmic stretch cuts smooth muscle's force at once <Fragment set:html={`(${cite('ljung1975')})`} />. The model carries both, the movement
+      route fitted to those squeezes (+{pct(v.squeeze.one.rise)} against +{pct(v.squeeze.one.measured.rise)} after one; +{pct(v.squeeze.five.rise)}{' '}
+      against +{pct(v.squeeze.five.measured.rise)} after five).
+    </p>
+    <figure class="paper-fig scroll-x" set:html={releaseMap(breath)} />
+    <p class="caption">
+      Each knot is formed the same way, then held at a depth: how far the drive holding it sits above its own reopening threshold. Then {breath.breaths}{' '}
+      slow breaths (six a minute). Numbers are the breath on which it lets go. Hover a cell for the time.
+    </p>
+    <div class="two">
+      <div>
+        <p class="find"><strong>An even breath holds every knot.</strong> Tone rises fast and eases slowly, so a breath that raises drive as much as it lowers it
+          keeps knots held. Through drive, only a breath that lowers drive more than it raises it lets knots go, and only the easy ones.</p>
+        <p class="find"><strong>Easy knots go first; hard ones take many breaths or none.</strong> Through movement the loosening adds up breath by breath, so a knot
+          just above its threshold needs the tissue to move by only {pct(need10[depthAt(0.01)] ?? 0)} of a squeeze that shuts it, repeated for ten breaths;
+          a knot a fifth of the way up needs {pct(need10[depthAt(0.2)] ?? 0)}, and the deepest none will reach.</p>
+        <p class="find"><strong>One breath or many</strong> turns on one number nobody has measured in skin: how fast its small arteries ease when drive
+          falls. Fitted to the gasp's slow recovery, the easiest knot takes three breaths through drive; if they eased within about 3 s, it would go in one.</p>
+      </div>
+      <figure class="paper-fig small" set:html={leastMovement(breath)} />
+    </div>
+    <p class="caption">
+      What would have to be true for movement to be the route: the least deformation per breath, as a share of a squeeze that shuts the vessel.
+      Ultrasound speckle tracking over a knot during the breath could measure it.
+    </p>
+  </section>
+
+  <section id="trees" class="sec full" data-glyph="樹">
+    <h2>Trees: a parent and its children</h2>
+    <p class="sub">
+      Perforators branch: a parent vessel feeds children, and they share its pressure. Each vessel here is the same switch, with its own wall;
+      pressures are solved at every step. The tree's own numbers are guesses and are sampled below.
+    </p>
+    <figure class="ink-fig wide-fig scroll-x" set:html={treeStory(tree.figure)} />
+    <div class="two">
+      <div>
+        <p class="find"><strong>One knot upstream makes a cluster below it.</strong> When a local surge shuts the parent, the pressure beneath it collapses and all
+          four children snap shut within seconds.</p>
+        <p class="find"><strong>Release the parent, and the cluster lets go together.</strong> The pressure surges back and three children open within a second.
+          The thickest-walled one stays shut while stress stays raised: the next knot in the queue, which goes only when drive falls.</p>
+        <p class="find"><strong>Siblings protect each other.</strong> On a shared feed, each closure raises the pressure holding the others open: a surge of
+          stress shut {tree.siblings.shut_by_surge} of {tree.siblings.siblings}. Clusters come from the tree's hierarchy, not from neighbours.</p>
+      </div>
+      <div class="tiles">
+        <p class="tile"><span class="big">{pct(tr.share_cluster)}</span><span class="fl">of plausible trees in which the parent held a knot: a cluster formed beneath it ({tr.mean_cluster.toFixed(1)} of 4 children on average)</span></p>
+        <p class="tile"><span class="big">{pct(tr.share_cascade)}</span><span class="fl">in which releasing the parent freed most of its cluster within 5 s</span></p>
+        <p class="tile"><span class="big">{pct(tr.share_queue)}</span><span class="fl">in which at least one child stayed held after the parent let go</span></p>
+        <p class="tile-note">{tr.samples} trees: source and bed pressures, the parent's resistance, the children's walls and the drive, each sampled across its range.</p>
+      </div>
+    </div>
+    <p class="caption">
+      The author has felt one knot's release let many go with it (O13), written down after this simulation was shared, so the match is found
+      after the fact. The blind tests are the details, and a flow surge over the whole cluster at the parent's release.
+    </p>
+  </section>
+
+  <section id="signatures" class="sec full" data-glyph="徴">
+    <h2>What each theory predicts a recording would show</h2>
+    <p class="sub">
+      At the moment a knot lets go, at the spot, against a sham site. The perforator row comes from the model; the others from each theory's own
+      statements until their models run. Where two theories predict the same, no measurement of that signal separates them.
+    </p>
+    <div class="table-wrap">
+      <table class="sig">
+        <thead>
+          <tr><th scope="col">theory</th>{SIGNALS.map((x) => <th scope="col">{x}</th>)}</tr>
+        </thead>
+        <tbody>
+          {
+            SIGS.map((row) => (
+              <tr>
+                <th scope="row"><span class="g cjk">{row.glyph}</span> {row.name}{row.modelled && <span class="st st-modelled">model</span>}</th>
+                {row.cells.map(([m, text]) => (
+                  <td><span class:list={['mk', `mk-${m}`]} aria-hidden="true">{MARK[m]}</span> {text}</td>
+                ))}
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+    <p class="legend-row"><span>▲ rises</span><span>▼ falls</span><span>— no change</span><span>◉ confined to a patch</span><span>○ anywhere</span><span>· not stated</span></p>
+  </section>
+
+  <section id="experiment" class="sec full" data-glyph="験">
+    <h2>The experiment that would settle it</h2>
+    <p class="sub">
+      Four questions, in order; each measurement splits the theories left standing. It describes a measurement; it prescribes nothing to anyone
+      practising.
+    </p>
+    <figure class="ink-fig wide-fig scroll-x" set:html={decisionTree()} />
+    <div class="two">
+      <div>
+        <p class="find"><strong>The keystone recording.</strong> Over a palpable knot, under a probe that holds a constant, measured pressure: blood flow at two
+          depths (laser speckle for the skin; ultrasound Doppler or near-infrared spectroscopy for the muscle), shear-wave elastography for stiffness and
+          glide, surface EMG, a breath belt, and a button pressed at each felt release. The same at a sham site. Controls: pressure with a held breath, breath
+          without pressure, and the failed attempts, which hold everything constant except the release itself.</p>
+        <p class="find"><strong>Why one skilled person is enough to start.</strong> A practitioner who can release knots on cue gives dozens of time-locked
+          events in weeks: an event-related design, as meditation neuroscience began, with the predictions sealed before the first session.</p>
+      </div>
+      <div>
+        <p class="find"><strong>What the perforator model predicts it would see.</strong> Skin flow over the spot rising within seconds of the felt release, to
+          about {sc.press_and_release.summary.peak_flow.toFixed(1)}× after pressure, and nothing at the sham site; skin temperature following over a minute or
+          more; release after pressure faster and brighter than after calm alone; and, before a slow release, flow flickering more slowly (a switch slowing
+          near its edge).</p>
+        <p class="find"><strong>A cheap first look.</strong> A thermal camera and a photoplethysmography sensor over a knot and a sham site, a breath belt and an
+          event button: enough to ask the first question. Under the site's <a href={`${base}/#moderation`}>moderation guidance</a>.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="asks" class="sec full" data-glyph="願">
+    <h2>What we need</h2>
+    <ol class="asks">
+      <li>
+        <p class="ask-h">Two numbers from small-artery myography</p>
+        <p>How much force a small artery's muscle keeps when the vessel is nearly shut (the width of its length–tension curve), and the thickness of its
+          wall, in human skin perforators or subcutaneous small arteries. Together they decide whether a knot can hold at rest.</p>
+      </li>
+      <li>
+        <p class="ask-h">How fast skin arterioles relax when sympathetic drive falls</p>
+        <p>The time course of dilation after a brief sympathetic burst ends, over hairy skin (the back and neck, where knots are reported). It decides
+          whether a knot can let go in one breath or needs many. The gasp reflex itself is measured mostly on the fingers.</p>
+      </li>
+      <li>
+        <p class="ask-h">The recording at release</p>
+        <p>A laboratory with laser speckle, ultrasound or elastography, and a skilled practitioner, to make the keystone recording above; or the first
+          question alone.</p>
+      </li>
+      <li>
+        <p class="ask-h">The proponents' eyes</p>
+        <p>Each theory's formalisation checked by those who hold it: the vascular latch, fascial densification, trigger points, peripheral nerve
+          sensitivity and the perceptual account. Variants are welcome; so are objections.</p>
+      </li>
+      <li>
+        <p class="ask-h">A physiologist or modeller as co-author</p>
+        <p>For the preprint, and to keep the models honest.</p>
+      </li>
+    </ol>
+    <p class="contact">Everything is open: <a href="https://github.com/ejhong/knots">the code and data</a>; objections and offers as{' '}
+      <a href="https://github.com/ejhong/knots/issues">issues</a>.</p>
+  </section>
+
+  <section id="method" class="sec full" data-glyph="法">
+    <h2>How it is made</h2>
+    <div class="two">
+      <div>
+        <p class="find"><strong>Measured numbers, quoted.</strong> Every parameter has a source in the <a href={`${base}/library/`}>library</a>, the line it comes
+          from quoted, and a confidence (measured, inferred, fitted or guessed); a script checks every quote word for word against the paper. Fitted values are
+          fitted automatically to measured targets.</p>
+        <p class="find"><strong>Can, not is.</strong> A model can show that a mechanism cannot produce an observation at any plausible parameters, or what a
+          measurement would record if it is right. It cannot show that a theory is true.</p>
+      </div>
+      <div>
+        <p class="find"><strong>Written once, run everywhere.</strong> Each model is written once in Python (SymPy); the browser runs code generated from it, held to
+          the same trajectories by a test. Results are generated, never edited by hand, and each names its run.</p>
+        <p class="find"><strong>Sealed before swept.</strong> The observations are frozen with a date before any sweep; the predictions for the experiment are sealed
+          before any data.</p>
+      </div>
+    </div>
+    <p class="stamp mono">run {data.run.date} · inputs {data.run.inputs} · exam draft v{exam.version}</p>
+    <p class="links mono">
+      <a href={`${base}/simulation/`}>the bench</a>
+      <a href={`${repo}/sim/PLAN.md`}>the research plan</a>
+      <a href={`${repo}/sim/knots_sim/models/vessel.py`}>the vessel model</a>
+      <a href={`${repo}/sim/knots_sim/models/tree.py`}>the tree</a>
+      <a href={`${repo}/sim/knots_sim/breath.py`}>the breath trials</a>
+      <a href={`${repo}/sim/observations/spec.yaml`}>the observations</a>
+      <a href={`${repo}/sim/findings/`}>findings notes</a>
+    </p>
+  </section>
+</Doc>
+
+<style>
+  .sub {
+    max-width: 720px;
+    margin: 4px 0 14px;
+    font-family: var(--font-serif);
+    font-size: 13.5px;
+    line-height: 1.65;
+  }
+  .mono {
+    font-family: var(--font-mono);
+  }
+  .muted {
+    color: var(--muted);
+  }
+  :global(.cite) {
+    color: var(--accent-dark);
+    text-decoration-color: var(--frame-border);
+    white-space: nowrap;
+  }
+
+  /* Summary, set like an abstract. */
+  .abstract {
+    max-width: 760px;
+    padding: 18px 22px 8px;
+    background: var(--frame-bg);
+    border-left: 3px solid var(--seal);
+    border-radius: 0 8px 8px 0;
+    font-family: var(--font-serif);
+    font-size: 13.5px;
+    line-height: 1.65;
+  }
+  .abstract p {
+    margin: 0 0 10px;
+  }
+  .abstract .label {
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: var(--seal);
+    margin-bottom: 8px;
+  }
+
+  /* Observations. */
+  .seal-line {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    font-size: 10px;
+    margin: -4px 0 14px;
+  }
+  .seal-draft {
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    color: var(--seal);
+    border: 1px dashed var(--seal);
+    border-radius: 3px;
+    padding: 2px 8px;
+  }
+  .obs-groups {
+    display: grid;
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: 18px 22px;
+  }
+  .obs-head {
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--muted);
+    margin: 0 0 8px;
+    padding-bottom: 5px;
+    border-bottom: 1px solid var(--border);
+  }
+  .obs {
+    margin-bottom: 12px;
+  }
+  .obs-title {
+    font-weight: 600;
+    font-size: 12.5px;
+    margin: 0 0 2px;
+  }
+  .oid {
+    color: var(--accent-dark);
+    font-weight: 400;
+    font-size: 10.5px;
+  }
+  .ev {
+    font-family: var(--font-mono);
+    font-weight: 400;
+    font-size: 8.5px;
+    padding: 0 5px;
+    border-radius: 3px;
+    border: 1px solid currentColor;
+    vertical-align: 1px;
+  }
+  .ev-s {
+    color: var(--muted);
+    border-style: dashed;
+  }
+  .ev-m {
+    color: #3f8f73;
+  }
+  .obs-text {
+    font-family: var(--font-serif);
+    font-size: 12.5px;
+    line-height: 1.55;
+    margin: 0;
+  }
+  .obs-note {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 11px;
+    line-height: 1.5;
+    color: var(--muted);
+    margin: 3px 0 0;
+  }
+
+  /* Tables. */
+  .table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 12px;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 11.5px;
+  }
+  th,
+  td {
+    text-align: left;
+    vertical-align: top;
+    padding: 9px 12px;
+    border-bottom: 1px solid var(--border);
+  }
+  thead th {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--muted);
+    background: var(--frame-bg);
+  }
+  tbody tr:last-child th,
+  tbody tr:last-child td {
+    border-bottom: 0;
+  }
+  tbody th {
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .theories {
+    min-width: 640px;
+  }
+  .sig {
+    min-width: 860px;
+  }
+  .theories td {
+    font-family: var(--font-serif);
+    font-size: 12px;
+    line-height: 1.5;
+  }
+  .g {
+    color: var(--jade);
+    font-weight: 400;
+    margin-right: 4px;
+  }
+  .who {
+    display: block;
+    font-family: var(--font-mono);
+    font-weight: 400;
+    font-size: 9px;
+    color: var(--muted);
+    margin-top: 2px;
+    white-space: normal;
+  }
+  .st {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    padding: 1px 6px;
+    border-radius: 3px;
+    border: 1px solid currentColor;
+    margin-left: 6px;
+  }
+  .st-modelled {
+    color: #3f8f73;
+  }
+  .st-next {
+    color: var(--seal);
+  }
+  .st-open {
+    color: var(--muted);
+    border-style: dashed;
+  }
+  .theories td .st {
+    margin-left: 0;
+  }
+  .sig td {
+    font-size: 11px;
+    line-height: 1.45;
+    min-width: 110px;
+  }
+  .mk {
+    font-size: 10px;
+    margin-right: 2px;
+  }
+  .mk-none,
+  .mk-silent {
+    color: var(--faint);
+  }
+  .legend-row {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 16px;
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    color: var(--muted);
+    margin: 0 0 6px;
+  }
+  .fine-print {
+    font-family: var(--font-serif);
+    font-size: 12px;
+    line-height: 1.6;
+    color: var(--muted);
+    max-width: 760px;
+  }
+  .aside {
+    max-width: 760px;
+    margin: 14px 0 6px;
+    padding: 12px 16px;
+    background: var(--frame-bg);
+    border-radius: 8px;
+    font-family: var(--font-serif);
+    font-size: 12.5px;
+    line-height: 1.6;
+  }
+  .aside p {
+    margin: 0;
+  }
+  .aside-h {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 12.5px;
+    margin-bottom: 4px !important;
+  }
+
+  /* Figures. */
+  .ink-fig {
+    margin: 0;
+    padding: 14px 16px;
+    background: var(--panel-bg);
+    border-radius: var(--radius);
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3);
+  }
+  .ink-fig :global(svg),
+  .paper-fig :global(svg) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .wide-fig {
+    max-width: 860px;
+  }
+  .paper-fig {
+    margin: 8px 0 4px;
+    max-width: 820px;
+  }
+  .paper-fig.small {
+    max-width: 440px;
+    margin: 0;
+  }
+  .caption {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 11.5px;
+    line-height: 1.55;
+    color: var(--muted);
+    max-width: 760px;
+    margin: 6px 0 14px;
+  }
+  .physics {
+    display: grid;
+    grid-template-columns: minmax(0, 400px) minmax(0, 1fr);
+    gap: 22px;
+    align-items: start;
+    margin-bottom: 18px;
+  }
+  .physics .ink-fig {
+    padding: 12px;
+  }
+  .facts,
+  .tiles {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+  }
+  .fact,
+  .tile {
+    margin: 0;
+    display: grid;
+    grid-template-columns: 92px minmax(0, 1fr);
+    gap: 12px;
+    align-items: baseline;
+  }
+  .big {
+    font-family: var(--font-sans);
+    font-size: 22px;
+    font-weight: 300;
+    letter-spacing: -0.3px;
+    color: var(--text);
+    text-align: right;
+    white-space: nowrap;
+  }
+  .fl {
+    font-family: var(--font-serif);
+    font-size: 12.5px;
+    line-height: 1.55;
+  }
+  .tile-note {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 11px;
+    color: var(--muted);
+    margin: 0 0 0 104px;
+  }
+  .checks {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+  }
+  .check {
+    background: var(--frame-bg);
+    border-radius: 8px;
+    padding: 12px 14px 10px;
+    font-family: var(--font-serif);
+    font-size: 12px;
+    line-height: 1.55;
+  }
+  .check p {
+    margin: 0 0 6px;
+  }
+  .check .q {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 12.5px;
+  }
+  .check .a {
+    font-style: italic;
+    font-size: 14px;
+    color: var(--accent-dark);
+  }
+  .two {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 22px 28px;
+    align-items: start;
+    margin: 12px 0 4px;
+  }
+  .find {
+    font-family: var(--font-serif);
+    font-size: 13px;
+    line-height: 1.62;
+    margin: 0 0 10px;
+  }
+  .asks {
+    max-width: 780px;
+    padding-left: 20px;
+    display: grid;
+    gap: 10px;
+  }
+  .asks li::marker {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--accent-dark);
+  }
+  .asks p {
+    margin: 0;
+    font-family: var(--font-serif);
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .asks .ask-h {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 13px;
+  }
+  .contact {
+    font-family: var(--font-serif);
+    font-size: 13px;
+  }
+  .stamp {
+    font-size: 9.5px;
+    color: var(--muted);
+    margin-top: 10px;
+  }
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 16px;
+    font-size: 10px;
+  }
+
+  .scroll-x {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  @media (max-width: 700px) {
+    .scroll-x :global(svg) {
+      min-width: 640px;
+    }
+  }
+
+  @media (max-width: 1000px) {
+    .obs-groups {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .checks {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+    .physics {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  @media (max-width: 700px) {
+    .obs-groups,
+    .checks,
+    .two {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .fact,
+    .tile {
+      grid-template-columns: 70px minmax(0, 1fr);
+    }
+    .big {
+      font-size: 18px;
+    }
+    .tile-note {
+      margin-left: 82px;
+    }
+  }
+</style>
