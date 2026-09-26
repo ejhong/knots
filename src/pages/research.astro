@@ -53,6 +53,42 @@ const THEORIES = [
   { glyph: '覚', id: 'central', name: 'Perception', who: 'clinical medicine', hold: 'Raised gain in the pain pathways, kept up by threat, attention and poor sleep.', release: 'Safety, sleep, a change of attention; overbreathing makes tingling anywhere.', status: 'open', statusText: 'to model early: the account to beat' },
 ];
 
+const VERDICTS: { glyph: string; name: string; status: string; can: string; cannot: string; open: string }[] = [
+  { glyph: '結', name: 'Perforators', status: 'modelled',
+    can: `Hold a knot by the vessel's own wall (a switch in ${pct(r.share_bistable)} of plausible settings); let it go by pressure (fastest, with the largest flush), by an uneven breath, or by movement; make clusters and a queue through its tree; release broadly or at one spot.`,
+    cannot: `Hold by its hyaluronan collar (a liquid, ${Math.round(col.pressure_over_drag)} times too weak); let go within a breath by warming.`,
+    open: 'Whether knots sit on perforators; two unmeasured wall numbers decide whether a knot can hold at rest; how fast skin arterioles relax decides one breath or many.' },
+  { glyph: '閂', name: 'Vascular latch', status: 'in part',
+    can: 'Its core, a small artery held shut, is the same switch. The latch lets a held vessel stay held cheaply, and may harden an old knot against movement, as it does airway muscle against a deep breath.',
+    cannot: 'Remember by the latch alone: relaxation follows the fall of calcium, not latch-bridge detachment.',
+    open: 'The Hai–Murphy model itself (the rate constants); knots placed where no perforator lies, the brain and organs included, are its territory.' },
+  { glyph: '点', name: 'Trigger points', status: 'not yet run',
+    can: 'Its energy-crisis loop is itself a candidate switch, inside muscle, with a twitch, a softening nodule and falling spontaneous activity at release.',
+    cannot: 'Host micro knots at dozens per square inch, unless a knot is a single motor unit (a variant worth running).',
+    open: 'The loop’s dynamics with measured energetics; release by compression and stretch.' },
+  { glyph: '膠', name: 'Densification', status: 'not yet run',
+    can: 'Change glide between the fascial layers; the collar check does not touch it, since its claim is glide, not holding a vessel.',
+    cannot: `Let go within a breath by heat (warming takes at least ${Math.round(cool.tau_s_at_max_flow)} s).`,
+    open: 'Hyaluronan thinning as the layers move: its fast route.' },
+  { glyph: '神経', name: 'Nerves', status: 'not yet run',
+    can: 'Sensitivity where nerves pierce the fascia, which is where the perforators are.',
+    cannot: 'Be told apart from perforators by location alone; it needs no flush at release.',
+    open: 'Nerve-specific tests at the knots themselves.' },
+  { glyph: '覚', name: 'Perception', status: 'not yet run',
+    can: 'Any timing, any place, and a queue by salience: when the loudest spot quiets, the next is noticed.',
+    cannot: 'Change the tissue at the spot when a knot lets go: it predicts nothing local.',
+    open: 'The first measurement decides it: is there a local change at release, absent at a sham site?' },
+];
+
+const WHERE: { glyph: string; name: string; where: string; count: string; scalp: string; inside: string; test: string }[] = [
+  { glyph: '結', name: 'Perforators', where: 'where a vessel and its nerve pierce a fascia', count: 'a ladder: ~374 major, ~3,600 medium, ~100,000 small, one every 4–5 mm', scalp: 'yes', inside: 'no', test: 'blinded palpation against a blinded Doppler map of perforators' },
+  { glyph: '閂', name: 'Vascular latch', where: 'wherever smooth muscle wraps a vessel or hollow organ', count: 'millions in principle', scalp: 'yes', inside: 'yes: the brain’s vessels and the organs', test: 'knots felt where no perforator lies' },
+  { glyph: '点', name: 'Trigger points', where: 'the endplate zones of taut bands, inside muscle', count: 'hundreds, at mapped sites', scalp: 'only over its few muscles', inside: 'no', test: 'palpation against endplate zones (EMG) and ultrasound nodules' },
+  { glyph: '膠', name: 'Densification', where: 'the loose layers between fasciae', count: 'tens to hundreds of patches, centimetres across', scalp: 'yes (the galea’s loose layer)', inside: 'no', test: 'ultrasound thickness of the loose layers under each knot' },
+  { glyph: '神経', name: 'Nerves', where: 'where cutaneous nerves pierce the fascia', count: 'thousands, beside the medium and major perforators', scalp: 'yes', inside: 'no', test: 'nerve tests at each knot; the same places as perforators' },
+  { glyph: '覚', name: 'Perception', where: 'anywhere attention and sensitisation make them', count: 'no fixed number; they can move', scalp: 'yes', inside: 'yes, as felt', test: 'sham places, and whether knots follow attention' },
+];
+
 const SIGNALS = ['blood flow in the skin over the spot', 'flow or tension in the muscle beneath', 'stiffness and glide', 'muscle activity (EMG)', 'skin temperature', 'where it tingles'];
 const SIGS: { name: string; glyph: string; modelled?: boolean; cells: [string, string][] }[] = [
   { name: 'Perforators', glyph: '結', modelled: true, cells: [['up', `rises, to ${sc.press_and_release.summary.peak_flow.toFixed(1)}×\u00a0within seconds`], ['none', 'little'], ['none', 'little'], ['none', 'no change'], ['up', `rises, over ≥\u00a0${Math.round(cool.tau_s_at_max_flow)}\u00a0s`], ['here', 'the vessel’s own patch']] },
@@ -66,8 +102,10 @@ const MARK: Record<string, string> = { up: '▲', down: '▼', none: '—', sile
 
 const index = [
   { id: 'summary', label: 'summary' },
+  { id: 'findings', label: 'what the simulations show' },
   { id: 'observations', label: 'what people report' },
   { id: 'theories', label: 'the theories' },
+  { id: 'where', label: 'where, and how many' },
   { id: 'physics', label: 'what physics allows' },
   { id: 'breath', label: 'breath' },
   { id: 'trees', label: 'trees' },
@@ -104,10 +142,11 @@ const index = [
         band: a switch in {pct(r.share_bistable)} of {r.samples.toLocaleString('en-GB')} plausible parameter sets.
         Hyaluronan cannot hold a vessel, and warming cannot release one within a breath. The breath can release a knot
         through two routes, drive and movement, both fitted to measurements. A vessel holding a knot upstream shuts the
-        vessels below it, and releasing it frees most of them at once.
+        vessels below it, and releasing it frees most of them at once. <a href="#findings">What this says about each theory.</a>
       </p>
       <p>
-        <strong>What would settle it.</strong> A recording at the moment of release: blood flow in the skin and in the
+        <strong>What would settle it.</strong> First, and cheapest: whether knots sit where a theory's anatomy puts them, checked blind against a
+        map of perforators, of muscle endplates, or of the fascial layers. Then a recording at the moment of release: blood flow in the skin and in the
         muscle, stiffness, muscle activity and the breath, at the spot and at a sham site. The first question it answers
         is whether anything changes in the tissue at all. Each theory's predicted recording is set out below, to be
         sealed before any data.
@@ -118,6 +157,52 @@ const index = [
         recording. <a href="#asks">Details below.</a>
       </p>
     </div>
+  </section>
+
+  <section id="findings" class="sec full" data-glyph="得">
+    <h2>What the simulations show so far</h2>
+    <p class="sub">
+      Built from measured numbers and run through the same trials; each result names what it rests on further down the page. None says which theory is
+      true: they say what each mechanism can and cannot do, and so where to look.
+    </p>
+    <ol class="findings">
+      <li><strong>A knot can be a small artery holding itself shut.</strong> With measured wall strength, pressure and reflex timings, a small artery has two
+        stable states over a band of tone, in {pct(r.share_bistable)} of {r.samples.toLocaleString('en-GB')} plausible settings: held until released, by mechanics alone.</li>
+      <li><strong>Liquids cannot hold, and heat is too slow.</strong> Hyaluronan resists motion, not position ({Math.round(col.pressure_over_drag)} times too weak to
+        hold a vessel); warming takes at least {Math.round(cool.tau_s_at_max_flow)} s. Whatever releases a knot within a breath is faster than heat.</li>
+      <li><strong>The breath must be uneven, or move the tissue.</strong> Tone rises fast and eases slowly, so an even breath holds every knot. A breath that lowers
+        drive more than it raises it releases the easy knots; a breath that moves the tissue releases knots where it moves, adding up breath by breath.</li>
+      <li><strong>Easy knots go first; the deepest hold.</strong> On a patch of {fieldData.n}, a broad easing of drive freed {fc.broad.freed} of {fc.broad.knots},
+        in order of difficulty; a focused breath freed the knots at its spot and almost none elsewhere; together, all {fc.both.knots_near} at the spot.</li>
+      <li><strong>One breath or many turns on one unmeasured number:</strong> how fast skin arterioles relax when drive falls ({Math.round(easeFitted.release_s[0] ?? NaN)} s
+        at the fitted value; {Math.round(easeFast.release_s[0] ?? NaN)} s if they relaxed in 3 s).</li>
+      <li><strong>Trees make clusters and queues.</strong> A knot in a parent vessel shuts its children; releasing it frees most of them at once, and the hardest
+        stays: a cluster whenever the parent held, in {tr.samples} plausible trees. Siblings on one feed protect each other, so knots do not simply hop sideways.</li>
+      <li><strong>Pressure, then release, is the fastest way out</strong>, with the largest flush ({sc.press_and_release.summary.peak_flow.toFixed(1)}× resting flow within
+        seconds): the clearest thing a laser speckle camera could look for.</li>
+    </ol>
+    <h3 class="h3">What this says about each theory, so far</h3>
+    <div class="table-wrap">
+      <table class="verdicts">
+        <thead><tr><th scope="col">theory</th><th scope="col">can, with measured numbers</th><th scope="col">cannot, or not as stated</th><th scope="col">still open</th></tr></thead>
+        <tbody>
+          {
+            VERDICTS.map((t) => (
+              <tr>
+                <th scope="row"><span class="g cjk">{t.glyph}</span> {t.name}<span class:list={['st', t.status === 'modelled' ? 'st-modelled' : t.status === 'in part' ? 'st-next' : 'st-open']}>{t.status}</span></th>
+                <td>{t.can}</td>
+                <td>{t.cannot}</td>
+                <td>{t.open}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+    <p class="fine-print">
+      Only the perforator theory has been run in full; the vascular latch shares its core. The others' rows come from their own statements and the checks that
+      touch them, until their models run. A theory with more rows filled is not a better theory, only a more tested one.
+    </p>
   </section>
 
   <section id="observations" class="sec full" data-glyph="報">
@@ -195,6 +280,39 @@ const index = [
         included, as a memory of the mind. A recording can tell them apart by depth (the skin over a perforator, or arterioles in muscle)
         and by pattern (points on a perforator map, or diffuse).
       </p>
+    </div>
+  </section>
+
+  <section id="where" class="sec full" data-glyph="所">
+    <h2>Where knots are, and how many</h2>
+    <p class="sub">
+      The cheapest test comes before any recording: each theory puts knots in different places, in different numbers. Where a practitioner finds a knot can be
+      checked against a map of the anatomy each theory names, blinded both ways.
+    </p>
+    <div class="table-wrap">
+      <table class="where">
+        <thead><tr><th scope="col">theory</th><th scope="col">where a knot is</th><th scope="col">how many</th><th scope="col">over the bare scalp?</th><th scope="col">inside the head or organs?</th><th scope="col">the location test</th></tr></thead>
+        <tbody>
+          {
+            WHERE.map((t) => (
+              <tr>
+                <th scope="row"><span class="g cjk">{t.glyph}</span> {t.name}</th>
+                <td>{t.where}</td>
+                <td>{t.count}</td>
+                <td>{t.scalp}</td>
+                <td>{t.inside}</td>
+                <td>{t.test}</td>
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+    <div class="two">
+      <p class="find"><strong>Micro knots decide between units.</strong> If knots come at dozens per square inch (O15), only a unit that dense can hold one: small
+        perforators, small arteries anywhere, or a single motor unit (a trigger-point variant). Patches centimetres across, or hundreds of mapped points, cannot.</p>
+      <p class="find"><strong>Places that stay, or places that move.</strong> Anatomical theories put knots back in the same places; perception lets them move with
+        attention. And a knot felt inside the head or an organ is the territory of the vascular latch and of perception alone.</p>
     </div>
   </section>
 
@@ -344,7 +462,7 @@ const index = [
   <section id="experiment" class="sec full" data-glyph="験">
     <h2>The experiment that would settle it</h2>
     <p class="sub">
-      Four questions, in order; each measurement splits the theories left standing. It describes a measurement; it prescribes nothing to anyone
+      A location test first, then four questions, in order; each measurement splits the theories left standing. It describes a measurement; it prescribes nothing to anyone
       practising.
     </p>
     <figure class="ink-fig wide-fig scroll-x" set:html={decisionTree()} />
@@ -629,6 +747,41 @@ const index = [
   }
   .theories td .st {
     margin-left: 0;
+  }
+  .verdicts,
+  .where {
+    min-width: 760px;
+  }
+  .verdicts td,
+  .where td {
+    font-family: var(--font-serif);
+    font-size: 12px;
+    line-height: 1.5;
+  }
+  .verdicts th .st {
+    display: inline-block;
+    margin: 4px 0 0;
+  }
+  .verdicts tbody th {
+    white-space: normal;
+    min-width: 120px;
+  }
+  .findings {
+    max-width: 780px;
+    padding-left: 20px;
+    display: grid;
+    gap: 8px;
+    margin: 4px 0 18px;
+  }
+  .findings li {
+    font-family: var(--font-serif);
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .findings li::marker {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--accent-dark);
   }
   .sig td {
     font-size: 11px;

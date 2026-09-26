@@ -226,6 +226,13 @@ measurement that splits the most theories first. A likely first split, to be che
 at release?* (T6 predicts none.) Then *at what depth, and in what* (flow in the skin: T1; flow or stiffness in the muscle: T2,
 T3; glide: T4; nerve: T5). Then *which breath route*: strain, drive or neither.
 
+**Location first** (reassessed 26 Sep). Before any recording, the cheapest discriminator: each theory puts knots in
+different places and numbers (perforator exits; muscle endplate zones; the loose layers; nerve piercing points, the same
+places as perforators; anywhere, and inside the head and organs, for perception and the latch). Blinded palpation against a
+Doppler map, an endplate map or ultrasound of the layers is step 0 of the decision tree. The essays' size and number report
+(O15: micro knots at dozens per square inch) already constrains the unit: only small perforators, small arteries anywhere,
+or single motor units are that dense.
+
 **Sealed predictions.** Before any data, the predicted outcomes are frozen (OSF, dated) and shown sealed on the site.
 
 **A pilot** (D5, the author's choice, under the site's moderation guidance): a thermal camera and a photoplethysmography
@@ -318,6 +325,9 @@ M5. The top-bar link comes when the author says (D2); the natural moment is matr
   knot depth for every breath route, and the least movement per breath (`knots_sim/breath.py`); the tree
   (`knots_sim/models/tree.py`) with robustness over 256 trees; the exam drafted as data (`observations/spec.yaml`,
   shown on the site as a draft); the Research page; a movement control on the bench; findings 002.
+- **Done after (26 Sep):** the field (240 knots, broad against focused); the findings synthesis on the Research page (what
+  the simulations show, and a can / cannot / open verdict per theory); where knots are and how many (the location test,
+  O15) as step 0 of the decision tree; Simulation in the top bar; both pages indexed; a sitemap.
 - **Still in M1:** the shared interface (`interface.py`) with the other breath routes (local nerve, attention,
   chemistry); the field (a patch of a few hundred vessels under one breath, broad against focused); P12 (old and new
   knots) waits for the latch.

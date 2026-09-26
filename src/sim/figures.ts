@@ -238,8 +238,16 @@ export function treeStory(f: TreeFigure): string {
 /** The first measurements, in order, and where each outcome points. A diagram; the words are the content. */
 export function decisionTree(): string {
   const W = 700;
-  const H = 400;
+  const shift = 78;
+  const H = 400 + shift;
   const out: string[] = [];
+  const head: string[] = [];
+  // 0. Before any recording: where are they?
+  head.push(`<rect x="120" y="10" width="460" height="46" rx="7" fill="${INK.bg}" stroke="${INK.ochre}" stroke-width="1.2" stroke-dasharray="4 3"/>`);
+  head.push(`<text x="132" y="27" fill="${INK.text}" font-size="10" ${SERIF}>0. Before any recording: are the knots where a theory's anatomy puts them?</text>`);
+  head.push(`<text x="132" y="41" fill="${INK.muted}" font-size="9" ${MONO}>palpation, blinded, against a Doppler map, an endplate map, the layers</text>`);
+  head.push(`<path d="M350 56 L350 ${shift + 12}" stroke="${INK.faint}" stroke-width="1"/><path d="M346 ${shift + 7} L350 ${shift + 12} L354 ${shift + 7}" fill="none" stroke="${INK.faint}" stroke-width="1"/>`);
+  out.push(`<g transform="translate(0 ${shift})">`);
   const box = (x: number, y: number, w: number, h: number, lines: string[], opts: { kind?: 'q' | 'leaf'; glyph?: string } = {}) => {
     const q = opts.kind !== 'leaf';
     out.push(`<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="7" fill="${q ? INK.bg : '#2b3134'}" stroke="${q ? INK.ochre : INK.line}" stroke-width="${q ? 1.2 : 1}"/>`);
@@ -279,7 +287,8 @@ export function decisionTree(): string {
   box(10, 338, 330, 46, ['Ultrasound speckle tracking, laser speckle at a sham', 'site, skin sympathetic nerve activity'], { kind: 'leaf' });
   box(360, 338, 330, 46, ['Laser speckle over the cluster, an event marker', 'at each felt release'], { kind: 'leaf' });
   out.push(`<path d="M175 316 L175 338 M525 316 L525 338" stroke="${INK.faint}" stroke-width="1"/>`);
-  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="What would settle it: first, whether anything changes locally at release; then where and in what; then, for a vascular answer, the breath's route and clusters">${out.join('')}</svg>`;
+  out.push('</g>');
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="What would settle it: first, whether knots sit where a theory's anatomy puts them; then whether anything changes locally at release; then where and in what; then, for a vascular answer, the breath's route and clusters">${head.join('')}${out.join('')}</svg>`;
 }
 
 // ---------- The field: broad and focused ----------

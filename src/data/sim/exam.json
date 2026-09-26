@@ -20,6 +20,10 @@
    "label": "Clusters and spread"
   },
   {
+   "id": "where",
+   "label": "Where, and how many"
+  },
+  {
    "id": "body",
    "label": "Across the body"
   },
@@ -100,10 +104,18 @@
   },
   {
    "id": "O14",
-   "group": "clusters",
+   "group": "where",
    "title": "Clusters in place",
    "text": "Knots gather in clusters at particular places, the base of the skull most of all; an old, heavily loaded cluster can let go with a wave of warmth spreading from the site.",
    "evidence": "S"
+  },
+  {
+   "id": "O15",
+   "group": "where",
+   "title": "Sizes and numbers",
+   "text": "Knots come in a hierarchy: a handful of roots at the ridges, big knots that take sessions to clear, and micro knots at dozens per square inch, hundreds of thousands in a body by practitioners' own estimate.",
+   "evidence": "S",
+   "note": "The number and density are part of the test: each theory predicts its own, and only a unit that dense can host a micro knot."
   },
   {
    "id": "O9",

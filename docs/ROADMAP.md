@@ -77,6 +77,9 @@ design: `docs/SIMULATION.md`.
 - [x] The movement route in T1, fitted to squeezed arteries; release maps over knot depth for drive and movement; the least movement per breath
 - [x] The tree: a parent's knot makes a cluster of its children, its release frees most of them, the hardest stays (256 trees)
 - [x] The Research page (`/research/`, in the top bar): the problem, the observations as a dated draft, the theories, what physics allows, breath, trees, what each theory predicts a recording would show, the experiment, what we need
+- [x] The field: a patch of knots under one breath, broad against focused
+- [x] What the simulations show, and a verdict per theory (can / cannot / open), on the Research page
+- [x] Where knots are and how many: the location test as step 0 of the decision tree (O15 from the essays)
 - [ ] M1, the rest: the other breath routes (local nerve, attention, chemistry) in a shared interface; the pulse variant; the field (a patch of perforators under one breath, broad against focused); the exam rewritten by the author
 - [ ] M2: T6 and T3; the harness (sweep, scoring); matrix v1; the exam frozen (dated; OSF) and shown sealed
 - [ ] M3: T2 live (Hai–Murphy; needs the paper) with latch hardening; T4, T5, the gamma loop, hybrids; matrix v2
