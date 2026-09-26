@@ -246,6 +246,62 @@ Every theory takes the same inputs and gives the same outputs, or the comparison
 | P12 | *Added:* old and new: the same unit held for a minute, an hour, a year of model time, then the same release |
 | P13 | *Added:* release a root: free the unit at the top of a tree (or of a cluster) and watch everything below it |
 
+## 5b. The harness and matrix v1 (designed 26 Sep 2026; to build)
+
+`knots_sim/exam.py` loads the sealed spec and refuses to run if the file's hash differs from its seal. For each theory,
+each variant and each scored part it runs the part's trial over parameter sets sampled across the theory's own ranges,
+and records one of: **a pass share** (the share of plausible sets in which the part holds; never one tuned setting),
+**silent** (the theory's account says nothing), or **not run** (it says something, but no trial can test it yet). The
+matrix shows each variant's cells and its joint pass, and the best variant per part.
+
+**Parts** (the sealed readings in brackets; each part names the words it tests):
+
+| Part | Trial and pass |
+|---|---|
+| O1.1 | A held knot, slow breathing: the easiest knots let go during an out-breath [within 10 s of its start] |
+| O1.2 | A patch of knots, one relaxing breath (no pressure, no focus): ≥ 3 small knots let go [within the same breath] |
+| O1.3 | Deep knots hold through 30 relaxing breaths, but let go to focused attention and breath at their place [within 30 breaths] |
+| O1.4 | Both patterns occur under the theory's breath variants: releases spread across regions (broad), and most in one region (focused) |
+| O1.5 | Under one way of breathing, some knots go by the end of the 2nd breath and others between the 3rd and the 30th |
+| O2.1 | Pressure (and attention) at one place in a patch: knots let go there, few elsewhere |
+| O2.2 | A held knot pressed (palpation pressure, not occlusion; a guessed range until measured), slow breathing: ≥ half of knots across depths let go during an out-breath [within 10 s] while still pressed. T1 today lets go when pressure lifts: scored as it is |
+| O3 | Hydration eases or speeds release (most theories expected silent) |
+| O4.1 | Raised sustained drive: more held knots in a patch |
+| O4.2 | Held knots concentrate where drive or load is highest |
+| O16.1 | Drive that moves with breath and mood: some knot forms and lets go at least twice in an hour |
+| O16.2 | Some knot forms and lets go within a single breath |
+| O6 | A release brings, within seconds, a brief sensory signal confined to the released knot's own patch |
+| O8 | After one knot lets go, a new knot forms nearby within minutes, and the held count evens out |
+| O13 | Releasing one knot lets ≥ 3 others go with it, within seconds |
+| O15 | The theory's unit exists at ≥ dozens per square inch and ~10⁵ in a body (anatomical counts, sourced) |
+| O5, O9, O10 | Not run until the mechanics and body stages (O10's young-and-old part can run with T1's adaptation); O7, O11 noted |
+
+**Theories in matrix v1.** T1 (variants: the breath through drive, through movement, both; with and without adaptation),
+T3 and T6; T2 once the Hai–Murphy rate constants are in hand (§11); T4 and T5 next.
+
+**T6, perception** (the account to beat; hypotheses.ts at its strongest). Sites on a body map, each with a peripheral input
+(ordinary tissue signals, raised where muscles guard under stress) and a local gain; a central gain set by threat and
+arousal (stress raises it; a relaxing breath lowers it within seconds; safety over minutes); attention as a spotlight on
+one site that lowers its local gain when paired with safety; a knot is a site whose felt intensity (input × local × central
+gain) crosses a threshold. Overbreathing lowers CO₂ and makes tingling anywhere, over tens of seconds to minutes. Sources to
+find on PubMed (quotes verified): descending modulation and conditioned pain modulation timescales, attention's effect on
+pain, hyperventilation paraesthesia onset and extent; everything else marked guessed.
+
+**T3, trigger points** (the energy crisis, gerwin2004). One endplate zone: acetylcholine leak drives sarcomere contracture;
+contracture compresses the capillaries; ischaemia lowers ATP; low ATP keeps the contracture (the loop); sympathetic drive
+raises endplate activity (stress raises trigger-point EMG: McNulty 1994, measured; find it); sensitising substances build
+(Shah's microdialysis); release by sustained compression, stretch or needling, with a local twitch. Variants: the standard
+unit (hundreds of mapped sites) and a single motor unit (for O15's density). Parameters sourced where possible, the rest
+guessed.
+
+**On the site.** Matrix v1 on the Research page: theories and variants by parts, cells shaded by pass share, silent and not
+run marked, each cell's why on hover; findings 004 generated from the run.
+
+**Later: the base of the skull.** Set aside in the exam (essay-only), but a sharp location test if the author confirms it:
+the vessel view puts a root there (the occipital artery and the greater occipital nerve at the superior nuchal line), the
+trigger-point view the suboccipital and upper-trapezius points, the nerve view the occipital nerves, the latch nothing
+special, and perception wherever attention and threat gather.
+
 ## 6. The decisive experiment
 
 **Instrument models.** Each measurement modelled with its depth, resolution in space and time, and noise, so that each
