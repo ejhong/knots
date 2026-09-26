@@ -44,7 +44,7 @@ show all of it. Read `sim/PLAN.md` (the research plan: its path, next steps, pap
   - `data/` roots, knot zones, perforator density (anatomical data used by the viewer)
 - `src/data/` — site-wide registries: hypotheses, references (+ `papers.json`), timeline, map index
 - `src/pages/` — introduction, atlas, hypotheses, research (the case for researchers), traditions, library, about, simulation (the
-  bench; unlisted; `lab` is a dev bench)
+  bench; `lab` is a dev bench)
 - `src/sim/` — the simulation in the browser: `models/*.ts` (generated from Python; never edit), `vessel.ts` (stepper,
   calibration, inputs), `draw.ts` and `figures.ts` (figures as SVG strings), `bench.ts` (the live instrument); `src/data/sim/`
   (generated)

@@ -59,7 +59,8 @@ A living list. Checked items are live.
 - [x] Introduction (first version), Hypotheses, Traditions, Library, About
 - [ ] Scroll-driven scenes on the introduction (sticky figure changes with each chapter)
 - [ ] Knot census chart: burden by age against cutaneous microvascular decline
-- [ ] Social image, sitemap
+- [x] Sitemap (`/knots/sitemap.xml`); Research and Simulation in the top bar and indexed
+- [ ] Social image per page
 
 ## Simulation — the theories against the observations
 Plan: `sim/PLAN.md`, reassessed 26 Sep 2026: *can* (every theory through the same exam), *signatures* (what an instrument would
@@ -71,7 +72,7 @@ design: `docs/SIMULATION.md`.
 - [x] T1, one knot: the switch's band, trials (a knot forms, holds, lets go by easing, by pressure, by uneven breath), robustness (Sobol, 49,152 sets)
 - [x] Feasibility checks: hyaluronan cannot hold, cooling cannot release within a breath, the latch does not remember
 - [x] Write once: SymPy → numpy and TypeScript, with golden-trajectory tests
-- [x] The switch and the bench, live on an unlisted page (`/simulation/`); findings note 001
+- [x] The switch and the bench, live at `/simulation/`; findings note 001
 - [x] The perforator theory presented as the simulation found it: the vessel holds itself, the collar does not, breath by drive and by movement
 - [x] The movement route in T1, fitted to squeezed arteries; release maps over knot depth for drive and movement; the least movement per breath
 - [x] The tree: a parent's knot makes a cluster of its children, its release frees most of them, the hardest stays (256 trees)

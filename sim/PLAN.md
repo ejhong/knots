@@ -357,8 +357,9 @@ Add to this list as the models need more.
 
 ## 13. Open decisions (for the author)
 
-- **D1** The section's name: *Tests*, *Trials* or *Simulation*? (The page is at `/simulation/`.)
-- **D2** When the section joins the top bar (the natural moment: matrix v1).
+- **D1** The section's name. *Decided 26 Sep 2026:* two tabs, **Research** (the case for researchers) and **Simulation**
+  (the bench).
+- **D2** When the section joins the top bar. *Decided 26 Sep 2026:* now, both pages indexed and in the sitemap.
 - **D3** Python with generated TypeScript: built, and held to the same trajectories by a golden test.
 - **D4** What "attention" means in the models (route B4; O2b).
 - **D5** A pilot measurement (§6): whether, how, and under the moderation guidance.
