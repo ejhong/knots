@@ -25,6 +25,7 @@ export interface VesselParams {
   k_mv: number;
   tau_w: number;
   tau_z: number;
+  lo: number;
   xrest: number;
 }
 
@@ -32,11 +33,11 @@ export interface VesselParams {
 export function rhs(y: ArrayLike<number>, u: ArrayLike<number>, p: VesselParams, out: number[]): void {
   const x = y[0], A = y[1], m = y[2], n = y[3], my = y[4], ml = y[5], w = y[6], z = y[7];
   const uS = u[0], Pext = u[1], mv = u[2];
-  const { r100, Tmax, xopt, P, beta, width, wall, xc, tau_x, tau_up, tau_down, tau_debt, tau_nerve, collateral, myogenic, tau_myogenic, tau_mv, k_mv, tau_w, tau_z, xrest } = p;
+  const { r100, Tmax, xopt, P, beta, width, wall, xc, tau_x, tau_up, tau_down, tau_debt, tau_nerve, collateral, myogenic, tau_myogenic, tau_mv, k_mv, tau_w, tau_z, lo, xrest } = p;
   let d0: number, d1: number, d2: number, d3: number, d4: number, d5: number, d6: number, d7: number;
   const c0 = -Math.exp(-beta);
   const c1 = (1/2)*wall;
-  const c2 = 7.50063755419211e-5*(-A*Tmax*(1 - n)*(1 - z)*Math.exp(-Math.pow(Math.sqrt(c1 + Math.pow(x, 2))/Math.sqrt(c1 + Math.pow(xopt, 2)) - 1, 2)/Math.pow(width, 2)) + r100*x*(133.322*P - 133.322*Pext) - 13332.2*r100*(c0 + Math.exp(beta*(x - 1)))/(c0 + 1))/r100;
+  const c2 = 7.50063755419211e-5*(-A*Tmax*(1 - n)*(1 - z)*Math.exp(-Math.pow(-1 + Math.sqrt(c1 + Math.pow(x, 2))/(lo*Math.sqrt(c1 + Math.pow(xopt, 2))), 2)/Math.pow(width, 2)) + r100*x*(133.322*P - 133.322*Pext) - 13332.2*r100*(c0 + Math.exp(beta*(x - 1)))/(c0 + 1))/r100;
   const c3 = -my*myogenic + 1;
   const c4 = -A + c3*uS;
   const c5 = Math.min(1, Math.pow(x, 4)/Math.pow(xrest, 4));
@@ -56,10 +57,10 @@ export function rhs(y: ArrayLike<number>, u: ArrayLike<number>, p: VesselParams,
 
 /** The effective tone A·(1 − n)·(1 − z) that holds the vessel at radius x (the switch's equilibrium curve). */
 export function aeq(x: number, Pext: number, p: VesselParams): number {
-  const { r100, Tmax, xopt, P, beta, width, wall } = p;
+  const { r100, Tmax, xopt, P, beta, width, wall, lo } = p;
   let r: number;
   const c0 = (1/2)*wall;
   const c1 = -Math.exp(-beta);
-  r = (r100*x*(133.322*P - 133.322*Pext) - 13332.2*r100*(c1 + Math.exp(beta*(x - 1)))/(c1 + 1))*Math.exp(Math.pow(Math.sqrt(c0 + Math.pow(x, 2))/Math.sqrt(c0 + Math.pow(xopt, 2)) - 1, 2)/Math.pow(width, 2))/Tmax;
+  r = (r100*x*(133.322*P - 133.322*Pext) - 13332.2*r100*(c1 + Math.exp(beta*(x - 1)))/(c1 + 1))*Math.exp(Math.pow(-1 + Math.sqrt(c0 + Math.pow(x, 2))/(lo*Math.sqrt(c0 + Math.pow(xopt, 2))), 2)/Math.pow(width, 2))/Tmax;
   return r;
 }

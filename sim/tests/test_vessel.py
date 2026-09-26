@@ -101,5 +101,6 @@ def test_generated_typescript_is_current():
 
 
 def test_site_data_is_from_the_current_model():
-    data = json.loads((SITE / "data" / "sim" / "vessel.json").read_text())
-    assert data["run"]["inputs"] == export._inputs_hash(), "run `uv run python -m knots_sim.export`"
+    for name in ("vessel.json", "adapt.json"):
+        data = json.loads((SITE / "data" / "sim" / name).read_text())
+        assert data["run"]["inputs"] == export._inputs_hash(), f"{name}: run `uv run python -m knots_sim.export`"

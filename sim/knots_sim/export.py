@@ -6,6 +6,7 @@ Writes
     src/sim/models/vessel.ts          the model's equations as TypeScript (codegen)
     src/data/sim/vessel.json          parameters with provenance, the switch, validation, robustness, scenarios, checks
     src/data/sim/golden-vessel.json   reference trajectories the TypeScript model must reproduce (tests/sim-vessel.test.ts)
+    src/data/sim/adapt.json           length adaptation: how a held knot sets, and what its release looks like
     sim/findings/001-can-a-perforator-hold.md
     sim/results/<run>/manifest.json   what produced this run
 """
@@ -23,8 +24,8 @@ from pathlib import Path
 
 import numpy as np
 
-from . import breath, checks, codegen, field, robustness, scenarios
-from .findings import write_breath_and_trees, write_findings
+from . import adapt, breath, checks, codegen, field, robustness, scenarios
+from .findings import write_adaptation, write_breath_and_trees, write_findings
 from .models import tree, vessel
 from .params import load, papers
 
@@ -92,8 +93,7 @@ def main() -> dict:
     # normotensive, 7.5-8% hypertensive), measured at 0.9 of the relaxed circumference at 100 mmHg.
     wall_rows = []
     for ml in (0.04, 0.052, 0.06, 0.07, 0.08, 0.09, 0.10, 0.12):
-        r_, h_ = 0.9, 2 * 0.9 * ml
-        aw = (r_ + h_) ** 2 - r_ ** 2
+        aw = vessel.wall_area(ml)
         c = vessel.calibrate(p | {"wall": aw})
         wall_rows.append({"media_to_lumen": ml, "wall": aw, "Aopen": c.Aopen, "Afold": c.Afold, "urest": c.urest,
                           "bistable": c.bistable})
@@ -172,9 +172,15 @@ def main() -> dict:
     exam["updated"] = str(exam["updated"])
     (SITE_DATA / "exam.json").write_text(json.dumps(exam, ensure_ascii=False, indent=1) + "\n")
 
+    # Length adaptation: its own file, stamped with the same run.
+    adapted = _round({"run": data["run"], "params": param_table("adapt", {"adapt_share": adapt.params(fitted=False)["adapt_share"]}),
+                      **adapt.study()})
+    (SITE_DATA / "adapt.json").write_text(json.dumps(adapted, ensure_ascii=False, indent=1, allow_nan=False) + "\n")
+
     codegen.write()
     write_findings(data)
     write_breath_and_trees(data)
+    write_adaptation(data, adapted)
     run_dir = SIM / "results" / f"{data['run']['date']}-vessel"
     run_dir.mkdir(parents=True, exist_ok=True)
     (run_dir / "manifest.json").write_text(json.dumps(

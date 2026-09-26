@@ -1,0 +1,57 @@
+# Length adaptation: held long enough, a vessel's muscle adapts to the length it is held at. A variant of the vessel
+# switch (T1), and of any vessel held by its own muscle (T2's too).
+#
+# Same format as vessel.yaml: every parameter has a value, units, a range, a confidence and, unless guessed, a source
+# in src/data/papers.json with the line it comes from, quoted verbatim.
+
+model: adapt
+title: Length adaptation
+parameters:
+  tau_adapt:
+    symbol: τ_a
+    label: "time to adapt to a held length"
+    value: 3600
+    unit: s
+    range: [1200, 14400]
+    confidence: inferred
+    source: martinezlemus2004
+    locator: abstract
+    quote: "In contrast, when NE exposure lasted 4 h, vessels did not return to control diameter, but VSMCs returned to control length after NE removal."
+    note: "How long the muscle takes to adapt to a held length, at full activation; the rate scales with activation, since arteries held narrow without tone do not remodel (bakker2002). Arterioles constricted for 5 minutes returned to their diameter when the drive was removed; after 4 hours they did not. An hour leaves 5 minutes without trace (under 7% of the way at strong tone) and 4 hours nearly complete. Airway muscle adapts over 5–6 contractions at 5-minute intervals (pratusevich1995)."
+
+  recovery_06:
+    symbol: R₀.₆
+    label: "force regained after shortening to 0.6"
+    value: 0.73
+    unit: "1"
+    range: [0.63, 0.73]
+    confidence: measured
+    source: syyong2008
+    locator: abstract
+    quote: "Release (or stretch) of resting PASM from L(ref) to 0.6 (and vice versa) was followed by a significant force recovery (73 and 63%, respectively)"
+    note: "Share of the force lost by shortening to 0.6 of the reference length that pulmonary arterial smooth muscle regained as it adapted (63% after the reverse stretch). The target the share below is fitted to."
+
+  adapt_share:
+    symbol: φ
+    label: "how far the optimum follows"
+    value: 0.7
+    unit: "1"
+    range: [0.3, 1.0]
+    confidence: fitted
+    fit: the force regained after shortening to 0.6 of the reference length (recovery_06)
+    source: syyong2008
+    locator: abstract
+    quote: "Release (or stretch) of resting PASM from L(ref) to 0.6 (and vice versa) was followed by a significant force recovery (73 and 63%, respectively)"
+    note: "The share of a held change of length that the muscle's optimal length follows. Fitted to pulmonary arterial muscle and applied to a skin small artery: inferred across vessels. Arterial muscle shortened by a fifth adapted in part over three contractions (bednarek2011); airway muscle's adapted force varied by only 4% over a threefold range of length (pratusevich1995). The range spans both."
+
+  remodel_3d:
+    symbol: ρ₃
+    label: "inward remodelling after 3 days of tone"
+    value: 0.156
+    unit: "1"
+    range: [0.10, 0.16]
+    confidence: measured
+    source: bakker2002
+    locator: abstract
+    quote: "Maximal dilation revealed inward remodeling from 179 +/- 6.5 microm lumen diameter on day 0 to 151 +/- 6.3 microm on day 3 at 75 mm Hg in vessels incubated with serum (n = 8)."
+    note: "Share of the relaxed lumen diameter lost after 3 days of active constriction (1 − 151/179); 0.10 with endothelin-1 (182 to 164 µm). Kept narrow without tone, the vessels did not remodel. Beyond the hours this module models; shown as a static check."

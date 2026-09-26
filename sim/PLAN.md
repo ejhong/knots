@@ -85,11 +85,35 @@ proponents of each theory, and a lab.
    release upstream frees most of what lies below it; conducted dilation (segal1986, not yet run) would carry release
    upstream, toward the root, where the tree's paths converge. The author has felt a parent release many children (O13),
    recorded after these runs were shared.
+9. **Held long enough, a knot can set** (`knots_sim/adapt.py`, `params/adapt.yaml`, findings 003). Smooth muscle held at a
+   new length adapts to it (syyong2008: 73% of the lost force regained at 0.6 L; pratusevich1995; bednarek2011), and
+   arterioles held constricted for 4 h no longer relax fully (martinezlemus2004, hill2003); days of tone remodel the lumen
+   inward (bakker2002). As a two-timescale variant (the muscle's optimum follows the held length, share 0.70 fitted to
+   syyong2008, time constant 1 h bracketed by martinezlemus2004): a knot held shut at 4× resting tone holds at rest after
+   1.7 h, outlasting its stress; held 1 h it lets go when stress ends, 3 h it stays. Fully adapted it holds down to 0.5×
+   rest. Released, a set knot opens wide (2.8× resting flow; a new one's, 1×; one released before it set reopens narrowed,
+   as the lab's arterioles did). Across 512 settings: of the switches, 86% can set, median 2.2 h at mid-band tone. Three
+   days' inward remodelling alone brings the hold from 3.4× to 1.8× rest. **What it gets wrong:** at constant drive the
+   model's *open* vessels creep shut under sustained tone (1.5× rest: 14 h), but the lab's arterioles held at 61% for 4 h
+   kept their diameter (the model's would have shut in 1.7 h). In an open vessel adaptation must make holding cheaper, not
+   narrower (activation easing, or flow and metabolism; vanbavel2014). So stress making knots without a surge (O4) is not
+   shown, and how long a released knot's flush lasts is not known; the shut-vessel results do not depend on the missing loop.
+   It resolves finding 1's tension (a hold that needs 3.4× rest) through time, and bears on O10 and O14, known in advance.
+10. **What the perforation adds, if the switch is shared with the latch** (reasoning, not yet run; the author's question).
+   The hold is the same smooth muscle either way; the piercing is mechanical and positional. A vessel pinned where it
+   pierces the fascia, with the layers sliding past, would take a concentrated share of movement, stretch and a roller's
+   shear, and a change of shape is what loosens the wall (clifford2006); a firm plane behind it lets pressure reach it and
+   makes it palpable as a point; its nerve pierces beside it (tenderness, the spark); it heads a tree (clusters). A set knot
+   needs pressure or movement to let go, which a piercing is placed to receive; the same hold deep in muscle or in the brain
+   would be out of reach and not felt as a point. As a variant: a strain gain on the movement route at a piercing (guessed
+   until measured). The measurement: ultrasound speckle tracking of a perforator's wall at its piercing against a vessel
+   within a layer, under a roller or a breath; it is also the unmeasured `breath_move`.
 
 **A hypothesis these suggest** (to be run through the same exam as everything else, not assumed). Knots form where drive is
 raised and the tissue is still. A shut vessel loses the pulse that stretches its wall with every heartbeat, and so may hold
-harder than an open one (a second loop that widens the band). The longer it is held, the more of its muscle latches and the
-less movement can shake it (old knots harder than fresh ones). Breath releases in two ways: by lowering drive everywhere
+harder than an open one (a second loop that widens the band). The longer it is held, the more its muscle adapts to being
+shut and the less calm alone can free it (old knots harder than fresh ones; now run as finding 9, by adaptation rather than
+the latch). Breath releases in two ways: by lowering drive everywhere
 (broad) and by moving the tissue where the knot is (focused), cumulatively over breaths. Its predictions: release follows
 local tissue strain; the regions that move least with the breath hold the most knots; a knot's difficulty grows with how long
 it has been held. It favours no theory in advance: T3 (stretching a taut band), T4 (hyaluronan thinning as layers glide) and
@@ -333,6 +357,14 @@ M5. The top-bar link comes when the author says (D2); the natural moment is matr
 - **Done after (26 Sep):** the field (240 knots, broad against focused); the findings synthesis on the Research page (what
   the simulations show, and a can / cannot / open verdict per theory); where knots are and how many (the location test,
   O15) as step 0 of the decision tree; Simulation in the top bar; both pages indexed; a sitemap.
+- **Done after that (26 Sep):** the measured wall and length–tension width (schiffrin1995, mulvany1979), with every claim
+  that rested on the old numbers rewritten from the run; how tightly the lumen closes shown as the guess it is; the switch
+  diagram and the bench's stress slider rescaled to the measured band; length adaptation (finding 9, findings 003, the
+  Research page's *Time* section, the four-hour closure test as an ask); the perforation's mechanical role (finding 10).
+- **Next, from finding 9:** the open vessel's missing loop (activation easing as the muscle adapts, or flow and metabolic
+  regulation), fitted to martinezlemus2004's maintained diameter, before adaptation speaks about open vessels (creep, the
+  flush's duration, O4); adaptation in the tree (does a set parent leave set children?); the strain gain at a piercing as a
+  movement-route variant (finding 10).
 - **Still in M1:** the shared interface (`interface.py`) with the other breath routes (local nerve, attention,
   chemistry); the field (a patch of a few hundred vessels under one breath, broad against focused); P12 (old and new
   knots) waits for the latch.
@@ -352,6 +384,17 @@ M5. The top-bar link comes when the author says (D2); the natural moment is matr
 3. Fredberg JJ, Jones KA, Nathan M, et al. (1996). *Friction in airway smooth muscle: mechanism, latch, and implications in
    asthma.* J Appl Physiol 81:2703–2712. https://doi.org/10.1152/jappl.1996.81.6.2703 (fredberg1996). The latch under
    stretch; for the latch-hardening variant.
+
+4. Martinez-Lemus LA, Hill MA, Bolz SS, et al. (2004). *Acute mechanoadaptation of vascular smooth muscle cells in response
+   to continuous arteriolar vasoconstriction: implications for functional remodeling.* FASEB J 18:708–710.
+   https://doi.org/10.1096/fj.03-0634fje (martinezlemus2004). The diameters after 4 h and on removal of the drive, and the
+   time course of the cells' repositioning: to measure the adaptation's time constant and fit the open vessel's missing loop.
+5. Syyong H, Cheung C, Solomon D, et al. (2008). *Adaptive response of pulmonary arterial smooth muscle to length change.*
+   J Appl Physiol 104:1014–1020. https://doi.org/10.1152/japplphysiol.01203.2007 (syyong2008). The time constant of the
+   monoexponential force recovery; the adaptation's share is fitted to its abstract, its pace is not yet.
+6. Hill MA, Potocnik SJ, Martinez-Lemus LA, et al. (2003). *Delayed arteriolar relaxation after prolonged agonist exposure:
+   functional remodeling involving tyrosine phosphorylation.* Am J Physiol Heart Circ Physiol 285:H849–H856.
+   https://doi.org/10.1152/ajpheart.00986.2002 (hill2003). How much slower the relaxation is after 4 h: a second target.
 
 Add to this list as the models need more.
 

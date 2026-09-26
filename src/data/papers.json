@@ -45,6 +45,51 @@
   "note": "Infrared thermography finds perforating cutaneous vessels at acupuncture points."
  },
  {
+  "id": "ansell2015",
+  "authors": "Ansell TK, McFawn PK, McLaughlin RA et al.",
+  "year": 2015,
+  "title": "Does smooth muscle in an intact airway undergo length adaptation during a sustained change in transmural pressure?",
+  "venue": "J Appl Physiol (1985) 118:533-43",
+  "url": "https://doi.org/10.1152/japplphysiol.00724.2014",
+  "pmid": "25729015",
+  "kind": "paper",
+  "tags": [
+   "breath",
+   "animals"
+  ],
+  "note": "A caution: whole airways held inflated or deflated for about 50 minutes showed no length adaptation within physiological ranges."
+ },
+ {
+  "id": "bakker2002",
+  "authors": "Bakker EN, van der Meulen ET, van den Berg BM et al.",
+  "year": 2002,
+  "title": "Inward remodeling follows chronic vasoconstriction in isolated resistance arteries",
+  "venue": "J Vasc Res 39:12-20",
+  "url": "https://doi.org/10.1159/000048989",
+  "pmid": "11844933",
+  "kind": "paper",
+  "tags": [
+   "vascular",
+   "animals"
+  ],
+  "note": "Resistance arteries kept actively constricted for 3 days remodel inward, their relaxed lumen 10-16% smaller; kept narrow without tone, they do not."
+ },
+ {
+  "id": "bednarek2011",
+  "authors": "Bednarek ML, Speich JE, Miner AS et al.",
+  "year": 2011,
+  "title": "Active tension adaptation at a shortened arterial muscle length: inhibition by cytochalasin-D",
+  "venue": "Am J Physiol Heart Circ Physiol 300:H1166-73",
+  "url": "https://doi.org/10.1152/ajpheart.00009.2010",
+  "pmid": "21239639",
+  "kind": "paper",
+  "tags": [
+   "vascular",
+   "animals"
+  ],
+  "note": "Arterial smooth muscle shortened by a fifth regains force over three contractions, by adding actin filaments; released from 1.25 to 0.75 of its optimal length, its sustained force rises by half."
+ },
+ {
   "id": "benias2018",
   "authors": "Benias PC, Wells RG, Sackey-Aboagye B et al.",
   "year": 2018,
@@ -399,6 +444,21 @@
   "note": "About 80% of classical acupoints coincide with perforations of the superficial fascia by a vessel–nerve bundle."
  },
  {
+  "id": "hill2003",
+  "authors": "Hill MA, Potocnik SJ, Martinez-Lemus LA et al.",
+  "year": 2003,
+  "title": "Delayed arteriolar relaxation after prolonged agonist exposure: functional remodeling involving tyrosine phosphorylation",
+  "venue": "Am J Physiol Heart Circ Physiol 285:H849-56",
+  "url": "https://doi.org/10.1152/ajpheart.00986.2002",
+  "pmid": "12714327",
+  "kind": "paper",
+  "tags": [
+   "vascular",
+   "animals"
+  ],
+  "note": "After 4 hours of constriction, arterioles relax more slowly when the drive is removed; the hold still needs calcium, and goes at once without it."
+ },
+ {
   "id": "hong1998",
   "authors": "Hong CZ, Simons DG",
   "year": 1998,
@@ -606,6 +666,21 @@
   "note": "Horses have trigger points too: the same spontaneous electrical activity found in humans and rabbits."
  },
  {
+  "id": "martinezlemus2004",
+  "authors": "Martinez-Lemus LA, Hill MA, Bolz SS et al.",
+  "year": 2004,
+  "title": "Acute mechanoadaptation of vascular smooth muscle cells in response to continuous arteriolar vasoconstriction: implications for functional remodeling",
+  "venue": "FASEB J 18:708-10",
+  "url": "https://doi.org/10.1096/fj.03-0634fje",
+  "pmid": "14977879",
+  "kind": "paper",
+  "tags": [
+   "vascular",
+   "animals"
+  ],
+  "note": "Arterioles constricted for 5 minutes relax fully when the drive is removed; after 4 hours they do not, and their muscle cells have repositioned to hold the smaller diameter."
+ },
+ {
   "id": "maurer2019",
   "authors": "Maurer N, Nissel H, Egerbacher M et al.",
   "year": 2019,
@@ -772,6 +847,21 @@
   "note": "The latch-bridge hypothesis reviewed: in sustained contractions calcium, phosphorylation and ATP use fall while force is held."
  },
  {
+  "id": "naghshin2003",
+  "authors": "Naghshin J, Wang L, Pare PD et al.",
+  "year": 2003,
+  "title": "Adaptation to chronic length change in explanted airway smooth muscle",
+  "venue": "J Appl Physiol (1985) 95:448-53; discussion 435",
+  "url": "https://doi.org/10.1152/japplphysiol.01180.2002",
+  "pmid": "12626491",
+  "kind": "paper",
+  "tags": [
+   "models",
+   "animals"
+  ],
+  "note": "Airway muscle held short for a week shifts its optimal length down by 38%, and the shift no longer fully reverses: after 3 days it still did."
+ },
+ {
   "id": "nakayama2000",
   "authors": "Nakayama Y, Shirai Y, Yoshihara K et al.",
   "year": 2000,
@@ -829,6 +919,21 @@
    "models"
   ],
   "note": "Healthy synovial fluid, far richer in hyaluronan than fascia, has a zero-shear viscosity of 1–175 Pa·s: an upper bound for any hyaluronan collar."
+ },
+ {
+  "id": "pratusevich1995",
+  "authors": "Pratusevich VR, Seow CY, Ford LE",
+  "year": 1995,
+  "title": "Plasticity in canine airway smooth muscle",
+  "venue": "J Gen Physiol 105:73-94",
+  "url": "https://doi.org/10.1085/jgp.105.1.73",
+  "pmid": "7730790",
+  "kind": "paper",
+  "tags": [
+   "models",
+   "animals"
+  ],
+  "note": "Airway smooth muscle regains its force after a change of length over 5-6 contractions at 5-minute intervals, and its adapted force varies little over a threefold range of length."
  },
  {
   "id": "quintner1994",
@@ -1020,6 +1125,21 @@
   "note": "The loose-connective-tissue sublayers of neck fascia are thicker in chronic neck pain and thin with treatment."
  },
  {
+  "id": "syyong2008",
+  "authors": "Syyong H, Cheung C, Solomon D et al.",
+  "year": 2008,
+  "title": "Adaptive response of pulmonary arterial smooth muscle to length change",
+  "venue": "J Appl Physiol (1985) 104:1014-20",
+  "url": "https://doi.org/10.1152/japplphysiol.01203.2007",
+  "pmid": "18218913",
+  "kind": "paper",
+  "tags": [
+   "vascular",
+   "animals"
+  ],
+  "note": "Pulmonary arterial smooth muscle shortened to 0.6 of its length regains 73% of the force it lost, along a single exponential: the muscle adapts to the length it is held at."
+ },
+ {
   "id": "tang2009",
   "authors": "Tang M, Mao Y, Almutairi K et al.",
   "year": 2009,
@@ -1123,6 +1243,36 @@
    "models"
   ],
   "note": "After a transient stretch the living cell's cytoskeleton fluidizes, in the same way across cell types: a universal physical response."
+ },
+ {
+  "id": "tuna2012",
+  "authors": "Tuna BG, Bakker EN, VanBavel E",
+  "year": 2012,
+  "title": "Smooth muscle biomechanics and plasticity: relevance for vascular calibre and remodelling",
+  "venue": "Basic Clin Pharmacol Toxicol 110:35-41",
+  "url": "https://doi.org/10.1111/j.1742-7843.2011.00794.x",
+  "pmid": "21902815",
+  "kind": "paper",
+  "tags": [
+   "vascular",
+   "models"
+  ],
+  "note": "Review: vascular smooth muscle adapts its length like airway and bladder muscle; under strong constriction this may prevent immediate full dilation and lead to inward remodelling."
+ },
+ {
+  "id": "vanbavel2014",
+  "authors": "VanBavel E, Tuna BG",
+  "year": 2014,
+  "title": "Integrative modeling of small artery structure and function uncovers critical parameters for diameter regulation",
+  "venue": "PLoS One 9:e86901",
+  "url": "https://doi.org/10.1371/journal.pone.0086901",
+  "pmid": "24497993",
+  "kind": "paper",
+  "tags": [
+   "vascular",
+   "models"
+  ],
+  "note": "A model of small arteries regulated by four adaptive processes (tone, smooth-muscle length adaptation, matrix rearrangement, growth): leave any one out and regulation fails, in some cases with unstable structure."
  },
  {
   "id": "whetzel1992",

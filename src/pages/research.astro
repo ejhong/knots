@@ -2,9 +2,10 @@
 import Doc from '../layouts/Doc.astro';
 import data from '../data/sim/vessel.json';
 import exam from '../data/sim/exam.json';
+import adaptData from '../data/sim/adapt.json';
 import { refById } from '../data/references';
 import { switchDiagram } from '../sim/draw';
-import { decisionTree, fieldPanels, leastMovement, releaseMap, treeStory, type BreathMaps, type FieldStudy, type TreeFigure } from '../sim/figures';
+import { decisionTree, fieldPanels, knotSets, leastMovement, releaseMap, treeStory, type AdaptStudy, type BreathMaps, type FieldStudy, type TreeFigure } from '../sim/figures';
 import { calibrate, type Params } from '../sim/vessel';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
@@ -37,6 +38,14 @@ const healthyRatio = s.Aopen / s.urest;
 const hyper = wallAt(0.08);
 const closureRows = data.closure_sensitivity as { xc: number; Aopen: number; urest: number; bistable: boolean }[];
 const tight = closureRows[0];
+const ad = adaptData as unknown as AdaptStudy;
+const setAt = (rows: { mult: number; hours: number | null }[], m: number) => rows.find((row) => Math.abs(row.mult - m) < 1e-9)?.hours ?? NaN;
+const holdMult = ad.stories.hold_mult;
+const setHealthy = setAt(ad.healthy.set_h, holdMult);
+const hyFirst = ad.hypertensive.set_h.find((row) => row.hours !== null)!;
+const oldKnot = ad.flushes.filter((row) => row.holds_at_rest).at(-1)!;
+const adRob = ad.robustness;
+const creep15 = ad.healthy.creep_h[0];
 const treeQueue = (data.tree as unknown as { queue: { drive: number[]; remain: number[]; parent_knot: boolean[] } }).queue;
 const deepest = need10[need10.length - 1];
 const easing = (data.breath as unknown as { easing: { swing: number; rows: { tau_down: number; fitted: boolean; release_s: (number | null)[] }[] } }).easing;
@@ -56,8 +65,8 @@ const groups = exam.groups as { id: string; label: string }[];
 const obs = exam.observations as Obs[];
 
 const THEORIES = [
-  { glyph: '結', id: 'perforator', name: 'Perforators', who: 'proposed here', hold: 'A small artery shut by the muscle of its own wall: a switch, stable open or shut.', release: 'Tone falling below its reopening threshold (calm; a breath that lowers drive more than it raises it), or movement loosening the wall; pressure, then release.', status: 'modelled', statusText: 'one vessel; a tree' },
-  { glyph: '閂', id: 'latch', name: 'Vascular latch', who: 'Johnson', hold: 'Smooth muscle in the latch state, holding tension cheaply; less flow leaves less energy to unlatch.', release: 'Attention to the held tissue, heat and cold, meditation.', status: 'next', statusText: 'needs the Hai–Murphy rate constants' },
+  { glyph: '結', id: 'perforator', name: 'Perforators', who: 'proposed here', hold: 'A small artery shut by the muscle of its own wall: a switch, stable open or shut.', release: 'Tone falling below its reopening threshold (calm; a breath that lowers drive more than it raises it), or movement loosening the wall; pressure, then release.', status: 'modelled', statusText: 'one vessel; a tree; how a knot sets' },
+  { glyph: '閂', id: 'latch', name: 'Vascular latch', who: 'Johnson', hold: 'Smooth muscle in the latch state, holding tension cheaply; less flow leaves less energy to unlatch.', release: 'Attention to the held tissue, heat and cold, meditation.', status: 'next', statusText: 'shares the switch and how it sets; the latch needs the Hai–Murphy rate constants' },
   { glyph: '点', id: 'trigger-point', name: 'Trigger points', who: 'Travell · Simons', hold: 'An energy crisis at an overactive endplate: contracture squeezes the capillaries, and ischaemia withholds the energy to relax.', release: 'Sustained compression, stretch, needling; a local twitch as it goes.', status: 'open', statusText: 'to model' },
   { glyph: '膠', id: 'densification', name: 'Densification', who: 'Stecco', hold: 'Hyaluronan between the fascial layers turned viscous: the layers stop gliding.', release: 'Friction, heat and movement.', status: 'open', statusText: 'to model' },
   { glyph: '神経', id: 'nerve', name: 'Nerves', who: 'Quintner · Cohen', hold: 'A sensitised nerve where it pierces the fascia.', release: 'Nerve gliding, desensitisation, freeing it with fluid.', status: 'open', statusText: 'to model' },
@@ -66,11 +75,11 @@ const THEORIES = [
 
 const VERDICTS: { glyph: string; name: string; status: string; can: string; cannot: string; open: string }[] = [
   { glyph: '結', name: 'Perforators', status: 'modelled',
-    can: `Hold a knot by the vessel's own wall (a switch in ${pct(r.share_bistable)} of plausible settings); let it go by pressure (fastest), by an uneven breath, or by movement; make clusters and a queue through its tree; release broadly or at one spot.`,
+    can: `Hold a knot by the vessel's own wall (a switch in ${pct(r.share_bistable)} of plausible settings); let it go by pressure (fastest), by an uneven breath, or by movement; make clusters and a queue through its tree; release broadly or at one spot; held an hour or two, set, so that it holds at rest and lets go with a flush.`,
     cannot: `Hold by its hyaluronan collar (a liquid, ${Math.round(col.pressure_over_drag)} times too weak); let go within a breath by warming.`,
-    open: `Whether knots sit on perforators. In healthy vessels the hold needs tone about ${(s.Aopen / s.urest).toFixed(1)} times rest; thicker walls (hypertension, perhaps age) and a lumen that closes tighter bring it nearer rest; a vessel only narrowed has no hold. How fast skin arterioles relax decides one breath or many.` },
+    open: `Whether knots sit on perforators. In healthy vessels the hold needs tone about ${(s.Aopen / s.urest).toFixed(1)} times rest; thicker walls (hypertension, perhaps age) and a lumen that closes tighter bring it nearer rest; a vessel only narrowed has no hold. Whether skin perforators adapt as arterioles do in the lab. How fast skin arterioles relax decides one breath or many.` },
   { glyph: '閂', name: 'Vascular latch', status: 'in part',
-    can: 'Its core, a small artery held shut, is the same switch. The latch lets a held vessel stay held cheaply, and may harden an old knot against movement, as it does airway muscle against a deep breath.',
+    can: 'Its core, a small artery held shut, is the same switch, and held long enough, its muscle adapts to being shut: memory, from the muscle’s own remodelling rather than latch bridges. The latch lets a held vessel stay held cheaply, and may harden an old knot against movement, as it does airway muscle against a deep breath.',
     cannot: 'Remember by the latch alone: relaxation follows the fall of calcium, not latch-bridge detachment.',
     open: 'The Hai–Murphy model itself (the rate constants); knots placed where no perforator lies, the brain and organs included, are its territory.' },
   { glyph: '点', name: 'Trigger points', status: 'not yet run',
@@ -102,7 +111,7 @@ const WHERE: { glyph: string; name: string; where: string; count: string; scalp:
 
 const SIGNALS = ['blood flow in the skin over the spot', 'flow or tension in the muscle beneath', 'stiffness and glide', 'muscle activity (EMG)', 'skin temperature', 'where it tingles'];
 const SIGS: { name: string; glyph: string; modelled?: boolean; cells: [string, string][] }[] = [
-  { name: 'Perforators', glyph: '結', modelled: true, cells: [['up', 'returns within seconds, from near nothing'], ['none', 'little'], ['none', 'little'], ['none', 'no change'], ['up', `rises, over ≥\u00a0${Math.round(cool.tau_s_at_max_flow)}\u00a0s`], ['here', 'the vessel’s own patch']] },
+  { name: 'Perforators', glyph: '結', modelled: true, cells: [['up', 'returns within seconds, from near nothing; above rest if the knot was old'], ['none', 'little'], ['none', 'little'], ['none', 'no change'], ['up', `an old knot’s flush warms it, over ≥\u00a0${Math.round(cool.tau_s_at_max_flow)}\u00a0s`], ['here', 'the vessel’s own patch']] },
   { name: 'Vascular latch', glyph: '閂', cells: [['up', 'rises, if skin vessels latch'], ['up', 'vascular tension falls'], ['none', 'little'], ['none', 'no change'], ['up', 'rises with flow'], ['silent', 'not stated']] },
   { name: 'Trigger points', glyph: '点', cells: [['none', 'little'], ['up', 'the taut band lets go; flow returns'], ['down', 'the nodule softens'], ['down', 'spontaneous activity falls; a twitch'], ['none', 'little at the skin'], ['here', 'a referred pattern']] },
   { name: 'Densification', glyph: '膠', cells: [['none', 'not required'], ['none', 'not required'], ['down', 'glide between layers returns'], ['none', 'no change'], ['silent', 'warmth may come first'], ['silent', 'not stated']] },
@@ -118,6 +127,7 @@ const index = [
   { id: 'theories', label: 'the theories' },
   { id: 'where', label: 'where, and how many' },
   { id: 'physics', label: 'what physics allows' },
+  { id: 'time', label: 'time: how a knot sets' },
   { id: 'breath', label: 'breath' },
   { id: 'trees', label: 'trees' },
   { id: 'signatures', label: 'what each predicts' },
@@ -151,8 +161,8 @@ const index = [
         every parameter traced to a quoted line of a paper, and run through the same trials. The first is complete. A
         small artery with tone in its wall holds itself shut over a band of tone and lets go when tone falls below the
         band: a switch in {pct(r.share_bistable)} of {r.samples.toLocaleString('en-GB')} plausible parameter sets, though with the walls of healthy human
-        small arteries only while tone stays well above rest.
-        Hyaluronan cannot hold a vessel, and warming cannot release one within a breath. The breath can release a knot
+        small arteries only while tone stays well above rest, until, held an hour or two, its muscle adapts to being shut and
+        the knot sets, holding at rest. Hyaluronan cannot hold a vessel, and warming cannot release one within a breath. The breath can release a knot
         through two routes, drive and movement, both fitted to measurements. A vessel holding a knot upstream shuts the
         vessels below it, and releasing it frees most of them at once. <a href="#findings">What this says about each theory.</a>
       </p>
@@ -164,9 +174,9 @@ const index = [
         sealed before any data.
       </p>
       <p>
-        <strong>What we need.</strong> A few measurements that decide the most (small-artery myography; how fast skin
-        arterioles relax), proponents to check how their theory has been formalised, and a laboratory to make the
-        recording. <a href="#asks">Details below.</a>
+        <strong>What we need.</strong> A few measurements that decide the most (small-artery myography, including a
+        four-hour closure test; how fast skin arterioles relax; how much a fascial piercing concentrates movement), proponents
+        to check how their theory has been formalised, and a laboratory to make the recording. <a href="#asks">Details below.</a>
       </p>
     </div>
   </section>
@@ -185,6 +195,10 @@ const index = [
         (media 8% of the lumen) it sits at {(hyper.Aopen / hyper.urest).toFixed(1)} times rest. How much force the muscle keeps when a vessel is nearly shut
         decides it most; then how tightly the lumen closes, a guess: closed to {f2(tight.xc)} of its relaxed radius it holds at{' '}
         {(tight.Aopen / tight.urest).toFixed(1)} times rest, and a vessel that cannot close past its fold, {f2(s.xfold)} of it, has no hold at all. Narrowed is not held.</li>
+      <li><strong>Held long enough, a knot can set.</strong> Smooth muscle held at a new length adapts to it. With adaptation at its measured pace, a knot held
+        shut at {holdMult}× resting tone comes to hold at rest after {setHealthy.toFixed(1)} h, outlasting the stress that made it; released, it opens wide,
+        {oldKnot.peak_flow.toFixed(1)}× resting flow, where a new knot's release brings flow back only to rest. The four-hour closure test would tell, in a
+        myograph.</li>
       <li><strong>Liquids cannot hold, and heat is too slow.</strong> Hyaluronan resists motion, not position ({Math.round(col.pressure_over_drag)} times too weak to
         hold a vessel); warming takes at least {Math.round(cool.tau_s_at_max_flow)} s. Whatever releases a knot within a breath is faster than heat.</li>
       <li><strong>The breath must be uneven, or move the tissue.</strong> Tone rises fast and eases slowly, so an even breath holds every knot. A breath that lowers
@@ -292,13 +306,22 @@ const index = [
     <div class="aside">
       <p class="aside-h">Perforators and the vascular latch</p>
       <p>
-        The two share a core: both put the hold in the smooth muscle of a small artery. The first model pushes them closer, since the
-        vessel's own mechanics hold it and the latch does not remember (relaxation follows calcium; <Fragment set:html={cite('rembold1991')} />).
-        They differ in where and why. The perforator view is anatomical: it names the places where a vessel and its nerve pierce the
-        fascia, and predicts a countable ladder of them, the spark from the nerve beside the vessel, clusters under a parent vessel, and a
-        tie to the fascial layers. Johnson's is general: held tension anywhere smooth muscle wraps a tube, the brain's vessels
-        included, as a memory of the mind. A recording can tell them apart by depth (the skin over a perforator, or arterioles in muscle)
-        and by pattern (points on a perforator map, or diffuse).
+        The two share a core: both put the hold in the smooth muscle of a small artery. The models push them closer: the vessel's own
+        mechanics hold it, and what remembers is the muscle adapting to being shut (<a href="#time">time</a>), not latch bridges, since
+        relaxation follows calcium (<Fragment set:html={cite('rembold1991')} />). If the switch is shared, what the perforation adds is
+        mechanical, and it may be why these knots are the ones hands and rollers find. Where a vessel pierces the fascia it is pinned
+        while the layers slide past it, so movement, stretch and a roller's shear would concentrate on its wall, and a change of shape is
+        what loosens the wall (<Fragment set:html={cite('clifford2006')} />). A firm plane lies behind it, so fingers or a roller can press
+        it, feel it as a point, and let pressure, then release, reach it. Its nerve pierces beside it, for the tenderness and the spark.
+        And it heads a tree, so a knot there makes a cluster. A set knot needs pressure or movement to let go, which a piercing is placed to
+        receive. The same hold in a vessel deep in muscle, or in the brain, would be out of reach of hands and not felt as a point.
+      </p>
+      <p>
+        So the perforator view is anatomical: a countable ladder of piercings. Johnson's is general: held tension anywhere smooth muscle
+        wraps a tube, the brain's vessels included, as a memory of the mind. A recording can tell them apart by depth (the skin over a
+        perforator, or arterioles in muscle) and by pattern (points on a perforator map, or diffuse). And ultrasound, tracking the strain on
+        a vessel's wall where it pierces the fascia against one within a layer as a roller passes or a breath moves the tissue, would
+        measure the one number the movement route still guesses.
       </p>
     </div>
   </section>
@@ -372,6 +395,53 @@ const index = [
         <p>After 40 s of pressure the vessel reopens {pressed.toFixed(1)} s after the pressure lifts, and flow returns from near nothing to {afterPress.toFixed(2)} of resting flow while drive stays raised ({afterEase.toFixed(2)} when stress eases instead): the pressure ran up a debt, and returning blood repays it through the nerves.</p>
       </article>
     </div>
+  </section>
+
+  <section id="time" class="sec full" data-glyph="時">
+    <h2>Time: how a knot sets</h2>
+    <p class="sub">
+      The switch alone holds a knot only while tone stays {healthyRatio.toFixed(1)} times rest. But smooth muscle held at a new length adapts to it: it regains
+      the force it lost there, as its optimal length moves toward the length it is held at{' '}
+      <Fragment set:html={`(${cite('syyong2008')}; ${cite('pratusevich1995')}; ${cite('bednarek2011')})`} />. Arterioles held constricted for four hours no longer
+      relax fully when the drive is removed <Fragment set:html={`(${cite('martinezlemus2004')}; ${cite('hill2003')})`} />; held for days, they remodel inward, and
+      only if their muscle is active <Fragment set:html={`(${cite('bakker2002')})`} />. In this variant the muscle's optimum follows the length it is held at,{' '}
+      {pct(ad.share)} of the way (fitted to the 73% of lost force that pulmonary arterial muscle regained), over about {ad.tau_h.toFixed(0)} h at full activation
+      (bracketed by the arterioles: five minutes leaves no trace, four hours does). It belongs to any vessel held by its own muscle: the perforator's, and the
+      latch's.
+    </p>
+    <figure class="paper-fig scroll-x" set:html={knotSets(ad)} />
+    <div class="two">
+      <div>
+        <p class="find"><strong>A knot can set.</strong> Held shut at {holdMult}× resting tone, a knot holds at rest after {setHealthy.toFixed(1)} h: it outlasts
+          the stress that made it. Held an hour, it lets go when stress ends; held three, it stays. With the walls of hypertension it can be held from{' '}
+          {hyFirst.mult}× rest, and sets there in {(hyFirst.hours ?? NaN).toFixed(1)} h.</p>
+        <p class="find"><strong>A set knot is harder to release.</strong> Fully adapted, it stays shut down to {f2(ad.healthy.adapted_aopen_over_rest)} of
+          resting tone: calm alone no longer frees it. It needs drive below rest, pressure, or movement. How long a knot has been held is one reason some go in a
+          breath and others take many.</p>
+        <p class="find"><strong>Old knots let go with a wave; young ones without.</strong> A set knot's muscle is weak at open lengths until it re-adapts, so
+          released, the vessel opens to {oldKnot.peak_flow.toFixed(1)}× resting flow. A new knot's release brings flow back only to rest, and one released
+          before it set reopens narrowed, as the lab's arterioles did after four hours. How long a flush lasts turns on what the model leaves out (below); if
+          it lasts more than a minute, the skin warms (it takes {Math.round(cool.tau_s_at_max_flow)} s at least).</p>
+        <p class="find"><strong>Days make it structural.</strong> Three days of tone narrow the relaxed lumen by {Math.round(100 * ad.remodel.shrink)}% around
+          the same wall <Fragment set:html={`(${cite('bakker2002')})`} />: that alone brings the hold from {ad.remodel.before.toFixed(1)}× to{' '}
+          {ad.remodel.aopen_over_rest.toFixed(1)}× resting tone.</p>
+      </div>
+      <div class="tiles">
+        <p class="tile"><span class="big">{setHealthy.toFixed(1)} h</span><span class="fl">held shut at {holdMult}× resting tone before a knot holds at rest</span></p>
+        <p class="tile"><span class="big">{pct(adRob.share_sets)}</span><span class="fl">of plausible switches can set; {pct(adRob.share_sets_within)} within {adRob.within_h} h
+          held midway up the band (median {(adRob.set_h[1] ?? NaN).toFixed(1)} h)</span></p>
+        <p class="tile"><span class="big">{oldKnot.peak_flow.toFixed(1)}×</span><span class="fl">resting flow when an old knot lets go; a new one's, 1×</span></p>
+        <p class="tile-note">{adRob.samples} settings: the adaptation's time and share, and the switch's own ranges, each sampled.</p>
+      </div>
+    </div>
+    <p class="caption">
+      What it does not show. With drive held steady, the model's open vessels creep shut under sustained tone ({(creep15.hours ?? NaN).toFixed(0)} h at{' '}
+      {creep15.mult}× rest), but arterioles held at {Math.round(100 * ad.lab.diameter)}% of their diameter for four hours kept it, where the model's would have
+      shut within {(ad.lab.shuts_h ?? NaN).toFixed(1)} h. In an open vessel adaptation seems to make holding cheaper, not narrower, and flow and metabolism push
+      back <Fragment set:html={`(${cite('vanbavel2014')})`} />; so stress making knots without a surge is not shown. A shut vessel has no flow, and the results
+      above do not lean on what is missing. That old knots persist (O10) and that an old cluster can let go with warmth (O14) were known when this variant was
+      added, so the match is found after the fact; the blind test is the four-hour closure test, <a href="#asks">below</a>.
+    </p>
   </section>
 
   <section id="breath" class="sec full" data-glyph="息">
@@ -502,8 +572,8 @@ const index = [
       <div>
         <p class="find"><strong>What the perforator model predicts it would see.</strong> Skin flow over the spot returning within seconds of the felt
           release, from near nothing to about {afterPress.toFixed(2)} of resting flow after a press (to {afterEase.toFixed(2)} if stress eases), and nothing at
-          the sham site; skin temperature following over a minute or more; release after pressure sooner than after calm alone; and, before a slow release,
-          flow flickering more slowly (a switch slowing near its edge).</p>
+          the sham site; skin temperature following over a minute or more; release after pressure sooner than after calm alone; before a slow release,
+          flow flickering more slowly (a switch slowing near its edge); and a flush that grows with how long the knot has been held.</p>
         <p class="find"><strong>A cheap first look.</strong> A thermal camera and a photoplethysmography sensor over a knot and a sham site, a breath belt and an
           event button: enough to ask the first question. Under the site's <a href={`${base}/#moderation`}>moderation guidance</a>.</p>
       </div>
@@ -518,6 +588,19 @@ const index = [
         <p>How much active force a small artery's muscle keeps at the very short lengths of a nearly shut vessel, and how thick its wall is, measured in
           human skin perforators or subcutaneous small arteries, young and old, with and without hypertension. The model now takes them from rat arteries
           and healthy human walls, and they decide whether a knot can hold at ordinary tone.</p>
+      </li>
+      <li>
+        <p class="ask-h">The four-hour closure test</p>
+        <p>In a pressure myograph, shut a small artery with an agonist for five minutes, or for four hours, then lower the agonist to a resting level. If
+          knots are vessels that set, the first reopens and the second stays shut, and when it is finally released it opens past its resting diameter.
+          Arterioles held constricted for four hours already relax incompletely and slowly; the test asks whether a vessel held fully shut stays shut at rest.
+          It is a day's work for a lab with a myograph, and it tests whether a knot can remember.</p>
+      </li>
+      <li>
+        <p class="ask-h">How much a piercing concentrates movement</p>
+        <p>Ultrasound speckle tracking of a perforator's wall where it pierces the fascia, against a vessel within one layer, as a roller passes or a
+          breath moves the tissue. It is the number the movement route guesses, and it would say whether the perforation is what makes these knots
+          the ones pressure and movement release.</p>
       </li>
       <li>
         <p class="ask-h">How fast skin arterioles relax when sympathetic drive falls</p>
@@ -567,6 +650,7 @@ const index = [
       <a href={`${repo}/sim/knots_sim/models/vessel.py`}>the vessel model</a>
       <a href={`${repo}/sim/knots_sim/models/tree.py`}>the tree</a>
       <a href={`${repo}/sim/knots_sim/breath.py`}>the breath trials</a>
+      <a href={`${repo}/sim/knots_sim/adapt.py`}>how a knot sets</a>
       <a href={`${repo}/sim/observations/spec.yaml`}>the observations</a>
       <a href={`${repo}/sim/findings/`}>findings notes</a>
     </p>
@@ -849,6 +933,9 @@ const index = [
   }
   .aside p {
     margin: 0;
+  }
+  .aside p + p {
+    margin-top: 8px;
   }
   .aside-h {
     font-family: var(--font-sans);

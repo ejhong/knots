@@ -23,6 +23,9 @@ Movement loosens the wall: a squeezed artery widens seconds after release, and m
 after one long one (clifford2006); rhythmic stretch cuts vascular smooth muscle's force at once (ljung1975). The
 wall answers changes of shape, not held shapes.
 
+The muscle's optimal length is `lo` times the one it has in a vessel at its normal size (1 unless a variant sets it):
+held at a new length for an hour or more, smooth muscle shifts its optimum toward it (`knots_sim.adapt`).
+
 The equations are written once here; `numeric()` gives fast functions for Python, and `knots_sim.codegen` writes the
 same expressions out as TypeScript for the site.
 """
@@ -45,7 +48,8 @@ INPUTS = ("uS", "Pext", "mv")
 # Parameters the equations use: the YAML keys, plus xrest (resting radius, from calibration).
 PARAMS = ("r100", "Tmax", "xopt", "P", "beta", "width", "wall", "xc", "tau_x", "tau_up", "tau_down",
           "tau_debt", "tau_nerve", "collateral", "myogenic", "tau_myogenic", "tau_mv", "k_mv", "tau_w", "tau_z",
-          "xrest")
+          "lo", "xrest")
+DEFAULTS = {"lo": 1.0}  # parameters that are not in the table: the muscle adapted to the vessel's normal size
 
 
 @lru_cache
@@ -54,12 +58,12 @@ def laws() -> dict[str, sp.Expr]:
     x, A, m, n, my, ml, lw, z = sp.symbols(STATES, real=True)
     uS, Pext, mv = sp.symbols(INPUTS, real=True)
     (r100, Tmax, xopt, P, beta, w, aw, xc, tau_x, tau_up, tau_down, tau_debt, tau_n, c, kmy, tau_my, tau_mv,
-     k_mv, tau_w, tau_z, xrest) = sp.symbols(PARAMS, real=True)
+     k_mv, tau_w, tau_z, lo, xrest) = sp.symbols(PARAMS, real=True)
 
     T100 = 100 * MMHG * r100  # passive tension of a relaxed vessel at 100 mmHg, by definition of r100
     Tp = T100 * (sp.exp(beta * (x - 1)) - sp.exp(-beta)) / (1 - sp.exp(-beta))
     ell = sp.sqrt(x**2 + aw / 2) / sp.sqrt(xopt**2 + aw / 2)  # mid-wall muscle length / optimal length
-    g = sp.exp(-(((ell - 1) / w) ** 2))  # active length-tension
+    g = sp.exp(-(((ell / lo - 1) / w) ** 2))  # active length-tension, about the muscle's (adapted) optimum
     Ptm = (P - Pext) * MMHG
     F = Ptm * r100 * x - Tp - A * (1 - n) * (1 - z) * Tmax * g  # net outward force per unit length (N/m)
     Aeq = (Ptm * r100 * x - Tp) / (Tmax * g)  # effective tone A·(1 − n)·(1 − z) that balances radius x
@@ -99,7 +103,7 @@ def numeric():
 def params(fitted: bool = True, **overrides: float) -> dict[str, float]:
     """Parameter values from params/vessel.yaml with overrides; the resting radius from calibration; and, unless
     fitted=False, the three timing constants fitted to their measured targets (see `fit`)."""
-    p = values("vessel") | overrides
+    p = values("vessel") | DEFAULTS | overrides
     p["xrest"] = calibrate(p).xrest
     if fitted:
         p |= fit(tuple(sorted(p.items())))
@@ -108,7 +112,7 @@ def params(fitted: bool = True, **overrides: float) -> dict[str, float]:
 
 
 def vector(p: dict[str, float]) -> tuple[float, ...]:
-    return tuple(p[k] for k in PARAMS)
+    return tuple(p.get(k, DEFAULTS.get(k)) if k in DEFAULTS else p[k] for k in PARAMS)
 
 
 @dataclass(frozen=True)
@@ -130,6 +134,13 @@ class Switch:
     @property
     def bistable(self) -> bool:
         return 0 < self.Aopen < self.Afold < 1
+
+
+def wall_area(media_to_lumen: float, x: float = 0.9) -> float:
+    """The media's cross-sectional area (units of r100²) from its thickness as a share of the lumen's diameter,
+    measured at radius x (schiffrin1995 measured at 0.9 of the relaxed circumference at 100 mmHg)."""
+    h = 2 * x * media_to_lumen
+    return (x + h) ** 2 - x**2
 
 
 def aeq_curve(p: dict[str, float], n: int = 600, Pext: float = 0.0) -> tuple[np.ndarray, np.ndarray]:

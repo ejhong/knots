@@ -357,3 +357,162 @@ export function fieldPanels(f: FieldStudy, after: number[] = [0, 5, 15, 30]): st
   out.push(`<circle cx="${left + 215}" cy="${ly - 3}" r="6" fill="#c9a45f" fill-opacity="0.13" stroke="#c9a45f" stroke-opacity="0.5" stroke-dasharray="2 3"/><text x="${left + 226}" y="${ly}" fill="${PAPER.muted}" font-size="9" ${MONO}>where the breath moves the tissue</text>`);
   return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="A patch of knots under one breath: broad release takes easy knots everywhere; focused release takes the knots at one spot; both together take all the knots at the spot and the easy ones everywhere">${out.join('')}</svg>`;
 }
+
+// ---------- Time: how a knot sets (length adaptation) ----------
+
+export interface AdaptStudy {
+  share: number;
+  tau_h: number;
+  healthy: AdaptWall;
+  hypertensive: AdaptWall;
+  stories: { hold_mult: number; hour: AdaptStory; three: AdaptStory };
+  flushes: { held_h: number; lo: number; holds_at_rest: boolean; peak_flow: number; flush_h: number; reshut_h: number | null }[];
+  lab: { diameter: number; tone_over_rest: number; shuts_h: number | null };
+  remodel: { shrink: number; aopen_over_rest: number; adapted_aopen_over_rest: number; before: number };
+  robustness: { samples: number; share_bistable: number; share_sets: number; share_sets_within: number; within_h: number; set_h: (number | null)[] };
+}
+interface AdaptWall {
+  urest: number;
+  aopen_over_rest: number;
+  afold_over_rest: number;
+  adapted_aopen_over_rest: number;
+  set_h: { mult: number; hours: number | null }[];
+  creep_h: { mult: number; hours: number | null }[];
+}
+interface AdaptStory {
+  held_h: number;
+  stays: boolean;
+  /** [hours, tone ÷ rest, reopening tone ÷ rest, flow ÷ rest] */
+  series: number[][];
+}
+
+const hLabel = (h: number) => (h === 0.5 ? '½ h' : `${h} h`);
+
+/** Four panels: a knot held for an hour or for three (does it outlast its stress?), the flush at release by how long
+ *  the knot was held, and how long a hold takes to set a knot, for healthy and hypertensive walls. */
+export function knotSets(a: AdaptStudy): string {
+  const W = 720;
+  const H = 500;
+  const out: string[] = [];
+  const axisText = (x: number, y: number, s: string, anchor = 'middle') =>
+    `<text x="${f1(x)}" y="${f1(y)}" text-anchor="${anchor}" fill="${PAPER.faint}" font-size="8.5" ${MONO}>${s}</text>`;
+  const frame = (L: number, R: number, T: number, B: number) =>
+    `<line x1="${L}" x2="${R}" y1="${B}" y2="${B}" stroke="${PAPER.line}" stroke-width="1"/><line x1="${L}" x2="${L}" y1="${T}" y2="${B}" stroke="${PAPER.line}" stroke-width="1"/>`;
+
+  // Top: the two stories, as small multiples on the same scales.
+  const stories = [a.stories.hour, a.stories.three];
+  stories.forEach((st, k) => {
+    const L = 44 + k * 360;
+    const R = L + 296;
+    const T = 40;
+    const B = 168;
+    const X = (h: number) => L + (h / 6) * (R - L);
+    const Y = (m: number) => B - (Math.min(m, 5) / 5) * (B - T);
+    const [t, tone, thr, q] = st.series;
+    out.push(frame(L, R, T, B));
+    for (const m of [1, 2, 3, 4, 5]) {
+      out.push(axisText(L - 6, Y(m) + 3, `${m}×`, 'end'));
+      out.push(`<line x1="${L}" x2="${R}" y1="${f1(Y(m))}" y2="${f1(Y(m))}" stroke="${PAPER.line}" stroke-width="0.6" stroke-dasharray="2 4"/>`);
+    }
+    for (const h of [0, 1, 2, 3, 4, 5, 6]) out.push(axisText(X(h), B + 13, `${h}`));
+    out.push(axisText(R, B + 27, 'hours →', 'end'));
+    out.push(`<text x="${L}" y="${T - 22}" fill="${PAPER.text}" font-size="10" ${MONO}>held ${st.held_h} h at ${a.stories.hold_mult}× resting tone, then rest</text>`);
+    out.push(`<text x="${L}" y="${T - 9}" fill="${PAPER.muted}" font-size="8.5" ${MONO}>${st.stays ? 'it outlasts its stress: still shut at rest' : 'it lets go when stress ends'}</text>`);
+    // Tone: the command, as a step.
+    out.push(`<path d="${t.map((h, i) => `${i ? 'L' : 'M'}${f1(X(h))} ${f1(Y(tone[i]))}`).join(' ')}" fill="none" stroke="${PAPER.ink}" stroke-width="1.6" stroke-linejoin="round"/>`);
+    const toneLabelAt = t.findIndex((h) => h >= 0.25);
+    out.push(`<text x="${f1(X(t[toneLabelAt]))}" y="${f1(Y(tone[toneLabelAt]) - 6)}" fill="${PAPER.ink}" font-size="8.5" ${MONO}>tone</text>`);
+    // The tone below which the shut vessel would reopen, while it is shut.
+    const shut = q.map((v) => v === 0);
+    const thrPts = t.map((h, i) => [h, thr[i]] as const).filter((_, i) => shut[i]);
+    out.push(`<path d="${thrPts.map(([h, m], i) => `${i ? 'L' : 'M'}${f1(X(h))} ${f1(Y(m))}`).join(' ')}" fill="none" stroke="${PAPER.knot}" stroke-width="1.6" stroke-dasharray="5 3"/>`);
+    const li = t.findIndex((h) => h >= 0.35);
+    out.push(`<text x="${f1(X(t[li]) + 6)}" y="${f1(Y(thr[li]) - 13)}" fill="${PAPER.knot}" font-size="8.5" ${MONO}>reopens below this</text>`);
+    // Where the threshold falls through rest: from here the knot holds at resting tone.
+    const cross = thrPts.findIndex(([, m]) => m < 1);
+    if (cross > 0) {
+      const [hc] = thrPts[cross];
+      out.push(`<g><title>${esc(`after ${hc.toFixed(1)} h held, the knot would stay shut even at resting tone`)}</title><circle cx="${f1(X(hc))}" cy="${f1(Y(1))}" r="3.2" fill="${PAPER.knot}"/></g>`);
+      out.push(`<text x="${f1(X(hc) + 6)}" y="${B - 5}" fill="${PAPER.text}" font-size="8.5" ${MONO}>set: holds at rest</text>`);
+    }
+    // State: a strip under the plot, terracotta while shut, jade once open.
+    const stripY = B + 32;
+    for (let i = 0; i < t.length - 1; i++) {
+      out.push(`<rect x="${f1(X(t[i]))}" y="${stripY}" width="${f1(X(t[i + 1]) - X(t[i]) + 0.4)}" height="7" fill="${shut[i] ? PAPER.knot : PAPER.release}" opacity="${shut[i] ? 0.9 : 0.75}"/>`);
+    }
+    const opened = shut.findIndex((s) => !s);
+    const st_ = opened >= 0 ? `shut, then open: flow ${q[Math.min(opened + 2, q.length - 1)].toFixed(2)}× rest, the vessel narrowed` : 'shut throughout';
+    out.push(`<text x="${L}" y="${stripY + 19}" fill="${PAPER.muted}" font-size="8.5" ${MONO}>${esc(st_)}</text>`);
+  });
+
+  // Bottom left: the flow a knot opens to when let go, by how long it had been held.
+  {
+    const L = 44;
+    const R = L + 296;
+    const T = 300;
+    const B = 440;
+    const Y = (qv: number) => B - (Math.min(qv, 3.5) / 3.5) * (B - T);
+    const n = a.flushes.length;
+    const slot = (R - L) / n;
+    out.push(frame(L, R, T, B));
+    for (const m of [0, 1, 2, 3]) out.push(axisText(L - 6, Y(m) + 3, `${m}×`, 'end'));
+    out.push(`<text x="${L}" y="${T - 22}" fill="${PAPER.text}" font-size="10" ${MONO}>let go: the blood flow it opens to</text>`);
+    out.push(`<text x="${L}" y="${T - 9}" fill="${PAPER.muted}" font-size="8.5" ${MONO}>by how long the knot had been held (× resting flow)</text>`);
+    a.flushes.forEach((fl, i) => {
+      const cx = L + slot * (i + 0.5);
+      const w = Math.min(26, slot * 0.55);
+      const color = fl.holds_at_rest ? PAPER.release : fl.held_h === 0 ? PAPER.ink : PAPER.faint;
+      const what = fl.held_h === 0
+        ? 'a new knot: flow returns to rest'
+        : fl.holds_at_rest
+          ? `held ${hLabel(fl.held_h)}, set: it opens wide, to ${fl.peak_flow.toFixed(1)}× resting flow`
+          : `held ${hLabel(fl.held_h)}, not yet set: it reopens narrowed, to ${fl.peak_flow.toFixed(2)}× resting flow`;
+      out.push(`<g><title>${esc(what)}</title><rect x="${f1(cx - w / 2)}" y="${f1(Y(fl.peak_flow))}" width="${f1(w)}" height="${f1(B - Y(fl.peak_flow))}" fill="${color}" opacity="${fl.holds_at_rest ? 0.9 : 0.8}"/></g>`);
+      out.push(`<text x="${f1(cx)}" y="${f1(Y(fl.peak_flow) - 5)}" text-anchor="middle" fill="${PAPER.text}" font-size="8.5" ${MONO}>${fl.peak_flow.toFixed(1)}</text>`);
+      out.push(axisText(cx, B + 13, fl.held_h === 0 ? 'new' : hLabel(fl.held_h)));
+    });
+    out.push(`<line x1="${L}" x2="${R}" y1="${f1(Y(1))}" y2="${f1(Y(1))}" stroke="${PAPER.faint}" stroke-width="0.8" stroke-dasharray="1 3"/>`);
+    out.push(`<text x="${R + 4}" y="${f1(Y(1) + 3)}" fill="${PAPER.faint}" font-size="8" ${MONO}>rest</text>`);
+    out.push(axisText(R, B + 27, 'held for →', 'end'));
+    const firstSet = a.flushes.findIndex((fl) => fl.holds_at_rest);
+    if (firstSet > 0) {
+      const xs = L + slot * firstSet;
+      out.push(`<line x1="${f1(xs)}" x2="${f1(xs)}" y1="${T + 4}" y2="${B}" stroke="${PAPER.faint}" stroke-width="0.8" stroke-dasharray="2 3"/>`);
+      out.push(`<text x="${f1(xs + 5)}" y="${T + 10}" fill="${PAPER.muted}" font-size="8" ${MONO}>set →</text>`);
+      out.push(`<text x="${f1(xs - 5)}" y="${T + 10}" text-anchor="end" fill="${PAPER.muted}" font-size="8" ${MONO}>← not yet set</text>`);
+    }
+  }
+
+  // Bottom right: how long a hold takes to set a knot, by how strong the hold is.
+  {
+    const L = 404;
+    const R = L + 296;
+    const T = 300;
+    const B = 440;
+    const X = (m: number) => L + ((m - 1.5) / 3.5) * (R - L);
+    const Y = (h: number) => B - (Math.min(h, 3) / 3) * (B - T);
+    out.push(frame(L, R, T, B));
+    for (const h of [0, 1, 2, 3]) out.push(axisText(L - 6, Y(h) + 3, `${h} h`, 'end'));
+    for (const m of [2, 3, 4, 5]) out.push(axisText(X(m), B + 13, `${m}×`));
+    out.push(axisText(R, B + 27, 'tone that holds the knot, × rest →', 'end'));
+    out.push(`<text x="${L}" y="${T - 22}" fill="${PAPER.text}" font-size="10" ${MONO}>how long until it sets</text>`);
+    out.push(`<text x="${L}" y="${T - 9}" fill="${PAPER.muted}" font-size="8.5" ${MONO}>held at a steady tone; lower, it lets go at once</text>`);
+    const walls = [
+      { w: a.healthy, name: 'healthy walls', dash: '' },
+      { w: a.hypertensive, name: 'hypertensive walls', dash: '5 3' },
+    ];
+    for (const { w, name, dash } of walls) {
+      const pts = w.set_h.filter((r) => r.hours !== null).map((r) => [r.mult, r.hours as number] as const);
+      // Below this tone the knot lets go at once: it cannot be held long enough to set.
+      out.push(`<line x1="${f1(X(w.aopen_over_rest))}" x2="${f1(X(w.aopen_over_rest))}" y1="${T}" y2="${B}" stroke="${PAPER.knot}" stroke-width="0.8" stroke-dasharray="${dash || '1 0'}" opacity="0.45"/>`);
+      out.push(`<path d="${pts.map(([m, h], i) => `${i ? 'L' : 'M'}${f1(X(m))} ${f1(Y(h))}`).join(' ')}" fill="none" stroke="${PAPER.knot}" stroke-width="1.8" stroke-dasharray="${dash}" stroke-linejoin="round"/>`);
+      for (const [m, h] of pts) {
+        out.push(`<g><title>${esc(`${name}: held at ${m}× resting tone, it sets after ${h.toFixed(1)} h`)}</title><circle cx="${f1(X(m))}" cy="${f1(Y(h))}" r="7" fill="transparent"/></g>`);
+      }
+      const [m0, h0] = pts[0];
+      out.push(`<text x="${f1(X(m0) + 5)}" y="${f1(Y(h0) - 7)}" fill="${PAPER.text}" font-size="8.5" ${MONO}>${name}</text>`);
+      out.push(`<text x="${f1(X(w.aopen_over_rest) + 4)}" y="${B - 6}" fill="${PAPER.muted}" font-size="8" ${MONO}>${w.aopen_over_rest.toFixed(1)}×</text>`);
+    }
+  }
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="How a knot sets: a knot held for an hour lets go when stress ends, one held for three hours stays shut at rest; released, a set knot flushes; the stronger the hold, the sooner it sets">${out.join('')}</svg>`;
+}
