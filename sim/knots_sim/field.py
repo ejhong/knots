@@ -29,13 +29,13 @@ FORM = (5.0, 35.0)  # a surge of stress, scaled by each vessel's zone
 BREATH_FROM = 60.0
 BREATHS = 30
 PERIOD = 10.0
-SURGE, HOLD = 0.35, 0.12  # extra tone during the surge, and after it (times the zone)
+SURGE, HOLD = 0.8, 0.45  # extra tone during the surge, and after it (times the zone): strong regional stress
 SPOT, RADIUS = (0.64, 0.8), 0.14  # the focused breath's centre and reach (patch units)
 CONDITIONS = {
     "calm": {},
-    "broad": {"settle": 0.09},
+    "broad": {"settle": 0.15},
     "focused": {"move": 0.8},
-    "both": {"settle": 0.09, "move": 0.8},
+    "both": {"settle": 0.15, "move": 0.8},
 }
 
 

@@ -108,9 +108,9 @@ PRESS = (100.0, 140.0)  # the parent pressed, then released
 CALM = 220.0  # drive falls to rest everywhere
 
 
-def parent_inputs(tree: dict, u_m: np.ndarray, calm: float | None = CALM, target: int = 0):
-    """Drive raised to u_m everywhere; a surge shuts the target; the target is pressed (and squeezed), then
-    released; then calm."""
+def parent_inputs(tree: dict, u_m: np.ndarray, calm: float | None = CALM, target: int = 0, surge: float = 0.95):
+    """Drive raised to u_m everywhere; a local surge (near-maximal tone) shuts the target; the target is pressed (and
+    squeezed), then released; then calm."""
     T, V = tree["T"], tree["V"]
     u_m = np.broadcast_to(u_m, (T,))[:, None] * np.ones((1, V))
     urest, P = tree["urest"], tree["pars"]["P"]
@@ -120,7 +120,7 @@ def parent_inputs(tree: dict, u_m: np.ndarray, calm: float | None = CALM, target
         pe = np.zeros((T, V))
         mv = np.zeros((T, V))
         if SURGE[0] <= t < SURGE[1]:
-            u[:, target] = 0.7
+            u[:, target] = surge
         if PRESS[0] <= t < PRESS[1]:
             pe[:, target] = P[:, target] + 10
             mv[:, target] = 1.0
@@ -151,10 +151,15 @@ def story(tree: dict, r: dict) -> dict:
     }
 
 
-def figure(u_m: float = 0.28) -> dict:
-    """The worked example: children with walls from 0.25 to 0.35 (thin walls hold less, thick more)."""
+WORKED_WALLS = [0.30, 0.25, 0.283, 0.317, 0.35]  # media 7.5-10% of the lumen: walls as in hypertension (schiffrin1995)
+WORKED_DRIVE = 0.40
+
+
+def figure(u_m: float = WORKED_DRIVE) -> dict:
+    """The worked example: a parent and four children with walls as in hypertension (thin walls hold less, thick
+    more), drive raised to u_m (about twice resting tone)."""
     tv = values("tree")
-    walls = np.array([[0.30, 0.25, 0.283, 0.317, 0.35]])
+    walls = np.array([WORKED_WALLS])
     tree = build(walls, tv["P_source"], tv["P_bed"], tv["ratio"])
     r = run(tree, parent_inputs(tree, np.array([u_m])), duration=300.0)
     s = shut(tree, r["x"])[:, 0, :]
@@ -180,7 +185,7 @@ def robustness(n: int = 256, seed: int = 11) -> dict:
     ratio = np.exp(rng.uniform(np.log(lo("ratio")), np.log(hi("ratio")), n))
     wall_range = __import__("knots_sim.params", fromlist=["load"]).load("vessel")["wall"].range
     walls = np.column_stack([np.full(n, 0.30), np.sort(rng.uniform(*wall_range, (n, 4)), axis=1)])
-    u_m = rng.uniform(0.2, 0.36, n)
+    u_m = rng.uniform(0.25, 0.65, n)
     tree = build(walls, Ps, Pv, ratio)
     r = run(tree, parent_inputs(tree, u_m), duration=CALM + 1.0, dt=0.02, every=5)
     st = story(tree, r)
@@ -198,17 +203,30 @@ def robustness(n: int = 256, seed: int = 11) -> dict:
     }
 
 
-def siblings(u_m: float = 0.42) -> dict:
+def queue_by_drive(drives: tuple[float, ...] = tuple(np.round(np.arange(0.30, 0.62, 0.04), 2))) -> dict:
+    """The worked tree at each drive: how many children stay held after the parent lets go (the queue)."""
+    tv = values("tree")
+    T = len(drives)
+    tree = build(np.repeat(np.array([WORKED_WALLS]), T, axis=0), tv["P_source"], tv["P_bed"], tv["ratio"])
+    r = run(tree, parent_inputs(tree, np.array(drives)), duration=CALM - 1.0, every=10)
+    st = story(tree, r)
+    return {"drive": list(drives), "urest": float(tree["urest"][0, 0]), "parent_knot": st["parent_knot"].tolist(),
+            "cluster": st["cluster"].tolist(), "remain": st["remain"].tolist()}
+
+
+def siblings(u_m: float = 0.5) -> dict:
     """Eight siblings on a rigid feed (walls 0.25–0.35): a surge of stress everywhere; how many shut?"""
     walls = np.array([[0.30] + [0.25 + 0.1 * i / 7 for i in range(8)]])
     tree = build(walls, 90.0, 20.0, 0.5, rigid_parent=True)
     T, V = tree["T"], tree["V"]
 
     def inputs(t):
-        u = tree["urest"].copy() if t < 10 else np.full((T, V), 0.52 if t < 30 else u_m)
+        u = tree["urest"].copy() if t < 10 else np.full((T, V), 0.8 if t < 30 else u_m)
         return u, np.zeros((T, V)), np.zeros((T, V))
 
     r = run(tree, inputs, duration=100.0)
     s = shut(tree, r["x"])[:, 0, 1:]
-    return {"siblings": 8, "shut_by_surge": int(s[-1].sum()), "Pn_rest": float(r["Pn"][0, 0]),
+    # Alone, at the pressure they share at rest, every sibling whose fold lies below the surge would shut.
+    alone = int((tree["Afold"][0, 1:] < 0.8).sum())
+    return {"siblings": 8, "shut_by_surge": int(s[-1].sum()), "shut_alone": alone, "Pn_rest": float(r["Pn"][0, 0]),
             "Pn_after": float(r["Pn"][-1, 0])}

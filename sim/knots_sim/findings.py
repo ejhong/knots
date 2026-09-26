@@ -33,7 +33,14 @@ def write_findings(d: dict) -> Path:
     eased = opened("stress_eases")
     pressed = opened("press_and_release")
     relax = opened("relaxing_breath_at_threshold")
+    pr, se = sc["press_and_release"], sc["stress_eases"]
+    brighter = pr["peak_spark"] > se["peak_spark"]
+    flow_after = lambda x: f"{x['flow_after_open']:.2f}× resting flow" if x["flow_after_open"] is not None else "no flow"
     col, cool = c["collar"], c["cooling"]
+    walls = {row["media_to_lumen"]: row for row in d["wall_sensitivity"]}
+    held = lambda row: f"{row['Aopen'] / row['urest']:.1f}×"
+    closure = d["closure_sensitivity"]
+    tight, loose = closure[0], max((row for row in closure if row["bistable"]), key=lambda row: row["xc"])
     run = d["run"]
     text = f"""# Can a perforator hold a knot? First findings
 
@@ -48,7 +55,8 @@ each made with published measurements:
 
 1. **The vessel can hold itself.** A small artery with smooth muscle in its wall has two stable states, open and
    shut, over a band of tone (Burton 1951). With measured wall strength, pressure and reflex timings, the band runs
-   from {s['Aopen']:.2f} to {s['Afold']:.2f} of maximal tone, just above resting tone ({s['urest']:.2f}). An open
+   from {s['Aopen']:.2f} to {s['Afold']:.2f} of maximal tone, {s['Aopen'] / s['urest']:.1f} times resting tone ({s['urest']:.2f}) at its
+   lower edge: in healthy vessels a knot would need tone well above rest to stay held. An open
    vessel snaps shut when tone passes {s['Afold']:.2f}; once shut, it stays shut until tone falls below
    {s['Aopen']:.2f}. That is *held until released*. Across {r['samples']:,} plausible parameter sets, a small artery
    is such a switch in {pct(r['share_bistable'])} of them.
@@ -90,8 +98,8 @@ test: after a gasp the model's flow is lowest at {v['gasp']['at_s']:.1f} s, agai
 | A deep gasp at rest | flow dips and recovers; the vessel never shuts |
 | A deep gasp with tone two-thirds up the band | tone passes the fold for a few seconds, but near a fold everything slows, and the vessel stays open |
 | A surge of stress past the fold | the vessel shuts, and stays shut when stress falls back but stays raised: a knot, with an oxygen debt of {sc['knot_forms']['peak_debt']:.2f} that its sensory nerves feel |
-| Stress eases | it reopens {eased - 110:.0f} s later, with a flush to {sc['stress_eases']['peak_flow']:.2f}× resting flow |
-| A 40 s press, then release | it reopens {pressed - 150:.1f} s after the pressure lifts, with a flush to {sc['press_and_release']['peak_flow']:.2f}× and the brightest spark ({sc['press_and_release']['peak_spark']:.2f}, against {sc['stress_eases']['peak_spark']:.2f} when stress eases): the press ran up a debt, and returning blood repays it through the nerves |
+| Stress eases | it reopens {eased - 110:.0f} s later; within 30 s flow is back to {flow_after(se)} |
+| A 40 s press, then release | it reopens {pressed - 150:.1f} s after the pressure lifts, from near nothing to {flow_after(pr)} within 30 s, while drive stays raised; the sensory burst is {pr['peak_spark']:.2f} (against {se['peak_spark']:.2f} when stress eases) |
 | Even breathing, knot at the threshold | it holds: tone rises in about a second and fades over {d['params']['values']['tau_down']:.0f} s, so an even swing raises average tone |
 | Relaxing breaths (the out-breath lowers drive; the in-breath does not raise it) | a knot at the threshold lets go after {relax - 40:.0f} s, about {(relax - 40) / 10:.0f} breaths |
 
@@ -102,13 +110,20 @@ The band runs from {q['Aopen'][1]:.2f} to {q['Afold'][1]:.2f} of maximal tone at
 {q['Aopen'][0]:.2f}–{q['Aopen'][2]:.2f} and {q['Afold'][0]:.2f}–{q['Afold'][2]:.2f}). Whether a knot can hold at rest
 is decided by {decide}. These are guesses today, and each can be measured in a myograph.
 
+**What moves the hold.** The wall: with its media 5.2% of the lumen's diameter, as in normotensive people (Schiffrin
+1995), a shut vessel needs {held(walls[0.052])} resting tone to stay shut; at 8%, as in untreated hypertension,
+{held(walls[0.08])}. How tightly a shut lumen closes, a guess: closed to {tight['xc']:.2f} of the relaxed radius it needs
+{held(tight)}; closed only to {loose['xc']:.2f}, {held(loose)}. The tighter it closes, the less the pressure inside has to
+push on. A vessel that cannot close past its fold ({s['xfold']:.2f} of the relaxed radius) has no second state at
+all: narrowed is not held.
+
 ## What it predicts
 
-- **A flush at release.** A perforator that lets go carries up to {sc['press_and_release']['peak_flow']:.1f}× its
-  resting flow within seconds. Laser speckle imaging over the spot would see it; a theory with nothing held in the
-  tissue predicts no local flush.
-- **Pressure, then release, lets go faster and brighter than calm alone** ({pressed - 150:.1f} s against
-  {eased - 110:.0f} s; spark {sc['press_and_release']['peak_spark']:.2f} against {sc['stress_eases']['peak_spark']:.2f}).
+- **Blood returns at release.** A perforator that lets go carries flow again within seconds, from near nothing: back to
+  {flow_after(se)} when stress eases, {flow_after(pr)} after a press while drive stays raised. Laser speckle imaging over
+  the spot would see it; a theory with nothing held in the tissue predicts no local change.
+- **Pressure, then release, lets go faster than calm alone** ({pressed - 150:.1f} s against {eased - 110:.0f} s){', and brighter' if brighter else ''}
+  (the sensory burst {pr['peak_spark']:.2f} against {se['peak_spark']:.2f}).
 - **Slowing before a switch.** Near the fold, the vessel's response to small changes in tone slows; flow should flicker
   more slowly just before a knot forms under rising stress.
 - **Breath releases knots only if it is uneven.** An out-breath has to lower sympathetic drive to the skin more than
@@ -149,6 +164,9 @@ def write_breath_and_trees(d: dict) -> Path:
     tr, sib, fig = t["robustness"], t["siblings"], t["figure"]
     fd = d["field"]
     fc = fd["conditions"]
+    corr = lambda x: "n/a" if x is None else f"{x:.2f}"
+    qd = t["queue"]
+    queue = ", ".join(f"{u:.2f}: {k}" for u, k, pk in zip(qd["drive"], qd["remain"], qd["parent_knot"]) if pk)
     first = {e["vessel"]: e["t"] for e in fig["events"] if e["to"] == "shut"}
     opened = [e for e in fig["events"] if e["to"] == "open"]
     parent_open = next(e["t"] for e in opened if e["vessel"] == 0)
@@ -187,22 +205,24 @@ are `sim/knots_sim/breath.py`. The site shows the same results at /research/.*
    gasp's recovery ({fitted['tau_down']:.0f} s), an uneven breath (−{ease['swing']}) releases the easiest knot after
    {fitted['release_s'][0]:.0f} s; if they eased in 3 s, after {fast['release_s'][0]:.0f} s. Nobody has measured it over hairy skin.
 5. **Broad or focused.** On a patch of {fd['n']} perforators, each with its own wall and more stress in some zones,
-   {fc['calm']['knots']} knots form. With no breath, {fc['calm']['freed']} lets go. When drive eases everywhere (broad),
-   {fc['broad']['freed']} let go, scattered across the patch, in order of difficulty (correlation of depth and release time
-   {fc['broad']['depth_vs_time']:.2f}). When the breath moves the tissue around one spot (focused), {fc['focused']['freed_near']}
+   {fc['calm']['knots']} knots form under strong regional stress. With no breath, {fc['calm']['freed']} poised at their
+   thresholds drift open. When drive eases everywhere (broad), {fc['broad']['freed']} let go, scattered across the patch,
+   in order of difficulty (correlation of depth and release time {corr(fc['broad']['depth_vs_time'])}). When the breath moves the tissue around one spot (focused), {fc['focused']['freed_near']}
    of the {fc['focused']['knots_near']} knots within a radius of the spot let go and {fc['focused']['freed_far']} of the
    {fc['focused']['knots_far']} elsewhere. Together, {fc['both']['freed_near']} of {fc['both']['knots_near']} at the spot and
    {fc['both']['freed_far']} of {fc['both']['knots_far']} elsewhere. (The zones, the patch and the spot are representative.)
 6. **One knot upstream makes a cluster below it.** In the worked tree (a parent and four children with walls from 0.25 to
-   0.35), a local surge shuts the parent at {first[0]:.0f} s and all four children within {max(first.values()) - first[0]:.1f} s,
+   0.35, as in hypertension, drive {fig['u_m']:.2f}), a local surge shuts the parent at {first[0]:.0f} s and all four children within {max(first.values()) - first[0]:.1f} s,
    as the pressure below the parent collapses. Released after a 40 s press, the parent reopens at {parent_open:.0f} s and
    {len(with_it)} children with it within 5 s; the last lets go at {last['t']:.0f} s, after drive falls to rest.
 7. **Across {tr['samples']} plausible trees** (pressures, the parent's resistance, the children's walls and the drive
    sampled): when the parent held a knot, a cluster formed beneath it in {pc(tr['share_cluster'])} ({tr['mean_cluster']:.1f}
    of 4 children on average); releasing the parent freed most of its cluster within 5 s in {pc(tr['share_cascade'])}; at
-   least one child stayed held in {pc(tr['share_queue'])}.
+   least one child stayed held in {pc(tr['share_queue'])}. In the worked tree, the higher the drive, the longer the queue
+   (drive: children left held) {queue}.
 8. **Siblings on one feed protect each other.** Each closure raises the pressure holding the others open: a surge of
-   stress shut {sib['shut_by_surge']} of {sib['siblings']}. Clusters come from the tree's hierarchy.
+   stress shut {sib['shut_by_surge']} of {sib['siblings']}, where alone, at the same pressure, {sib['shut_alone']} would. Clusters come
+   from the tree's hierarchy.
 
 ## Limits
 

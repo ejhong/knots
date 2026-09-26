@@ -186,7 +186,7 @@ export function createKnotPlate(tone: Tone): KnotPlate {
   const CAPTIONS: [number, string, string][] = [
     [0, 'A knot: the artery held shut by its own wall, its skin short of blood.', 'breathing in · held'],
     [3.2, 'On the out-breath its tone eases, and the artery snaps open…', 'breathing out · letting go'],
-    [4.8, '…blood floods back, and the waking nerve lights its patch of skin.', 'open'],
+    [4.8, '…blood returns, and the waking nerve lights its patch of skin.', 'open'],
     [8.6, '', ''],
   ];
 

@@ -13,7 +13,7 @@ const v = data.validation;
 const col = data.checks.collar;
 const cool = data.checks.cooling;
 const guessedCount = (data.params.vessel as { confidence: string }[]).filter((row) => row.confidence === 'guessed').length;
-const sc = data.scenarios as Record<string, { summary: { events: { t: number; to: string }[]; peak_flow: number; peak_spark: number; peak_debt: number } }>;
+const sc = data.scenarios as Record<string, { summary: { events: { t: number; to: string }[]; peak_flow: number; peak_spark: number; peak_debt: number; flow_before_open: number | null; flow_after_open: number | null } }>;
 const opened = (name: string) => sc[name].summary.events.find((e) => e.to === 'open')?.t ?? NaN;
 const eased = opened('stress_eases') - 110;
 const pressed = opened('press_and_release') - 150;
@@ -164,7 +164,7 @@ const repo = 'https://github.com/ejhong/knots/blob/main';
         <p class="q">Can the vessel hold itself?</p>
         <p class="a">Yes: a small artery is a switch.</p>
         <figure set:html={bandScale(s)} />
-        <p set:html={`With measured wall strength (3.4 mN/mm; ${cite('zhang2007')}), the stretch at which its muscle is strongest (${cite('elassar2022')}), the pressure inside it, and the timing of breath and reactive hyperaemia, the band runs from ${f2(s.Aopen)} to ${f2(s.Afold)} of maximal tone, just above rest (${f2(s.urest)}). It is the instability ${cite('burton1951')} described, which clinicians now read as a closing threshold (${cite('miller2026')}); nerves hold some arterioles shut in living tissue (${cite('bohlen1979')}). A switch in ${pct(r.share_bistable)} of ${r.samples.toLocaleString('en-GB')} plausible parameter sets.`} />
+        <p set:html={`With measured wall strength (3.4 mN/mm; ${cite('zhang2007')}), the stretch at which its muscle is strongest (${cite('elassar2022')}), how its force falls as the muscle shortens (${cite('mulvany1979')}), the thickness of healthy human small arteries' walls (${cite('schiffrin1995')}), the pressure inside it, and the timing of breath and reactive hyperaemia, the band runs from ${f2(s.Aopen)} to ${f2(s.Afold)} of maximal tone: a shut vessel stays shut while its tone stays above ${(s.Aopen / s.urest).toFixed(1)} times rest (${f2(s.urest)}). It is the instability ${cite('burton1951')} described, which clinicians now read as a closing threshold (${cite('miller2026')}); nerves hold some arterioles shut in living tissue (${cite('bohlen1979')}). A switch in ${pct(r.share_bistable)} of ${r.samples.toLocaleString('en-GB')} plausible parameter sets.`} />
       </article>
       <article class="check">
         <p class="q">Can hyaluronan hold it?</p>
@@ -190,11 +190,11 @@ const repo = 'https://github.com/ejhong/knots/blob/main';
   <section id="predicts" class="sec" data-glyph="験">
     <h2>What it predicts</h2>
     <ul class="prose preds">
-      <li><strong>A flush where a knot lets go.</strong> Up to {sc.press_and_release.summary.peak_flow.toFixed(1)}× resting flow within seconds of release, over the spot, where laser speckle imaging would see it. A theory with nothing held in the tissue predicts no local flush.</li>
-      <li><strong>Pressure, then release, lets go faster and brighter than calm alone:</strong> {pressed.toFixed(1)} s after the pressure lifts against {Math.round(eased)} s after stress eases, with a spark of {f2(sc.press_and_release.summary.peak_spark)} against {f2(sc.stress_eases.summary.peak_spark)}. The pressure runs up a debt, and returning blood repays it through the nerves.</li>
+      <li><strong>Blood returns where a knot lets go.</strong> Within seconds of release, flow over the spot rises from near nothing to {f2(sc.stress_eases.summary.flow_after_open ?? 0)} of resting flow when stress eases, or {f2(sc.press_and_release.summary.flow_after_open ?? 0)} after a press while drive stays raised. Laser speckle imaging over the spot would see it; a theory with nothing held in the tissue predicts no local change. It rises above rest only as tone falls.</li>
+      <li><strong>Pressure, then release, lets go faster than calm alone:</strong> {pressed.toFixed(1)} s after the pressure lifts against {Math.round(eased)} s after stress eases, with a burst from the sensory nerves of {f2(sc.press_and_release.summary.peak_spark)} against {f2(sc.stress_eases.summary.peak_spark)}. The pressure runs up a debt, and returning blood repays it through the nerves.</li>
       <li><strong>Slowing near the edge.</strong> As stress carries a vessel toward its fold, it answers small changes more and more slowly; flow over the spot should flicker more slowly just before a knot forms.</li>
       <li><strong>Through drive, breath lets go of knots only if it is uneven.</strong> Tone rises in about a second and fades over {Math.round(p.tau_down)} s, so an even swing with each breath holds a knot slightly tighter. The out-breath has to lower the skin's sympathetic drive more than the in-breath raises it; laser Doppler over hairy skin can measure whether it does. Breath may also act through movement: rhythmic stretch cuts smooth muscle's force at once <Fragment set:html={`(${cite('ljung1975')})`} />, and squeezed arteries widen within seconds of release, more after several squeezes than after one long one <Fragment set:html={`(${cite('clifford2006')})`} />. The model now carries that route, fitted to those squeezes; it acts where the breath moves the tissue, and adds up over breaths (the <a href={`${base}/research/#breath`}>release maps</a>).</li>
-      <li><strong>What to measure next:</strong> how much force a small artery's muscle keeps when the vessel is nearly shut, and how thick its wall is. More than anything else, they decide whether a knot can hold at rest.</li>
+      <li><strong>What to measure next:</strong> how much force a small artery's muscle keeps when the vessel is nearly shut, and how thick its wall is, in skin perforators themselves (the model takes them from rat arteries and healthy human walls). More than anything else, they decide whether a knot can hold at rest.</li>
     </ul>
   </section>
 

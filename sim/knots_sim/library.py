@@ -74,6 +74,11 @@ NEW = [
      "Airway smooth muscle stretched as in breathing: the latch is a low-friction contractile state, which may be why a deep breath fails to reopen the airways in asthma."),
     ("10051279", "fredberg1999", ["breath", "models"],
      "The breath keeps airway smooth muscle from freezing: tidal stretch perturbs myosin binding and biases the muscle toward lengthening; without it the muscle virtually freezes at its static length."),
+    # The wall's own numbers: how much force the muscle keeps when short, and how thick the wall is.
+    ("479823", "mulvany1979", ["vascular", "animals", "models"],
+     "Small arteries' active tension falls with shortening along a line that reaches zero at 0.38 of the optimal circumference: a nearly shut vessel's muscle pulls weakly."),
+    ("7794571", "schiffrin1995", ["vascular"],
+     "Human subcutaneous resistance arteries: the media is 5.2% of the lumen diameter in normotensive people, 7.5-8% in untreated hypertension."),
     # Other candidate mechanisms for full coverage.
     ("1943863", "johansson1991", ["trigger-points", "nerve"],
      "A proposed loop: metabolites of static contraction drive the gamma system and the muscle spindles, raising stiffness and metabolites again, so muscle tension perpetuates itself and spreads to other muscles."),

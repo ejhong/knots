@@ -15,9 +15,12 @@ const r = data.robustness;
 const v = data.validation as typeof data.validation & { squeeze: Record<string, { rise: number; peak_s: number; measured: { rise: number; peak_s: number } }> };
 const col = data.checks.collar;
 const cool = data.checks.cooling;
-const sc = data.scenarios as Record<string, { summary: { events: { t: number; to: string }[]; peak_flow: number; peak_spark: number } }>;
+const sc = data.scenarios as Record<string, { summary: { events: { t: number; to: string }[]; peak_flow: number; peak_spark: number; flow_after_open: number | null } }>;
 const opened = (name: string) => sc[name].summary.events.find((e) => e.to === 'open')?.t ?? NaN;
 const pressed = opened('press_and_release') - 150;
+const eased = opened('stress_eases') - 110;
+const afterEase = sc.stress_eases.summary.flow_after_open ?? 0;
+const afterPress = sc.press_and_release.summary.flow_after_open ?? 0;
 const breath = data.breath as unknown as BreathMaps;
 const tree = data.tree as unknown as { figure: TreeFigure; robustness: Record<string, number>; siblings: { siblings: number; shut_by_surge: number } };
 const tr = tree.robustness;
@@ -28,6 +31,14 @@ const pct = (x: number) => `${Math.round(100 * x)}%`;
 const guessed = (data.params.vessel as { confidence: string }[]).filter((row) => row.confidence === 'guessed').length;
 const sourced = (data.params.vessel as { confidence: string }[]).length - guessed;
 const need10 = breath.least_movement.within_10;
+const wallRows = data.wall_sensitivity as { media_to_lumen: number; Aopen: number; Afold: number; urest: number }[];
+const wallAt = (ml: number) => wallRows.find((row) => Math.abs(row.media_to_lumen - ml) < 1e-9)!;
+const healthyRatio = s.Aopen / s.urest;
+const hyper = wallAt(0.08);
+const closureRows = data.closure_sensitivity as { xc: number; Aopen: number; urest: number; bistable: boolean }[];
+const tight = closureRows[0];
+const treeQueue = (data.tree as unknown as { queue: { drive: number[]; remain: number[]; parent_knot: boolean[] } }).queue;
+const deepest = need10[need10.length - 1];
 const easing = (data.breath as unknown as { easing: { swing: number; rows: { tau_down: number; fitted: boolean; release_s: (number | null)[] }[] } }).easing;
 const easeFitted = easing.rows.find((row) => row.fitted)!;
 const easeFast = easing.rows.find((row) => Math.abs(row.tau_down - 3) < 1e-9)!;
@@ -55,9 +66,9 @@ const THEORIES = [
 
 const VERDICTS: { glyph: string; name: string; status: string; can: string; cannot: string; open: string }[] = [
   { glyph: '結', name: 'Perforators', status: 'modelled',
-    can: `Hold a knot by the vessel's own wall (a switch in ${pct(r.share_bistable)} of plausible settings); let it go by pressure (fastest, with the largest flush), by an uneven breath, or by movement; make clusters and a queue through its tree; release broadly or at one spot.`,
+    can: `Hold a knot by the vessel's own wall (a switch in ${pct(r.share_bistable)} of plausible settings); let it go by pressure (fastest), by an uneven breath, or by movement; make clusters and a queue through its tree; release broadly or at one spot.`,
     cannot: `Hold by its hyaluronan collar (a liquid, ${Math.round(col.pressure_over_drag)} times too weak); let go within a breath by warming.`,
-    open: 'Whether knots sit on perforators; two unmeasured wall numbers decide whether a knot can hold at rest; how fast skin arterioles relax decides one breath or many.' },
+    open: `Whether knots sit on perforators. In healthy vessels the hold needs tone about ${(s.Aopen / s.urest).toFixed(1)} times rest; thicker walls (hypertension, perhaps age) and a lumen that closes tighter bring it nearer rest; a vessel only narrowed has no hold. How fast skin arterioles relax decides one breath or many.` },
   { glyph: '閂', name: 'Vascular latch', status: 'in part',
     can: 'Its core, a small artery held shut, is the same switch. The latch lets a held vessel stay held cheaply, and may harden an old knot against movement, as it does airway muscle against a deep breath.',
     cannot: 'Remember by the latch alone: relaxation follows the fall of calcium, not latch-bridge detachment.',
@@ -72,7 +83,7 @@ const VERDICTS: { glyph: string; name: string; status: string; can: string; cann
     open: 'Hyaluronan thinning as the layers move: its fast route.' },
   { glyph: '神経', name: 'Nerves', status: 'not yet run',
     can: 'Sensitivity where nerves pierce the fascia, which is where the perforators are.',
-    cannot: 'Be told apart from perforators by location alone; it needs no flush at release.',
+    cannot: 'Be told apart from perforators by location alone; it needs no change in blood flow at release.',
     open: 'Nerve-specific tests at the knots themselves.' },
   { glyph: '覚', name: 'Perception', status: 'not yet run',
     can: 'Any timing, any place, and a queue by salience: when the loudest spot quiets, the next is noticed.',
@@ -91,7 +102,7 @@ const WHERE: { glyph: string; name: string; where: string; count: string; scalp:
 
 const SIGNALS = ['blood flow in the skin over the spot', 'flow or tension in the muscle beneath', 'stiffness and glide', 'muscle activity (EMG)', 'skin temperature', 'where it tingles'];
 const SIGS: { name: string; glyph: string; modelled?: boolean; cells: [string, string][] }[] = [
-  { name: 'Perforators', glyph: '結', modelled: true, cells: [['up', `rises, to ${sc.press_and_release.summary.peak_flow.toFixed(1)}×\u00a0within seconds`], ['none', 'little'], ['none', 'little'], ['none', 'no change'], ['up', `rises, over ≥\u00a0${Math.round(cool.tau_s_at_max_flow)}\u00a0s`], ['here', 'the vessel’s own patch']] },
+  { name: 'Perforators', glyph: '結', modelled: true, cells: [['up', 'returns within seconds, from near nothing'], ['none', 'little'], ['none', 'little'], ['none', 'no change'], ['up', `rises, over ≥\u00a0${Math.round(cool.tau_s_at_max_flow)}\u00a0s`], ['here', 'the vessel’s own patch']] },
   { name: 'Vascular latch', glyph: '閂', cells: [['up', 'rises, if skin vessels latch'], ['up', 'vascular tension falls'], ['none', 'little'], ['none', 'no change'], ['up', 'rises with flow'], ['silent', 'not stated']] },
   { name: 'Trigger points', glyph: '点', cells: [['none', 'little'], ['up', 'the taut band lets go; flow returns'], ['down', 'the nodule softens'], ['down', 'spontaneous activity falls; a twitch'], ['none', 'little at the skin'], ['here', 'a referred pattern']] },
   { name: 'Densification', glyph: '膠', cells: [['none', 'not required'], ['none', 'not required'], ['down', 'glide between layers returns'], ['none', 'no change'], ['silent', 'warmth may come first'], ['silent', 'not stated']] },
@@ -139,7 +150,8 @@ const index = [
         <strong>What is done so far.</strong> Each theory is being written as a dynamical model in its strongest form,
         every parameter traced to a quoted line of a paper, and run through the same trials. The first is complete. A
         small artery with tone in its wall holds itself shut over a band of tone and lets go when tone falls below the
-        band: a switch in {pct(r.share_bistable)} of {r.samples.toLocaleString('en-GB')} plausible parameter sets.
+        band: a switch in {pct(r.share_bistable)} of {r.samples.toLocaleString('en-GB')} plausible parameter sets, though with the walls of healthy human
+        small arteries only while tone stays well above rest.
         Hyaluronan cannot hold a vessel, and warming cannot release one within a breath. The breath can release a knot
         through two routes, drive and movement, both fitted to measurements. A vessel holding a knot upstream shuts the
         vessels below it, and releasing it frees most of them at once. <a href="#findings">What this says about each theory.</a>
@@ -166,20 +178,28 @@ const index = [
       true: they say what each mechanism can and cannot do, and so where to look.
     </p>
     <ol class="findings">
-      <li><strong>A knot can be a small artery holding itself shut.</strong> With measured wall strength, pressure and reflex timings, a small artery has two
-        stable states over a band of tone, in {pct(r.share_bistable)} of {r.samples.toLocaleString('en-GB')} plausible settings: held until released, by mechanics alone.</li>
+      <li><strong>A knot can be a small artery holding itself shut, but in healthy vessels only under strong, sustained tone.</strong> With measured wall
+        strength and thickness, pressure and reflex timings, a small artery has two stable states over a band of tone, in {pct(r.share_bistable)} of{' '}
+        {r.samples.toLocaleString('en-GB')} plausible settings: held until released, by mechanics alone. With the walls of healthy human small arteries the
+        band sits high: a shut vessel stays shut only while its tone stays above {healthyRatio.toFixed(1)} times rest. With the thicker walls of hypertension
+        (media 8% of the lumen) it sits at {(hyper.Aopen / hyper.urest).toFixed(1)} times rest. How much force the muscle keeps when a vessel is nearly shut
+        decides it most; then how tightly the lumen closes, a guess: closed to {f2(tight.xc)} of its relaxed radius it holds at{' '}
+        {(tight.Aopen / tight.urest).toFixed(1)} times rest, and a vessel that cannot close past its fold, {f2(s.xfold)} of it, has no hold at all. Narrowed is not held.</li>
       <li><strong>Liquids cannot hold, and heat is too slow.</strong> Hyaluronan resists motion, not position ({Math.round(col.pressure_over_drag)} times too weak to
         hold a vessel); warming takes at least {Math.round(cool.tau_s_at_max_flow)} s. Whatever releases a knot within a breath is faster than heat.</li>
       <li><strong>The breath must be uneven, or move the tissue.</strong> Tone rises fast and eases slowly, so an even breath holds every knot. A breath that lowers
         drive more than it raises it releases the easy knots; a breath that moves the tissue releases knots where it moves, adding up breath by breath.</li>
       <li><strong>Easy knots go first; the deepest hold.</strong> On a patch of {fieldData.n}, a broad easing of drive freed {fc.broad.freed} of {fc.broad.knots},
-        in order of difficulty; a focused breath freed the knots at its spot and almost none elsewhere; together, all {fc.both.knots_near} at the spot.</li>
+        in order of difficulty; a focused breath freed {fc.focused.freed_near} of the {fc.focused.knots_near} knots at its spot and {fc.focused.freed_far} of{' '}
+        {fc.focused.knots_far} elsewhere; together, {fc.both.freed_near} of {fc.both.knots_near} at the spot.</li>
       <li><strong>One breath or many turns on one unmeasured number:</strong> how fast skin arterioles relax when drive falls ({Math.round(easeFitted.release_s[0] ?? NaN)} s
         at the fitted value; {Math.round(easeFast.release_s[0] ?? NaN)} s if they relaxed in 3 s).</li>
       <li><strong>Trees make clusters and queues.</strong> A knot in a parent vessel shuts its children; releasing it frees most of them at once, and the hardest
-        stays: a cluster whenever the parent held, in {tr.samples} plausible trees. Siblings on one feed protect each other, so knots do not simply hop sideways.</li>
-      <li><strong>Pressure, then release, is the fastest way out</strong>, with the largest flush ({sc.press_and_release.summary.peak_flow.toFixed(1)}× resting flow within
-        seconds): the clearest thing a laser speckle camera could look for.</li>
+        stays: when the parent held, a cluster formed beneath it in {pct(tr.share_cluster)} of {tr.samples} plausible trees, and the higher the stress, the
+        longer the queue. Siblings on one feed protect each other, so knots do not simply hop sideways.</li>
+      <li><strong>Pressure, then release, is the fastest way out</strong> ({pressed.toFixed(1)} s after the pressure lifts, against {Math.round(eased)} s when stress
+        eases), and at every release blood returns to the spot within seconds, from near nothing: the clearest thing a laser speckle camera could look for.
+        It rises above resting flow only as tone falls.</li>
     </ol>
     <h3 class="h3">What this says about each theory, so far</h3>
     <div class="table-wrap">
@@ -326,7 +346,7 @@ const index = [
       <figure class="ink-fig" set:html={switchDiagram(p, s)} />
       <div class="facts">
         <p class="fact"><span class="big">{f2(s.Aopen)}–{f2(s.Afold)}</span><span class="fl">the band of tone, as a share of maximal, over which a small artery is stable both open and shut (rest: {f2(s.urest)}). Above the band it snaps shut; once shut, it stays shut until tone falls below it. <Fragment set:html={cite('burton1951')} /> described the instability.</span></p>
-        <p class="fact"><span class="big">{pct(r.share_bistable)}</span><span class="fl">of {r.samples.toLocaleString('en-GB')} plausible parameter sets give the switch; in {pct(r.share_holds_at_rest)} it holds even at resting tone. Whether it holds at rest turns mostly on two guesses: how much force the muscle keeps when the vessel is nearly shut, and the wall's thickness.</span></p>
+        <p class="fact"><span class="big">{pct(r.share_bistable)}</span><span class="fl">of {r.samples.toLocaleString('en-GB')} plausible parameter sets give the switch; in {pct(r.share_holds_at_rest)} it holds even at resting tone. Whether it holds at rest turns mostly on two numbers, now taken from measurements: how much force the muscle keeps as it shortens (<Fragment set:html={cite('mulvany1979')} />, rat small arteries) and the wall's thickness (<Fragment set:html={cite('schiffrin1995')} />, human subcutaneous small arteries).</span></p>
         <p class="fact"><span class="big">{v.gasp.at_s.toFixed(1)} s</span><span class="fl">when flow is lowest after a deep gasp, the one timing not fitted: measured 4.6–5.2 s <Fragment set:html={`(${cite('mayrovitz2026')})`} />. The fitted ones reproduce the gasp's size and recovery and the timing of reactive hyperaemia.</span></p>
       </div>
     </div>
@@ -349,7 +369,7 @@ const index = [
       <article class="check">
         <p class="q">Does pressure, then release, let go?</p>
         <p class="a">Yes, and fastest.</p>
-        <p>After 40 s of pressure the vessel reopens {pressed.toFixed(1)} s after the pressure lifts, with a flush to {sc.press_and_release.summary.peak_flow.toFixed(1)}× resting flow and the brightest burst from the sensory nerves: the pressure ran up a debt, and returning blood repays it.</p>
+        <p>After 40 s of pressure the vessel reopens {pressed.toFixed(1)} s after the pressure lifts, and flow returns from near nothing to {afterPress.toFixed(2)} of resting flow while drive stays raised ({afterEase.toFixed(2)} when stress eases instead): the pressure ran up a debt, and returning blood repays it through the nerves.</p>
       </article>
     </div>
   </section>
@@ -376,7 +396,7 @@ const index = [
           keeps knots held. Through drive, only a breath that lowers drive more than it raises it lets knots go, and only the easy ones.</p>
         <p class="find"><strong>Easy knots go first; hard ones take many breaths or none.</strong> Through movement the loosening adds up breath by breath, so a knot
           just above its threshold needs the tissue to move by only {pct(need10[depthAt(0.01)] ?? 0)} of a squeeze that shuts it, repeated for ten breaths;
-          a knot a fifth of the way up needs {pct(need10[depthAt(0.2)] ?? 0)}, and the deepest none will reach.</p>
+          a knot a fifth of the way up needs {pct(need10[depthAt(0.2)] ?? 0)}, and the deepest {deepest === null ? 'none will reach' : `needs ${pct(deepest)}`}.</p>
         <p class="find"><strong>One breath or many</strong> turns on one number nobody has measured in skin: how fast its small arteries ease when drive
           falls. With the value fitted to the gasp's slow recovery ({Math.round(easeFitted.tau_down)} s), an uneven breath releases the easiest knot after{' '}
           {Math.round(easeFitted.release_s[0] ?? NaN)} s; if they eased in 3 s, after {Math.round(easeFast.release_s[0] ?? NaN)} s, about one breath.</p>
@@ -390,7 +410,8 @@ const index = [
     <h3 class="h3">Broad or focused: a patch of knots under one breath</h3>
     <p class="sub">
       {fieldData.n} perforators on a patch of skin, each with its own wall, and more stress in some zones (representative, not anatomy). A surge
-      forms {fc.broad.knots} knots; with no breath, {fc.calm.freed} lets go. Then the breath acts in one of three ways.
+      forms {fc.broad.knots} knots under strong regional stress; with no breath, {fc.calm.freed} poised at their thresholds drift open. Then the breath acts in one
+      of three ways.
     </p>
     <figure class="paper-fig scroll-x" set:html={fieldPanels(fieldData)} />
     <div class="two">
@@ -406,7 +427,8 @@ const index = [
     <h2>Trees: a parent and its children</h2>
     <p class="sub">
       Perforators branch: a parent vessel feeds children, and they share its pressure. Each vessel here is the same switch, with its own wall;
-      pressures are solved at every step. The tree's own numbers are guesses and are sampled below.
+      pressures are solved at every step. The worked tree has walls as in hypertension (media 7.5–10% of the lumen) and drive raised to{' '}
+      {(tree.figure as unknown as { u_m: number }).u_m.toFixed(2)} of maximal tone; the tree's own numbers are guesses and are sampled below.
     </p>
     <figure class="ink-fig wide-fig scroll-x" set:html={treeStory(tree.figure)} />
     <div class="two">
@@ -416,7 +438,9 @@ const index = [
         <p class="find"><strong>Release the parent, and the cluster lets go together.</strong> The pressure surges back and three children open within a second.
           The thickest-walled one stays shut while stress stays raised: the next knot in the queue, which goes only when drive falls.</p>
         <p class="find"><strong>Siblings protect each other.</strong> On a shared feed, each closure raises the pressure holding the others open: a surge of
-          stress shut {tree.siblings.shut_by_surge} of {tree.siblings.siblings}. Clusters come from the tree's hierarchy, not from neighbours.</p>
+          stress shut {tree.siblings.shut_by_surge} of {tree.siblings.siblings}, where alone, at the same pressure, {(tree.siblings as unknown as { shut_alone: number }).shut_alone} would. Clusters come from the tree's hierarchy, not from neighbours.</p>
+        <p class="find"><strong>The higher the stress, the longer the queue.</strong> In the worked tree, the children left held after the parent lets go:{' '}
+          {treeQueue.drive.map((u, i) => (treeQueue.parent_knot[i] ? `${treeQueue.remain[i]} at drive ${u.toFixed(2)}` : null)).filter(Boolean).join(', ')}.</p>
       </div>
       <div class="tiles">
         <p class="tile"><span class="big">{pct(tr.share_cluster)}</span><span class="fl">of plausible trees in which the parent held a knot: a cluster formed beneath it ({tr.mean_cluster.toFixed(1)} of 4 children on average)</span></p>
@@ -476,10 +500,10 @@ const index = [
           events in weeks: an event-related design, as meditation neuroscience began, with the predictions sealed before the first session.</p>
       </div>
       <div>
-        <p class="find"><strong>What the perforator model predicts it would see.</strong> Skin flow over the spot rising within seconds of the felt release, to
-          about {sc.press_and_release.summary.peak_flow.toFixed(1)}× after pressure, and nothing at the sham site; skin temperature following over a minute or
-          more; release after pressure faster and brighter than after calm alone; and, before a slow release, flow flickering more slowly (a switch slowing
-          near its edge).</p>
+        <p class="find"><strong>What the perforator model predicts it would see.</strong> Skin flow over the spot returning within seconds of the felt
+          release, from near nothing to about {afterPress.toFixed(2)} of resting flow after a press (to {afterEase.toFixed(2)} if stress eases), and nothing at
+          the sham site; skin temperature following over a minute or more; release after pressure sooner than after calm alone; and, before a slow release,
+          flow flickering more slowly (a switch slowing near its edge).</p>
         <p class="find"><strong>A cheap first look.</strong> A thermal camera and a photoplethysmography sensor over a knot and a sham site, a breath belt and an
           event button: enough to ask the first question. Under the site's <a href={`${base}/#moderation`}>moderation guidance</a>.</p>
       </div>
@@ -490,9 +514,10 @@ const index = [
     <h2>What we need</h2>
     <ol class="asks">
       <li>
-        <p class="ask-h">Two numbers from small-artery myography</p>
-        <p>How much force a small artery's muscle keeps when the vessel is nearly shut (the width of its length–tension curve), and the thickness of its
-          wall, in human skin perforators or subcutaneous small arteries. Together they decide whether a knot can hold at rest.</p>
+        <p class="ask-h">The force of a nearly shut small artery</p>
+        <p>How much active force a small artery's muscle keeps at the very short lengths of a nearly shut vessel, and how thick its wall is, measured in
+          human skin perforators or subcutaneous small arteries, young and old, with and without hypertension. The model now takes them from rat arteries
+          and healthy human walls, and they decide whether a knot can hold at ordinary tone.</p>
       </li>
       <li>
         <p class="ask-h">How fast skin arterioles relax when sympathetic drive falls</p>

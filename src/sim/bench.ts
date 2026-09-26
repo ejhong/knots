@@ -10,7 +10,7 @@ type Breath = 'off' | 'even' | 'relaxing';
 
 const TRIALS: Record<string, string> = {
   knot_forms: 'A surge of stress carries tone past the fold at 10 s; at 40 s stress falls back but stays raised. The vessel shuts, and stays shut.',
-  stress_eases: 'The knot forms as before; at 110 s stress eases back to rest. Tone fades over about 14 s, and the vessel reopens with a flush.',
+  stress_eases: 'The knot forms as before; at 110 s stress eases back to rest. Tone fades over several seconds, and the vessel reopens as blood returns.',
   press_and_release: 'The knot forms; at 110 s pressure for 40 s. The muscle gives up tone under pressure and the patch runs up a debt; as the pressure lifts, the squeeze loosens the wall, the vessel reopens and the nerves light.',
   moving_breath: 'The knot forms; at 40 s stress falls back a fifth of the way up the band and stays there, and each breath begins to move the tissue at the knot. Drive never changes: the loosening adds up breath by breath until it lets go.',
   relaxing_breath_at_threshold: 'The knot forms; at 40 s stress sits just above the reopening threshold, and each out-breath lowers drive a little. It lets go after a few breaths.',

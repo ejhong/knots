@@ -1,8 +1,8 @@
 {
  "run": {
   "date": "2026-09-26",
-  "inputs": "b50c7ea7c466",
-  "commit": "37ebf43",
+  "inputs": "2b25b0ebc678",
+  "commit": "52c1a83",
   "dirty": true,
   "python": "3.11.15",
   "packages": {
@@ -15,47 +15,47 @@
  "switch": {
   "xp": 0.9143,
   "xrest": 0.7025,
-  "urest": 0.172,
-  "xfold": 0.2592,
-  "Afold": 0.3957,
-  "Aopen": 0.2056,
-  "gasp": 0.08387
+  "urest": 0.185,
+  "xfold": 0.1891,
+  "Afold": 0.9318,
+  "Aopen": 0.6209,
+  "gasp": 0.142
  },
  "fitted": [
   {
    "key": "gasp_gain",
-   "value": 0.1608,
+   "value": 0.266,
    "target": "the fall in fingertip flow after a deep gasp (gasp_drop)"
   },
   {
    "key": "tau_down",
-   "value": 14.3,
+   "value": 12.3,
    "target": "the recovery of flow about 34 s after a gasp"
   },
   {
    "key": "tau_nerve",
-   "value": 4.636,
+   "value": 4.773,
    "target": "the timing of reactive hyperaemia (porh_peak_time)"
   },
   {
    "key": "k_mv",
-   "value": 2.071,
+   "value": 1.954,
    "target": "the widening of squeezed arteries after one squeeze, one long squeeze and five (clifford2006)"
   },
   {
    "key": "tau_w",
-   "value": 7.479,
+   "value": 9.716,
    "target": "the same widenings and when each peaks"
   },
   {
    "key": "tau_z",
-   "value": 2.385,
+   "value": 2.067,
    "target": "the same widenings and when each peaks"
   }
  ],
  "robustness": {
   "samples": 49152,
-  "share_bistable": 0.721923828125,
-  "share_holds_at_rest": 0.4422200520833333
+  "share_bistable": 0.5161539713541666,
+  "share_holds_at_rest": 0.060404459635416664
  }
 }

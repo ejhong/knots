@@ -88,7 +88,24 @@ def main() -> dict:
     squeezed = {name: vessel.squeeze_response(p, pulses) for name, pulses in vessel.SQUEEZES.items()}
     robust = robustness.run()
     breath_maps = breath.maps(p) | {"easing": breath.easing(p)}
+    # How high the band sits depends on the wall: media thickness as a share of lumen diameter (schiffrin1995: 5.2%
+    # normotensive, 7.5-8% hypertensive), measured at 0.9 of the relaxed circumference at 100 mmHg.
+    wall_rows = []
+    for ml in (0.04, 0.052, 0.06, 0.07, 0.08, 0.09, 0.10, 0.12):
+        r_, h_ = 0.9, 2 * 0.9 * ml
+        aw = (r_ + h_) ** 2 - r_ ** 2
+        c = vessel.calibrate(p | {"wall": aw})
+        wall_rows.append({"media_to_lumen": ml, "wall": aw, "Aopen": c.Aopen, "Afold": c.Afold, "urest": c.urest,
+                          "bistable": c.bistable})
+    # And on how tightly a shut lumen closes (guessed): pressure has less to push on the tighter it closes, so less tone
+    # holds it; a vessel that cannot close past its fold has no second state at all.
+    closure_rows = []
+    for xc in (0.04, 0.06, 0.08, 0.10, 0.12, 0.15, 0.20, 0.25):
+        c = vessel.calibrate(p | {"xc": xc})
+        closure_rows.append({"xc": xc, "Aopen": c.Aopen, "Afold": c.Afold, "urest": c.urest, "xfold": c.xfold,
+                             "bistable": c.bistable})
     trees = {"figure": tree.figure(), "robustness": tree.robustness(), "siblings": tree.siblings(),
+             "queue": tree.queue_by_drive(),
              "params": param_table("tree", {})}
     runs = scenarios.all_runs(p)
     sc = scenarios.scores(p)
@@ -125,6 +142,8 @@ def main() -> dict:
             for name, x in sc.items()
         },
         "checks": {"collar": checks.collar(p), "cooling": checks.cooling()},
+        "wall_sensitivity": wall_rows,
+        "closure_sensitivity": closure_rows,
     }
     exact = data["params"]["values"]
     exact_scores = {k: x["score"] for k, x in data["scenarios"].items()}

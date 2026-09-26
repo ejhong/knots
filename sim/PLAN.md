@@ -41,17 +41,22 @@ proponents of each theory, and a lab.
 
 ## 1. Findings so far
 
-1. **The vessel can hold itself.** A small artery with tone in its wall has two stable states over a band of tone (Burton
-   1951): with measured numbers the band is 0.21–0.40 of maximal tone, just above rest (0.17). An open vessel snaps shut above
-   the fold and a shut one stays shut until tone falls below the reopening threshold: *held until released*, from mechanics
-   alone. A switch in 72% of 49,152 plausible parameter sets; a hold even at resting tone in 44%. Whether a knot can hold at
-   rest is decided mostly by the width of the muscle's length–tension curve and the wall's thickness (both guesses today,
-   both measurable in a myograph).
+1. **The vessel can hold itself, but in healthy vessels only under strong, sustained tone.** A small artery with tone in
+   its wall has two stable states over a band of tone (Burton 1951). With the length–tension curve measured in small
+   arteries (mulvany1979: active force falls to zero at 0.38 of the optimal length) and the wall of healthy human
+   subcutaneous small arteries (schiffrin1995: media 5.2% of the lumen), the band is 0.62–0.93 of maximal tone, 3.4 times
+   resting tone at its lower edge; with the thicker walls of hypertension (8%) it falls to 1.8 times rest, and a knot
+   holds at rest only with media about 12% of the lumen. A switch in 52% of 49,152 plausible parameter sets; a hold even
+   at resting tone in 6%. (With the earlier guesses, 72% and 44%.) What decides it is how much force the muscle keeps
+   at the very short lengths of a nearly shut vessel, which nobody has measured in a skin perforator; then how tightly
+   the lumen closes (guessed: closed to 0.04 of the relaxed radius, 1.8 times rest; to 0.15, 4.8 times). A vessel that
+   cannot close past its fold (0.19) has no hold at all: narrowed is not held.
 2. **Hyaluronan cannot hold it.** A liquid resists motion, not position; even at synovial-fluid viscosity its drag is about
    12 times too weak. T1's collar is not the hold. (This does not test T4, whose claim is about glide.)
 3. **Cooling cannot release it within a breath** (warming takes ≥ 44 s even at maximal skin flow).
 4. **The latch economises; it does not remember** (relaxation follows calcium; rembold1991). It may still matter: see 7.
-5. **Predictions**: a local flush at release (laser speckle); pressure-then-release faster and brighter than calm; slowing
+5. **Predictions**: blood returning to the spot within seconds of release, from near nothing (laser speckle), rising above
+   resting flow only as tone falls; pressure-then-release faster than calm (not brighter, with the measured wall); slowing
    near the fold; breath releases knots through drive only if its effect on drive is uneven. O2 (pressure, then release) is
    reproduced well; O1 only in part (below).
 6. **Breath through drive** (now trials in `knots_sim/breath.py`, findings 002). Tone rises within seconds and eases over

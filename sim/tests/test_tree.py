@@ -12,9 +12,9 @@ def test_tree_table_is_sound():
 
 def test_a_parent_knot_shuts_its_children_and_its_release_frees_most():
     tv = values("tree")
-    walls = np.array([[0.30, 0.25, 0.283, 0.317, 0.35]])
+    walls = np.array([tree.WORKED_WALLS])
     t = tree.build(walls, tv["P_source"], tv["P_bed"], tv["ratio"])
-    r = tree.run(t, tree.parent_inputs(t, np.array([0.28])), duration=tree.PRESS[1] + 6.0)
+    r = tree.run(t, tree.parent_inputs(t, np.array([tree.WORKED_DRIVE])), duration=tree.PRESS[1] + 6.0)
     s = tree.shut(t, r["x"])[:, 0, :]
     before = s[np.searchsorted(r["t"], tree.PRESS[0]) - 1]
     after = s[-1]
@@ -24,5 +24,5 @@ def test_a_parent_knot_shuts_its_children_and_its_release_frees_most():
 
 def test_siblings_on_a_rigid_feed_protect_each_other():
     out = tree.siblings()
-    assert out["shut_by_surge"] <= 2  # each closure raises the pressure that holds the rest open
+    assert out["shut_by_surge"] < out["shut_alone"]  # each closure raises the pressure that holds the rest open
     assert out["Pn_after"] > out["Pn_rest"]

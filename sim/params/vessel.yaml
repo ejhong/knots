@@ -69,20 +69,26 @@ parameters:
   width:
     symbol: w
     label: "width of the length–tension curve"
-    value: 0.4
+    value: 0.37
     unit: "1"
-    range: [0.25, 0.6]
-    confidence: guessed
-    note: "Width of the active length–tension curve, as a fraction of the optimal muscle length."
+    range: [0.3, 0.45]
+    confidence: inferred
+    source: mulvany1979
+    locator: abstract
+    quote: "Below L0 (the length at which maximum tension, delta T0, was developed) the active tension fell with decreasing length along a line which extrapolated to 0.38 L0"
+    note: "Width of the active length–tension curve, as a fraction of the optimal muscle length. The Gaussian that best fits the measured line (zero at 0.38 of the optimal circumference) has width 0.37. Rat mesenteric arteries of 100–200 µm; taken as the length of the muscle cells, which followed the vessel's circumference in the same study."
 
   wall:
     symbol: a_w
     label: "thickness of the wall"
-    value: 0.3
+    value: 0.177
     unit: r100²
-    range: [0.15, 0.45]
-    confidence: guessed
-    note: "Cross-sectional area of the media, in units of r100²; a media thickness of 5–10% of the lumen diameter. Sets how short the muscle becomes when the lumen closes."
+    range: [0.13, 0.30]
+    confidence: inferred
+    source: schiffrin1995
+    locator: abstract
+    quote: "at which time it was not different from that of arteries from normotensive subjects (5.2 +/- 0.2%)"
+    note: "Cross-sectional area of the media, in units of r100². Human gluteal subcutaneous small arteries: media thickness 5.2% of the lumen diameter in normotensive people (7.5–8% in untreated hypertension). Measured at 0.9 of the relaxed circumference at 100 mmHg, which gives an area of 0.177 r100² (hypertension: 0.26–0.28). Sets how short the muscle becomes when the lumen closes: thicker walls keep it longer, and stronger."
 
   xc:
     symbol: x_c

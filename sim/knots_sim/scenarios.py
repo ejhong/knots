@@ -45,12 +45,21 @@ def summarise(p: dict[str, float], r: dict[str, np.ndarray]) -> dict:
     t = r["t"]
     edges = np.flatnonzero(np.diff(shut.astype(int)))
     events = [{"t": float(t[i + 1]), "to": "shut" if shut[i + 1] else "open"} for i in edges]
+    opened = [e["t"] for e in events if e["to"] == "open"]
+    after = before = None
+    if opened:
+        t0 = opened[0]
+        win = (t >= t0) & (t < t0 + 30.0)
+        after = float(r["q"][win].max())  # the most flow in the 30 s after it reopens, relative to rest
+        before = float(r["q"][np.searchsorted(t, t0) - 5])  # flow just before (near nothing when shut)
     return {
         "shut_at_end": bool(shut[-1]),
         "events": events,
         "peak_flow": float(r["q"].max()),
         "peak_spark": float(r["n"].max()),
         "peak_debt": float(r["m"].max()),
+        "flow_before_open": before,
+        "flow_after_open": after,
     }
 
 

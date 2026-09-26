@@ -727,6 +727,22 @@
   "note": "A modern synthesis of perforator anatomy region by region."
  },
  {
+  "id": "mulvany1979",
+  "authors": "Mulvany MJ, Warshaw DM",
+  "year": 1979,
+  "title": "The active tension-length curve of vascular smooth muscle related to its cellular components",
+  "venue": "J Gen Physiol 74:85-104",
+  "url": "https://doi.org/10.1085/jgp.74.1.85",
+  "pmid": "479823",
+  "kind": "paper",
+  "tags": [
+   "vascular",
+   "animals",
+   "models"
+  ],
+  "note": "Small arteries' active tension falls with shortening along a line that reaches zero at 0.38 of the optimal circumference: a nearly shut vessel's muscle pulls weakly."
+ },
+ {
   "id": "mulvany1990",
   "authors": "Mulvany MJ, Aalkjaer C",
   "year": 1990,
@@ -887,6 +903,20 @@
    "anatomy"
   ],
   "note": "Each perforator supplies its own territory — a perforasome — linked to its neighbours by direct and indirect vessels."
+ },
+ {
+  "id": "schiffrin1995",
+  "authors": "Schiffrin EL, Deng LY, Larochelle P",
+  "year": 1995,
+  "title": "Progressive improvement in the structure of resistance arteries of hypertensive patients after 2 years of treatment with an angiotensin I-converting enzyme inhibitor. Comparison with effects of a beta-blocker",
+  "venue": "Am J Hypertens 8:229-36",
+  "url": "https://doi.org/10.1016/0895-7061(95)96211-2",
+  "pmid": "7794571",
+  "kind": "paper",
+  "tags": [
+   "vascular"
+  ],
+  "note": "Human subcutaneous resistance arteries: the media is 5.2% of the lumen diameter in normotensive people, 7.5-8% in untreated hypertension."
  },
  {
   "id": "schleip2005",
