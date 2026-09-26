@@ -24,7 +24,7 @@ from pathlib import Path
 import numpy as np
 
 from . import breath, checks, codegen, robustness, scenarios
-from .findings import write_findings
+from .findings import write_breath_and_trees, write_findings
 from .models import tree, vessel
 from .params import load, papers
 
@@ -87,7 +87,7 @@ def main() -> dict:
     rise, peak = vessel.hyperaemia(p)
     squeezed = {name: vessel.squeeze_response(p, pulses) for name, pulses in vessel.SQUEEZES.items()}
     robust = robustness.run()
-    breath_maps = breath.maps(p)
+    breath_maps = breath.maps(p) | {"easing": breath.easing(p)}
     trees = {"figure": tree.figure(), "robustness": tree.robustness(), "siblings": tree.siblings(),
              "params": param_table("tree", {})}
     runs = scenarios.all_runs(p)
@@ -154,6 +154,7 @@ def main() -> dict:
 
     codegen.write()
     write_findings(data)
+    write_breath_and_trees(data)
     run_dir = SIM / "results" / f"{data['run']['date']}-vessel"
     run_dir.mkdir(parents=True, exist_ok=True)
     (run_dir / "manifest.json").write_text(json.dumps(

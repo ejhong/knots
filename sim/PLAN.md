@@ -1,11 +1,13 @@
 # Simulation plan: from mystery to experiment
 
-*Status (26 Sep 2026): reassessed from scratch. Stage 0 is done. The first model, T1 as **the vessel switch**, is built from
-sourced parameters, validated against measurements, checked for robustness, and live at `/simulation/` (unlisted); four
-feasibility checks are answered (`findings/001-can-a-perforator-hold.md`). The aim now reaches past "which theory can" to "what
-would settle it": the measurement a lab should make first, with each theory's predicted result sealed in advance. Written from
-the author's brief ([BRIEF.md](BRIEF.md), verbatim) and reassessed against this repo; where the two differ, this plan holds. A
-number marked (verify) has no source yet: source it before using it.*
+*Status (26 Sep 2026): reassessed from scratch; M1 largely done. T1, **the vessel switch**, is built from sourced
+parameters, validated, checked for robustness, and now carries the breath's movement route (fitted to squeezed arteries)
+and a tree of a parent and its children. The results are on the site: the bench at `/simulation/`, and the case for
+researchers at `/research/` (in the top bar), with the observations as a dated draft (`observations/spec.yaml`).
+Findings notes 001 and 002 are generated from the run. The aim reaches past "which theory can" to "what would settle
+it": the measurement a lab should make first, with each theory's predicted result sealed in advance. Written from the
+author's brief ([BRIEF.md](BRIEF.md), verbatim) and reassessed against this repo; where the two differ, this plan
+holds. A number marked (verify) has no source yet: source it before using it.*
 
 ## 0. The objective
 
@@ -52,7 +54,7 @@ proponents of each theory, and a lab.
 5. **Predictions**: a local flush at release (laser speckle); pressure-then-release faster and brighter than calm; slowing
    near the fold; breath releases knots through drive only if its effect on drive is uneven. O2 (pressure, then release) is
    reproduced well; O1 only in part (below).
-6. **Breath through drive** (exploratory runs, 26 Sep; to become trials P10–P12). Tone rises within seconds and eases over
+6. **Breath through drive** (now trials in `knots_sim/breath.py`, findings 002). Tone rises within seconds and eases over
    about half a minute (the gasp reflex: mayrovitz2026), so an even breath keeps knots held. A breath that lowers drive more
    than it raises it releases *easy* knots (just above their threshold) over 3–5 breaths; knots a fifth of the way up the
    band need a stronger or sustained drop; knots two-thirds up held under every variant tried. That matches O1's "many small
@@ -66,8 +68,8 @@ proponents of each theory, and a lab.
    arterioles (goto1996); aortic smooth muscle de-stiffens after bouts of cyclic stretch and re-stiffens slowly (neutel2023).
    In airway smooth muscle the breath's own stretch keeps the muscle from freezing (fredberg1999), and the latch is a
    low-friction state that deep breaths fail to reverse (fredberg1996). None of this has been measured in a perforator.
-8. **Trees make clusters and queues** (exploratory runs, 26 Sep, small trees with guessed resistances; to become the network
-   stage). *Siblings on one feed protect each other:* each closure raises the pressure that holds the others open, so a surge
+8. **Trees make clusters and queues** (now `knots_sim/models/tree.py`, findings 002: across 256 plausible trees, a cluster
+   whenever the parent holds, most of it freed within 5 s of the parent's release in 59%, something left behind in 84%). *Siblings on one feed protect each other:* each closure raises the pressure that holds the others open, so a surge
    shut only 2 of 8 siblings, and releasing a knot did not shut a neighbour in its place. *A parent and its children behave
    differently:* when a local surge shuts a parent vessel, the pressure below it collapses (to about 20 mmHg) and all four of
    its children snap shut within seconds, a cluster from one knot. When the parent is released, the pressure below surges and
@@ -312,7 +314,14 @@ M5. The top-bar link comes when the author says (D2); the natural moment is matr
 
 - **Done now (26 Sep):** this plan; the perforator theory as presented on the site (card, introduction, plate, About);
   eight papers verified and added to the library (movement, the latch, the gamma loop).
-- **Next sessions (no papers needed):** M1, then M2. Breath routes in `knots_sim/interface.py`; the movement route and the
+- **Done in M1 (26 Sep):** the movement route in T1 (`k_mv`, `tau_w`, `tau_z` fitted to clifford2006); release maps over
+  knot depth for every breath route, and the least movement per breath (`knots_sim/breath.py`); the tree
+  (`knots_sim/models/tree.py`) with robustness over 256 trees; the exam drafted as data (`observations/spec.yaml`,
+  shown on the site as a draft); the Research page; a movement control on the bench; findings 002.
+- **Still in M1:** the shared interface (`interface.py`) with the other breath routes (local nerve, attention,
+  chemistry); the field (a patch of a few hundred vessels under one breath, broad against focused); P12 (old and new
+  knots) waits for the latch.
+- **Next sessions (no papers needed):** the rest of M1, then M2. Breath routes in `knots_sim/interface.py`; the movement route and the
   pulse variant in T1 (ljung1975, clifford2006, goto1996, neutel2023 for their shapes and sizes); P10–P12 as trials; the field
   in Python and on the bench; the exam drafted in `observations/spec.yaml` for the author; then T6 and T3.
 - **At home, with the papers:** T2 live, and the latch-hardening variant; then T4, T5 and the gamma loop.

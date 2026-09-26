@@ -108,3 +108,16 @@ if __name__ == "__main__":
     for k, xs in m["least_movement"].items():
         print(f"least movement {k}: " + " ".join("  none" if x is None else f"{x:6.3f}" for x in xs))
     print(f"{time.time() - t0:.0f} s")
+
+
+def easing(p: dict[str, float] | None = None, taus: tuple[float, ...] = (0.0, 6.0, 3.0, 1.5),
+           depths: tuple[float, ...] = (0.01, 0.1)) -> dict:
+    """One breath or many: when an uneven breath (−0.06) releases an easy knot, if the skin's small arteries eased
+    faster than the fitted value (0 in `taus` means the fitted tau_down)."""
+    p = p or v.params()
+    rows = []
+    for tau in taus:
+        q = p | ({"tau_down": tau} if tau else {})
+        rows.append({"tau_down": q["tau_down"], "fitted": not tau,
+                     "release_s": [release_time(q, score(q, d, "uneven", 0.06), "uneven", 0.06) for d in depths]})
+    return {"depths": list(depths), "swing": 0.06, "rows": rows}

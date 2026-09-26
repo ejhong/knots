@@ -1,7 +1,10 @@
 # The simulation section — design
 
-*The site's side of the simulation phase. The research plan is `sim/PLAN.md`; the look is `docs/DESIGN.md`. Built so
-far, at `/simulation/` (unlisted, noindex): the switch and the bench for T1 (the vessel switch), the four checks, the
+*The site's side of the simulation phase. The research plan is `sim/PLAN.md`; the look is `docs/DESIGN.md`. The section
+now has two pages. `/research/` (in the top bar as Research, noindex for now) is the case for researchers: the problem,
+the observations as a dated draft, the theories, what physics allows, the breath's routes, trees, what each theory
+predicts a recording would show, the experiment as a decision tree, and what is needed; its figures are drawn at build
+time by `src/sim/figures.ts`. `/simulation/` is the bench. Built so far at `/simulation/` (unlisted, noindex): the switch and the bench for T1 (the vessel switch), the four checks, the
 predictions, robustness, the model against measurements, and every parameter with its quote. Still to come, in the order of
 `sim/PLAN.md` §9–10: the breath's routes and the field, the exam, the matrix, the fingerprints, and the decision tree for labs.
 The name is decision D1 in the plan.*

@@ -73,7 +73,10 @@ design: `docs/SIMULATION.md`.
 - [x] Write once: SymPy → numpy and TypeScript, with golden-trajectory tests
 - [x] The switch and the bench, live on an unlisted page (`/simulation/`); findings note 001
 - [x] The perforator theory presented as the simulation found it: the vessel holds itself, the collar does not, breath by drive and by movement
-- [ ] M1: the breath's routes, kept open (drive, movement, local nerve, attention, chemistry); T1 with movement and the pulse variant; trials P10–P12; the field (a patch of perforators under one breath); the exam drafted for the author
+- [x] The movement route in T1, fitted to squeezed arteries; release maps over knot depth for drive and movement; the least movement per breath
+- [x] The tree: a parent's knot makes a cluster of its children, its release frees most of them, the hardest stays (256 trees)
+- [x] The Research page (`/research/`, in the top bar): the problem, the observations as a dated draft, the theories, what physics allows, breath, trees, what each theory predicts a recording would show, the experiment, what we need
+- [ ] M1, the rest: the other breath routes (local nerve, attention, chemistry) in a shared interface; the pulse variant; the field (a patch of perforators under one breath, broad against focused); the exam rewritten by the author
 - [ ] M2: T6 and T3; the harness (sweep, scoring); matrix v1; the exam frozen (dated; OSF) and shown sealed
 - [ ] M3: T2 live (Hai–Murphy; needs the paper) with latch hardening; T4, T5, the gamma loop, hybrids; matrix v2
 - [ ] M4: instrument models; each theory's fingerprint at a release; the decision tree for labs, its predictions sealed

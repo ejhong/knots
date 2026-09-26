@@ -43,9 +43,11 @@ show all of it. Read `sim/PLAN.md` (the research plan: its path, next steps, pap
   - `interaction/` picking and tools; `ui/` DOM bindings for the atlas and hero
   - `data/` roots, knot zones, perforator density (anatomical data used by the viewer)
 - `src/data/` — site-wide registries: hypotheses, references (+ `papers.json`), timeline, map index
-- `src/pages/` — introduction, atlas, hypotheses, traditions, library, about, simulation (unlisted; `lab` is a dev bench)
+- `src/pages/` — introduction, atlas, hypotheses, research (the case for researchers), traditions, library, about, simulation (the
+  bench; unlisted; `lab` is a dev bench)
 - `src/sim/` — the simulation in the browser: `models/*.ts` (generated from Python; never edit), `vessel.ts` (stepper,
-  calibration, inputs), `draw.ts` (figures as SVG strings), `bench.ts` (the live instrument); `src/data/sim/` (generated)
+  calibration, inputs), `draw.ts` and `figures.ts` (figures as SVG strings), `bench.ts` (the live instrument); `src/data/sim/`
+  (generated)
 - `scripts/body/build-body.ts` — regenerates `public/models/body.*` from MakeHuman (cached downloads)
 - `scripts/shot.ts` — Playwright screenshot bench; use it to check visual changes
 - `sim/` — the simulation phase (Python, uv), built stage by stage (`sim/README.md` has the layout as it grows): `PLAN.md` (its

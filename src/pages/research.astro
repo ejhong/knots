@@ -26,6 +26,9 @@ const pct = (x: number) => `${Math.round(100 * x)}%`;
 const guessed = (data.params.vessel as { confidence: string }[]).filter((row) => row.confidence === 'guessed').length;
 const sourced = (data.params.vessel as { confidence: string }[]).length - guessed;
 const need10 = breath.least_movement.within_10;
+const easing = (data.breath as unknown as { easing: { swing: number; rows: { tau_down: number; fitted: boolean; release_s: (number | null)[] }[] } }).easing;
+const easeFitted = easing.rows.find((row) => row.fitted)!;
+const easeFast = easing.rows.find((row) => Math.abs(row.tau_down - 3) < 1e-9)!;
 const depthAt = (d: number) => breath.depths.indexOf(d);
 
 const cite = (id: string) => {
@@ -256,7 +259,8 @@ const index = [
           just above its threshold needs the tissue to move by only {pct(need10[depthAt(0.01)] ?? 0)} of a squeeze that shuts it, repeated for ten breaths;
           a knot a fifth of the way up needs {pct(need10[depthAt(0.2)] ?? 0)}, and the deepest none will reach.</p>
         <p class="find"><strong>One breath or many</strong> turns on one number nobody has measured in skin: how fast its small arteries ease when drive
-          falls. Fitted to the gasp's slow recovery, the easiest knot takes three breaths through drive; if they eased within about 3 s, it would go in one.</p>
+          falls. With the value fitted to the gasp's slow recovery ({Math.round(easeFitted.tau_down)} s), an uneven breath releases the easiest knot after{' '}
+          {Math.round(easeFitted.release_s[0] ?? NaN)} s; if they eased in 3 s, after {Math.round(easeFast.release_s[0] ?? NaN)} s, about one breath.</p>
       </div>
       <figure class="paper-fig small" set:html={leastMovement(breath)} />
     </div>

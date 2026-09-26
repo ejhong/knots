@@ -11,7 +11,8 @@ type Breath = 'off' | 'even' | 'relaxing';
 const TRIALS: Record<string, string> = {
   knot_forms: 'A surge of stress carries tone past the fold at 10 s; at 40 s stress falls back but stays raised. The vessel shuts, and stays shut.',
   stress_eases: 'The knot forms as before; at 110 s stress eases back to rest. Tone fades over about 14 s, and the vessel reopens with a flush.',
-  press_and_release: 'The knot forms; at 110 s pressure for 40 s. The muscle gives up tone under pressure and the patch runs up a debt; as the pressure lifts, the vessel reopens and the nerves light.',
+  press_and_release: 'The knot forms; at 110 s pressure for 40 s. The muscle gives up tone under pressure and the patch runs up a debt; as the pressure lifts, the squeeze loosens the wall, the vessel reopens and the nerves light.',
+  moving_breath: 'The knot forms; at 40 s stress falls back a fifth of the way up the band and stays there, and each breath begins to move the tissue at the knot. Drive never changes: the loosening adds up breath by breath until it lets go.',
   relaxing_breath_at_threshold: 'The knot forms; at 40 s stress sits just above the reopening threshold, and each out-breath lowers drive a little. It lets go after a few breaths.',
   gasp_near_fold: 'Tone sits two-thirds up the band; a deep breath at 30 s pushes it past the fold for a few seconds. Near a fold everything slows, and the vessel stays open.',
 };
@@ -119,6 +120,13 @@ export function mountBench(root: HTMLElement): void {
       $$<HTMLButtonElement>('[data-breath]').forEach((o) => o.setAttribute('aria-pressed', String(o === b)));
     }),
   );
+  $$<HTMLButtonElement>('[data-move]').forEach((b) =>
+    b.addEventListener('click', () => {
+      toManual();
+      moving = Number(b.dataset.move);
+      $$<HTMLButtonElement>('[data-move]').forEach((o) => o.setAttribute('aria-pressed', String(o === b)));
+    }),
+  );
   $$<HTMLButtonElement>('[data-speed]').forEach((b) =>
     b.addEventListener('click', () => {
       speed = Number(b.dataset.speed);
@@ -139,7 +147,9 @@ export function mountBench(root: HTMLElement): void {
     stress = 0;
     stressIn.value = '0';
     breath = 'off';
+    moving = 0;
     $$<HTMLButtonElement>('[data-breath]').forEach((o) => o.setAttribute('aria-pressed', String(o.dataset.breath === 'off')));
+    $$<HTMLButtonElement>('[data-move]').forEach((o) => o.setAttribute('aria-pressed', String(o.dataset.move === '0')));
     $$<HTMLButtonElement>('[data-trial]').forEach((b) => b.setAttribute('aria-pressed', 'false'));
     out('note').textContent = '';
     reset();

@@ -1,8 +1,8 @@
 {
  "run": {
   "date": "2026-09-26",
-  "inputs": "edf3e4dbe241",
-  "commit": "0861f00",
+  "inputs": "46dee96cb05d",
+  "commit": "99b2138",
   "dirty": true,
   "python": "3.11.15",
   "packages": {
@@ -1171,6 +1171,47 @@
     0.7227,
     0.9375,
     null
+   ]
+  },
+  "easing": {
+   "depths": [
+    0.01,
+    0.1
+   ],
+   "swing": 0.06,
+   "rows": [
+    {
+     "tau_down": 14.3,
+     "fitted": true,
+     "release_s": [
+      41.08,
+      null
+     ]
+    },
+    {
+     "tau_down": 6.0,
+     "fitted": false,
+     "release_s": [
+      20.12,
+      22.96
+     ]
+    },
+    {
+     "tau_down": 3.0,
+     "fitted": false,
+     "release_s": [
+      10.18,
+      11.44
+     ]
+    },
+    {
+     "tau_down": 1.5,
+     "fitted": false,
+     "release_s": [
+      9.12,
+      10.14
+     ]
+    }
    ]
   }
  },

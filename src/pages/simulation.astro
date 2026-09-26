@@ -126,12 +126,21 @@ const repo = 'https://github.com/ejhong/knots/blob/main';
           </div>
         </div>
         <div class="ctl-row">
+          <span class="k">the breath moves the tissue here</span>
+          <div class="seg-row" role="group" aria-label="How much the breath moves the tissue at the knot">
+            <button class="ctl" type="button" data-move="0" aria-pressed="true">not at all</button>
+            <button class="ctl" type="button" data-move="0.1" aria-pressed="false">a little</button>
+            <button class="ctl" type="button" data-move="0.3" aria-pressed="false">more</button>
+          </div>
+        </div>
+        <div class="ctl-row">
           <span class="k">trials</span>
           <div class="trials">
             <button class="ctl" type="button" data-trial="knot_forms" aria-pressed="false">a knot forms</button>
             <button class="ctl" type="button" data-trial="stress_eases" aria-pressed="false">stress eases</button>
             <button class="ctl" type="button" data-trial="press_and_release" aria-pressed="false">pressure, then release</button>
             <button class="ctl" type="button" data-trial="relaxing_breath_at_threshold" aria-pressed="false">relaxing breaths</button>
+            <button class="ctl" type="button" data-trial="moving_breath" aria-pressed="false">the breath moves the tissue</button>
             <button class="ctl" type="button" data-trial="gasp_near_fold" aria-pressed="false">a breath near the fold</button>
           </div>
         </div>

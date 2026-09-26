@@ -25,6 +25,15 @@ const GLYPH: Record<string, string> = {
   nerve: '神経',
   central: '覚',
 };
+// Where each theory stands in the simulation (the Research page).
+const TESTS: Record<string, string> = {
+  perforator: 'modelled: one vessel from measured numbers, the breath by drive and by movement, and a tree of a parent and its children',
+  latch: 'next: it needs the Hai–Murphy rate constants',
+  'trigger-point': 'to model',
+  densification: 'to model',
+  nerve: 'to model',
+  central: 'to model early: the account every other view has to beat',
+};
 const index = [
   ...HYPOTHESES.map((h, i) => ({ id: h.id, label: `${String(i + 1).padStart(2, '0')} ${h.label}` })),
   { id: 'compare', label: 'side by side' },
@@ -74,6 +83,10 @@ const index = [
             </>
           ))}
         </dl>
+        <p class="tests">
+          <span class="mono k">in the tests</span> {TESTS[h.id]}.{' '}
+          <a href={`${base}/research/#theories`}>Research →</a>
+        </p>
         <p class="refs mono">
           {h.refs
             .map((r) => refById(r))
@@ -265,5 +278,21 @@ const index = [
     .kv dd {
       margin-bottom: 8px;
     }
+  }
+  .tests {
+    font-family: var(--font-serif);
+    font-size: 12.5px;
+    line-height: 1.55;
+    margin: 10px 0 4px;
+    padding: 8px 12px;
+    background: var(--frame-bg);
+    border-radius: 6px;
+  }
+  .tests .k {
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--seal);
+    margin-right: 6px;
   }
 </style>

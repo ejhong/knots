@@ -19,21 +19,25 @@ Data that people review, the parameters and (later) the tests, lives outside the
 ```
 params/vessel.yaml       T1, the vessel switch: every parameter with its source, locator and quoted line
 params/checks.yaml       numbers for the feasibility checks (collar, cooling, latch)
+params/tree.yaml         the tree's own numbers (guesses, sampled)
+observations/spec.yaml   the exam: what people report, as tests (a dated draft until the author seals it)
 knots_sim/
   pubmed.py              PubMed E-utilities and Europe PMC full texts, paced and cached (.cache/, ignored)
   library.py             papers the simulation stands on, merged into src/data/papers.json from PubMed records
   params.py              loads the tables; --verify checks every quote against its source
   models/vessel.py       the vessel switch, written once in SymPy; calibration and fitting to measured targets
+  models/tree.py         a parent and its children, each a switch, sharing pressure; many trees at once
   scenarios.py           the trials as input scores: a knot forms, holds, lets go
+  breath.py              the breath's routes over knot depth: release maps, the least movement per breath
   robustness.py          Sobol sampling of every uncertain parameter; which ones decide the switch
   checks.py              the collar and cooling checks
   codegen.py             the model's equations as TypeScript (src/sim/models/)
   export.py  findings.py run everything; write src/data/sim/*.json, the findings note and the run manifest
 tests/                   physics, calibration, and freshness of what the site shows
-findings/                notes written from a run's numbers (001-can-a-perforator-hold.md)
+findings/                notes written from a run's numbers (001-can-a-perforator-hold.md, 002-breath-and-trees.md)
 exploratory/             quick probes behind the plan's findings, kept as run (not tests)
 results/<run>/           run manifests (committed); raw/ is not
 private/                 papers for reading (ignored by git: never commit PDFs)
 ```
 
-Still to come (PLAN.md §9–11): `interface.py` (the breath's routes), `observations/spec.yaml` (the exam), the other theories' models, the field, the sweep harness, the instrument models.
+Still to come (PLAN.md §9–11): `interface.py` (the other breath routes), the field, the other theories' models, the sweep harness, the instrument models.
