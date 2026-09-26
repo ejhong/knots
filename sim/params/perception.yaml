@@ -1,0 +1,148 @@
+# T6, perception: knots as places the nervous system makes tender. Its strongest form (src/data/hypotheses.ts): central
+# plasticity, kept up by threat, attention and poor sleep; released by safety, sleep and a change of attention;
+# overbreathing makes tingling anywhere. Each place's felt intensity is its ordinary input, times its local gain, times a
+# central gain that stress raises; a knot is felt where that crosses a threshold (knots_sim/models/perception.py).
+
+model: perception
+title: Perception
+parameters:
+  kappa:
+    symbol: κ
+    label: "how much stress raises what is felt"
+    value: 0.8
+    unit: "per surge"
+    range: [0.3, 1.5]
+    confidence: guessed
+    note: "Central gain rises with arousal: 1 + κ times the stress. A standardised social stressor raised pain sensitivity in healthy people (crettaz2013); its size here is a guess."
+
+  tau_arousal:
+    symbol: τ_a
+    label: "how fast arousal follows stress"
+    value: 40
+    unit: s
+    range: [10, 120]
+    confidence: guessed
+    note: "Arousal, and with it the central gain, follows stress and the breath with this time constant. Relaxing slow breathing lowers sympathetic arousal over a session (busch2012)."
+
+  phase_amp:
+    symbol: φ
+    label: "how much less is felt during the in-breath"
+    value: 0.02
+    unit: "1"
+    range: [0.0, 0.05]
+    confidence: inferred
+    source: arsenault2013
+    locator: abstract
+    quote: "Pain ratings were not affected by breathing patterns (p=0.3), but were significantly lower during inspiration compared with expiration (p=0.02)."
+    note: "Felt intensity is lower near the top of the in-breath than of the out-breath; the authors call the effect small, so its size is kept to a few percent."
+
+  attention_gain:
+    symbol: α
+    label: "how much attending to a place raises what is felt there"
+    value: 0.2
+    unit: "1"
+    range: [0.1, 0.4]
+    confidence: guessed
+    note: "Attending to a painful stimulus makes it more intense and unpleasant (miron1989); the size is a guess."
+
+  tau_extinct:
+    symbol: τ_e
+    label: "how fast attention with safety quiets a place"
+    value: 60
+    unit: s
+    range: [10, 300]
+    confidence: guessed
+    note: "Attention held on a place while breathing slowly (felt as safe) lowers its local gain toward half its base, with this time constant: the account's release of a single knot."
+
+  tau_sens:
+    symbol: τ_s
+    label: "how slowly a held place sensitises"
+    value: 7200
+    unit: s
+    range: [1800, 18000]
+    confidence: guessed
+    note: "While a knot is felt, its place's gain creeps up toward (1 + sens_max) times its base, over hours: why old knots persist."
+
+  sens_max:
+    symbol: σ_max
+    label: "how far a held place can sensitise"
+    value: 0.5
+    unit: "1"
+    range: [0.2, 1.0]
+    confidence: guessed
+    note: "The most a sustained knot raises its own place's gain."
+
+  cpm:
+    symbol: β
+    label: "how much the loudest knot quiets the others"
+    value: 0.15
+    unit: "1"
+    range: [0.0, 0.3]
+    confidence: guessed
+    note: "Pain inhibits pain: a felt knot lowers what is felt elsewhere (conditioned pain modulation; moont2010), so when it lets go others can surface."
+
+  relief:
+    symbol: r
+    label: "how much a release eases arousal"
+    value: 0.1
+    unit: "surge"
+    range: [0.0, 0.3]
+    confidence: guessed
+    note: "A felt release is a signal of safety: arousal drops by this much at once."
+
+  hysteresis:
+    symbol: h
+    label: "the gap between a knot appearing and fading"
+    value: 0.1
+    unit: "1"
+    range: [0.0, 0.2]
+    confidence: guessed
+    note: "A knot is felt once its intensity passes 1, and fades only below 1 - h."
+
+  input_sd:
+    symbol: σ_u
+    label: "how uneven ordinary input is from place to place"
+    value: 0.4
+    unit: "1"
+    range: [0.2, 0.6]
+    confidence: guessed
+    note: "Each place's ordinary input, lognormal about 1: the places that surface first."
+
+  guard:
+    symbol: γ
+    label: "how much stress raises input where it is held"
+    value: 0.5
+    unit: "per surge"
+    range: [0.2, 1.0]
+    confidence: guessed
+    note: "Muscles guard where stress is held, raising the input there by γ times the stress times the place's share."
+
+  press_gain:
+    symbol: g_p
+    label: "input a pressing hand adds"
+    value: 1.0
+    unit: "per 40 mmHg"
+    range: [0.5, 2.0]
+    confidence: guessed
+    note: "Pressure on a place adds to its input: a knot announces itself under the roller."
+
+  tingle_co2:
+    symbol: ΔP_CO2
+    label: "fall in carbon dioxide that makes tingling"
+    value: 20
+    unit: mmHg
+    range: [15, 25]
+    confidence: measured
+    source: macefield1991
+    locator: abstract
+    quote: "This occurred when alveolar PCO2 (PACO2) had declined on average by 20 mmHg."
+    note: "Overbreathing's tingling appears in the hands, face and trunk together, once alveolar CO2 has fallen this far: widespread, not at one knot. The trials' slow breathing does not lower CO2 this far, so in them the account makes no sparks."
+
+  u_scale:
+    symbol: u₀
+    label: "how close ordinary input is to being felt as a knot"
+    value: 0.5
+    unit: "1"
+    range: [0.3, 0.7]
+    confidence: guessed
+    note: "At rest a place's felt intensity is u₀ times its ordinary input: only the loudest places come near the threshold of 1. In the exam u₀ is set by the shared rule (knots_sim/exam.py): the typical place where stress is held sits in the middle of its window, so a surge makes it a knot and the holding stress keeps it one."

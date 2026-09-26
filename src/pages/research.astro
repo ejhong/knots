@@ -3,9 +3,10 @@ import Doc from '../layouts/Doc.astro';
 import data from '../data/sim/vessel.json';
 import exam from '../data/sim/exam.json';
 import adaptData from '../data/sim/adapt.json';
+import matrixData from '../data/sim/matrix.json';
 import { refById } from '../data/references';
 import { switchDiagram } from '../sim/draw';
-import { decisionTree, fieldPanels, knotSets, leastMovement, releaseMap, treeStory, type AdaptStudy, type BreathMaps, type FieldStudy, type TreeFigure } from '../sim/figures';
+import { cellMark, countsStrip, decisionTree, fieldPanels, knotSets, leastMovement, releaseMap, treeStory, type AdaptStudy, type BreathMaps, type Cell, type FieldStudy, type Matrix, type TreeFigure } from '../sim/figures';
 import { calibrate, type Params } from '../sim/vessel';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
@@ -64,28 +65,101 @@ type Obs = { id: string; group: string; title: string; text: string; evidence: s
 const groups = exam.groups as { id: string; label: string }[];
 const obs = exam.observations as Obs[];
 
+// The exam: every modelled theory through the same trials (src/data/sim/matrix.json, from `knots_sim.exam`).
+const mx = matrixData as unknown as Matrix;
+const ROWS: { glyph: string; key: string; name: string; id?: string; why?: string }[] = [
+  { glyph: '結', key: 'perforator', name: 'Perforators', id: 'T1' },
+  { glyph: '閂', key: 'latch', name: 'Vascular latch', why: 'next: it shares the switch; the latch needs the Hai–Murphy rate constants' },
+  { glyph: '点', key: 'trigger-point', name: 'Trigger points', id: 'T3' },
+  { glyph: '膠', key: 'densification', name: 'Densification', why: 'to model: the layers’ glide, and hyaluronan thinning as they move' },
+  { glyph: '神経', key: 'nerve', name: 'Nerves', why: 'to model: a sensitised nerve where it pierces the fascia' },
+  { glyph: '覚', key: 'central', name: 'Perception', id: 'T6' },
+];
+const mxTheory = (id?: string) => mx.theories.find((t) => t.id === id);
+const obsTitle = Object.fromEntries(obs.map((o) => [o.id, o.title]));
+const partGroups = mx.parts.reduce<{ obs: string; parts: typeof mx.parts }[]>((acc, part) => {
+  const last = acc.at(-1);
+  if (last && last.obs === part.obs) last.parts.push(part);
+  else acc.push({ obs: part.obs, parts: [part] });
+  return acc;
+}, []);
+const nSets = mx.trials.samples;
+const cellText = (t: { name: string; samples: number; notes: Record<string, string> }, pid: string, says: string, c: Cell) => {
+  const note = t.notes[pid] ? ` ${t.notes[pid]}` : '';
+  if (c === 'silent') return `${pid} ${says}: ${t.name} is silent: its account says nothing about this.${note}`;
+  if (c === 'not run') return `${pid} ${says}: not run yet (it needs the mechanics or body stage).${note}`;
+  const k = Math.round(c * t.samples);
+  return `${pid} ${says}: holds in ${k} of ${t.samples} plausible settings (${Math.round(100 * c)}%).${note}`;
+};
+const bestShare = (t: (typeof mx.theories)[number], pid: string) => {
+  const vals = t.variants.map((v) => v.cells[pid]).filter((c): c is number => typeof c === 'number');
+  return vals.length ? Math.max(...vals) : null;
+};
+const scored = mx.parts.filter((part) => mx.theories.some((t) => bestShare(t, part.id) !== null));
+const noneCan = scored.filter((part) => mx.theories.every((t) => (bestShare(t, part.id) ?? 0) === 0));
+const onlyOne = scored
+  .map((part) => ({ part, who: mx.theories.filter((t) => (bestShare(t, part.id) ?? 0) > 0) }))
+  .filter((x) => x.who.length === 1);
+const variantLabel = (name: string) => name.replace('+', ' + ');
+// What each modelled theory can do in the exam, by its best variant per part: in at least a quarter of its settings,
+// in fewer, in none.
+const examOf = (id: string) => {
+  const t = mxTheory(id);
+  const b = (pid: string) => (t ? bestShare(t, pid) : null);
+  return {
+    can: mx.parts.filter((part) => (b(part.id) ?? -1) >= 0.25),
+    some: mx.parts.filter((part) => {
+      const x = b(part.id);
+      return x !== null && x > 0 && x < 0.25;
+    }),
+    none: mx.parts.filter((part) => b(part.id) === 0),
+  };
+};
+const phrases = (ps: { short: string }[]) => ps.map((part) => part.short).join('; ');
+const partById = (pid: string) => mx.parts.find((part) => part.id === pid)!;
+const bestOf = (id: string, pid: string) => {
+  const t = mxTheory(id);
+  return t ? (bestShare(t, pid) ?? 0) : 0;
+};
+const o22best = Math.max(...mx.theories.map((t) => bestShare(t, 'O2.2') ?? 0));
+// Where a theory leads: the parts in which its best share beats every other modelled theory's.
+const strengths = (id: string) =>
+  mx.parts
+    .map((part) => ({ part, b: bestOf(id, part.id), others: Math.max(...mx.theories.filter((t) => t.id !== id).map((t) => bestShare(t, part.id) ?? 0)) }))
+    .filter(({ part, b, others }) => b > others && part.id !== 'O15')
+    .sort((a, b) => b.b - a.b)
+    .slice(0, 2)
+    .map(({ part, b }) => `to ${part.short} (${pct(b)})`)
+    .join(' and ');
+const e1 = examOf('T1');
+const e3 = examOf('T3');
+const e6 = examOf('T6');
+const inExam = (e: ReturnType<typeof examOf>) => `In the exam, in at least a quarter of its settings: ${phrases(e.can) || 'nothing'}.`;
+const notInExam = (e: ReturnType<typeof examOf>) => (e.none.length ? `In the exam, in none of its ${nSets} settings: ${phrases(e.none)}.` : '');
+
+
 const THEORIES = [
-  { glyph: '結', id: 'perforator', name: 'Perforators', who: 'proposed here', hold: 'A small artery shut by the muscle of its own wall: a switch, stable open or shut.', release: 'Tone falling below its reopening threshold (calm; a breath that lowers drive more than it raises it), or movement loosening the wall; pressure, then release.', status: 'modelled', statusText: 'one vessel; a tree; how a knot sets' },
+  { glyph: '結', id: 'perforator', name: 'Perforators', who: 'proposed here', hold: 'A small artery shut by the muscle of its own wall: a switch, stable open or shut.', release: 'Tone falling below its reopening threshold (calm; a breath that lowers drive more than it raises it), or movement loosening the wall; pressure, then release.', status: 'modelled', statusText: 'one vessel; a tree; how a knot sets; through the exam' },
   { glyph: '閂', id: 'latch', name: 'Vascular latch', who: 'Johnson', hold: 'Smooth muscle in the latch state, holding tension cheaply; less flow leaves less energy to unlatch.', release: 'Attention to the held tissue, heat and cold, meditation.', status: 'next', statusText: 'shares the switch and how it sets; the latch needs the Hai–Murphy rate constants' },
-  { glyph: '点', id: 'trigger-point', name: 'Trigger points', who: 'Travell · Simons', hold: 'An energy crisis at an overactive endplate: contracture squeezes the capillaries, and ischaemia withholds the energy to relax.', release: 'Sustained compression, stretch, needling; a local twitch as it goes.', status: 'open', statusText: 'to model' },
+  { glyph: '点', id: 'trigger-point', name: 'Trigger points', who: 'Travell · Simons', hold: 'An energy crisis at an overactive endplate: contracture squeezes the capillaries, and ischaemia withholds the energy to relax.', release: 'Sustained compression, stretch, needling; a local twitch as it goes.', status: 'modelled', statusText: 'the energy crisis at an endplate; through the exam' },
   { glyph: '膠', id: 'densification', name: 'Densification', who: 'Stecco', hold: 'Hyaluronan between the fascial layers turned viscous: the layers stop gliding.', release: 'Friction, heat and movement.', status: 'open', statusText: 'to model' },
   { glyph: '神経', id: 'nerve', name: 'Nerves', who: 'Quintner · Cohen', hold: 'A sensitised nerve where it pierces the fascia.', release: 'Nerve gliding, desensitisation, freeing it with fluid.', status: 'open', statusText: 'to model' },
-  { glyph: '覚', id: 'central', name: 'Perception', who: 'clinical medicine', hold: 'Raised gain in the pain pathways, kept up by threat, attention and poor sleep.', release: 'Safety, sleep, a change of attention; overbreathing makes tingling anywhere.', status: 'open', statusText: 'to model early: the account to beat' },
+  { glyph: '覚', id: 'central', name: 'Perception', who: 'clinical medicine', hold: 'Raised gain in the pain pathways, kept up by threat, attention and poor sleep.', release: 'Safety, sleep, a change of attention; overbreathing makes tingling anywhere.', status: 'modelled', statusText: 'gain, arousal and attention on a body map: the account to beat; through the exam' },
 ];
 
 const VERDICTS: { glyph: string; name: string; status: string; can: string; cannot: string; open: string }[] = [
   { glyph: '結', name: 'Perforators', status: 'modelled',
-    can: `Hold a knot by the vessel's own wall (a switch in ${pct(r.share_bistable)} of plausible settings); let it go by pressure (fastest), by an uneven breath, or by movement; make clusters and a queue through its tree; release broadly or at one spot; held an hour or two, set, so that it holds at rest and lets go with a flush.`,
-    cannot: `Hold by its hyaluronan collar (a liquid, ${Math.round(col.pressure_over_drag)} times too weak); let go within a breath by warming.`,
+    can: `Hold a knot by the vessel's own wall (a switch in ${pct(r.share_bistable)} of plausible settings); let it go by pressure (fastest), by an uneven breath, or by movement; make clusters and a queue through its tree; held an hour or two, set, so that it holds at rest and lets go with a flush. ${inExam(e1)}`,
+    cannot: `Hold by its hyaluronan collar (a liquid, ${Math.round(col.pressure_over_drag)} times too weak); let go within a breath by warming. ${notInExam(e1)}`,
     open: `Whether knots sit on perforators. In healthy vessels the hold needs tone about ${(s.Aopen / s.urest).toFixed(1)} times rest; thicker walls (hypertension, perhaps age) and a lumen that closes tighter bring it nearer rest; a vessel only narrowed has no hold. Whether skin perforators adapt as arterioles do in the lab. How fast skin arterioles relax decides one breath or many.` },
   { glyph: '閂', name: 'Vascular latch', status: 'in part',
     can: 'Its core, a small artery held shut, is the same switch, and held long enough, its muscle adapts to being shut: memory, from the muscle’s own remodelling rather than latch bridges. The latch lets a held vessel stay held cheaply, and may harden an old knot against movement, as it does airway muscle against a deep breath.',
     cannot: 'Remember by the latch alone: relaxation follows the fall of calcium, not latch-bridge detachment.',
     open: 'The Hai–Murphy model itself (the rate constants); knots placed where no perforator lies, the brain and organs included, are its territory.' },
-  { glyph: '点', name: 'Trigger points', status: 'not yet run',
-    can: 'Its energy-crisis loop is itself a candidate switch, inside muscle, with a twitch, a softening nodule and falling spontaneous activity at release.',
-    cannot: 'Host micro knots at dozens per square inch, unless a knot is a single motor unit (a variant worth running).',
-    open: 'The loop’s dynamics with measured energetics; release by compression and stretch.' },
+  { glyph: '点', name: 'Trigger points', status: 'modelled',
+    can: `Hold a knot by its own ischaemia: the energy-crisis loop is a switch inside muscle, released by sustained pressure (calibrated to its 60–90 s) and by stretch, with a twitch as it goes. ${inExam(e3)}`,
+    cannot: `${notInExam(e3)} Its knots form over its slow loops, tens of minutes, and which endplates hold one is set more by their own activity than by where stress is held.`,
+    open: 'The loop’s energetics, measured at a contracture; a single motor unit as the unit (for micro knots); its slow sustaining factors, over weeks.' },
   { glyph: '膠', name: 'Densification', status: 'not yet run',
     can: 'Change glide between the fascial layers; the collar check does not touch it, since its claim is glide, not holding a vessel.',
     cannot: `Let go within a breath by heat (warming takes at least ${Math.round(cool.tau_s_at_max_flow)} s).`,
@@ -94,9 +168,9 @@ const VERDICTS: { glyph: string; name: string; status: string; can: string; cann
     can: 'Sensitivity where nerves pierce the fascia, which is where the perforators are.',
     cannot: 'Be told apart from perforators by location alone; it needs no change in blood flow at release.',
     open: 'Nerve-specific tests at the knots themselves.' },
-  { glyph: '覚', name: 'Perception', status: 'not yet run',
-    can: 'Any timing, any place, and a queue by salience: when the loudest spot quiets, the next is noticed.',
-    cannot: 'Change the tissue at the spot when a knot lets go: it predicts nothing local.',
+  { glyph: '覚', name: 'Perception', status: 'modelled',
+    can: `Any place and a queue by salience: when the loudest spot quiets, the next is noticed. ${inExam(e6)}`,
+    cannot: `Change the tissue at the spot when a knot lets go: it predicts nothing local. ${notInExam(e6)}`,
     open: 'The first measurement decides it: is there a local change at release, absent at a sham site?' },
 ];
 
@@ -124,6 +198,7 @@ const index = [
   { id: 'summary', label: 'summary' },
   { id: 'findings', label: 'what the simulations show' },
   { id: 'observations', label: 'what people report' },
+  { id: 'exam', label: 'the exam' },
   { id: 'theories', label: 'the theories' },
   { id: 'where', label: 'where, and how many' },
   { id: 'physics', label: 'what physics allows' },
@@ -164,7 +239,9 @@ const index = [
         small arteries only while tone stays well above rest, until, held an hour or two, its muscle adapts to being shut and
         the knot sets, holding at rest. Hyaluronan cannot hold a vessel, and warming cannot release one within a breath. The breath can release a knot
         through two routes, drive and movement, both fitted to measurements. A vessel holding a knot upstream shuts the
-        vessels below it, and releasing it frees most of them at once. <a href="#findings">What this says about each theory.</a>
+        vessels below it, and releasing it frees most of them at once. Three of the six, perforators, trigger points and
+        perception, have now sat the sealed exam, each in {nSets} plausible settings: no variant of any does everything people
+        report at once{noneCan.length > 0 && <>, and none can {phrases(noneCan)}</>}. <a href="#findings">What this says about each theory.</a>
       </p>
       <p>
         <strong>What would settle it.</strong> First, and cheapest: whether knots sit where a theory's anatomy puts them, checked blind against a
@@ -188,6 +265,17 @@ const index = [
       true: they say what each mechanism can and cannot do, and so where to look.
     </p>
     <ol class="findings">
+      <li><strong>Three theories through one exam, and none does everything.</strong> Perforators, trigger points and perception, each
+        in its strongest form, sat the same trials in {nSets} plausible settings each (<a href="#exam">the matrix</a>). No variant
+        of any produces every report at once{noneCan.length > 0 && <>, and none can {phrases(noneCan)}</>}. Each leads somewhere
+        different: perforators are the likeliest {strengths('T1')}; trigger points, {strengths('T3')}; perception,{' '}
+        {strengths('T6')}.</li>
+      <li><strong>The hand is the sharpest test so far.</strong> Pressed, with a slow out-breath, a knot often lets go within seconds,
+        under the hand (O2.2). No theory does it in more than {pct(o22best)} of its settings. The perforator switch lets go only as
+        the hand lifts: pressed, the vessel cannot open. Perception's knots too: a press is felt more, not less. A trigger point's
+        pressure release takes tens of seconds, as its own literature has it. Whether a knot lets go under a held hand or as the hand
+        lifts would tell them apart; if under the hand, within a breath, something the press itself undoes is missing from all
+        three.</li>
       <li><strong>A knot can be a small artery holding itself shut, but in healthy vessels only under strong, sustained tone.</strong> With measured wall
         strength and thickness, pressure and reflex timings, a small artery has two stable states over a band of tone, in {pct(r.share_bistable)} of{' '}
         {r.samples.toLocaleString('en-GB')} plausible settings: held until released, by mechanics alone. With the walls of healthy human small arteries the
@@ -196,7 +284,7 @@ const index = [
         decides it most; then how tightly the lumen closes, a guess: closed to {f2(tight.xc)} of its relaxed radius it holds at{' '}
         {(tight.Aopen / tight.urest).toFixed(1)} times rest, and a vessel that cannot close past its fold, {f2(s.xfold)} of it, has no hold at all. Narrowed is not held.</li>
       <li><strong>Held long enough, a knot can set.</strong> Smooth muscle held at a new length adapts to it. With adaptation at its measured pace, a knot held
-        shut at {holdMult}× resting tone comes to hold at rest after {setHealthy.toFixed(1)} h, outlasting the stress that made it; released, it opens wide,
+        shut at {holdMult}× resting tone comes to hold at rest after {setHealthy.toFixed(1)} h, outlasting the stress that made it; released, it opens wide,{' '}
         {oldKnot.peak_flow.toFixed(1)}× resting flow, where a new knot's release brings flow back only to rest. The four-hour closure test would tell, in a
         myograph.</li>
       <li><strong>Liquids cannot hold, and heat is too slow.</strong> Hyaluronan resists motion, not position ({Math.round(col.pressure_over_drag)} times too weak to
@@ -234,8 +322,9 @@ const index = [
       </table>
     </div>
     <p class="fine-print">
-      Only the perforator theory has been run in full; the vascular latch shares its core. The others' rows come from their own statements and the checks that
-      touch them, until their models run. A theory with more rows filled is not a better theory, only a more tested one.
+      Three theories have been through the <a href="#exam">exam</a>, each by its best variant for each part; the vascular latch shares the perforators'
+      core. The other rows come from their own statements and the checks that touch them, until their models run. A theory with more rows filled is not a
+      better theory, only a more tested one.
     </p>
   </section>
 
@@ -280,6 +369,121 @@ const index = [
       <p class="set-aside-sub">Reports that appear only in the essays, whose text was generated and is sometimes off, until the author confirms them:</p>
       <ul>{(exam.set_aside as string[]).map((x) => <li>{x}</li>)}</ul>
     </div>
+  </section>
+
+  <section id="exam" class="sec full" data-glyph="試">
+    <h2>Every theory through the same exam</h2>
+    <p class="sub">
+      Each theory, as a model in its strongest form, sits the same trials: a single knot at a range of depths, a patch of{' '}
+      {mx.trials.patch} places where stress is held, a cluster, and an hour of breath and mood. Every part of the sealed exam is
+      scored in {nSets} settings sampled across the theory's own plausible ranges, and a cell shows the share in which the part
+      holds, never one tuned setting. Where turning words into equations is a choice, each choice is a row. Three of six
+      theories have run: this is the first matrix. It says what each can do, never which is true.
+    </p>
+    <p class="legend-row" aria-hidden="true">
+      <span><Fragment set:html={cellMark(1)} /> holds in every setting</span>
+      <span><Fragment set:html={cellMark(0.25)} /> in a quarter (the disc's area)</span>
+      <span><Fragment set:html={cellMark(0)} /> in none of {nSets}</span>
+      <span><Fragment set:html={cellMark('silent')} /> silent: the account says nothing</span>
+      <span>blank: not run yet</span>
+    </p>
+    <div class="table-wrap">
+      <table class="matrix">
+        <caption class="sr-only">Every modelled theory and variant against every part of the sealed exam: the share of plausible settings in which each part holds</caption>
+        <thead>
+          <tr>
+            <th scope="col" rowspan="2" class="mx-name">theory · variant</th>
+            {partGroups.map((g) => <th scope="colgroup" colspan={g.parts.length} class="mx-obs" title={`${g.obs} ${obsTitle[g.obs] ?? ''}`}>{g.obs}</th>)}
+            <th scope="col" rowspan="2" class="mx-joint" title="the share of settings that pass every scored part at once">all</th>
+          </tr>
+          <tr>
+            {mx.parts.map((part) => <th scope="col" class="mx-part" title={`${part.id} ${part.says}`}>{part.id.includes('.') ? `.${part.id.split('.')[1]}` : '·'}</th>)}
+          </tr>
+        </thead>
+        <tbody>
+          {
+            ROWS.map((row) => {
+              const t = mxTheory(row.id);
+              if (!t) {
+                return (
+                  <tr class="mx-first mx-notyet">
+                    <th scope="row"><span class="g cjk">{row.glyph}</span> {row.name}</th>
+                    <td colspan={mx.parts.length + 1} class="mx-why">{row.why}</td>
+                  </tr>
+                );
+              }
+              return t.variants.map((v, i) => (
+                <tr class:list={[{ 'mx-first': i === 0 }]}>
+                  <th scope="row">
+                    {i === 0 ? <span class="mx-theory"><span class="g cjk">{row.glyph}</span> {row.name}</span> : null}
+                    <span class="mx-variant" title={v.description}>{variantLabel(v.name)}</span>
+                  </th>
+                  {mx.parts.map((part) => {
+                    const c = v.cells[part.id] as Cell;
+                    const text = cellText(t, part.id, part.says, c);
+                    return (
+                      <td class:list={['mx-cell', { 'mx-dim': typeof c !== 'number' }]} title={text}>
+                        <Fragment set:html={cellMark(c)} />
+                        <span class="sr-only">{text}</span>
+                      </td>
+                    );
+                  })}
+                  <td class="mx-joint mono" title={`passes every scored part at once in ${Math.round(v.joint * t.samples)} of ${t.samples} settings`}>{v.joint > 0 ? pct(v.joint) : '0'}</td>
+                </tr>
+              ));
+            })
+          }
+        </tbody>
+      </table>
+    </div>
+    <details class="parts-key">
+      <summary>The parts, as scored</summary>
+      <ol>
+        {mx.parts.map((part) => <li><span class="mono oid">{part.id}</span> {part.says}</li>)}
+      </ol>
+      <p class="fine-print">
+        The trials, the same for every theory: a surge of stress for {Math.round(mx.trials.surge_s / 60)} minutes forms the knots, the
+        holding stress keeps them {mx.trials.settle_s} s before any trial; a slow breath is {mx.trials.breath_s[0]} s in and{' '}
+        {mx.trials.breath_s[1]} s out; a press lasts {mx.trials.press_s} s; a focused breath or a press starts after{' '}
+        {mx.trials.breaths} broad breaths, once the easy knots have gone; the count is taken after{' '}
+        {Math.round(mx.trials.hold_s / 60)} minutes at a stress. Stress is in one unit for every theory, and each sets its own
+        scale by one rule: the typical place where stress is held sits in the middle of its window, so that the surge makes it a
+        knot and the holding stress keeps it one without making it one alone. Minutes of slow breathing lower sympathetic drive (<Fragment set:html={cite('oneda2010')} />,{' '}
+        <Fragment set:html={cite('adler2019')} />), and every theory whose breath acts through drive gets that too.
+      </p>
+    </details>
+    {
+      noneCan.length > 0 && (
+        <p class="find">
+          <strong>What none of the three can do, in any of their settings:</strong>{' '}
+          {noneCan.map((part, i) => <>{i > 0 ? (i === noneCan.length - 1 ? '; or ' : '; ') : ''}{part.short} <span class="mono oid">{part.id}</span></>)}.
+        </p>
+      )
+    }
+    {
+      onlyOne.length > 0 && (
+        <p class="find">
+          <strong>What only one can do:</strong>{' '}
+          {onlyOne.map(({ part, who }, i) => {
+            const k = Math.round((bestShare(who[0], part.id) ?? 0) * who[0].samples);
+            return <>{i > 0 ? '; ' : ''}only {who[0].name.toLowerCase()} can {part.short}, in {k === who[0].samples ? 'every one' : `${k}`} of its {who[0].samples} settings <span class="mono oid">{part.id}</span></>;
+          })}.
+        </p>
+      )
+    }
+    <h3 class="h3">How many knots each would hold</h3>
+    <p class="find">
+      Each theory's count: the share of its units holding a knot after half an hour of held stress in the patch, times the units a
+      body has by its own sources, as if the whole body were held like the patch (so an upper figure). Practitioners who count
+      report hundreds of thousands.
+    </p>
+    <div class="scroll-x"><Fragment set:html={countsStrip(mx)} /></div>
+    <p class="fine-print">
+      Run <span class="mono">{mx.run.inputs}</span>{mx.run.commit ? <> at commit <span class="mono">{mx.run.commit}</span></> : null}, against the exam sealed{' '}
+      {mx.exam.sealed} (v{mx.exam.version}). Generated by <span class="mono">uv run python -m knots_sim.exam</span>; each theory's
+      mapping onto the trials is written out, for its proponents to check, at the top of its file in{' '}
+      <a href={`${repo}/sim/knots_sim/theories`}>sim/knots_sim/theories</a>.
+    </p>
   </section>
 
   <section id="theories" class="sec full" data-glyph="説">
@@ -917,6 +1121,136 @@ const index = [
     white-space: normal;
     min-width: 120px;
   }
+  .matrix {
+    min-width: 760px;
+    table-layout: auto;
+  }
+  .matrix th,
+  .matrix td {
+    padding: 5px 3px;
+    vertical-align: middle;
+  }
+  .matrix .mx-name {
+    padding-left: 12px;
+    text-align: left;
+  }
+  .matrix thead .mx-obs,
+  .matrix thead .mx-part,
+  .matrix thead .mx-joint {
+    text-align: center;
+    padding: 5px 2px;
+  }
+  .matrix thead .mx-part {
+    font-size: 8.5px;
+    text-transform: none;
+  }
+  .matrix thead .mx-obs {
+    border-left: 1px solid var(--border);
+  }
+  .matrix tbody th {
+    padding: 4px 10px 4px 12px;
+    font-weight: 400;
+    min-width: 150px;
+  }
+  .matrix tbody th,
+  .matrix thead .mx-name {
+    position: sticky;
+    left: 0;
+    z-index: 1;
+    background: var(--bg);
+  }
+  .matrix thead .mx-name {
+    background: var(--frame-bg);
+  }
+  .mx-theory {
+    display: block;
+    font-weight: 600;
+    margin-bottom: 1px;
+  }
+  .mx-variant {
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    color: var(--muted);
+  }
+  .matrix tr:not(.mx-first) th,
+  .matrix tr:not(.mx-first) td {
+    border-top: 0;
+  }
+  .matrix tbody tr:not(.mx-first) th,
+  .matrix tbody tr:not(.mx-first) td {
+    border-bottom-color: transparent;
+  }
+  .matrix tbody tr.mx-first th,
+  .matrix tbody tr.mx-first td {
+    border-top: 1px solid var(--border);
+  }
+  .mx-cell {
+    text-align: center;
+    width: 26px;
+  }
+  .mx-cell :global(svg),
+  .legend-row :global(svg.mk-cell) {
+    width: 16px;
+    height: 16px;
+    display: inline-block;
+    vertical-align: middle;
+  }
+  .mx-joint {
+    text-align: center;
+    font-size: 10px;
+    color: var(--accent-dark);
+    border-left: 1px solid var(--border);
+    min-width: 38px;
+  }
+  .mx-notyet th {
+    color: var(--muted);
+  }
+  .mx-why {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 11px;
+    color: var(--muted);
+    padding-left: 10px !important;
+  }
+  .parts-key {
+    margin: 0 0 14px;
+    font-family: var(--font-serif);
+    font-size: 12px;
+  }
+  .parts-key summary {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--accent-dark);
+    cursor: pointer;
+  }
+  .parts-key ol {
+    columns: 2;
+    column-gap: 28px;
+    list-style: none;
+    padding: 8px 0 0;
+    margin: 0 0 8px;
+  }
+  .parts-key li {
+    break-inside: avoid;
+    margin: 0 0 4px;
+    line-height: 1.45;
+  }
+  .parts-key .oid,
+  .find .oid {
+    font-size: 10px;
+    color: var(--accent-dark);
+  }
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
   .findings {
     max-width: 780px;
     padding-left: 20px;
@@ -1174,6 +1508,9 @@ const index = [
     .checks,
     .two {
       grid-template-columns: minmax(0, 1fr);
+    }
+    .parts-key ol {
+      columns: 1;
     }
     .fact,
     .tile {

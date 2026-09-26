@@ -113,6 +113,17 @@ proponents of each theory, and a lab.
    5–25 s (loosening 0.62–0.87); a knot just set goes with either. Old knots need fast, large changes of shape, and a
    piercing is where those would concentrate. To be run as trials with the strain gain (M1).
 
+11. **Three theories through one exam** (matrix v1, `knots_sim/exam.py`, findings 004; T1 with four variants, T3 with two,
+   T6 with one; 32 settings each, all on the site at /research/#exam). No variant of any passes every part at once; none
+   forms a new knot nearby after a release (O8). Each leads somewhere different: T1 on an easy knot going on the out-breath
+   and a parent releasing its children, T3 on knots forming and letting go within a breath (with the breath's stretch), T6
+   on stress, where it is held, mood, and deep knots yielding to focus. The sharpest single test is the hand (O2.2): the
+   vessel lets go within a second of the hand lifting, never under it; perception's knots also go when the hand lifts; a
+   trigger point's pressure release takes tens of seconds. Whether a knot lets go under a held hand or as it lifts would
+   tell them apart; a question for the author. Perception releases on the in-breath (arsenault2013's measured analgesia),
+   against O1.1. Counts: T1 about 19,000 knots where it holds any (none in 47% of settings), T3 about 170 of its 300
+   sites, T6 no unit; practitioners report hundreds of thousands.
+
 **A hypothesis these suggest** (to be run through the same exam as everything else, not assumed). Knots form where drive is
 raised and the tissue is still. A shut vessel loses the pulse that stretches its wall with every heartbeat, and so may hold
 harder than an open one (a second loop that widens the band). The longer it is held, the more its muscle adapts to being
@@ -246,7 +257,7 @@ Every theory takes the same inputs and gives the same outputs, or the comparison
 | P12 | *Added:* old and new: the same unit held for a minute, an hour, a year of model time, then the same release |
 | P13 | *Added:* release a root: free the unit at the top of a tree (or of a cluster) and watch everything below it |
 
-## 5b. The harness and matrix v1 (designed 26 Sep 2026; to build)
+## 5b. The harness and matrix v1 (designed and built 26 Sep 2026)
 
 `knots_sim/exam.py` loads the sealed spec and refuses to run if the file's hash differs from its seal. For each theory,
 each variant and each scored part it runs the part's trial over parameter sets sampled across the theory's own ranges,
@@ -296,6 +307,28 @@ guessed.
 
 **On the site.** Matrix v1 on the Research page: theories and variants by parts, cells shaded by pass share, silent and not
 run marked, each cell's why on hover; findings 004 generated from the run.
+
+**As built: the fairness corrections** (found by running the first three theories; each applies to every theory, the
+ones not yet built included; any later change reruns them all):
+
+- *One rule for the stress unit.* 1 is a surge that forms knots, `hold` keeps them. Each adapter sets its one scale so that
+  the typical place that can hold a knot, where stress is held most, sits in the middle of its window: the surge makes it a
+  knot, the holding stress keeps it one and cannot make it one alone (T1: tone per unit, over the patch's walls; T3: the
+  typical endplate's drive, found by running the surge itself, since the energy crisis builds slowly; T6: the scale of
+  ordinary input). Without it one theory's surge formed no knots and another's hold made them without a surge.
+- *Local trials start after 30 broad breaths.* A focused breath or a press follows 30 broad breaths, once the easy knots
+  have gone, so that what it lets go is its own (O1.4's focused half, O2.1).
+- *A population, not a ladder, for O1.5.* Easy and hard knots are read from the patch's own knots under 30 broad breaths.
+- *Time to form.* The surge lasts 3 minutes and the count is taken after 30 minutes at a stress: trigger points form over
+  their slow loops, perception sensitises over hours.
+- *Minutes of slow breathing calm.* Slow breathing lowers muscle sympathetic activity over its 15 minutes (oneda2010,
+  adler2019); every drive route gets that sustained fall (`breath_calm`, 0 in its range) as well as each breath's dip.
+- *A press as its own literature has it.* T3's pressure works through the band's slow lengthening, calibrated so that a
+  knot of middle depth lets go in τ_p (60–90 s, pecosmartin2019); as first written it let go in seconds or never.
+- *Sparks within 10 s*, the sealed reading of "within seconds".
+
+A zero means none of 32 settings, not impossible; where a zero is structural (drive is not local, so focus changes
+nothing through drive alone), the adapter's notes say so, and the cell's hover carries it.
 
 **Later: the base of the skull.** Set aside in the exam (essay-only), but a sharp location test if the author confirms it:
 the vessel view puts a root there (the occipital artery and the greater occipital nerve at the superior nuchal line), the
@@ -392,7 +425,7 @@ Five tracks run together. Each ends in something on the site.
 | | Milestone | Needs |
 |---|---|---|
 | M1 | Breath routes in the interface; T1 with movement (B2) and the pulse variant; P10–P12; the field, first version; the exam drafted for the author | nothing new |
-| M2 | T6 and T3 behind the interface; the harness; matrix v1 with T1, T3, T6 (the exam is sealed) | nothing new |
+| M2 | T6 and T3 behind the interface; the harness; matrix v1 with T1, T3, T6 (the exam is sealed). *Done 26 Sep 2026* | nothing new |
 | M3 | T2 live (Hai–Murphy) with the latch-hardening variant; T4, T5, the gamma loop, hybrids; matrix v2 | the papers (§11) |
 | M4 | Instrument models; signatures; the decision tree; sealed predictions | M2 at least |
 | M5 | Clusters and migration for every theory (O8, O13, P13); the spatial test with published maps; network; body; the atlas driven by the model | digitised perforator maps |
@@ -433,6 +466,14 @@ M5. The top-bar link comes when the author says (D2); the natural moment is matr
   that rested on the old numbers rewritten from the run; how tightly the lumen closes shown as the guess it is; the switch
   diagram and the bench's stress slider rescaled to the measured band; length adaptation (finding 9, findings 003, the
   Research page's *Time* section, the four-hour closure test as an ask); the perforation's mechanical role (finding 10).
+- **Matrix v1 (26 Sep):** the harness (`knots_sim/exam.py`) and T3 and T6 as models (`models/triggerpoint.py`,
+  `models/perception.py`, `theories/`), every theory through the sealed exam in 32 settings; the fairness corrections
+  (§5b); counts; findings 004; the Research page's exam section, the verdicts rewritten from it, and each modelled card's
+  exam line on Hypotheses (finding 11).
+- **Next, from the matrix:** ask the author whether a pressed knot lets go under the hand or as it lifts (O2.2 splits
+  the theories); T2 live and T4, T5 behind the same harness (matrix v2); per-cell drawers on the site (a passing and a
+  failing run, what decides it); the mechanics stage for O5 and O9, and ageing for T3; the base of the skull as a
+  location test, once the author confirms it.
 - **Next, from finding 9:** the open vessel's missing loop (activation easing as the muscle adapts, or flow and metabolic
   regulation), fitted to martinezlemus2004's maintained diameter, before adaptation speaks about open vessels (creep, the
   flush's duration, O4); adaptation in the tree (does a set parent leave set children?); the strain gain at a piercing as a

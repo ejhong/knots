@@ -1,0 +1,157 @@
+# T3, trigger points: the energy crisis at an overactive motor endplate (gerwin2004). Its strongest form
+# (src/data/hypotheses.ts): sustained contraction squeezes the capillaries, and the ischaemia withholds the energy needed
+# to relax; released substances sensitise nearby nerves. Released by sustained compression, stretch or needling, often
+# with a local twitch; the breath acts indirectly, as relaxation lowers motor drive (knots_sim/models/triggerpoint.py).
+
+model: triggerpoint
+title: Trigger points
+parameters:
+  stress_gain:
+    symbol: σ
+    label: "how much stress raises endplate activity"
+    value: 0.8
+    unit: "per surge"
+    range: [0.3, 1.5]
+    confidence: guessed
+    note: "Endplate drive is a₀ (1 + σ s): a mental stressor raised a trigger point's EMG while the muscle beside it stayed silent (mcnulty1994); the size is a guess."
+
+  squeeze:
+    symbol: κ_c
+    label: "how far a contracture squeezes the capillaries"
+    value: 0.8
+    unit: "1"
+    range: [0.5, 0.95]
+    confidence: guessed
+    note: "Perfusion falls as 1 - κ_c c with the contracture c: the heart of the energy crisis (gerwin2004)."
+
+  relax:
+    symbol: r
+    label: "how fast energy lets the contracture relax"
+    value: 1.0
+    unit: 1/s
+    range: [0.3, 3.0]
+    confidence: guessed
+    note: "With energy e, the contracture relaxes at r eⁿ c: without energy it cannot."
+
+  use:
+    symbol: μ
+    label: "how much a contracture spends"
+    value: 2.0
+    unit: "1"
+    range: [0.5, 5.0]
+    confidence: guessed
+    note: "Energy is supplied by perfusion and spent by the contracture: de/dt = (q (1 - e) - μ c e) / τ_e."
+
+  tau_energy:
+    symbol: τ_e
+    label: "how fast energy follows supply"
+    value: 20
+    unit: s
+    range: [5, 60]
+    confidence: guessed
+    note: "The time constant of the unit's energy (ATP and phosphocreatine) against perfusion."
+
+  milieu_gain:
+    symbol: λ
+    label: "how much the acid milieu raises endplate activity"
+    value: 1.0
+    unit: "1"
+    range: [0.3, 3.0]
+    confidence: guessed
+    note: "Drive rises as (1 + λ m) with the milieu m: an acid milieu inhibits acetylcholinesterase and raises acetylcholine release (gerwin2004), the second loop."
+
+  tau_milieu:
+    symbol: τ_m
+    label: "how fast the milieu builds and washes out"
+    value: 90
+    unit: s
+    range: [30, 300]
+    confidence: guessed
+    note: "Protons, bradykinin and the rest build with ischaemia and wash out with flow: dm/dt = ((1 - q) - m) / τ_m. Active trigger points hold an acidic, mediator-rich milieu (shah2005)."
+
+  drive_sd:
+    symbol: σ_a
+    label: "how uneven endplate activity is from place to place"
+    value: 0.4
+    unit: "1"
+    range: [0.2, 0.6]
+    confidence: guessed
+    note: "Each place's baseline drive, lognormal about its median."
+
+  occlude:
+    symbol: p_occ
+    label: "pressure that stops flow in the muscle's capillaries"
+    value: 50
+    unit: mmHg
+    range: [30, 80]
+    confidence: guessed
+    note: "External pressure lowers perfusion as 1 - p / p_occ: a press adds ischaemia while it lasts."
+
+  tau_press:
+    symbol: τ_p
+    label: "how long sustained pressure takes to release one"
+    value: 60
+    unit: s
+    range: [30, 90]
+    confidence: inferred
+    source: pecosmartin2019
+    locator: abstract
+    quote: "The 60 s and 90 s applications of the pressure release technique may be recommended to increase PPT and strength, respectively, in latent MTrPs of the levator scapulae in the short term."
+    note: "Held pressure lengthens the band slowly, over τ_p at 40 mmHg, and the lengthening loosens the contracture with a strength set so that a knot of middle depth, pressed with nothing else, lets go in τ_p: pressure release works over tens of seconds, 60-90 s at the pressures used, and low pressure needs longer (hou2002)."
+
+  stretch_gain:
+    symbol: g_s
+    label: "how much a stretch loosens the contracture"
+    value: 1.0
+    unit: "1"
+    range: [0.2, 3.0]
+    confidence: guessed
+    note: "A change of length (the breath's movement, or a press landing) loosens the contracture at a rate of g_s times the strain rate: stretch is one of its releases."
+
+  twitch:
+    symbol: τ_tw
+    label: "how sudden a release must be to twitch"
+    value: 1.0
+    unit: s
+    range: [0.5, 2.0]
+    confidence: guessed
+    note: "A release fast enough (the contracture falling by 1 / τ_tw per second) comes with a local twitch: the account's pop. Needling that brings twitches quiets the spontaneous activity (chen2001)."
+
+  satellite:
+    symbol: χ
+    label: "how much a key trigger point drives its satellites"
+    value: 0.5
+    unit: "1"
+    range: [0.0, 1.0]
+    confidence: guessed
+    note: "Key trigger points maintain satellites in their referral zone: a satellite's drive rises as (1 + χ m_key) with the key's milieu."
+
+  load_share:
+    symbol: ψ
+    label: "how much a released unit's load falls on its band"
+    value: 0.2
+    unit: "1"
+    range: [0.0, 0.5]
+    confidence: guessed
+    note: "Within a taut band, when one unit lets go the others take its share of the load: their drive rises by ψ times the share released."
+
+  nidus:
+    symbol: d_n
+    label: "size of the active nidus"
+    value: 1.5
+    unit: mm
+    range: [1.0, 2.0]
+    confidence: measured
+    source: hubbard1993
+    locator: abstract
+    quote: "Sustained spontaneous EMG activity was found in the 1-2 mm nidus of all TrPs, and was absent in non-TrPs."
+    note: "The unit is small, but it sits at the endplate zones of taut bands: a few regions in each muscle, hundreds in a body."
+
+  coop:
+    symbol: n
+    label: "how steeply relaxation needs energy"
+    value: 2.0
+    unit: "1"
+    range: [1.0, 3.0]
+    confidence: guessed
+    note: "Relaxation goes as r eⁿ c: it needs ATP twice over, to pump calcium back and to detach the cross-bridges. With n = 1 the energy crisis gives two stable states only at the edges of the ranges; the choice is swept."

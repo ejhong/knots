@@ -3,6 +3,8 @@ import Doc from '../layouts/Doc.astro';
 import { HYPOTHESES } from '../data/hypotheses';
 import { refById } from '../data/references';
 import { crossSectionSVG } from '../lib/crossSection';
+import matrixData from '../data/sim/matrix.json';
+import type { Matrix } from '../sim/figures';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const ROWS: [keyof (typeof HYPOTHESES)[number], string][] = [
   ['layer', 'Where'],
@@ -26,13 +28,23 @@ const GLYPH: Record<string, string> = {
   central: '覚',
 };
 // Where each theory stands in the simulation (the Research page).
+// In the exam: the parts each modelled theory can pass in some plausible setting, with its best variant (matrix.json).
+const mx = matrixData as unknown as Matrix;
+const EXAM_ID: Record<string, string> = { perforator: 'T1', 'trigger-point': 'T3', central: 'T6' };
+const examLine = (key: string) => {
+  const t = mx.theories.find((x) => x.id === EXAM_ID[key]);
+  if (!t) return '';
+  const scored = mx.parts.filter((part) => t.variants.some((v) => typeof v.cells[part.id] === 'number'));
+  const can = scored.filter((part) => t.variants.some((v) => (v.cells[part.id] as number) > 0));
+  return `run through the sealed exam: ${can.length} of its ${scored.length} scored parts hold in some plausible setting`;
+};
 const TESTS: Record<string, string> = {
-  perforator: 'modelled: one vessel from measured numbers, the breath by drive and by movement, a tree of a parent and its children, and how a knot sets when held',
+  perforator: `modelled: one vessel from measured numbers, the breath by drive and by movement, a tree of a parent and its children, and how a knot sets when held; ${examLine('perforator')}`,
   latch: 'in part: it shares the vessel switch and its adaptation; the latch itself needs the Hai–Murphy rate constants',
-  'trigger-point': 'to model',
+  'trigger-point': `modelled: the energy crisis at an endplate, released by pressure and stretch; ${examLine('trigger-point')}`,
   densification: 'to model',
   nerve: 'to model',
-  central: 'to model early: the account every other view has to beat',
+  central: `modelled: gain, arousal and attention on a body map, the account every other view has to beat; ${examLine('central')}`,
 };
 const index = [
   ...HYPOTHESES.map((h, i) => ({ id: h.id, label: `${String(i + 1).padStart(2, '0')} ${h.label}` })),
@@ -85,7 +97,7 @@ const index = [
         </dl>
         <p class="tests">
           <span class="mono k">in the tests</span> {TESTS[h.id]}.{' '}
-          <a href={`${base}/research/#theories`}>Research →</a>
+          <a href={`${base}/research/#${EXAM_ID[h.id] ? 'exam' : 'theories'}`}>Research →</a>
         </p>
         <p class="refs mono">
           {h.refs

@@ -1,0 +1,110 @@
+# The trials' own quantities, shared by every theory (sim/PLAN.md §5, §5b): what a hand, a breath or a mood does, before
+# any theory says how it acts. None is measured at a knot; each is guessed and sampled across its range, the same range for
+# every theory, and each theory maps it onto its own states in its adapter (knots_sim/theories/).
+#
+# Stress is in one unit for all: 1 is a surge that forms knots in the typical unit of the theory; 0 is rest.
+
+model: interface
+title: The trials' shared quantities
+parameters:
+  hold:
+    symbol: s_hold
+    label: "stress that holds knots after the surge"
+    value: 0.55
+    unit: "surge"
+    range: [0.4, 0.7]
+    confidence: guessed
+    note: "After a surge forms the knots, stress falls back to this share of the surge and stays there: raised, as in a stressful day."
+
+  palpation:
+    symbol: p_palp
+    label: "pressure a hand or roller brings to a knot"
+    value: 40
+    unit: mmHg
+    range: [20, 80]
+    confidence: guessed
+    note: "The pressure reaching the tissue at a knot under a pressing hand or a roller, held: enough to find a knot, not to crush it. To be measured with a pressure-sensing probe."
+
+  press_strain:
+    symbol: ε_press
+    label: "how much a press deforms the tissue"
+    value: 0.5
+    unit: "1"
+    range: [0.2, 1.0]
+    confidence: guessed
+    note: "The change of shape a press makes at the knot, as a share of a squeeze that shuts a small artery."
+
+  focus_gain:
+    symbol: g_focus
+    label: "how much focused attention concentrates the breath at a place"
+    value: 3.0
+    unit: "1"
+    range: [1.5, 6.0]
+    confidence: guessed
+    note: "A proprioceptive, meditative breath directed at one place: how many times more the breath works there than elsewhere, by whatever route the theory gives it."
+
+  mood_sd:
+    symbol: σ_mood
+    label: "how much mood moves stress"
+    value: 0.1
+    unit: "surge"
+    range: [0.05, 0.2]
+    confidence: guessed
+    note: "Mood as slow random changes of stress (a relaxed-to-tense swing), with a time constant of minutes."
+
+  mood_tau:
+    symbol: τ_mood
+    label: "how slowly mood changes"
+    value: 120
+    unit: s
+    range: [30, 600]
+    confidence: guessed
+    note: "The time constant of mood's swings of stress."
+
+  breath_fall:
+    symbol: δ_out
+    label: "how far a slow out-breath lowers stress"
+    value: 0.08
+    unit: "surge"
+    range: [0.03, 0.15]
+    confidence: guessed
+    note: "A slow out-breath's easing of stress, in the shared unit; each theory maps it onto its own drive (sympathetic tone, arousal)."
+
+  breath_calm:
+    symbol: δ_calm
+    label: "how far minutes of slow breathing lower stress"
+    value: 0.1
+    unit: "surge"
+    range: [0.0, 0.3]
+    confidence: inferred
+    source: oneda2010
+    locator: abstract
+    quote: "Only the BIM device reduced the sympathetic nerve activity of the sample (-8 bursts min(-1))."
+    note: "Slow breathing calms over minutes as well as within each breath (adler2019 too): stress falls by δ_calm (1 - e^(-t/τ_calm)) while it lasts, in the shared unit, through each theory's own drive (sympathetic tone, motor drive, arousal). Its size against a surge is a guess, and zero is in the range."
+
+  tau_calm:
+    symbol: τ_calm
+    label: "how fast slow breathing calms"
+    value: 90
+    unit: s
+    range: [30, 300]
+    confidence: guessed
+    note: "The fall was measured over 15-minute sessions (oneda2010, adler2019); how fast it comes within them is a guess."
+
+  breath_in_share:
+    symbol: ρ_in
+    label: "how much the in-breath raises stress again"
+    value: 0.5
+    unit: "1"
+    range: [0.0, 1.0]
+    confidence: guessed
+    note: "The in-breath's rise as a share of the out-breath's fall: 0 is a relaxing breath that only eases, 1 an even one."
+
+  breath_strain:
+    symbol: ε_breath
+    label: "how much a breath moves the tissue at a knot"
+    value: 0.1
+    unit: "1"
+    range: [0.05, 0.5]
+    confidence: guessed
+    note: "Each breath's deformation of the tissue at a knot, as a share of a squeeze that shuts a small artery (the vessel model's breath_move). Ultrasound speckle tracking over a knot could measure it."

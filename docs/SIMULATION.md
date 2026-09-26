@@ -199,7 +199,7 @@ All written by `sim/knots_sim/export`, never by hand. Each file carries the run 
 | `src/data/sim/exam.json` | O1–O12: id, title, test, tolerances, evidence, sources, notes; version, date sealed, OSF link |
 | `src/data/sim/theories.json` | per theory and variant: id (as in `hypotheses.ts`), variant, equations (MathML), parameters with provenance |
 | `src/data/sim/switch/<theory>.json` | bifurcation branches (S, state, stability), folds, loop width |
-| `src/data/sim/matrix.json` | per theory × observation: status (pass, cannot, silent, unrun), share, share range across tolerances; joint rate |
+| `src/data/sim/matrix.json` | written by `knots_sim.exam` (v1): the run (inputs hash, commit), the exam's seal, the trials; per part its id, observation, statement and short phrase; per theory its variants, each with a cell per part (the share of sampled settings that pass, or `silent`, or `not run`), the per-setting passes, the joint pass and the count (units in a body, share held, median and 10–90% knots); the theory's notes (why a cell is what it is) |
 | `src/data/sim/runs/<theory>-<trial>.json` | representative trajectories, downsampled: passing and failing |
 | `src/data/sim/requirements/<theory>.json` | passing parameter ranges against literature ranges; Sobol indices |
 | `src/data/sim/log.json` | the run log |

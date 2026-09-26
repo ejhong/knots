@@ -516,3 +516,96 @@ export function knotSets(a: AdaptStudy): string {
   }
   return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="How a knot sets: a knot held for an hour lets go when stress ends, one held for three hours stays shut at rest; released, a set knot flushes; the stronger the hold, the sooner it sets">${out.join('')}</svg>`;
 }
+
+// ---------- The exam: every theory through the same trials ----------
+
+export type Cell = number | 'silent' | 'not run';
+export interface Count {
+  units: number;
+  per_mm2: number;
+  note: string;
+  median: number;
+  lo: number;
+  hi: number;
+  share: number;
+  none: number;
+  median_any: number | null;
+}
+export interface MatrixVariant {
+  name: string;
+  description: string;
+  cells: Record<string, Cell>;
+  joint: number;
+  passes: Record<string, number[]>;
+  count: Count | null;
+}
+export interface MatrixTheory {
+  id: string;
+  name: string;
+  samples: number;
+  variants: MatrixVariant[];
+  notes: Record<string, string>;
+}
+export interface Matrix {
+  run: { inputs: string; commit: string; dirty: boolean };
+  exam: { version: number; sealed: string; sha256: string };
+  trials: { surge_s: number; settle_s: number; breath_s: number[]; breaths: number; press_s: number; hold_s: number; mood_s: number; depths: number[]; patch: number; samples: number; seed: number };
+  parts: { id: string; obs: string; says: string; short: string }[];
+  theories: MatrixTheory[];
+}
+
+/** A cell's mark: a disc whose area is the share of plausible parameter sets that pass; a faint cross where none of
+ *  them does; a dash where the theory is silent; nothing where the part is not run yet. */
+export function cellMark(c: Cell, r = 7): string {
+  if (c === 'silent') return `<svg class="mk-cell" viewBox="-8 -8 16 16" aria-hidden="true"><line x1="-4" x2="4" y1="0" y2="0" stroke="${PAPER.faint}" stroke-width="1.2"/></svg>`;
+  if (c === 'not run') return '';
+  if (c <= 0) return `<svg class="mk-cell" viewBox="-8 -8 16 16" aria-hidden="true"><path d="M-2.6 -2.6L2.6 2.6M2.6 -2.6L-2.6 2.6" stroke="${PAPER.faint}" stroke-width="1"/></svg>`;
+  const rr = Math.max(r * Math.sqrt(c), 1.3);
+  return `<svg class="mk-cell" viewBox="-8 -8 16 16" aria-hidden="true"><circle r="${r}" fill="none" stroke="${PAPER.line}" stroke-width="0.8"/><circle r="${rr.toFixed(2)}" fill="${PAPER.ink}"/></svg>`;
+}
+
+/** How many knots each theory would hold in a body, beside practitioners' estimate, on a log scale: each modelled
+ *  theory's range across its plausible parameter sets (10th to 90th percentile), its median where it holds any, the
+ *  share of settings with none, and all its units. */
+export function countsStrip(m: Matrix, estimate: [number, number] = [1e5, 1e6]): string {
+  const W = 720;
+  const rows = m.theories.map((t) => ({ t, c: t.variants[0].count }));
+  const H = 70 + rows.length * 34;
+  const L = 150;
+  const R = 672;
+  const lo = 1;
+  const hi = 1e6;
+  const X = (n: number) => L + (Math.log10(Math.min(Math.max(n, lo), hi)) / Math.log10(hi)) * (R - L);
+  const out: string[] = [];
+  const top = 34;
+  const bottom = top + rows.length * 34;
+  // The practitioners' estimate, as a band behind everything.
+  out.push(`<g><title>${esc('Practitioners who count: micro-knots at dozens to the square inch, hundreds of thousands in a body (their own estimate)')}</title><rect x="${f1(X(estimate[0]))}" y="${top - 6}" width="${f1(X(estimate[1]) - X(estimate[0]))}" height="${bottom - top + 6}" fill="${PAPER.knot}" opacity="0.07"/></g>`);
+  out.push(`<text x="${f1(X(estimate[1]))}" y="${top - 12}" text-anchor="end" fill="${PAPER.knot}" font-size="8.5" ${MONO}>reported: hundreds of thousands</text>`);
+  for (const e of [0, 1, 2, 3, 4, 5, 6]) {
+    const x = X(10 ** e);
+    out.push(`<line x1="${f1(x)}" x2="${f1(x)}" y1="${top - 6}" y2="${bottom}" stroke="${PAPER.line}" stroke-width="0.7"/>`);
+    out.push(`<text x="${f1(x)}" y="${bottom + 13}" text-anchor="${e === 6 ? 'end' : e === 0 ? 'start' : 'middle'}" fill="${PAPER.faint}" font-size="8.5" ${MONO}>${(10 ** e).toLocaleString('en-GB')}</text>`);
+  }
+  out.push(`<text x="${R}" y="${bottom + 27}" text-anchor="end" fill="${PAPER.faint}" font-size="8.5" ${MONO}>knots held in a body →</text>`);
+  rows.forEach(({ t, c }, i) => {
+    const y = top + 17 + i * 34;
+    out.push(`<text x="${L - 12}" y="${y + 3}" text-anchor="end" fill="${PAPER.text}" font-size="10" ${MONO}>${esc(t.name)}</text>`);
+    if (!c) {
+      out.push(`<text x="${L}" y="${y + 3}" fill="${PAPER.muted}" font-size="9" ${SERIF} font-style="italic">no unit to count: as many places as sensitisation and attention make</text>`);
+      return;
+    }
+    const all = X(c.units);
+    out.push(`<g><title>${esc(`${t.name}: ${c.units.toLocaleString('en-GB')} units in a body. ${c.note}`)}</title><line x1="${f1(all)}" x2="${f1(all)}" y1="${y - 8}" y2="${y + 8}" stroke="${PAPER.muted}" stroke-width="1.2"/></g>`);
+    out.push(`<text x="${f1(all + 5)}" y="${y - 6}" fill="${PAPER.muted}" font-size="8" ${MONO}>all ${c.units.toLocaleString('en-GB')}</text>`);
+    const mid = c.median_any ?? 0;
+    const none = c.none > 0 ? `; none at all in ${Math.round(100 * c.none)}% of settings` : '';
+    const what = `${t.name}: ${mid.toLocaleString('en-GB')} knots at the median of the settings that hold any (${c.lo.toLocaleString('en-GB')}–${c.hi.toLocaleString('en-GB')} across 80% of all plausible settings${none}): the share of its units held after half an hour of held stress, if the whole body were held like the patch`;
+    const x0 = X(Math.max(c.lo, 1));
+    out.push(`<g><title>${esc(what)}</title><line x1="${f1(x0)}" x2="${f1(X(Math.max(c.hi, 1)))}" y1="${y}" y2="${y}" stroke="${PAPER.knot}" stroke-width="3" stroke-linecap="round" opacity="0.5"/>${mid > 0 ? `<circle cx="${f1(X(mid))}" cy="${y}" r="4" fill="${PAPER.knot}"/>` : ''}</g>`);
+    if (mid > 0) out.push(`<text x="${f1(X(mid))}" y="${y + 16}" text-anchor="middle" fill="${PAPER.text}" font-size="8.5" ${MONO}>${mid.toLocaleString('en-GB')}</text>`);
+    if (c.none > 0) out.push(`<text x="${f1(x0)}" y="${y + 16}" fill="${PAPER.muted}" font-size="8" ${MONO}>none in ${Math.round(100 * c.none)}%</text>`);
+  });
+  const label = rows.map(({ t, c }) => (c ? `${t.name} about ${(c.median_any ?? 0).toLocaleString('en-GB')} of ${c.units.toLocaleString('en-GB')} where it holds any` : `${t.name} no count`)).join('; ');
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(`How many knots each theory would hold in a body: ${label}; practitioners report hundreds of thousands`)}">${out.join('')}</svg>`;
+}

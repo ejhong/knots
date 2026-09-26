@@ -1,5 +1,20 @@
 [
  {
+  "id": "adler2019",
+  "authors": "Adler TE, Coovadia Y, Cirone D et al.",
+  "year": 2019,
+  "title": "Device-guided slow breathing reduces blood pressure and sympathetic activity in young normotensive individuals of both sexes",
+  "venue": "J Appl Physiol (1985) 127:1042-1049",
+  "url": "https://doi.org/10.1152/japplphysiol.00442.2019",
+  "pmid": "31436511",
+  "kind": "paper",
+  "tags": [
+   "breath",
+   "vascular"
+  ],
+  "note": "In young normotensive women and men, 15 minutes of slow breathing lowered muscle sympathetic burst incidence by 5 bursts per 100 heartbeats and blood pressure by 3 mmHg."
+ },
+ {
   "id": "ahmadzadeh2007",
   "authors": "Ahmadzadeh R, Bergeron L, Tang M et al.",
   "year": 2007,
@@ -58,6 +73,21 @@
    "animals"
   ],
   "note": "A caution: whole airways held inflated or deflated for about 50 minutes showed no length adaptation within physiological ranges."
+ },
+ {
+  "id": "arsenault2013",
+  "authors": "Arsenault M, Ladouceur A, Lehmann A et al.",
+  "year": 2013,
+  "title": "Pain modulation induced by respiration: phase and frequency effects",
+  "venue": "Neuroscience 252:501-11",
+  "url": "https://doi.org/10.1016/j.neuroscience.2013.07.048",
+  "pmid": "23906637",
+  "kind": "paper",
+  "tags": [
+   "breath",
+   "mind"
+  ],
+  "note": "Pain from brief shocks was rated lower near the end of the in-breath than of the out-breath, and the effect was small: the breath's phase is not what makes relaxation analgesic."
  },
  {
   "id": "bakker2002",
@@ -150,6 +180,21 @@
   "note": "Why a small vessel can snap shut: with active tension in its wall, Laplace's law leaves it no stable open state below a critical pressure."
  },
  {
+  "id": "busch2012",
+  "authors": "Busch V, Magerl W, Kern U et al.",
+  "year": 2012,
+  "title": "The effect of deep and slow breathing on pain perception, autonomic activity, and mood processing--an experimental study",
+  "venue": "Pain Med 13:215-28",
+  "url": "https://doi.org/10.1111/j.1526-4637.2011.01243.x",
+  "pmid": "21939499",
+  "kind": "paper",
+  "tags": [
+   "breath",
+   "mind"
+  ],
+  "note": "Deep, slow breathing with relaxation raised pain thresholds and lowered sympathetic arousal; the same breathing done with effortful attention did neither."
+ },
+ {
   "id": "cagnie2012",
   "authors": "Cagnie B, Barbe T, De Ridder E et al.",
   "year": 2012,
@@ -177,6 +222,21 @@
    "vascular"
   ],
   "note": "Skin blood flow is set by sympathetic nerves and local temperature: from minimal levels under local cooling to 6–8 L/min in heat."
+ },
+ {
+  "id": "chen2001",
+  "authors": "Chen JT, Chung KC, Hou CR et al.",
+  "year": 2001,
+  "title": "Inhibitory effect of dry needling on the spontaneous electrical activity recorded from myofascial trigger spots of rabbit skeletal muscle",
+  "venue": "Am J Phys Med Rehabil 80:729-35",
+  "url": "https://doi.org/10.1097/00002060-200110000-00004",
+  "pmid": "11562554",
+  "kind": "paper",
+  "tags": [
+   "trigger-points",
+   "animals"
+  ],
+  "note": "Dry needling that elicited local twitch responses cut the spontaneous electrical activity of rabbit trigger spots to about half."
  },
  {
   "id": "chen2007",
@@ -207,6 +267,20 @@
    "animals"
   ],
   "note": "Muscle feed arteries squeezed shut widen within seconds of release: by 16% after one 1 s compression, 14% after one of 5 s, and 27% after five of 1 s. Repeated compressions add up; a longer one does not."
+ },
+ {
+  "id": "crettaz2013",
+  "authors": "Crettaz B, Marziniak M, Willeke P et al.",
+  "year": 2013,
+  "title": "Stress-induced allodynia--evidence of increased pain sensitivity in healthy humans and patients with chronic pain after experimentally induced psychosocial stress",
+  "venue": "PLoS One 8:e69460",
+  "url": "https://doi.org/10.1371/journal.pone.0069460",
+  "pmid": "23950894",
+  "kind": "paper",
+  "tags": [
+   "mind"
+  ],
+  "note": "A standardised social stressor raised sensitivity to heat pain in healthy people, and to pressure pain as well in fibromyalgia."
  },
  {
   "id": "cutting1982",
@@ -473,6 +547,20 @@
   "note": "Pathophysiological and electrophysiological mechanisms of trigger points; satellites and key points."
  },
  {
+  "id": "hou2002",
+  "authors": "Hou CR, Tsai LC, Cheng KF et al.",
+  "year": 2002,
+  "title": "Immediate effects of various physical therapeutic modalities on cervical myofascial pain and trigger-point sensitivity",
+  "venue": "Arch Phys Med Rehabil 83:1406-14",
+  "url": "https://doi.org/10.1053/apmr.2002.34834",
+  "pmid": "12370877",
+  "kind": "paper",
+  "tags": [
+   "trigger-points"
+  ],
+  "note": "Ischaemic compression eased trigger-point pain either at low pressure held 90 s or at higher pressure held 30 s: pressure and time trade."
+ },
+ {
   "id": "hubbard1993",
   "authors": "Hubbard DR, Berkoff GM",
   "year": 1993,
@@ -485,6 +573,21 @@
    "trigger-points"
   ],
   "note": "Spontaneous needle-EMG activity at the trigger-point nidus."
+ },
+ {
+  "id": "jafari2017",
+  "authors": "Jafari H, Courtois I, Van den Bergh O et al.",
+  "year": 2017,
+  "title": "Pain and respiration: a systematic review",
+  "venue": "Pain 158:995-1006",
+  "url": "https://doi.org/10.1097/j.pain.0000000000000865",
+  "pmid": "28240995",
+  "kind": "paper",
+  "tags": [
+   "breath",
+   "mind"
+  ],
+  "note": "Systematic review: pain raises breathing's flow, rate and volume, and paced slow breathing reduces pain in some studies, by mechanisms not yet known."
  },
  {
   "id": "johansson1991",
@@ -651,6 +754,21 @@
   "note": "The skin's reactive hyperaemia is carried largely by sensory nerves and BKCa channels, not prostanoids."
  },
  {
+  "id": "macefield1991",
+  "authors": "Macefield G, Burke D",
+  "year": 1991,
+  "title": "Paraesthesiae and tetany induced by voluntary hyperventilation. Increased excitability of human cutaneous and motor axons",
+  "venue": "Brain 114 ( Pt 1B):527-40",
+  "url": "https://doi.org/10.1093/brain/114.1.527",
+  "pmid": "2004255",
+  "kind": "paper",
+  "tags": [
+   "breath",
+   "nerve"
+  ],
+  "note": "Overbreathing brings tingling in the hands, face and trunk once alveolar carbon dioxide has fallen by about 20 mmHg: peripheral axons grow excitable everywhere."
+ },
+ {
   "id": "macgregor2006",
   "authors": "Macgregor J, Graf von Schweinitz D",
   "year": 2006,
@@ -770,6 +888,34 @@
    "models"
   ],
   "note": "Critical closing pressure read as a binary threshold: arterioles snap shut when smooth-muscle tension exceeds intraluminal pressure, and reopen only when tone falls, external pressure is relieved or inflow pressure rises."
+ },
+ {
+  "id": "miron1989",
+  "authors": "Miron D, Duncan GH, Bushnell CM",
+  "year": 1989,
+  "title": "Effects of attention on the intensity and unpleasantness of thermal pain",
+  "venue": "Pain 39:345-352",
+  "url": "https://doi.org/10.1016/0304-3959(89)90048-1",
+  "pmid": "2616184",
+  "kind": "paper",
+  "tags": [
+   "mind"
+  ],
+  "note": "Attending to a painful heat stimulus makes it more intense and more unpleasant; attending elsewhere makes it less."
+ },
+ {
+  "id": "moont2010",
+  "authors": "Moont R, Pud D, Sprecher E et al.",
+  "year": 2010,
+  "title": "'Pain inhibits pain' mechanisms: Is pain modulation simply due to distraction?",
+  "venue": "Pain 150:113-120",
+  "url": "https://doi.org/10.1016/j.pain.2010.04.009",
+  "pmid": "20493631",
+  "kind": "paper",
+  "tags": [
+   "mind"
+  ],
+  "note": "Pain inhibits pain: a painful stimulus on one hand lessens pain elsewhere (conditioned pain modulation), independently of distraction."
  },
  {
   "id": "moraska2013",
@@ -919,6 +1065,35 @@
    "models"
   ],
   "note": "Healthy synovial fluid, far richer in hyaluronan than fascia, has a zero-shear viscosity of 1–175 Pa·s: an upper bound for any hyaluronan collar."
+ },
+ {
+  "id": "oneda2010",
+  "authors": "Oneda B, Ortega KC, Gusmão JL et al.",
+  "year": 2010,
+  "title": "Sympathetic nerve activity is decreased during device-guided slow breathing",
+  "venue": "Hypertens Res 33:708-12",
+  "url": "https://doi.org/10.1038/hr.2010.74",
+  "pmid": "20520613",
+  "kind": "paper",
+  "tags": [
+   "breath",
+   "vascular"
+  ],
+  "note": "Fifteen minutes of device-guided slow breathing (about 5.5 breaths a minute) lowered muscle sympathetic nerve activity by 8 bursts a minute; calm music lowered blood pressure but not sympathetic activity."
+ },
+ {
+  "id": "pecosmartin2019",
+  "authors": "Pecos-Martin D, Ponce-Castro MJ, Jiménez-Rejano JJ et al.",
+  "year": 2019,
+  "title": "Immediate effects of variable durations of pressure release technique on latent myofascial trigger points of the levator scapulae: a double-blinded randomised clinical trial",
+  "venue": "Acupunct Med 37:141-150",
+  "url": "https://doi.org/10.1136/acupmed-2018-011738",
+  "pmid": "31060367",
+  "kind": "paper",
+  "tags": [
+   "trigger-points"
+  ],
+  "note": "Pressure release held on a latent trigger point for 60 or 90 s raised its pressure-pain threshold more than 30 s did."
  },
  {
   "id": "pratusevich1995",
@@ -1347,6 +1522,21 @@
    "nerve"
   ],
   "note": "The whole model in one case: a tender point, a pulsating perforating artery beneath it on Doppler, resolution with hydrodissection."
+ },
+ {
+  "id": "zautra2010",
+  "authors": "Zautra AJ, Fasman R, Davis MC et al.",
+  "year": 2010,
+  "title": "The effects of slow breathing on affective responses to pain stimuli: an experimental study",
+  "venue": "Pain 149:12-18",
+  "url": "https://doi.org/10.1016/j.pain.2009.10.001",
+  "pmid": "20079569",
+  "kind": "paper",
+  "tags": [
+   "breath",
+   "mind"
+  ],
+  "note": "Breathing at half the normal rate lowered the intensity and unpleasantness of moderate heat pain, less reliably in fibromyalgia."
  },
  {
   "id": "zhang2007",

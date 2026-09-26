@@ -82,7 +82,7 @@ design: `docs/SIMULATION.md`.
 - [x] Where knots are and how many: the location test as step 0 of the decision tree (O15, from the introduction)
 - [ ] M1, the rest: the other breath routes (local nerve, attention, chemistry) in a shared interface; the pulse variant; the field (a patch of perforators under one breath, broad against focused)
 - [x] The exam sealed (v1, 26 Sep 2026): from the introduction and the author's words, with its readings and scoring; essay-only reports set aside
-- [ ] M2: T6 and T3; the harness (sweep, scoring); matrix v1
+- [x] M2: T6 and T3 as models; the harness (`knots_sim/exam.py`) with its fairness rules; matrix v1 with counts, on the Research page (`#exam`); findings 004
 - [ ] M3: T2 live (Hai–Murphy; needs the paper) with latch hardening; T4, T5, the gamma loop, hybrids; matrix v2
 - [ ] M4: instrument models; each theory's fingerprint at a release; the decision tree for labs, its predictions sealed
 - [ ] M5: clusters and the queue for every theory (how clusters form, let go together, and where they sit); the spatial test (the traditions' maps and trigger points against published perforator maps); network (O8); body (O9, O10); the atlas driven by the model
@@ -90,6 +90,8 @@ design: `docs/SIMULATION.md`.
 - [ ] Measure or source what decides the most: the wall's length–tension width and thickness (whether a knot holds at rest); how fast the skin's small arteries ease when drive falls (one breath or many); hairy-skin reflexes
 
 ## Open questions (for the author)
+- Pressed, with a slow out-breath: does a knot let go while the hand still presses, or as it eases off? The matrix splits
+  the theories on it (O2.2).
 - How should manipulation (pressure, breath) return to the atlas, if at all?
 - The simulation's open decisions (`sim/PLAN.md` §13): the section's name, and when `/simulation/` joins the top bar; what
   "attention" means in the models; a pilot measurement; a co-author; OSF and Zenodo accounts; reports from other practitioners.

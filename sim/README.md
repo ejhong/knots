@@ -10,6 +10,8 @@ scored against the same observations. The plan is [PLAN.md](PLAN.md); how the re
 cd sim
 uv sync            # Python ≥ 3.11; installs the locked environment into .venv
 uv run pytest      # tests
+uv run python -m knots_sim.export   # regenerate what the site shows (minutes)
+uv run python -m knots_sim.exam     # every theory through the sealed exam: src/data/sim/matrix.json (about half an hour)
 ```
 
 ## Layout
@@ -21,13 +23,20 @@ params/vessel.yaml       T1, the vessel switch: every parameter with its source,
 params/checks.yaml       numbers for the feasibility checks (collar, cooling, latch)
 params/tree.yaml         the tree's own numbers (guesses, sampled)
 params/adapt.yaml        length adaptation: how fast and how far a held vessel's muscle adapts, with sources
-observations/spec.yaml   the exam: what people report, as tests (a dated draft until the author seals it)
+params/interface.yaml    what every theory shares in the trials: stress held, the breath, the hand (guessed or sourced)
+params/perception.yaml   T6, perception: gain, arousal, attention, the in-breath, overbreathing
+params/triggerpoint.yaml T3, trigger points: the energy crisis at an endplate, pressure release, the twitch
+observations/spec.yaml   the exam: what people report, as tests (sealed v1; seal.yaml holds its hash)
 knots_sim/
   pubmed.py              PubMed E-utilities and Europe PMC full texts, paced and cached (.cache/, ignored)
   library.py             papers the simulation stands on, merged into src/data/papers.json from PubMed records
   params.py              loads the tables; --verify checks every quote against its source
   models/vessel.py       the vessel switch, written once in SymPy; calibration and fitting to measured targets
   models/tree.py         a parent and its children, each a switch, sharing pressure; many trees at once
+  models/perception.py   T6: places on a body map felt as knots through gain, arousal and attention
+  models/triggerpoint.py T3: an endplate's contracture held by its own ischaemia
+  exam.py                the harness: the shared trials and pass criteria, every theory through them, matrix.json
+  theories/t1.py t3.py t6.py   each theory's mapping onto the trials, written out for its proponents to check
   scenarios.py           the trials as input scores: a knot forms, holds, lets go
   breath.py              the breath's routes over knot depth: release maps, the least movement per breath
   field.py               a patch of perforators under one breath: broad against focused release
@@ -37,10 +46,13 @@ knots_sim/
   codegen.py             the model's equations as TypeScript (src/sim/models/)
   export.py  findings.py run everything; write src/data/sim/*.json, the findings note and the run manifest
 tests/                   physics, calibration, and freshness of what the site shows
-findings/                notes written from a run's numbers (001 can a perforator hold, 002 breath and trees, 003 how a knot sets)
+findings/                notes written from a run's numbers (001 can a perforator hold, 002 breath and trees, 003 how a knot sets,
+                         004 the exam)
 exploratory/             quick probes behind the plan's findings, kept as run (not tests)
 results/<run>/           run manifests (committed); raw/ is not
 private/                 papers for reading (ignored by git: never commit PDFs)
 ```
 
-Still to come (PLAN.md §9–11): `interface.py` (the other breath routes), the open vessel's missing loop for adaptation, the other theories' models, the sweep harness, the instrument models.
+Still to come (PLAN.md §9–11): the latch (T2), densification (T4) and the nerve view (T5) behind the same harness; the other
+breath routes; the open vessel's missing loop for adaptation; the mechanics and body stages (O5, O9, O10.2); the instrument
+models.
