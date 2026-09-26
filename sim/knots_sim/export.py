@@ -23,7 +23,7 @@ from pathlib import Path
 
 import numpy as np
 
-from . import breath, checks, codegen, robustness, scenarios
+from . import breath, checks, codegen, field, robustness, scenarios
 from .findings import write_breath_and_trees, write_findings
 from .models import tree, vessel
 from .params import load, papers
@@ -57,7 +57,7 @@ def _inputs_hash() -> str:
 
 def _round(v, n=4):
     if isinstance(v, float):
-        return float(f"{v:.{n}g}")
+        return None if v != v else float(f"{v:.{n}g}")  # NaN is not JSON
     if isinstance(v, dict):
         return {k: _round(x, n) for k, x in v.items()}
     if isinstance(v, (list, tuple)):
@@ -118,6 +118,7 @@ def main() -> dict:
         },
         "breath": breath_maps,
         "tree": trees,
+        "field": field.study(),
         "robustness": robust,
         "scenarios": {
             name: {"score": asdict(x), "summary": runs[name][1]}
@@ -133,7 +134,7 @@ def main() -> dict:
     for k, score in exact_scores.items():
         data["scenarios"][k]["score"] = score
     SITE_DATA.mkdir(parents=True, exist_ok=True)
-    (SITE_DATA / "vessel.json").write_text(json.dumps(data, ensure_ascii=False, indent=1) + "\n")
+    (SITE_DATA / "vessel.json").write_text(json.dumps(data, ensure_ascii=False, indent=1, allow_nan=False) + "\n")
 
     # Golden trajectories: the site's stepper must reproduce these (fixed step, same inputs).
     golden = {"dt": 0.02, "every": 25, "params": data["params"]["values"], "runs": {}}

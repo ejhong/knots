@@ -4,7 +4,7 @@ import data from '../data/sim/vessel.json';
 import exam from '../data/sim/exam.json';
 import { refById } from '../data/references';
 import { switchDiagram } from '../sim/draw';
-import { decisionTree, leastMovement, releaseMap, treeStory, type BreathMaps, type TreeFigure } from '../sim/figures';
+import { decisionTree, fieldPanels, leastMovement, releaseMap, treeStory, type BreathMaps, type FieldStudy, type TreeFigure } from '../sim/figures';
 import { calibrate, type Params } from '../sim/vessel';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
@@ -21,6 +21,8 @@ const pressed = opened('press_and_release') - 150;
 const breath = data.breath as unknown as BreathMaps;
 const tree = data.tree as unknown as { figure: TreeFigure; robustness: Record<string, number>; siblings: { siblings: number; shut_by_surge: number } };
 const tr = tree.robustness;
+const fieldData = data.field as unknown as FieldStudy & { conditions: Record<string, { depth_vs_time: number }> };
+const fc = fieldData.conditions;
 const f2 = (x: number) => x.toFixed(2);
 const pct = (x: number) => `${Math.round(100 * x)}%`;
 const guessed = (data.params.vessel as { confidence: string }[]).filter((row) => row.confidence === 'guessed').length;
@@ -267,6 +269,19 @@ const index = [
       What would have to be true for movement to be the route: the least deformation per breath, as a share of a squeeze that shuts the vessel.
       Ultrasound speckle tracking over a knot during the breath could measure it.
     </p>
+    <h3 class="h3">Broad or focused: a patch of knots under one breath</h3>
+    <p class="sub">
+      {fieldData.n} perforators on a patch of skin, each with its own wall, and more stress in some zones (representative, not anatomy). A surge
+      forms {fc.broad.knots} knots; with no breath, {fc.calm.freed} lets go. Then the breath acts in one of three ways.
+    </p>
+    <figure class="paper-fig scroll-x" set:html={fieldPanels(fieldData)} />
+    <div class="two">
+      <p class="find"><strong>Broad release takes the easy knots everywhere.</strong> When drive eases across the patch, {fc.broad.freed} of {fc.broad.knots} let go,
+        scattered wherever their thresholds are highest, in order of difficulty (depth and release time correlate at {fc.broad.depth_vs_time.toFixed(2)}).</p>
+      <p class="find"><strong>Focused release takes the knots where the tissue moves, whatever else is true.</strong> {fc.focused.freed_near} of the{' '}
+        {fc.focused.knots_near} knots at the spot let go, and {fc.focused.freed_far} of {fc.focused.knots_far} elsewhere. Together the two routes free all{' '}
+        {fc.both.knots_near} at the spot and {fc.both.freed_far} elsewhere: a focused breath works best in a calm body.</p>
+    </div>
   </section>
 
   <section id="trees" class="sec full" data-glyph="樹">
@@ -775,6 +790,12 @@ const index = [
     gap: 22px 28px;
     align-items: start;
     margin: 12px 0 4px;
+  }
+  .h3 {
+    font-family: var(--font-sans);
+    font-size: 13.5px;
+    font-weight: 700;
+    margin: 26px 0 2px;
   }
   .find {
     font-family: var(--font-serif);

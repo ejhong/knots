@@ -147,6 +147,8 @@ def write_breath_and_trees(d: dict) -> Path:
     fitted = next(r for r in ease["rows"] if r["fitted"])
     fast = next(r for r in ease["rows"] if abs(r["tau_down"] - 3.0) < 1e-9)
     tr, sib, fig = t["robustness"], t["siblings"], t["figure"]
+    fd = d["field"]
+    fc = fd["conditions"]
     first = {e["vessel"]: e["t"] for e in fig["events"] if e["to"] == "shut"}
     opened = [e for e in fig["events"] if e["to"] == "open"]
     parent_open = next(e["t"] for e in opened if e["vessel"] == 0)
@@ -184,15 +186,22 @@ are `sim/knots_sim/breath.py`. The site shows the same results at /research/.*
 4. **One breath or many turns on how fast the skin's small arteries ease when drive falls.** With the value fitted to the
    gasp's recovery ({fitted['tau_down']:.0f} s), an uneven breath (−{ease['swing']}) releases the easiest knot after
    {fitted['release_s'][0]:.0f} s; if they eased in 3 s, after {fast['release_s'][0]:.0f} s. Nobody has measured it over hairy skin.
-5. **One knot upstream makes a cluster below it.** In the worked tree (a parent and four children with walls from 0.25 to
+5. **Broad or focused.** On a patch of {fd['n']} perforators, each with its own wall and more stress in some zones,
+   {fc['calm']['knots']} knots form. With no breath, {fc['calm']['freed']} lets go. When drive eases everywhere (broad),
+   {fc['broad']['freed']} let go, scattered across the patch, in order of difficulty (correlation of depth and release time
+   {fc['broad']['depth_vs_time']:.2f}). When the breath moves the tissue around one spot (focused), {fc['focused']['freed_near']}
+   of the {fc['focused']['knots_near']} knots within a radius of the spot let go and {fc['focused']['freed_far']} of the
+   {fc['focused']['knots_far']} elsewhere. Together, {fc['both']['freed_near']} of {fc['both']['knots_near']} at the spot and
+   {fc['both']['freed_far']} of {fc['both']['knots_far']} elsewhere. (The zones, the patch and the spot are representative.)
+6. **One knot upstream makes a cluster below it.** In the worked tree (a parent and four children with walls from 0.25 to
    0.35), a local surge shuts the parent at {first[0]:.0f} s and all four children within {max(first.values()) - first[0]:.1f} s,
    as the pressure below the parent collapses. Released after a 40 s press, the parent reopens at {parent_open:.0f} s and
    {len(with_it)} children with it within 5 s; the last lets go at {last['t']:.0f} s, after drive falls to rest.
-6. **Across {tr['samples']} plausible trees** (pressures, the parent's resistance, the children's walls and the drive
+7. **Across {tr['samples']} plausible trees** (pressures, the parent's resistance, the children's walls and the drive
    sampled): when the parent held a knot, a cluster formed beneath it in {pc(tr['share_cluster'])} ({tr['mean_cluster']:.1f}
    of 4 children on average); releasing the parent freed most of its cluster within 5 s in {pc(tr['share_cascade'])}; at
    least one child stayed held in {pc(tr['share_queue'])}.
-7. **Siblings on one feed protect each other.** Each closure raises the pressure holding the others open: a surge of
+8. **Siblings on one feed protect each other.** Each closure raises the pressure holding the others open: a surge of
    stress shut {sib['shut_by_surge']} of {sib['siblings']}. Clusters come from the tree's hierarchy.
 
 ## Limits

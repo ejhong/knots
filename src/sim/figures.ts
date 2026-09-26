@@ -281,3 +281,70 @@ export function decisionTree(): string {
   out.push(`<path d="M175 316 L175 338 M525 316 L525 338" stroke="${INK.faint}" stroke-width="1"/>`);
   return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="What would settle it: first, whether anything changes locally at release; then where and in what; then, for a vascular answer, the breath's route and clusters">${out.join('')}</svg>`;
 }
+
+// ---------- The field: broad and focused ----------
+
+export interface FieldStudy {
+  n: number;
+  pos: number[][];
+  zone: number[];
+  spot: number[];
+  radius: number;
+  breaths: number;
+  period: number;
+  conditions: Record<string, { knots: number; freed: number; knots_near: number; freed_near: number; knots_far: number; freed_far: number; knot: number[]; released_s: (number | null)[] }>;
+}
+
+const FIELD_ROWS: [string, string][] = [
+  ['broad', 'broad: drive eases everywhere'],
+  ['focused', 'focused: the breath moves one spot'],
+  ['both', 'both'],
+];
+
+/** Small multiples: each row a way the breath acts, each column the patch after so many breaths. */
+export function fieldPanels(f: FieldStudy, after: number[] = [0, 5, 15, 30]): string {
+  const P = 138;
+  const gap = 14;
+  const left = 150;
+  const top = 26;
+  const W = left + after.length * (P + gap);
+  const H = top + FIELD_ROWS.length * (P + gap) + 34;
+  const out: string[] = [];
+  after.forEach((b, c) => {
+    out.push(`<text x="${f1(left + c * (P + gap) + P / 2)}" y="${top - 10}" text-anchor="middle" fill="${PAPER.muted}" font-size="9" ${MONO}>${b === 0 ? 'as the breath begins' : `after ${b} breaths`}</text>`);
+  });
+  FIELD_ROWS.forEach(([key, label], r) => {
+    const cond = f.conditions[key];
+    const y0 = top + r * (P + gap);
+    out.push(`<text x="0" y="${f1(y0 + 16)}" fill="${PAPER.text}" font-size="10" font-weight="600" font-family="-apple-system, 'Segoe UI', sans-serif">${esc(label.split(':')[0])}</text>`);
+    if (label.includes(':')) out.push(`<text x="0" y="${f1(y0 + 30)}" fill="${PAPER.muted}" font-size="9" ${SERIF} font-style="italic">${esc(label.split(': ')[1])}</text>`);
+    const freedAll = cond.released_s.filter((x, i) => cond.knot[i] && x !== null && x <= after[after.length - 1] * f.period).length;
+    out.push(`<text x="0" y="${f1(y0 + 50)}" fill="${PAPER.muted}" font-size="9" ${MONO}>${freedAll} of ${cond.knots} let go</text>`);
+    after.forEach((b, c) => {
+      const x0 = left + c * (P + gap);
+      const t = b * f.period;
+      out.push(`<rect x="${x0}" y="${f1(y0)}" width="${P}" height="${P}" rx="6" fill="#f3eee7" stroke="${PAPER.line}" stroke-width="1"/>`);
+      if (key !== 'broad') {
+        out.push(`<circle cx="${f1(x0 + f.spot[0] * P)}" cy="${f1(y0 + (1 - f.spot[1]) * P)}" r="${f1(f.radius * P * 1.6)}" fill="#c9a45f" fill-opacity="0.13" stroke="#c9a45f" stroke-opacity="0.5" stroke-dasharray="2 3"/>`);
+      }
+      f.pos.forEach(([px, py], i) => {
+        const cx = x0 + px * P;
+        const cy = y0 + (1 - py) * P;
+        const rel = cond.released_s[i];
+        if (!cond.knot[i]) {
+          out.push(`<circle cx="${f1(cx)}" cy="${f1(cy)}" r="1.1" fill="${PAPER.faint}"/>`);
+        } else if (rel !== null && rel <= t) {
+          out.push(`<circle cx="${f1(cx)}" cy="${f1(cy)}" r="2.6" fill="none" stroke="${PAPER.release}" stroke-width="1.3"/>`);
+        } else {
+          out.push(`<circle cx="${f1(cx)}" cy="${f1(cy)}" r="2.9" fill="${PAPER.knot}"/>`);
+        }
+      });
+    });
+  });
+  const ly = H - 12;
+  out.push(`<circle cx="${left + 5}" cy="${ly - 3}" r="2.9" fill="${PAPER.knot}"/><text x="${left + 13}" y="${ly}" fill="${PAPER.muted}" font-size="9" ${MONO}>held</text>`);
+  out.push(`<circle cx="${left + 65}" cy="${ly - 3}" r="2.6" fill="none" stroke="${PAPER.release}" stroke-width="1.3"/><text x="${left + 73}" y="${ly}" fill="${PAPER.muted}" font-size="9" ${MONO}>let go</text>`);
+  out.push(`<circle cx="${left + 135}" cy="${ly - 3}" r="1.1" fill="${PAPER.faint}"/><text x="${left + 143}" y="${ly}" fill="${PAPER.muted}" font-size="9" ${MONO}>no knot</text>`);
+  out.push(`<circle cx="${left + 215}" cy="${ly - 3}" r="6" fill="#c9a45f" fill-opacity="0.13" stroke="#c9a45f" stroke-opacity="0.5" stroke-dasharray="2 3"/><text x="${left + 226}" y="${ly}" fill="${PAPER.muted}" font-size="9" ${MONO}>where the breath moves the tissue</text>`);
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="A patch of knots under one breath: broad release takes easy knots everywhere; focused release takes the knots at one spot; both together take all the knots at the spot and the easy ones everywhere">${out.join('')}</svg>`;
+}
