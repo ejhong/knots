@@ -15,3 +15,10 @@ shots/
 
 # the essay PDF is archived locally only (the Substack post is canonical)
 docs/source/*.pdf
+
+# simulation (sim/): environment, caches, raw run outputs, and papers kept for reading (never commit PDFs)
+sim/.venv/
+__pycache__/
+.pytest_cache/
+sim/results/*/raw/
+sim/private/

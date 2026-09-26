@@ -3,6 +3,10 @@
 A long-running visualisation project: a static Astro site with a Three.js atlas of the body's perforators and knots.
 Owner: Eugene Jhong. Source essays: `docs/source/*.md` (the Substack posts are canonical).
 
+**Next phase: simulation.** The theories as dynamical models, run against the reported observations, with a new section of the
+site to show them. Read `sim/PLAN.md` (the research plan, with its open decisions) and `docs/SIMULATION.md` (the section's
+design) before any simulation work.
+
 ## Principles
 
 - **Look and feel of The OM Project** (ejhong.github.io/om), cooled: warm rice paper, cool ink (slate-indigo) panels and night
@@ -10,7 +14,7 @@ Owner: Eugene Jhong. Source essays: `docs/source/*.md` (the Substack posts are c
   thing on the body), jade for release and the characters, an indigo seal; perforators are one neutral colour, told apart by size
   and brightness. The figure itself is sacred art: light in an ink-stone card. See `docs/DESIGN.md`.
 - **Anatomical honesty.** Counts and clusters come from the literature (Taylor & Palmer 1987; Saint-Cyr 2009). Anything representative
-  is labelled as such. The simulation illustrates a hypothesis; it is not a measurement.
+  is labelled as such. The atlas's simulation illustrates a hypothesis; it is not a measurement.
 - **Describe, never prescribe.** Nothing is a protocol. Keep the moderation guidance (Varieties of Contemplative Experience, Cheetah
   House) and keep the narrative general; check with the author before adding anything about technique or intensity.
 - **Words.** Say *fascia* (not “sheet”) and *knots* or *perforators* (not “staples”). State things directly: the essays are credited in
@@ -19,6 +23,12 @@ Owner: Eugene Jhong. Source essays: `docs/source/*.md` (the Substack posts are c
   atlas menu uses its one- or two-word `label`.
 - **Verified references only.** Add papers to `src/data/papers.json` from PubMed E-utilities output (title/authors/venue/DOI), never
   from memory.
+- **Simulation: *can*, not *is*.** The models ask which theories can produce which observations, at what parameter cost, and what
+  would tell them apart; never which theory is true. Each theory in its strongest form, as `hypotheses.ts` states it, with
+  variants wherever the equations are a choice. Every parameter carries its source (`papers.json` id, locator, quoted line) or is
+  marked as guessed: never a number from memory. The exam (`sim/observations/spec.yaml`) is frozen before any sweep (the site
+  shows it sealed) and changes only by a new, dated version. Results are generated, never edited by hand, and each names its
+  run. On the site, simulated inputs are *trials*.
 
 ## Layout
 
@@ -34,6 +44,10 @@ Owner: Eugene Jhong. Source essays: `docs/source/*.md` (the Substack posts are c
 - `src/pages/` — introduction, atlas, hypotheses, traditions, library, about (`lab` is a dev bench)
 - `scripts/body/build-body.ts` — regenerates `public/models/body.*` from MakeHuman (cached downloads)
 - `scripts/shot.ts` — Playwright screenshot bench; use it to check visual changes
+- `sim/` — the simulation phase (Python, uv), built stage by stage (`sim/README.md` has the layout as it grows): `PLAN.md` (its
+  source brief is `BRIEF.md`); `knots_sim/` models, trials, scoring, sweeps, codegen, export; `observations/` and `params/` (the
+  data people review); `results/` (run manifests)
+- `docs/` — `DESIGN.md` (look), `ARCHITECTURE.md`, `DATA.md` (formats), `SIMULATION.md` (the simulation section), `ROADMAP.md`
 
 ## Conventions
 
@@ -42,10 +56,14 @@ Owner: Eugene Jhong. Source essays: `docs/source/*.md` (the Substack posts are c
 - `MeshBVH` must be built with `{ indirect: true }` — anchors depend on triangle order and `body.triangles` is shared.
 - Colours: 3D in `engine/theme.ts`, CSS in `src/styles/tokens.css` (+ `app.css` for the instrument layout); keep them in step.
 - Astro trims a line break before an inline tag: end such lines with `{' '}`.
-- Before pushing: `npm run check && npm test && npm run build`, and screenshot any visual change.
+- Before pushing: `npm run check && npm test && npm run build`, and screenshot any visual change; after changes in `sim/`, also
+  `cd sim && uv run pytest`.
 
 ## Workflow
 
 - `npm run dev` then `npx tsx scripts/shot.ts /knots/atlas shots/x.png --eval "…"` (`window.atlas` is the scene).
-- Deploy: push to `main` (GitHub Actions → Pages at https://ejhong.github.io/knots/).
-- Roadmap and open questions: `docs/ROADMAP.md`.
+- `SHOT_CHROMIUM=<path>` points `scripts/shot.ts` at another Chromium (cloud sessions set it to the pre-installed one).
+- Simulation: `cd sim && uv sync && uv run pytest`.
+- Deploy: push to `main` (GitHub Actions → Pages at https://ejhong.github.io/knots/). Every push also runs `ci.yml`: the sim
+  tests, plus the site checks on branches other than `main`.
+- Roadmap and open questions: `docs/ROADMAP.md`; the simulation's open decisions: `sim/PLAN.md` §11.

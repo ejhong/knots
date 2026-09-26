@@ -27,9 +27,10 @@ npm run check      # astro/TypeScript check
 npm run build      # static site → dist/
 npm run body       # rebuild public/models/body.{json,bin} from MakeHuman (CC0)
 npx tsx scripts/shot.ts /knots/atlas shots/atlas.png   # screenshot bench (dev server running)
+cd sim && uv sync && uv run pytest                     # the simulation phase (Python): see sim/PLAN.md
 ```
 
-Pushing to `main` deploys to GitHub Pages via `.github/workflows/deploy.yml`.
+Pushing to `main` deploys to GitHub Pages via `.github/workflows/deploy.yml`; every push also runs `.github/workflows/ci.yml`.
 
 ## How it is made
 

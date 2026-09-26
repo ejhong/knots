@@ -1,0 +1,46 @@
+name: CI
+
+# Every push: the simulation's tests; on branches other than main, the site's checks too
+# (deploy.yml checks main before it deploys).
+on:
+  push:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ci-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  sim:
+    name: Simulation (Python)
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: sim
+    steps:
+      - uses: actions/checkout@v7
+      - name: Install uv
+        run: |
+          python3 -m venv "$RUNNER_TEMP/uv"
+          "$RUNNER_TEMP/uv/bin/pip" install --quiet uv==0.8.17
+          echo "$RUNNER_TEMP/uv/bin" >> "$GITHUB_PATH"
+      - run: uv sync --locked
+      - run: uv run pytest
+
+  site:
+    name: Site (check, test, build)
+    if: github.ref != 'refs/heads/main'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+      - run: npm ci
+      - run: npm run check
+      - run: npm test
+      - run: npm run build

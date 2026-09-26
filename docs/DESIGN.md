@@ -23,3 +23,6 @@ more than a magazine — carrying a body drawn as sacred art: a figure made of l
   Mandorla halo, dust, bloom only on ink stone. Breath-paced motion.
 - **Marks:** a small seal 結 in the title; a procedural ensō for breath and loading.
 - **Honesty in the interface:** representative things say so; hypotheses are labelled as hypotheses.
+- **The simulation section** (planned): the same register, with model output labelled as model output. Results are marked in ink
+  by shape and fill, never red and green; terracotta and jade keep their roles (held, release); the seal marks what is sealed and
+  dated. See `docs/SIMULATION.md`.

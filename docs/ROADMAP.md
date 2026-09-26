@@ -61,5 +61,24 @@ A living list. Checked items are live.
 - [ ] Knot census chart: burden by age against cutaneous microvascular decline
 - [ ] Social image, sitemap
 
+## Simulation — the theories against the observations
+Plan: `sim/PLAN.md` (stages, method, first tasks). The section's design: `docs/SIMULATION.md`.
+- [x] Stage 0: the plan, the section's design, the Python package (`sim/`, uv) and CI
+- [ ] The exam: O1–O10 as tests with tolerances, reviewed by the author, then frozen (dated; OSF) and shown sealed
+- [ ] The shared interface and the trials (P1–P9)
+- [ ] Parameter tables for T1 and T2, every value sourced
+- [ ] T1, one knot: bifurcation in sympathetic drive; release timescale against O1
+- [ ] T2, one knot: the Hai–Murphy latch, the same analysis
+- [ ] Write once: models → Python, TypeScript and equations, with golden-trajectory tests
+- [ ] The switch and the bench, on an unlisted page
+- [ ] T3–T6, one knot; the harness (sweep, scoring); the matrix, v1
+- [ ] What would settle it: the discriminating predictions, drawn
+- [ ] Network: synthetic trees, Poiseuille flow, conducted dilation (O8; watershed clustering against digitised angiosome maps)
+- [ ] Body: O9 and O10; the atlas driven by the model
+- [ ] Preprint, with code and results cited by DOI
+
 ## Open questions (for the author)
 - How should manipulation (pressure, breath) return to the atlas, if at all?
+- The simulation's open decisions (`sim/PLAN.md` §11): the section's name; building in the open or unlisted; Python with
+  generated TypeScript (recommended) or TypeScript only; what "attention" means in the models; a pilot measurement; a co-author;
+  OSF and Zenodo accounts.

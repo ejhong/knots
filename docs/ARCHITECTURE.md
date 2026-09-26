@@ -24,6 +24,12 @@ src/viewer/AtlasScene.ts   assembles everything below and steps it each frame
 4. Any later `setShape` (age, sex) re-evaluates every anchor; nothing is re-placed.
 5. `KnotSim` runs on node indices (perforators, then roots); the cloud reads `sim.knot` / `sim.flash` each tick.
 
+## Simulation (planned)
+
+`sim/` (Python, uv) writes each theory's model once, in SymPy. Code generation emits the bench's TypeScript (`src/sim/models/`)
+and the equations; sweeps and scoring export small JSON to `src/data/sim/`, which the pages read at build time. The Pages build
+runs no simulation. Details: `docs/SIMULATION.md` (How it fits together) and `sim/PLAN.md` §9.
+
 ## Performance notes
 
 - Ladder generation takes ~0.7 s on a fast laptop (main thread). Moving it to a worker is on the roadmap.
