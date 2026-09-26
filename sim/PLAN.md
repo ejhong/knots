@@ -1,8 +1,29 @@
 # Simulation plan: the theories against the observations
 
-*Status: Stage 0 (foundations) is done: this plan, the site design (`docs/SIMULATION.md`), the package scaffold and CI. Nothing
-else is built. Written 26 Sep 2026 from the author's planning brief ([BRIEF.md](BRIEF.md), verbatim) and reassessed against
-this repo; where the two differ, this plan holds. A number marked (verify) has no source yet: source it before using it.*
+*Status (26 Sep 2026): Stage 0 is done, and Stage 1 is under way. The first model, T1 as **the vessel switch**, is built
+from sourced parameters, validated against measurements, checked for robustness, and live on the site at `/simulation/`
+(unlisted); four feasibility checks are answered (findings/001-can-a-perforator-hold.md). Written from the author's
+planning brief ([BRIEF.md](BRIEF.md), verbatim) and reassessed against this repo; where the two differ, this plan holds.
+A number marked (verify) has no source yet: source it before using it.*
+
+## 0. Findings so far
+
+1. **The vessel can hold itself.** A small artery with tone in its wall has two stable states over a band of tone
+   (Burton 1951): with measured numbers the band is 0.21–0.40 of maximal tone, just above rest (0.17). An open vessel
+   snaps shut above the fold and a shut one stays shut until tone falls below the reopening threshold: *held until
+   released*, from mechanics alone. A switch in 72% of 49,152 plausible parameter sets; whether a knot can hold at rest
+   is decided mostly by the width of the muscle's length–tension curve and the wall's thickness (both guesses today,
+   both measurable in a myograph).
+2. **Hyaluronan cannot hold it.** A liquid resists motion, not position; even at synovial-fluid viscosity its drag is
+   about 12 times too weak. T1's collar is not the hold; if it matters, it is as something stiffer, or as friction.
+3. **Cooling cannot release it within a breath** (warming takes ≥ 44 s even at maximal skin flow).
+4. **The latch economises; it does not remember** (relaxation follows calcium; Rembold 1991).
+5. **Predictions**: a local flush at release (laser speckle); pressure-then-release faster and brighter than calm;
+   slowing near the fold; breath releases knots only if its effect on drive is uneven. O1 (release within 2–10 s of one
+   exhale) is reproduced only for knots poised at the threshold; O2 (pressure, then release) is reproduced well.
+
+Next: source the guessed wall parameters; the Hai–Murphy rate constants (the 1988 paper is not open; put the PDF in
+`sim/private/`) to run T2 live; hairy-skin reflex magnitudes; then T3–T6 and the exam.
 
 ## 1. Aim
 
@@ -57,7 +78,7 @@ name its switch, or be shown to lack one.**
 
 | Theory | Candidate switch |
 |---|---|
-| T1 Perforator | constriction → low flow → cooling, acidosis, hypoxia → the HA collar gels → it resists or compresses the vessel → less flow |
+| T1 Perforator | *As built:* the vessel's own mechanics (Burton's instability: tension that depends on muscle length, against Laplace's law). *As briefed:* constriction → low flow → cooling, acidosis, hypoxia → the HA collar gels → it resists or compresses the vessel; the collar check rules this out as the hold |
 | T2 Latch | the latch-bridge state, holding tone at little energy cost (hai1988, the four-state cross-bridge model) |
 | T3 Trigger point | the energy crisis: contracture → ischaemia → too little ATP to relax |
 | T4 Densification | HA rheology, if it has hysteresis |
@@ -194,7 +215,7 @@ theory:
 | Stage | What | Done when |
 |---|---|---|
 | 0 Foundations | This plan, the site design, the package scaffold, CI | Done, 26 Sep 2026 |
-| 1 One knot, two theories | T1 (ODEs, about 5–8 state variables) and T2 (Hai–Murphy); bifurcation in S; trials P1–P3 and P9; the write-once pipeline; the switch and the bench on an unlisted page | Both bifurcation diagrams exist with sourced parameters; the key question is answered (can release happen within seconds for plausible parameters?); the bench reproduces the Python trajectories; the author has seen the page |
+| 1 One knot, two theories | T1 (ODEs, about 5–8 state variables) and T2 (Hai–Murphy); bifurcation in S; trials P1–P3 and P9; the write-once pipeline; the switch and the bench on an unlisted page | Both bifurcation diagrams exist with sourced parameters; the key question is answered (can release happen within seconds for plausible parameters?); the bench reproduces the Python trajectories; the author has seen the page. **T1 done** (5 states; switch, trials, robustness, page); T2 waits for its rate constants |
 | 2 All six, one knot | T3–T6 behind the interface; the harness (sweep, scoring, matrix) | The exam is frozen *first*; matrix v1 with existence, evidence and robustness |
 | 3 Network | A synthetic vascular tree (e.g. constrained constructive optimisation), Poiseuille flow (one sparse linear solve per step), conducted dilation; a few hundred to 1,000 units | O8 tested; watershed clustering tested against digitised maps |
 | 4 Body (optional) | About 100,000 units from angiosome anatomy; bilateral segmental sympathetic outflow; ageing | O9 and O10 tested; the atlas driven by the model (labelled as such) in place of KnotSim's illustration |
@@ -234,9 +255,9 @@ Compute is cheap. The pace is set by sourced parameters, fair formalisations and
 
 ## 11. Open decisions (for the author)
 
-- **D1** The section's name: *Tests*, *Trials* or *Simulations*? (Working name: Tests.)
+- **D1** The section's name: *Tests*, *Trials* or *Simulations*? (The first page is at `/simulation/`, unlisted.)
 - **D2** Build in the open (the frozen exam first, results as they come) or unlisted until the first matrix?
-- **D3** Python with generated TypeScript (recommended, and scaffolded), or TypeScript only?
+- **D3** Python with generated TypeScript: built, and held to the same trajectories by a golden test.
 - **D4** What "attention" means in the models.
 - **D5** A pilot measurement with people (thermal or laser speckle imaging at a release): whether, how, and under the moderation
   guidance.

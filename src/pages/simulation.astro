@@ -1,0 +1,699 @@
+---
+import Doc from '../layouts/Doc.astro';
+import data from '../data/sim/vessel.json';
+import { refById } from '../data/references';
+import { bandScale, logBars, sectionDrawing, shareBars, switchDiagram, tracesFrame } from '../sim/draw';
+import { calibrate, type Params } from '../sim/vessel';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const p = data.params.values as unknown as Params;
+const s = calibrate(p);
+const r = data.robustness;
+const v = data.validation;
+const col = data.checks.collar;
+const cool = data.checks.cooling;
+const sc = data.scenarios as Record<string, { summary: { events: { t: number; to: string }[]; peak_flow: number; peak_spark: number; peak_debt: number } }>;
+const opened = (name: string) => sc[name].summary.events.find((e) => e.to === 'open')?.t ?? NaN;
+const eased = opened('stress_eases') - 110;
+const pressed = opened('press_and_release') - 150;
+const f2 = (x: number) => x.toFixed(2);
+const pct = (x: number) => `${Math.round(100 * x)}%`;
+const cite = (id: string) => {
+  const ref = refById(id);
+  if (!ref) return id;
+  const who = ref.authors.split(',')[0].split(' et al')[0].replace(/\s+\S+$/, '');
+  return `<a class="cite" href="${base}/library/#${id}">${who} ${ref.year}</a>`;
+};
+const SOBOL_LABEL: Record<string, string> = {
+  width: 'length–tension width',
+  wall: 'wall thickness',
+  r100: 'vessel size',
+  P: 'pressure inside',
+  xopt: 'stretch of greatest force',
+  xc: 'shut radius',
+  Tmax: 'maximal tension',
+  beta: 'passive stiffness',
+  porh_rise: 'size of hyperaemia',
+  gasp_drop: 'size of the gasp reflex',
+};
+const sobol = Object.entries(r.sobol.to_hold)
+  .map(([k, x]) => ({ label: SOBOL_LABEL[k] ?? k, value: Math.min(1, Math.max(0, x.ST)) }))
+  .sort((a, b) => b.value - a.value)
+  .slice(0, 5);
+type Row = { key: string; label: string; symbol: string; value: number; unit: string; confidence: string; source?: string; locator?: string; quote?: string; note?: string; fit?: string; range?: number[] };
+const vesselRows = data.params.vessel as Row[];
+const checkRows = (data.params.checks as Row[]).filter((x) => x.unit !== '—');
+const quoteRows = (data.params.checks as Row[]).filter((x) => x.unit === '—');
+const fmt = (x: number) =>
+  Math.abs(x) >= 1e4 || (Math.abs(x) < 1e-3 && x !== 0) ? x.toExponential(2).replace('e', '×10^').replace('+', '') : Number(x.toPrecision(3)).toLocaleString('en-GB');
+const unit = (u: string) => u.replace('r100²', 'r₁₀₀²').replace('r100', 'r₁₀₀');
+const shown = (row: Row) => {
+  if (row.key === 'r100' || row.key === 'collar_thickness') return `${fmt(row.value * 1e6)} µm`;
+  if (row.key === 'layer_depth') return `${fmt(row.value * 1000)} mm`;
+  if (row.unit === 'J/m³·K') return `${fmt(row.value / 1e6)} MJ/m³·K`;
+  return `${fmt(row.value)}${row.unit && row.unit !== '1' ? ` ${unit(row.unit)}` : ''}`;
+};
+const range = (row: Row) => {
+  if (!row.range) return '';
+  const [a, b] = row.range;
+  if (row.key === 'r100' || row.key === 'collar_thickness') return `${fmt(a * 1e6)}–${fmt(b * 1e6)} µm`;
+  if (row.key === 'layer_depth') return `${fmt(a * 1000)}–${fmt(b * 1000)} mm`;
+  if (row.unit === 'J/m³·K') return `${fmt(a / 1e6)}–${fmt(b / 1e6)}`;
+  return `${fmt(a)}–${fmt(b)}`;
+};
+/** Symbols as written in the tables (T_max, τ_down) with their subscripts set as subscripts. */
+const sym = (x: string) => x.replace(/_([^_\s]+)$/, '<sub>$1</sub>');
+const index = [
+  { id: 'switch', label: 'the switch' },
+  { id: 'checks', label: 'four checks' },
+  { id: 'predicts', label: 'what it predicts' },
+  { id: 'sure', label: 'how sure' },
+  { id: 'measured', label: 'against measurements' },
+  { id: 'numbers', label: 'every number' },
+  { id: 'made', label: 'how it was made' },
+];
+const repo = 'https://github.com/ejhong/knots/blob/main';
+---
+<Doc
+  title="Can a knot hold?"
+  kicker="Simulation · first findings"
+  current=""
+  lede="If a knot is a perforator held stuck, something has to hold it, and it has to let go within seconds. A first model, built only from published measurements, finds that the vessel can hold itself."
+  description="A small artery with tone in its wall is a switch: open or shut over a band of tone. A live model of one perforator, built from published measurements, and four checks of what could hold a knot."
+  glyph="験"
+  index={index}
+  wide
+  noindex
+>
+  <section id="switch" class="sec full" data-glyph="結">
+    <h2>One perforator, running</h2>
+    <div class="prose intro">
+      <p>
+        A perforator's small artery, 0.24 mm across. Blood pushes its wall out; the wall pulls in with its own elastic
+        tension and with the tone of its muscle. Over a band of tone both answers balance: an open vessel snaps shut
+        when tone passes the fold, and a shut one stays shut until tone falls well below it. Every number comes from a
+        measurement listed at the foot of the page, and the few that are guesses say so.
+      </p>
+    </div>
+
+    <div class="bench" data-bench>
+      <figure class="fig fig-cs" set:html={sectionDrawing()} />
+      <figure class="fig fig-sw" set:html={switchDiagram(p, s)} />
+      <figure class="fig fig-tr" set:html={tracesFrame()} />
+      <div class="side">
+        <p class="read"><span class="k">state</span> <span class="state" data-out="state" data-state="open">open</span></p>
+        <dl class="reads">
+          <dt>tone</dt><dd data-out="tone">{f2(s.urest)}</dd>
+          <dt>flow</dt><dd data-out="flow">1.00× rest</dd>
+          <dt>debt</dt><dd data-out="debt">0.00</dd>
+          <dt>time</dt><dd data-out="clock">0:00</dd>
+        </dl>
+        <label class="ctl-row">
+          <span class="k">stress</span>
+          <input type="range" data-ctl="stress" min="0" max="0.35" step="0.005" value="0" aria-label="Stress: extra tone above rest" />
+        </label>
+        <div class="ctl-row buttons">
+          <button class="ctl" type="button" data-ctl="gasp">a deep breath</button>
+          <button class="ctl" type="button" data-ctl="press" aria-pressed="false">pressure</button>
+        </div>
+        <div class="ctl-row">
+          <span class="k">breathing</span>
+          <div class="seg-row" role="group" aria-label="Breathing">
+            <button class="ctl" type="button" data-breath="off" aria-pressed="true">off</button>
+            <button class="ctl" type="button" data-breath="even" aria-pressed="false">even</button>
+            <button class="ctl" type="button" data-breath="relaxing" aria-pressed="false">relaxing</button>
+          </div>
+        </div>
+        <div class="ctl-row">
+          <span class="k">trials</span>
+          <div class="trials">
+            <button class="ctl" type="button" data-trial="knot_forms" aria-pressed="false">a knot forms</button>
+            <button class="ctl" type="button" data-trial="stress_eases" aria-pressed="false">stress eases</button>
+            <button class="ctl" type="button" data-trial="press_and_release" aria-pressed="false">pressure, then release</button>
+            <button class="ctl" type="button" data-trial="relaxing_breath_at_threshold" aria-pressed="false">relaxing breaths</button>
+            <button class="ctl" type="button" data-trial="gasp_near_fold" aria-pressed="false">a breath near the fold</button>
+          </div>
+        </div>
+        <div class="ctl-row buttons">
+          <div class="seg-row" role="group" aria-label="Speed">
+            <button class="ctl" type="button" data-speed="1" aria-pressed="true">1×</button>
+            <button class="ctl" type="button" data-speed="4" aria-pressed="false">4×</button>
+          </div>
+          <button class="ctl" type="button" data-ctl="reset">reset</button>
+        </div>
+        <p class="note" data-out="note" aria-live="polite"></p>
+        <p class="fine">These are the model's inputs, not instructions. It illustrates a hypothesis and measures nothing.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="checks" class="sec full" data-glyph="検">
+    <h2>Four checks</h2>
+    <p class="sub quote">What could hold a knot and let it go within seconds, checked with published numbers.</p>
+    <div class="checks">
+      <article class="check">
+        <p class="q">Can the vessel hold itself?</p>
+        <p class="a">Yes: a small artery is a switch.</p>
+        <figure set:html={bandScale(s)} />
+        <p set:html={`With measured wall strength (3.4 mN/mm; ${cite('zhang2007')}), the stretch at which its muscle is strongest (${cite('elassar2022')}), the pressure inside it, and the timing of breath and reactive hyperaemia, the band runs from ${f2(s.Aopen)} to ${f2(s.Afold)} of maximal tone, just above rest (${f2(s.urest)}). It is the instability ${cite('burton1951')} described, which clinicians now read as a closing threshold (${cite('miller2026')}); nerves hold some arterioles shut in living tissue (${cite('bohlen1979')}). A switch in ${pct(r.share_bistable)} of ${r.samples.toLocaleString('en-GB')} plausible parameter sets.`} />
+      </article>
+      <article class="check">
+        <p class="q">Can hyaluronan hold it?</p>
+        <p class="a">No: a liquid resists motion, not position.</p>
+        <figure set:html={logBars([{ label: 'drag of the most viscous collar', value: col.drag_Pa, unit: 'Pa' }, { label: 'pressure holding the vessel open', value: Math.round(col.pressure_Pa / 100) * 100, unit: 'Pa', strong: true }], 10, 20000, [10, 100, 1000, 10000])} />
+        <p set:html={`At rest its drag is zero. At its most viscous (healthy synovial fluid, up to 175 Pa·s; ${cite('nicholls2018')}), in a collar 20 µm thin around a vessel snapping open in a second, the drag is ${Math.round(col.drag_Pa)} Pa: ${Math.round(col.pressure_over_drag)} times weaker than the pressure holding the vessel open. Fascia holds 6–90 µg of hyaluronan per gram (${cite('fede2018')}), ${Math.round(col.synovial_over_fascia_min)}–${Math.round(col.synovial_over_fascia_max)} times less than joint fluid (${cite('nakayama2000')}), and without protein hyaluronan does not gel (${cite('krause2001')}). If a collar holds, it is something stiffer.`} />
+      </article>
+      <article class="check">
+        <p class="q">Can cooling let it go within a breath?</p>
+        <p class="a">No: heat is too slow.</p>
+        <figure set:html={logBars([{ label: 'an out-breath, at six breaths a minute', value: 6, unit: 's' }, { label: 'skin warming at maximal blood flow', value: cool.tau_s_at_max_flow, unit: 's', strong: true }, { label: 'at a tenth of that flow', value: cool.tau_s_at_tenth_flow, unit: 's', strong: true }], 1, 2000, [1, 10, 100, 1000])} />
+        <p set:html={`When the vessel opens, the patch it feeds warms with a time constant of at least ${Math.round(cool.tau_s_at_max_flow)} s even at the body's maximal skin blood flow (6–8 L/min; ${cite('charkoudian2003')}), and about ${Math.round(cool.tau_s_at_tenth_flow / 60)} minutes at a tenth of it, while losing heat to the room at 7.9 W/m²·K (${cite('dedear1997')}). Letting go within a breath needs something faster than heat.`} />
+      </article>
+      <article class="check">
+        <p class="q">Does a latch remember?</p>
+        <p class="a">No: it economises.</p>
+        <blockquote class="pull">“The rate-limiting step for relaxation appears to be removal of [Ca2+] and not latch-bridge detachment.”</blockquote>
+        <p set:html={`Smooth muscle can hold force with less calcium and ATP, the latch (${cite('murphy2005')}), but in arteries relaxation follows the fall of calcium (${cite('rembold1991')}). A latch lets a held vessel stay held cheaply while the drive lasts; the memory is the switch. Its rate constants (${cite('hai1988')}) are not yet in an open paper; with them, the latch will run here too.`} />
+      </article>
+    </div>
+  </section>
+
+  <section id="predicts" class="sec" data-glyph="験">
+    <h2>What it predicts</h2>
+    <ul class="prose preds">
+      <li><strong>A flush where a knot lets go.</strong> Up to {sc.press_and_release.summary.peak_flow.toFixed(1)}× resting flow within seconds of release, over the spot, where laser speckle imaging would see it. A theory with nothing held in the tissue predicts no local flush.</li>
+      <li><strong>Pressure, then release, lets go faster and brighter than calm alone:</strong> {pressed.toFixed(1)} s after the pressure lifts against {Math.round(eased)} s after stress eases, with a spark of {f2(sc.press_and_release.summary.peak_spark)} against {f2(sc.stress_eases.summary.peak_spark)}. The pressure runs up a debt, and returning blood repays it through the nerves.</li>
+      <li><strong>Slowing near the edge.</strong> As stress carries a vessel toward its fold, it answers small changes more and more slowly; flow over the spot should flicker more slowly just before a knot forms.</li>
+      <li><strong>Breath lets go of knots only if it is uneven.</strong> Tone rises in about a second and fades over {Math.round(p.tau_down)} s, so an even swing with each breath holds a knot slightly tighter. The out-breath has to lower the skin's sympathetic drive more than the in-breath raises it; laser Doppler over hairy skin can measure whether it does.</li>
+      <li><strong>What to measure next:</strong> how much force a small artery's muscle keeps when the vessel is nearly shut, and how thick its wall is. More than anything else, they decide whether a knot can hold at rest.</li>
+    </ul>
+  </section>
+
+  <section id="sure" class="sec" data-glyph="確">
+    <h2>How sure</h2>
+    <p class="prose">
+      Every uncertain parameter sampled across its range, {r.samples.toLocaleString('en-GB')} sets in a Sobol design. A
+      single deep breath rarely shuts a relaxed vessel; stress has to carry tone most of the way to the fold first.
+    </p>
+    <figure class="bars" set:html={shareBars([
+      { label: 'a switch at all', value: r.share_bistable },
+      { label: 'holds even at rest', value: r.share_holds_at_rest },
+      { label: 'a breath shuts a relaxed vessel', value: r.share_gasp_shuts_at_rest },
+    ])} />
+    <p class="prose">What decides whether a knot can hold at rest (total Sobol index):</p>
+    <figure class="bars" set:html={shareBars(sobol.map((x) => ({ ...x, fmt: (v: number) => v.toFixed(2) })))} />
+  </section>
+
+  <section id="measured" class="sec" data-glyph="測">
+    <h2>Against measurements</h2>
+    <div class="table-wrap" role="region" aria-label="Model against measurements" tabindex="0">
+      <table class="vtab">
+        <thead><tr><th scope="col"></th><th scope="col">model</th><th scope="col">measured</th><th scope="col">used as</th></tr></thead>
+        <tbody>
+          <tr><th scope="row">lowest flow after a deep breath</th><td>{f2(v.gasp.lowest_flow)} of rest</td><td set:html={`0.29–0.41 (${cite('lau1995')})`} /><td>fitted</td></tr>
+          <tr><th scope="row">when it is lowest</th><td>{v.gasp.at_s.toFixed(1)} s</td><td set:html={`4.6–5.2 s (${cite('mayrovitz2026')})`} /><td class="test">test: {(v.gasp.at_s - 5.2).toFixed(1)} s late</td></tr>
+          <tr><th scope="row">recovered</th><td>{Math.round(v.gasp.recovered_s)} s</td><td set:html={`about 34 s, one recording (${cite('mayrovitz2026')})`} /><td>fitted</td></tr>
+          <tr><th scope="row">flush after a 5 min occlusion</th><td>+{pct(v.flush.rise)}</td><td set:html={`+187 ± 61% (${cite('alexandrou2021')})`} /><td>sets resting tone; falls a little short</td></tr>
+          <tr><th scope="row">its peak</th><td>{v.flush.peak_s.toFixed(1)} s</td><td set:html={`11.1 ± 5.1 s (${cite('alexandrou2021')})`} /><td>fitted</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <section id="numbers" class="sec full" data-glyph="数">
+    <h2>Every number</h2>
+    <p class="prose sub">Each value with its source and the line it comes from, checked word for word against the paper.</p>
+    <p class="legend-row"><span class="badge measured">measured</span> in the source <span class="badge inferred">inferred</span> from it <span class="badge fitted">fitted</span> to a measured target <span class="badge guessed">guessed</span> and marked so</p>
+    <h3 class="tab-h">The vessel</h3>
+    <div class="table-wrap" role="region" aria-label="Parameters of the vessel model" tabindex="0">
+      <table class="ptab">
+        <thead><tr><th scope="col">parameter</th><th scope="col">value</th><th scope="col">range</th><th scope="col"></th><th scope="col">source</th></tr></thead>
+        <tbody>
+          {vesselRows.map((row) => (
+            <tr>
+              <th scope="row">{row.label} <span class="sym" set:html={sym(row.symbol)} /></th>
+              <td class="num">{shown(row)}</td>
+              <td class="num muted">{range(row)}</td>
+              <td><span class:list={['badge', row.confidence]}>{row.confidence}</span></td>
+              <td class="src">
+                {row.source ? (
+                  <details>
+                    <summary set:html={`${cite(row.source)} · ${row.locator}`} />
+                    <blockquote>“{row.quote}”</blockquote>
+                    <p>{row.note}{row.fit ? ` Fitted: ${row.fit}.` : ''}</p>
+                  </details>
+                ) : (
+                  <span class="muted">{row.note}</span>
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <h3 class="tab-h">The checks</h3>
+    <div class="table-wrap" role="region" aria-label="Numbers for the checks" tabindex="0">
+      <table class="ptab">
+        <thead><tr><th scope="col">quantity</th><th scope="col">value</th><th scope="col"></th><th scope="col">source</th></tr></thead>
+        <tbody>
+          {checkRows.map((row) => (
+            <tr>
+              <th scope="row">{row.label}</th>
+              <td class="num">{shown(row)}</td>
+              <td><span class:list={['badge', row.confidence]}>{row.confidence}</span></td>
+              <td class="src">
+                {row.source ? (
+                  <details>
+                    <summary set:html={`${cite(row.source)} · ${row.locator}`} />
+                    <blockquote>“{row.quote}”</blockquote>
+                    <p>{row.note}</p>
+                  </details>
+                ) : (
+                  <span class="muted">{row.note}</span>
+                )}
+              </td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <h3 class="tab-h">And in the sources' own words</h3>
+    <ul class="quotes">
+      {quoteRows.map((row) => (
+        <li>
+          <span class="k">{row.label}</span>
+          <blockquote>“{row.quote}”</blockquote>
+          <span class="who" set:html={`${cite(row.source!)} · ${row.locator}`} />
+        </li>
+      ))}
+    </ul>
+  </section>
+
+  <section id="made" class="sec" data-glyph="作">
+    <h2>How it was made</h2>
+    <div class="prose">
+      <p>
+        The model is written once, in Python, and the code this page runs is generated from it; a test holds the two
+        to the same trajectories within a millionth. Parameters come from the <a href={`${base}/library/`}>library</a>,
+        each with the line it comes from, checked word for word against the paper. Fitted values are fitted
+        automatically to their measured targets; guesses are marked, and the sampling above spans their ranges.
+      </p>
+      <p>
+        Limits: ten parameters are guesses. The reflex timings are from the skin of the hands, while most knots are
+        reported over hairy skin, where the gasp reflex may be weaker. This is one vessel alone, with no tree and no
+        neighbours, and no other theory has yet been run through the same trials. The simulation shows what a
+        mechanism can do with measured numbers; it does not show that knots are perforators.
+      </p>
+      <p class="stamp mono">
+        run {data.run.date} · inputs {data.run.inputs} · numpy {data.run.packages.numpy}, scipy {data.run.packages.scipy}, sympy {data.run.packages.sympy}, SALib {data.run.packages.SALib}
+      </p>
+      <p class="links mono">
+        <a href={`${repo}/sim/findings/001-can-a-perforator-hold.md`}>the findings note</a>
+        <a href={`${repo}/sim/knots_sim/models/vessel.py`}>the model</a>
+        <a href={`${repo}/sim/params/vessel.yaml`}>the parameters</a>
+        <a href={`${repo}/sim/PLAN.md`}>the plan</a>
+        <a href={`${base}/hypotheses/#perforator`}>the perforator hypothesis</a>
+      </p>
+    </div>
+  </section>
+</Doc>
+
+<script>
+  import { mountBench } from '../sim/bench';
+  const root = document.querySelector<HTMLElement>('[data-bench]');
+  if (root) mountBench(root);
+</script>
+
+<style>
+  .intro {
+    max-width: 700px;
+    margin: 6px 0 16px;
+  }
+  .sub {
+    margin: 2px 0 14px;
+    max-width: 700px;
+  }
+  /* The instrument: ink, like the atlas. */
+  .bench {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr) 232px;
+    grid-template-areas:
+      'cs sw side'
+      'tr tr side';
+    gap: 14px 18px;
+    padding: 18px 18px 16px;
+    background: var(--panel-bg);
+    border-radius: var(--radius);
+    box-shadow: inset 0 2px 8px rgba(0, 0, 0, 0.3);
+    color: var(--panel-text);
+  }
+  .fig {
+    margin: 0;
+  }
+  .fig :global(svg) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .fig-cs {
+    grid-area: cs;
+  }
+  .fig-sw {
+    grid-area: sw;
+  }
+  .fig-tr {
+    grid-area: tr;
+    padding-top: 4px;
+    border-top: 1px solid var(--panel-line);
+  }
+  .side {
+    grid-area: side;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    border-left: 1px solid var(--panel-line);
+    padding-left: 16px;
+  }
+  .k {
+    display: block;
+    font-size: 8.5px;
+    text-transform: uppercase;
+    letter-spacing: 0.6px;
+    color: var(--panel-faint);
+    margin-bottom: 5px;
+  }
+  .read .k {
+    display: inline;
+    margin-right: 6px;
+  }
+  .state {
+    font-size: 12px;
+    color: #a8e6cd;
+  }
+  .state[data-state='shut'] {
+    color: #e27b61;
+  }
+  .reads {
+    display: grid;
+    grid-template-columns: 44px 1fr;
+    gap: 3px 8px;
+    margin: 0;
+    color: var(--panel-text);
+  }
+  .reads dt {
+    color: var(--panel-faint);
+  }
+  .reads dd {
+    margin: 0;
+    font-variant-numeric: tabular-nums;
+  }
+  .ctl-row input[type='range'] {
+    width: 100%;
+    background: var(--panel-line);
+  }
+  .ctl-row input[type='range']::-webkit-slider-thumb {
+    background: #c9a45f;
+  }
+  .ctl-row input[type='range']::-moz-range-thumb {
+    background: #c9a45f;
+  }
+  .buttons,
+  .seg-row,
+  .trials {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .ctl {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--panel-muted);
+    background: transparent;
+    border: 1px solid #4a5356;
+    border-radius: 6px;
+    padding: 5px 9px;
+    min-height: 28px;
+    cursor: pointer;
+    transition: background 0.15s, color 0.15s, border-color 0.15s;
+  }
+  .ctl:hover {
+    color: var(--panel-text);
+    border-color: #6b7478;
+  }
+  .ctl[aria-pressed='true'] {
+    background: #5a4d3e;
+    border-color: #8a7d6d;
+    color: #fff;
+  }
+  .note {
+    font-family: var(--font-serif);
+    font-size: 11.5px;
+    line-height: 1.5;
+    color: var(--panel-muted);
+    font-style: italic;
+    min-height: 2.8em;
+  }
+  .fine {
+    font-family: var(--font-serif);
+    font-size: 10px;
+    font-style: italic;
+    color: var(--panel-faint);
+    margin-top: auto;
+  }
+
+  /* The checks, on paper. */
+  .checks {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 16px;
+  }
+  .check {
+    background: var(--frame-bg);
+    border-radius: 8px;
+    padding: 14px 16px 12px;
+    font-family: var(--font-serif);
+    font-size: 12.5px;
+    line-height: 1.6;
+  }
+  .check .q {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 13px;
+    margin: 0;
+  }
+  .check .a {
+    font-style: italic;
+    font-size: 14px;
+    margin: 2px 0 8px;
+    color: var(--accent-dark);
+  }
+  .check figure {
+    margin: 6px 0 8px;
+  }
+  .check figure :global(svg) {
+    display: block;
+    width: 100%;
+    max-width: 360px;
+    height: auto;
+  }
+  .pull {
+    margin: 8px 0;
+    padding-left: 10px;
+    border-left: 2px solid var(--border);
+    color: var(--muted);
+    font-style: italic;
+  }
+  :global(.cite) {
+    color: var(--accent-dark);
+    text-decoration-color: var(--frame-border);
+    white-space: nowrap;
+  }
+  .preds li {
+    margin-bottom: 0.6em;
+  }
+  .bars {
+    margin: 6px 0 16px;
+    max-width: 420px;
+  }
+  .bars :global(svg) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+
+  /* Tables. */
+  .table-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin-bottom: 16px;
+  }
+  table {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 11.5px;
+    line-height: 1.45;
+  }
+  th,
+  td {
+    text-align: left;
+    vertical-align: top;
+    padding: 7px 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  thead th {
+    font-family: var(--font-mono);
+    font-weight: 400;
+    font-size: 9px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--muted);
+    background: var(--frame-bg);
+  }
+  tbody th {
+    font-weight: 500;
+    font-size: 11.5px;
+  }
+  td {
+    font-family: var(--font-serif);
+  }
+  .vtab td.test {
+    color: var(--accent-dark);
+  }
+  .num {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    white-space: nowrap;
+    font-variant-numeric: tabular-nums;
+  }
+  .sym {
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    color: var(--muted);
+    margin-left: 4px;
+  }
+  .ptab .src {
+    min-width: 280px;
+  }
+  .ptab details summary {
+    cursor: pointer;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    color: var(--accent-dark);
+  }
+  .ptab details blockquote {
+    margin: 6px 0 4px;
+    font-style: italic;
+    color: var(--text);
+  }
+  .ptab details p {
+    color: var(--muted);
+    font-size: 11px;
+  }
+  .badge {
+    display: inline-block;
+    font-family: var(--font-mono);
+    font-size: 8.5px;
+    letter-spacing: 0.3px;
+    padding: 1px 6px;
+    border-radius: 3px;
+    border: 1px solid currentColor;
+    white-space: nowrap;
+  }
+  .badge.measured {
+    color: #3f8f73;
+  }
+  .badge.inferred {
+    color: #34557a;
+  }
+  .badge.fitted {
+    color: #6b5d4d;
+  }
+  .badge.guessed {
+    color: #9a8a78;
+    border-style: dashed;
+  }
+  .legend-row {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 4px 6px;
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    color: var(--muted);
+    margin: -6px 0 6px;
+  }
+  .tab-h {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    font-weight: 600;
+    margin: 18px 0 8px;
+  }
+  .quotes {
+    list-style: none;
+    padding: 0;
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px 18px;
+  }
+  .quotes li {
+    font-size: 11.5px;
+  }
+  .quotes .k {
+    color: var(--muted);
+  }
+  .quotes blockquote {
+    font-family: var(--font-serif);
+    font-style: italic;
+    margin: 0 0 3px;
+  }
+  .quotes .who {
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+  }
+  .muted {
+    color: var(--muted);
+  }
+  .stamp {
+    font-size: 9.5px;
+    color: var(--muted);
+  }
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 16px;
+    font-size: 10px;
+  }
+
+  @media (max-width: 1100px) {
+    .bench {
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      grid-template-areas:
+        'cs sw'
+        'tr tr'
+        'side side';
+    }
+    .side {
+      border-left: 0;
+      padding-left: 0;
+      border-top: 1px solid var(--panel-line);
+      padding-top: 12px;
+    }
+  }
+  @media (max-width: 700px) {
+    .bench {
+      grid-template-columns: minmax(0, 1fr);
+      grid-template-areas: 'cs' 'sw' 'side' 'tr';
+      padding: 12px;
+    }
+    .checks,
+    .quotes {
+      grid-template-columns: minmax(0, 1fr);
+    }
+    .note:empty {
+      display: none;
+    }
+  }
+</style>

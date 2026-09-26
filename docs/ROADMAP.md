@@ -66,11 +66,15 @@ Plan: `sim/PLAN.md` (stages, method, first tasks). The section's design: `docs/S
 - [x] Stage 0: the plan, the section's design, the Python package (`sim/`, uv) and CI
 - [ ] The exam: O1–O10 as tests with tolerances, reviewed by the author, then frozen (dated; OSF) and shown sealed
 - [ ] The shared interface and the trials (P1–P9)
-- [ ] Parameter tables for T1 and T2, every value sourced
-- [ ] T1, one knot: bifurcation in sympathetic drive; release timescale against O1
-- [ ] T2, one knot: the Hai–Murphy latch, the same analysis
-- [ ] Write once: models → Python, TypeScript and equations, with golden-trajectory tests
-- [ ] The switch and the bench, on an unlisted page
+- [x] PubMed client and library tooling (`knots_sim.pubmed`, `knots_sim.library`); quotes checked word for word (`knots_sim.params --verify`)
+- [x] T1 as the vessel switch: 22 parameters (12 sourced, 10 guessed and marked), fitted to the gasp reflex and reactive hyperaemia
+- [x] T1, one knot: the switch's band, trials (a knot forms, holds, lets go by easing, by pressure, by uneven breath), robustness (Sobol, 49,152 sets)
+- [x] Feasibility checks: hyaluronan cannot hold, cooling cannot release within a breath, the latch does not remember
+- [x] Write once: SymPy → numpy and TypeScript, with golden-trajectory tests
+- [x] The switch and the bench, live on an unlisted page (`/simulation/`); findings note 001
+- [ ] Source the guessed wall parameters: passive stiffness, length–tension width, media thickness, shut radius (myography)
+- [ ] T2, one knot: the Hai–Murphy latch live (needs the 1988 rate constants)
+- [ ] Hairy-skin reflex magnitudes (the gasp and slow breathing over the back and neck)
 - [ ] T3–T6, one knot; the harness (sweep, scoring); the matrix, v1
 - [ ] What would settle it: the discriminating predictions, drawn
 - [ ] Network: synthetic trees, Poiseuille flow, conducted dilation (O8; watershed clustering against digitised angiosome maps)
@@ -79,6 +83,5 @@ Plan: `sim/PLAN.md` (stages, method, first tasks). The section's design: `docs/S
 
 ## Open questions (for the author)
 - How should manipulation (pressure, breath) return to the atlas, if at all?
-- The simulation's open decisions (`sim/PLAN.md` §11): the section's name; building in the open or unlisted; Python with
-  generated TypeScript (recommended) or TypeScript only; what "attention" means in the models; a pilot measurement; a co-author;
-  OSF and Zenodo accounts.
+- The simulation's open decisions (`sim/PLAN.md` §11): the section's name, and when `/simulation/` joins the top bar; what
+  "attention" means in the models; a pilot measurement; a co-author; OSF and Zenodo accounts.

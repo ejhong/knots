@@ -14,20 +14,25 @@ uv run pytest      # tests
 
 ## Layout
 
-It grows stage by stage (PLAN.md §9). Data that people review — the tests and the parameters — lives outside the package.
+Data that people review, the parameters and (later) the tests, lives outside the package.
 
 ```
-observations/spec.yaml   the exam: O1–O10 as tests with tolerances, frozen by version
-params/<theory>.yaml     parameter tables, every value with its source
+params/vessel.yaml       T1, the vessel switch: every parameter with its source, locator and quoted line
+params/checks.yaml       numbers for the feasibility checks (collar, cooling, latch)
 knots_sim/
-  interface.py           the shared inputs u(t) and outputs y(t)
-  trials/                P1–P8, the same inputs for every theory
-  models/                one module per theory (t1_perforator, t2_latch, …), equations written once in SymPy
-  scoring.py             observations → pass, fail or graded
-  sweep.py  analysis/  continuation/
-  codegen/               models → TypeScript for the bench, and typeset equations
-  export/                results → src/data/sim/*.json for the site
-tests/
-results/<run-id>/        manifest and summaries (committed); raw/ is not
+  pubmed.py              PubMed E-utilities and Europe PMC full texts, paced and cached (.cache/, ignored)
+  library.py             papers the simulation stands on, merged into src/data/papers.json from PubMed records
+  params.py              loads the tables; --verify checks every quote against its source
+  models/vessel.py       the vessel switch, written once in SymPy; calibration and fitting to measured targets
+  scenarios.py           the trials as input scores: a knot forms, holds, lets go
+  robustness.py          Sobol sampling of every uncertain parameter; which ones decide the switch
+  checks.py              the collar and cooling checks
+  codegen.py             the model's equations as TypeScript (src/sim/models/)
+  export.py  findings.py run everything; write src/data/sim/*.json, the findings note and the run manifest
+tests/                   physics, calibration, and freshness of what the site shows
+findings/                notes written from a run's numbers (001-can-a-perforator-hold.md)
+results/<run>/           run manifests (committed); raw/ is not
 private/                 papers for reading (ignored by git: never commit PDFs)
 ```
+
+Still to come (PLAN.md §8): `observations/spec.yaml` (the exam), the other theories' models, the sweep harness.

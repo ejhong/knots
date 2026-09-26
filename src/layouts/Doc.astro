@@ -17,10 +17,11 @@ interface Props {
   /** One-line index of the page's sections. */
   index?: { id: string; label: string }[];
   wide?: boolean;
+  noindex?: boolean;
 }
-const { title, kicker, lede, current, description, glyph, index = [], wide = false } = Astro.props;
+const { title, kicker, lede, current, description, glyph, index = [], wide = false, noindex = false } = Astro.props;
 ---
-<Base title={title} current={current} description={description}>
+<Base title={title} current={current} description={description} noindex={noindex}>
   <div class="doc">
     <article class:list={['sheet', { wide }]}>
       {glyph && <span class="ornament cjk" aria-hidden="true">{glyph}</span>}

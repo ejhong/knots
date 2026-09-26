@@ -12,6 +12,8 @@ from Eugene Jhong’s essays, which head the Library.
 - **Hypotheses** — seven answers, each at its strongest, with a comparison table.
 - **Traditions** — Chinese medicine, Daoist alchemy, yoga and tantra, Tibetan tsa lung and Dzogchen, Buddhist practice.
 - **Library** — verified references and a short history of knots.
+- **Simulation** (`/simulation/`, unlisted) — the first model: one perforator's small artery as a switch, running live, with
+  every number traced to its source.
 
 > A hypothesis drawn carefully; not medical advice. Perforator positions are representative, not a map of any one person.
 
@@ -28,6 +30,7 @@ npm run build      # static site → dist/
 npm run body       # rebuild public/models/body.{json,bin} from MakeHuman (CC0)
 npx tsx scripts/shot.ts /knots/atlas shots/atlas.png   # screenshot bench (dev server running)
 cd sim && uv sync && uv run pytest                     # the simulation phase (Python): see sim/PLAN.md
+cd sim && uv run python -m knots_sim.export            # regenerate the models and data the site shows
 ```
 
 Pushing to `main` deploys to GitHub Pages via `.github/workflows/deploy.yml`; every push also runs `.github/workflows/ci.yml`.

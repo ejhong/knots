@@ -1,7 +1,9 @@
 # The simulation section — design
 
-*The site's side of the simulation phase. The research plan is `sim/PLAN.md`; the look is `docs/DESIGN.md`. Working name
-**Tests** (decision D1 in the plan). Nothing here is built yet.*
+*The site's side of the simulation phase. The research plan is `sim/PLAN.md`; the look is `docs/DESIGN.md`. Built so
+far, at `/simulation/` (unlisted, noindex): the switch and the bench for T1 (the vessel switch), the four checks, the
+predictions, robustness, the model against measurements, and every parameter with its quote. Still to come: the exam and
+the matrix, once there is more than one theory to run. The name is decision D1 in the plan.*
 
 The atlas shows what each theory says a knot *is*. This section shows what each theory can *do*: every theory put through the
 same trials, scored against the same observations, with every number traceable to its source. It adds to the site; nothing

@@ -1,0 +1,252 @@
+# T1, the vessel switch: one perforator's small artery, held open or shut by its own wall.
+#
+# Every parameter has a value, units, a plausible range, a confidence (measured, inferred, fitted or guessed) and, unless
+# guessed, a source in src/data/papers.json with the line it comes from, quoted verbatim. `uv run python -m
+# knots_sim.params --verify` checks every quote against the source's abstract or open full text.
+#
+# Radii are in units of r100, the radius a relaxed vessel would have at 100 mmHg (the myograph's normalisation).
+
+model: vessel
+title: The vessel switch
+parameters:
+  r100:
+    symbol: r₁₀₀
+    label: "vessel radius"
+    value: 120.0e-6
+    unit: m
+    range: [60.0e-6, 250.0e-6]
+    confidence: measured
+    source: zhang2007
+    locator: abstract
+    quote: "adjacent small arteries ( approximately 240 microm)"
+    note: "Half the lumen diameter of the small arteries whose wall tension was measured. Perforators below 0.5 mm are small arteries in Mulvany's sense (mulvany1990)."
+
+  Tmax:
+    symbol: T_max
+    label: "maximal active wall tension"
+    value: 3.4
+    unit: N/m
+    range: [2.6, 4.2]
+    confidence: measured
+    source: zhang2007
+    locator: abstract
+    quote: "the maximal active tension of arteries (3.4 +/- 0.42 mN/mm)"
+    note: "Maximal active wall tension (1 mN/mm = 1 N/m); the range is ± 2 SE. Rat mesenteric small arteries."
+
+  xopt:
+    symbol: x_opt
+    label: "stretch of greatest force"
+    value: 0.9
+    unit: r100
+    range: [0.85, 0.95]
+    confidence: measured
+    source: elassar2022
+    locator: full text, section 2.2 (Methods)
+    quote: "The arteries were then set to the 90% of the determined internal circumference under a transmural pressure of 100 mmHg (L 100 ), at which point the force development was close to maximal."
+    note: "Human small arteries develop their greatest active force near 0.9 of the relaxed circumference at 100 mmHg; the same sentence defines r100."
+
+  P:
+    symbol: P
+    label: "pressure inside the vessel"
+    value: 60
+    unit: mmHg
+    range: [40, 90]
+    confidence: inferred
+    source: fronek1975
+    locator: abstract
+    quote: "The microvascular pressure in arterioles of 70 mum in diameter or larger was proportional to the systemic arterial pressure (PA)."
+    note: "Pressure inside the perforator. Small arteries lie upstream of the main resistance (the 20–35 µm arterioles), so their pressure is a large fraction of arterial pressure; results are shown across the whole range."
+
+  beta:
+    symbol: β
+    label: "stiffness of the relaxed wall"
+    value: 7.0
+    unit: "1"
+    range: [4.0, 10.0]
+    confidence: guessed
+    note: "Stiffness of the relaxed wall (passive tension rises as exp(β·(x − 1))). To be sourced from pressure-myograph curves."
+
+  width:
+    symbol: w
+    label: "width of the length–tension curve"
+    value: 0.4
+    unit: "1"
+    range: [0.25, 0.6]
+    confidence: guessed
+    note: "Width of the active length–tension curve, as a fraction of the optimal muscle length."
+
+  wall:
+    symbol: a_w
+    label: "thickness of the wall"
+    value: 0.3
+    unit: r100²
+    range: [0.15, 0.45]
+    confidence: guessed
+    note: "Cross-sectional area of the media, in units of r100²; a media thickness of 5–10% of the lumen diameter. Sets how short the muscle becomes when the lumen closes."
+
+  xc:
+    symbol: x_c
+    label: "shut radius"
+    value: 0.08
+    unit: r100
+    range: [0.04, 0.15]
+    confidence: guessed
+    note: "Lumen radius at which the vessel is shut to flow; flow scales as radius⁴, so flow here is under 0.1% of rest."
+
+  tau_x:
+    symbol: τ_x
+    label: "speed of the wall"
+    value: 0.3
+    unit: s
+    range: [0.1, 1.0]
+    confidence: guessed
+    note: "How fast the wall moves to its mechanical balance."
+
+  latency:
+    symbol: t_lat
+    label: "latency of the gasp reflex"
+    value: 3.7
+    unit: s
+    range: [3.6, 3.8]
+    confidence: measured
+    source: mayrovitz2026
+    locator: full text, Review
+    quote: "The median latency, measured from the start of the IG to the onset of the vasoconstriction, was reported as 3.6-3.8 seconds with no difference between genders, and the time to the minimum LDF value was 4.6-5.2 seconds, depending on the hand measured and gender"
+    note: "Delay between a deep inspiratory gasp and the constriction of skin vessels."
+
+  tau_up:
+    symbol: τ_up
+    label: "rise of tone"
+    value: 1.2
+    unit: s
+    range: [0.8, 1.6]
+    confidence: inferred
+    source: mayrovitz2026
+    locator: full text, Review
+    quote: "The median latency, measured from the start of the IG to the onset of the vasoconstriction, was reported as 3.6-3.8 seconds with no difference between genders, and the time to the minimum LDF value was 4.6-5.2 seconds, depending on the hand measured and gender"
+    note: "Tone rises fast; flow reaches its minimum 1.0–1.4 s after the constriction begins."
+
+  tau_down:
+    symbol: τ_down
+    label: "fade of nerve-driven tone"
+    value: 10.0
+    unit: s
+    range: [3.0, 20.0]
+    confidence: fitted
+    fit: a gasp's constriction recovers (flow back to 95%) about 34 s after the gasp
+    source: mayrovitz2026
+    locator: full text, Inspiratory gasp reflex
+    quote: "The overall duration of the reflex to recovery in this image is approximately 34 seconds, with the interval of near-zero LDF at approximately 10 seconds"
+    note: "How slowly nerve-driven tone fades once the drive stops (transmitter clearance and muscle relaxation). Fitted to one subject's recovery; to be refined with more recordings."
+
+  gasp_duration:
+    symbol: t_burst
+    label: "the gasp's burst"
+    value: 1.0
+    unit: s
+    range: [0.6, 1.6]
+    confidence: inferred
+    source: mayrovitz2026
+    locator: full text, Review
+    quote: "The median latency, measured from the start of the IG to the onset of the vasoconstriction, was reported as 3.6-3.8 seconds with no difference between genders, and the time to the minimum LDF value was 4.6-5.2 seconds, depending on the hand measured and gender"
+    note: "A gasp's burst of sympathetic firing is brief: flow is lowest 1.0–1.4 s after the constriction begins."
+
+  gasp_drop:
+    symbol: Δq_gasp
+    label: "fall in flow after a gasp"
+    value: 0.65
+    unit: "1"
+    range: [0.594, 0.714]
+    confidence: measured
+    source: lau1995
+    locator: abstract
+    quote: "the index of vasoconstrictor response (per cent change) induced by inspiratory gasp was higher in young males than in young females (71.4% versus 59.4%; P < 0.05)"
+    note: "Fall in fingertip skin blood flow after a deep gasp; the model sets the gasp's drive so an open vessel loses this share of its flow. Hairy skin, where most knots are, may respond less."
+
+  porh_rise:
+    symbol: Δq_flush
+    label: "size of reactive hyperaemia"
+    value: 1.87
+    unit: "1"
+    range: [1.26, 2.48]
+    confidence: measured
+    source: alexandrou2021
+    locator: abstract
+    quote: "controls: 187 ± 61%, P = 0.001"
+    note: "Rise of forearm skin perfusion from baseline to the peak of reactive hyperaemia. Sets resting tone, since a fully relaxed vessel must carry 2.87 times resting flow."
+
+  porh_peak_time:
+    symbol: t_flush
+    label: "timing of reactive hyperaemia"
+    value: 11.1
+    unit: s
+    range: [6.0, 16.2]
+    confidence: measured
+    source: alexandrou2021
+    locator: abstract
+    quote: "controls: 11.11 ± 5.1 s"
+    note: "Time from release of an occlusion to peak perfusion (± 1 SD). The model's flush is checked against it."
+
+  tau_debt:
+    symbol: τ_debt
+    label: "build-up of oxygen debt"
+    value: 40.0
+    unit: s
+    range: [20.0, 120.0]
+    confidence: guessed
+    note: "How fast an unsupplied patch runs up an oxygen debt that its sensory nerves sense."
+
+  tau_nerve:
+    symbol: τ_n
+    label: "speed of the sensory nerves"
+    value: 4.0
+    unit: s
+    range: [1.0, 10.0]
+    confidence: fitted
+    fit: reactive hyperaemia peaks at porh_peak_time after a 5 min occlusion
+    source: alexandrou2021
+    locator: abstract
+    quote: "controls: 11.11 ± 5.1 s"
+    note: "How fast the sensory nerves release their dilator when blood returns to a patch in debt (sensory nerves and BKCa channels carry the skin's reactive hyperaemia, lorenzo2007). The dilator relaxes the muscle directly. Fitted so the flush peaks when the measured one does."
+
+  collateral:
+    symbol: c
+    label: "share supplied by neighbours"
+    value: 0.7
+    unit: "1"
+    range: [0.3, 0.95]
+    confidence: guessed
+    source: saintcyr2009
+    locator: abstract
+    quote: "Each perforasome is linked with adjacent perforasomes by means of two main mechanisms that include both direct and indirect linking vessels."
+    note: "Share of a shut perforator's territory that neighbours keep supplied through linking vessels. The linking is measured; the share is a guess."
+
+  myogenic:
+    symbol: k_my
+    label: "myogenic relaxation under pressure"
+    value: 0.6
+    unit: "1"
+    range: [0.3, 0.9]
+    confidence: guessed
+    source: mulvany1990
+    locator: abstract
+    quote: "investigation of the vasoconstrictor response to raised intravascular pressure (the Bayliss response)"
+    note: "How much tone a small artery gives up when its transmural pressure is taken away (the Bayliss response run backwards). The response is established; its size here is a guess."
+
+  tau_myogenic:
+    symbol: τ_my
+    label: "timing of myogenic relaxation"
+    value: 20.0
+    unit: s
+    range: [10.0, 60.0]
+    confidence: guessed
+    note: "How long the myogenic relaxation takes under sustained pressure."
+
+  breath_swing:
+    symbol: δ_breath
+    label: "breath's swing in tone"
+    value: 0.03
+    unit: "1"
+    range: [0.0, 0.08]
+    confidence: guessed
+    note: "How much ordinary slow breathing swings tone (a fraction of maximal activation), rising on the in-breath and falling on the out-breath."

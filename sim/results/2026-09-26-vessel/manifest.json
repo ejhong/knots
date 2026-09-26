@@ -1,0 +1,46 @@
+{
+ "run": {
+  "date": "2026-09-26",
+  "inputs": "b93ce672eb1b",
+  "commit": "99f4ff6",
+  "dirty": true,
+  "python": "3.11.15",
+  "packages": {
+   "numpy": "2.4.6",
+   "scipy": "1.17.1",
+   "sympy": "1.14.0",
+   "SALib": "1.6.0"
+  }
+ },
+ "switch": {
+  "xp": 0.9143,
+  "xrest": 0.7025,
+  "urest": 0.172,
+  "xfold": 0.2592,
+  "Afold": 0.3957,
+  "Aopen": 0.2056,
+  "gasp": 0.08387
+ },
+ "fitted": [
+  {
+   "key": "gasp_gain",
+   "value": 0.1608,
+   "target": "the fall in fingertip flow after a deep gasp (gasp_drop)"
+  },
+  {
+   "key": "tau_down",
+   "value": 14.3,
+   "target": "the recovery of flow about 34 s after a gasp"
+  },
+  {
+   "key": "tau_nerve",
+   "value": 4.636,
+   "target": "the timing of reactive hyperaemia (porh_peak_time)"
+  }
+ ],
+ "robustness": {
+  "samples": 49152,
+  "share_bistable": 0.721923828125,
+  "share_holds_at_rest": 0.4422200520833333
+ }
+}

@@ -24,7 +24,8 @@ export type Tag =
   | 'tradition'
   | 'critique'
   | 'safety'
-  | 'history';
+  | 'history'
+  | 'models';
 
 export interface Reference {
   id: string;
@@ -398,4 +399,5 @@ export const TAG_LABELS: Record<Tag, string> = {
   critique: 'Critique',
   safety: 'Safety',
   history: 'History',
+  models: 'Models',
 };

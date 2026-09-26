@@ -41,7 +41,9 @@ design) before any simulation work.
   - `interaction/` picking and tools; `ui/` DOM bindings for the atlas and hero
   - `data/` roots, knot zones, perforator density (anatomical data used by the viewer)
 - `src/data/` — site-wide registries: hypotheses, references (+ `papers.json`), timeline, map index
-- `src/pages/` — introduction, atlas, hypotheses, traditions, library, about (`lab` is a dev bench)
+- `src/pages/` — introduction, atlas, hypotheses, traditions, library, about, simulation (unlisted; `lab` is a dev bench)
+- `src/sim/` — the simulation in the browser: `models/*.ts` (generated from Python; never edit), `vessel.ts` (stepper,
+  calibration, inputs), `draw.ts` (figures as SVG strings), `bench.ts` (the live instrument); `src/data/sim/` (generated)
 - `scripts/body/build-body.ts` — regenerates `public/models/body.*` from MakeHuman (cached downloads)
 - `scripts/shot.ts` — Playwright screenshot bench; use it to check visual changes
 - `sim/` — the simulation phase (Python, uv), built stage by stage (`sim/README.md` has the layout as it grows): `PLAN.md` (its
@@ -63,7 +65,10 @@ design) before any simulation work.
 
 - `npm run dev` then `npx tsx scripts/shot.ts /knots/atlas shots/x.png --eval "…"` (`window.atlas` is the scene).
 - `SHOT_CHROMIUM=<path>` points `scripts/shot.ts` at another Chromium (cloud sessions set it to the pre-installed one).
-- Simulation: `cd sim && uv sync && uv run pytest`.
+- Simulation (`cd sim`): `uv run pytest`; `uv run python -m knots_sim.export` regenerates everything the site shows (the
+  TypeScript models, `src/data/sim/*.json`, the findings note; a test fails if it is stale); `uv run python -m
+  knots_sim.params --verify` checks every quote against its source; `uv run python -m knots_sim.pubmed search "…"` finds
+  papers, and `knots_sim.library` adds them to `papers.json` from PubMed's own records.
 - Deploy: push to `main` (GitHub Actions → Pages at https://ejhong.github.io/knots/). Every push also runs `ci.yml`: the sim
   tests, plus the site checks on branches other than `main`.
 - Roadmap and open questions: `docs/ROADMAP.md`; the simulation's open decisions: `sim/PLAN.md` §11.

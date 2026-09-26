@@ -22,3 +22,6 @@ __pycache__/
 .pytest_cache/
 sim/results/*/raw/
 sim/private/
+
+# cached PubMed responses (sim/knots_sim/pubmed.py)
+sim/.cache/

@@ -1,0 +1,229 @@
+# Numbers for the feasibility checks beside the vessel switch: can hyaluronan squeeze a vessel, can cooling hold or
+# release a knot within a breath, and can a latch remember. Same format as vessel.yaml.
+
+model: checks
+title: Feasibility checks
+parameters:
+  ha_fascia_low:
+    symbol: c_HA
+    label: "hyaluronan over trapezius and deltoid"
+    value: 6.0
+    unit: µg/g
+    confidence: measured
+    source: fede2018
+    locator: abstract
+    quote: "6 μg g-1 in the fascia overlying the trapezius and deltoid muscles"
+    note: "Hyaluronan in the fascia over trapezius and deltoid, where knots are commonly reported."
+
+  ha_fascia_high:
+    symbol: c_HA,max
+    label: "hyaluronan in the retinacula"
+    value: 90.0
+    unit: µg/g
+    confidence: measured
+    source: fede2018
+    locator: abstract
+    quote: "In the fascia that surrounds joints, the hyaluronan increases to 90 μg g-1"
+    note: "The richest fascia measured, the retinacula of the ankle."
+
+  ha_no_gel:
+    symbol: "—"
+    label: "hyaluronan does not gel"
+    value: 0
+    unit: "—"
+    confidence: measured
+    source: krause2001
+    locator: abstract
+    quote: "There is no evidence of intermolecule hydrogen bonding causing gel formation in NaHA solutions without protein present."
+    note: "Hyaluronan alone, under physiological conditions, is a liquid, not a gel."
+
+  eta_max:
+    symbol: η_max
+    label: "viscosity of synovial fluid"
+    value: 175.0
+    unit: Pa·s
+    range: [1.0, 175.0]
+    confidence: measured
+    source: nicholls2018
+    locator: full text, Discussion
+    quote: "The observed zero shear rate viscosity for synovial fluid from a healthy joint ranges from 1 to 175 Pa s"
+    note: "Healthy synovial fluid holds milligrams of hyaluronan per millilitre, tens to hundreds of times the fascia's; its viscosity is an upper bound for any collar."
+
+  ha_synovial:
+    symbol: c_HA,SF
+    label: "hyaluronan in synovial fluid"
+    value: 3.4
+    unit: mg/ml
+    range: [2.8, 4.0]
+    confidence: measured
+    source: nakayama2000
+    locator: abstract
+    quote: "The mean HA concentration was 3.4+/-0.6 mg/ml."
+    note: "Hyaluronan in normal knee joint fluid, the source of the viscosity bound (eta_max); roughly 40–570 times the fascia's."
+
+  collar_thickness:
+    symbol: δ
+    label: "thickness of the collar"
+    value: 50.0e-6
+    unit: m
+    range: [20.0e-6, 200.0e-6]
+    confidence: guessed
+    note: "Thickness of the hyaluronan-rich layer around the vessel where it passes through the fascia. A thinner collar shears faster, so the low end is the collar's best case."
+
+  h_radiative:
+    symbol: h_r
+    label: "radiative heat loss"
+    value: 4.5
+    unit: W/m²·K
+    confidence: measured
+    source: dedear1997
+    locator: abstract
+    quote: "The radiative heat transfer coefficient measured for the whole-body was 4.5 W/m2 per K for both the seated and standing cases"
+    note: "Heat lost from the skin by radiation, per degree."
+
+  h_convective:
+    symbol: h_c
+    label: "convective heat loss"
+    value: 3.4
+    unit: W/m²·K
+    confidence: measured
+    source: dedear1997
+    locator: abstract
+    quote: "the whole-body natural convection coefficient for the manikin fell within the mid-range of previously published values at 3.4 and 3.3 W/m2 per K when standing and seated respectively"
+    note: "Heat lost from the skin by convection in still air, per degree."
+
+  skin_flow_max:
+    symbol: Q_max
+    label: "maximal skin blood flow"
+    value: 7.0
+    unit: L/min
+    range: [6.0, 8.0]
+    confidence: measured
+    source: charkoudian2003
+    locator: abstract
+    quote: "skin blood flow can reach 6 to 8 L/min during hyperthermia"
+    note: "Whole-body skin blood flow at its maximum; the fastest a patch can be warmed from within."
+
+  skin_area:
+    symbol: A_skin
+    label: "skin area"
+    value: 1.8
+    unit: m²
+    range: [1.6, 2.0]
+    confidence: guessed
+    note: "Skin area of an adult, to turn whole-body flow into flow per square metre."
+
+  tissue_heat_capacity:
+    symbol: ρc
+    label: "heat capacity of tissue"
+    value: 3.7e6
+    unit: J/m³·K
+    range: [3.3e6, 4.0e6]
+    confidence: guessed
+    note: "Volumetric heat capacity of skin and subcutis, which are mostly water (water is 4.2e6)."
+
+  blood_heat_capacity:
+    symbol: ρc_b
+    label: "heat capacity of blood"
+    value: 3.8e6
+    unit: J/m³·K
+    range: [3.6e6, 4.0e6]
+    confidence: guessed
+    note: "Volumetric heat capacity of blood."
+
+  layer_depth:
+    symbol: d
+    label: "depth of the warmed layer"
+    value: 3.0e-3
+    unit: m
+    range: [2.0e-3, 5.0e-3]
+    confidence: guessed
+    note: "Depth of skin and superficial fat whose temperature a perforator's flow sets."
+
+  latch_model:
+    symbol: "—"
+    label: "the latch, in the model"
+    value: 0
+    unit: "—"
+    confidence: measured
+    source: hai1988
+    locator: abstract
+    quote: "Comparison of the rate constants indicates that latch-bridge detachment is the rate-limiting step."
+    note: "In the latch-bridge model, force is lost at the pace of latch-bridge detachment."
+
+  latch_tissue:
+    symbol: "—"
+    label: "the latch, in tissue"
+    value: 0
+    unit: "—"
+    confidence: measured
+    source: rembold1991
+    locator: abstract
+    quote: "The rate-limiting step for relaxation appears to be removal of [Ca2+] and not latch-bridge detachment."
+    note: "In arterial tissue, relaxation follows the fall of calcium; the latch does not hold force on its own."
+
+  latch_economy:
+    symbol: "—"
+    label: "the latch's economy"
+    value: 0
+    unit: "—"
+    confidence: measured
+    source: murphy2005
+    locator: abstract
+    quote: "In sustained contractions, Ca2+, cross-bridge phosphorylation, and ATP consumption rates fall, a phenomenon termed \"latch\"."
+    note: "What the latch buys is economy: force held with less calcium and less ATP."
+
+  aging_gain:
+    symbol: "—"
+    label: "age and adrenergic drive"
+    value: 0
+    unit: "—"
+    confidence: measured
+    source: elassar2022
+    locator: abstract
+    quote: "The inhibition of STIM/Orai with YM-58483 (20 μM) reversed adrenergic hypercontractility in MA from older subjects"
+    note: "Human small arteries from older donors contract more to adrenergic drive, one route by which age could push vessels into the switch's window."
+
+  closure_in_vivo:
+    symbol: "—"
+    label: "arterioles held shut by nerves"
+    value: 0
+    unit: "—"
+    confidence: measured
+    source: bohlen1979
+    locator: abstract
+    quote: "Following denervation, a 22.2 +/- 6.3% (SE) and 61.8 +/- 12 increase in the number of third-order arterioles open to flow occurred in WKY and SHR."
+    note: "Nerves hold some arterioles shut in living tissue; cut them and more open."
+
+  closure_threshold:
+    symbol: "—"
+    label: "the closing threshold"
+    value: 0
+    unit: "—"
+    confidence: measured
+    source: miller2026
+    locator: full text, section 5
+    quote: "When pressure in an arteriole falls below its critical closing pressure (CCP), the smooth muscle generates enough wall tension to snap the vessel shut."
+    note: "The switch itself, as clinical physiology describes it."
+
+  closure_hysteresis:
+    symbol: "—"
+    label: "staying shut"
+    value: 0
+    unit: "—"
+    confidence: measured
+    source: miller2026
+    locator: full text, section 5
+    quote: "it falls abruptly towards zero and remains minimal until pressure rises above the CCP threshold"
+    note: "Once shut, a vessel stays shut until the balance tips back."
+
+  skin_flap_threshold:
+    symbol: "—"
+    label: "the threshold in skin"
+    value: 0
+    unit: "—"
+    confidence: measured
+    source: cutting1982
+    locator: abstract
+    quote: "Results demonstrate that a relatively high intraarterial pressure must be applied to this skin flap before blood flow will commence."
+    note: "The same threshold, measured in skin."

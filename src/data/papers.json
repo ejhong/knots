@@ -15,6 +15,21 @@
   "note": "About 5 superior and 8 inferior gluteal perforators of at least 0.5 mm on each side, along two lines across the buttock."
  },
  {
+  "id": "alexandrou2021",
+  "authors": "Alexandrou ME, Gkaliagkousi Ε, Loutradis C et al.",
+  "year": 2021,
+  "title": "Haemodialysis and peritoneal dialysis patients have severely impaired post-occlusive skin forearm vasodilatory response assessed with laser speckle contrast imaging",
+  "venue": "Clin Kidney J 14:1419-1427",
+  "url": "https://doi.org/10.1093/ckj/sfaa136",
+  "pmid": "33959270",
+  "kind": "paper",
+  "tags": [
+   "vascular",
+   "imaging"
+  ],
+  "note": "Reactive hyperaemia in forearm skin by laser speckle imaging: after an occlusion, flow rises 187% above baseline and peaks about 11 s after release."
+ },
+ {
   "id": "alvarezprats2019",
   "authors": "Álvarez-Prats D, Carvajal-Fernández O, Valera Garrido F et al.",
   "year": 2019,
@@ -45,6 +60,21 @@
   "note": "Fluid-filled spaces supported by collagen bundles in submucosae, dermis, fasciae and perivascular tissue — a body-wide interstitium."
  },
  {
+  "id": "bohlen1979",
+  "authors": "Bohlen HG",
+  "year": 1979,
+  "title": "Arteriolar closure mediated by hyperresponsiveness to norepinephrine in hypertensive rats",
+  "venue": "Am J Physiol 236:H157-64",
+  "url": "https://doi.org/10.1152/ajpheart.1979.236.1.H157",
+  "pmid": "434167",
+  "kind": "paper",
+  "tags": [
+   "vascular",
+   "animals"
+  ],
+  "note": "Arterioles held closed by nerves: cutting them opened 22% more third-order arterioles in normal rats."
+ },
+ {
   "id": "bolton1936",
   "authors": "Bolton B, Carmichael EA, Stürup G",
   "year": 1936,
@@ -58,6 +88,21 @@
    "breath"
   ],
   "note": "The inspiratory gasp reflex: a deep breath constricts the skin’s vessels within seconds."
+ },
+ {
+  "id": "burton1951",
+  "authors": "Burton AC",
+  "year": 1951,
+  "title": "On the physical equilibrium of small blood vessels",
+  "venue": "Am J Physiol 164:319-29",
+  "url": "https://doi.org/10.1152/ajplegacy.1951.164.2.319",
+  "pmid": "14810937",
+  "kind": "paper",
+  "tags": [
+   "vascular",
+   "models"
+  ],
+  "note": "Why a small vessel can snap shut: with active tension in its wall, Laplace's law leaves it no stable open state below a critical pressure."
  },
  {
   "id": "cagnie2012",
@@ -75,6 +120,20 @@
   "note": "A single dry-needling stimulus raises local blood flow and oxygenation in the trapezius for fifteen minutes."
  },
  {
+  "id": "charkoudian2003",
+  "authors": "Charkoudian N",
+  "year": 2003,
+  "title": "Skin blood flow in adult human thermoregulation: how it works, when it does not, and why",
+  "venue": "Mayo Clin Proc 78:603-12",
+  "url": "https://doi.org/10.4065/78.5.603",
+  "pmid": "12744548",
+  "kind": "paper",
+  "tags": [
+   "vascular"
+  ],
+  "note": "Skin blood flow is set by sympathetic nerves and local temperature: from minimal levels under local cooling to 6–8 L/min in heat."
+ },
+ {
   "id": "chen2007",
   "authors": "Chen Q, Bensamoun S, Basford JR et al.",
   "year": 2007,
@@ -88,6 +147,35 @@
    "imaging"
   ],
   "note": "Taut bands identified and quantified with magnetic resonance elastography."
+ },
+ {
+  "id": "cutting1982",
+  "authors": "Cutting C, Ballantyne D, Shaw W et al.",
+  "year": 1982,
+  "title": "Critical closing pressure, local perfusion pressure, and the failing skin flap",
+  "venue": "Ann Plast Surg 8:504-9",
+  "url": "https://doi.org/10.1097/00000637-198206000-00009",
+  "pmid": "7114760",
+  "kind": "paper",
+  "tags": [
+   "vascular",
+   "perforators"
+  ],
+  "note": "Skin flaps show the critical closing phenomenon: blood does not flow until perfusion pressure passes a threshold set in part by vascular smooth muscle tone."
+ },
+ {
+  "id": "dedear1997",
+  "authors": "de Dear RJ, Arens E, Hui Z et al.",
+  "year": 1997,
+  "title": "Convective and radiative heat transfer coefficients for individual human body segments",
+  "venue": "Int J Biometeorol 40:141-56",
+  "url": "https://doi.org/10.1007/s004840050035",
+  "pmid": "9195861",
+  "kind": "paper",
+  "tags": [
+   "models"
+  ],
+  "note": "How fast skin loses heat: about 4.5 W/m²·K by radiation and 3.4 W/m²·K by convection in still air."
  },
  {
   "id": "dorsher2009",
@@ -105,6 +193,20 @@
   "note": "Trigger-point referred-pain patterns track the acupuncture meridians."
  },
  {
+  "id": "elassar2022",
+  "authors": "El Assar M, García-Rojo E, Sevilleja-Ortiz A et al.",
+  "year": 2022,
+  "title": "Functional Role of STIM-1 and Orai1 in Human Microvascular Aging",
+  "venue": "Cells 11",
+  "url": "https://doi.org/10.3390/cells11223675",
+  "pmid": "36429103",
+  "kind": "paper",
+  "tags": [
+   "vascular"
+  ],
+  "note": "Human small arteries from donors over 65 contract more strongly to adrenergic stimulation; force is close to maximal at 90% of the circumference they would have at 100 mmHg."
+ },
+ {
   "id": "farias2020",
   "authors": "Farias M, Maraldi E, Wallenkampf KC et al.",
   "year": 2020,
@@ -120,6 +222,20 @@
   "note": "Across 83 studies, adverse events in about 8% of those who meditated — anxiety and depression most often, suicidal behaviour among them — sometimes in people with no previous mental-health problems."
  },
  {
+  "id": "fede2018",
+  "authors": "Fede C, Angelini A, Stern R et al.",
+  "year": 2018,
+  "title": "Quantification of hyaluronan in human fasciae: variations with function and anatomical site",
+  "venue": "J Anat 233:552-556",
+  "url": "https://doi.org/10.1111/joa.12866",
+  "pmid": "30040133",
+  "kind": "paper",
+  "tags": [
+   "fascia"
+  ],
+  "note": "Hyaluronan measured in human fasciae: 6 µg/g over trapezius and deltoid, about 30–35 µg/g in fascia lata and rectus sheath, 90 µg/g in the retinacula."
+ },
+ {
   "id": "fede2022",
   "authors": "Fede C, Petrelli L, Pirri C et al.",
   "year": 2022,
@@ -133,6 +249,21 @@
    "nerve"
   ],
   "note": "The superficial fascia is richly innervated; about a third of its fibres are autonomic, concentrated around vessels."
+ },
+ {
+  "id": "fronek1975",
+  "authors": "Fronek K, Zweifach BW",
+  "year": 1975,
+  "title": "Microvascular pressure distribution in skeletal muscle and the effect of vasodilation",
+  "venue": "Am J Physiol 228:791-6",
+  "url": "https://doi.org/10.1152/ajplegacy.1975.228.3.791",
+  "pmid": "1115244",
+  "kind": "paper",
+  "tags": [
+   "vascular",
+   "animals"
+  ],
+  "note": "Microvascular pressures measured directly: in arterioles of 70 µm and wider, pressure tracks systemic arterial pressure."
  },
  {
   "id": "gerwin2004",
@@ -187,7 +318,8 @@
   "pmid": "3337223",
   "kind": "paper",
   "tags": [
-   "vascular"
+   "vascular",
+   "models"
   ],
   "note": "The latch-bridge model: dephosphorylated cross-bridges that hold smooth-muscle tension cheaply."
  },
@@ -265,6 +397,21 @@
   "note": "A scoping review: one bout of foam rolling on one limb increases range of motion in the other, untreated limb, most likely through reduced perception of pain. A single bout leaves the other side’s maximal strength unchanged."
  },
  {
+  "id": "krause2001",
+  "authors": "Krause WE, Bellomo EG, Colby RH",
+  "year": 2001,
+  "title": "Rheology of sodium hyaluronate under physiological conditions",
+  "venue": "Biomacromolecules 2:65-9",
+  "url": "https://doi.org/10.1021/bm0055798",
+  "pmid": "11749156",
+  "kind": "paper",
+  "tags": [
+   "fascia",
+   "models"
+  ],
+  "note": "Hyaluronan in physiological saline stays a Newtonian liquid over a wide range of shear rates, with no sign of gel formation without protein."
+ },
+ {
   "id": "langevin2002",
   "authors": "Langevin HM, Yandow JA",
   "year": 2002,
@@ -309,6 +456,21 @@
   "note": "About 20% less shear glide between thoracolumbar fascia layers in chronic low back pain."
  },
  {
+  "id": "lau1995",
+  "authors": "Lau YT, Liu CF, Tsai CC",
+  "year": 1995,
+  "title": "Cutaneous vasoconstrictor response induced by inspiratory gasp in relation to sex and age",
+  "venue": "Clin Sci (Lond) 89:233-7",
+  "url": "https://doi.org/10.1042/cs0890233",
+  "pmid": "7493417",
+  "kind": "paper",
+  "tags": [
+   "breath",
+   "vascular"
+  ],
+  "note": "A deep inspiratory gasp cuts fingertip skin blood flow by 59–71%, graded with the depth of the breath."
+ },
+ {
   "id": "lindahl2017",
   "authors": "Lindahl JR, Fisher NE, Cooper DJ et al.",
   "year": 2017,
@@ -322,6 +484,21 @@
    "safety"
   ],
   "note": "The largest study of meditation-related challenges: pressure or tension that builds and releases, energy, currents, involuntary movement."
+ },
+ {
+  "id": "lorenzo2007",
+  "authors": "Lorenzo S, Minson CT",
+  "year": 2007,
+  "title": "Human cutaneous reactive hyperaemia: role of BKCa channels and sensory nerves",
+  "venue": "J Physiol 585:295-303",
+  "url": "https://doi.org/10.1113/jphysiol.2007.143867",
+  "pmid": "17901123",
+  "kind": "paper",
+  "tags": [
+   "vascular",
+   "nerve"
+  ],
+  "note": "The skin's reactive hyperaemia is carried largely by sensory nerves and BKCa channels, not prostanoids."
  },
  {
   "id": "macgregor2006",
@@ -352,6 +529,21 @@
    "fascia"
   ],
   "note": "Dissection of meridians: tracks in the extracellular matrix, but vessel–nerve bundles at only a few points."
+ },
+ {
+  "id": "mayrovitz2026",
+  "authors": "Mayrovitz HN",
+  "year": 2026,
+  "title": "Physiological Impacts and Medical Applications of the Inspiratory Gasp Vascular Reflex",
+  "venue": "Cureus 18:e105709",
+  "url": "https://doi.org/10.7759/cureus.105709",
+  "pmid": "42028531",
+  "kind": "paper",
+  "tags": [
+   "breath",
+   "vascular"
+  ],
+  "note": "The inspiratory gasp reflex reviewed: skin vessels constrict 3.6–3.8 s after a gasp, most deeply at 4.6–5.2 s, and recover over about half a minute."
  },
  {
   "id": "mcnulty1994",
@@ -400,6 +592,21 @@
   "note": "Dissection of the five-shu points of the arm: perforating cutaneous vessels are a key feature of acupoints."
  },
  {
+  "id": "miller2026",
+  "authors": "Miller A, Rola P, Spiegel R et al.",
+  "year": 2026,
+  "title": "Arteriolar Collapse and Haemodynamic Incoherence in Shock: Rethinking Critical Closing Pressure",
+  "venue": "J Pers Med 16",
+  "url": "https://doi.org/10.3390/jpm16020078",
+  "pmid": "41745371",
+  "kind": "paper",
+  "tags": [
+   "vascular",
+   "models"
+  ],
+  "note": "Critical closing pressure read as a binary threshold: arterioles snap shut when smooth-muscle tension exceeds intraluminal pressure, and reopen only when tone falls, external pressure is relieved or inflow pressure rises."
+ },
+ {
   "id": "moraska2013",
   "authors": "Moraska AF, Hickner RC, Kohrt WM et al.",
   "year": 2013,
@@ -430,6 +637,79 @@
   "note": "A modern synthesis of perforator anatomy region by region."
  },
  {
+  "id": "mulvany1990",
+  "authors": "Mulvany MJ, Aalkjaer C",
+  "year": 1990,
+  "title": "Structure and function of small arteries",
+  "venue": "Physiol Rev 70:921-61",
+  "url": "https://doi.org/10.1152/physrev.1990.70.4.921",
+  "pmid": "2217559",
+  "kind": "paper",
+  "tags": [
+   "vascular"
+  ],
+  "note": "Small arteries, below about 500 µm, actively regulate peripheral resistance: the size class of most perforators."
+ },
+ {
+  "id": "murphy2005",
+  "authors": "Murphy RA, Rembold CM",
+  "year": 2005,
+  "title": "The latch-bridge hypothesis of smooth muscle contraction",
+  "venue": "Can J Physiol Pharmacol 83:857-64",
+  "url": "https://doi.org/10.1139/y05-090",
+  "pmid": "16333357",
+  "kind": "paper",
+  "tags": [
+   "vascular",
+   "models"
+  ],
+  "note": "The latch-bridge hypothesis reviewed: in sustained contractions calcium, phosphorylation and ATP use fall while force is held."
+ },
+ {
+  "id": "nakayama2000",
+  "authors": "Nakayama Y, Shirai Y, Yoshihara K et al.",
+  "year": 2000,
+  "title": "Evaluation of glycosaminoglycans levels in normal joint fluid of the knee",
+  "venue": "J Nippon Med Sch 67:92-5",
+  "url": "https://doi.org/10.1272/jnms.67.92",
+  "pmid": "10754597",
+  "kind": "paper",
+  "tags": [
+   "fascia"
+  ],
+  "note": "Normal knee joint fluid in healthy young adults holds 3.4 mg/ml of hyaluronan: tens to hundreds of times the fascia's."
+ },
+ {
+  "id": "nichol1951",
+  "authors": "Nichol J, Girling F, Jerrard W et al.",
+  "year": 1951,
+  "title": "Fundamental instability of the small blood vessels and critical closing pressures in vascular beds",
+  "venue": "Am J Physiol 164:330-44",
+  "url": "https://doi.org/10.1152/ajplegacy.1951.164.2.330",
+  "pmid": "14810938",
+  "kind": "paper",
+  "tags": [
+   "vascular",
+   "models"
+  ],
+  "note": "The companion measurements: whole vascular beds stop flowing at a critical closing pressure, the instability Burton predicted."
+ },
+ {
+  "id": "nicholls2018",
+  "authors": "Nicholls M, Manjoo A, Shaw P et al.",
+  "year": 2018,
+  "title": "A Comparison Between Rheological Properties of Intra-articular Hyaluronic Acid Preparations and Reported Human Synovial Fluid",
+  "venue": "Adv Ther 35:523-530",
+  "url": "https://doi.org/10.1007/s12325-018-0688-y",
+  "pmid": "29542009",
+  "kind": "paper",
+  "tags": [
+   "fascia",
+   "models"
+  ],
+  "note": "Healthy synovial fluid, far richer in hyaluronan than fascia, has a zero-shear viscosity of 1–175 Pa·s: an upper bound for any hyaluronan collar."
+ },
+ {
   "id": "quintner1994",
   "authors": "Quintner JL, Cohen ML",
   "year": 1994,
@@ -458,6 +738,21 @@
    "trigger-points"
   ],
   "note": "A sceptical review of the trigger-point construct and its circularity."
+ },
+ {
+  "id": "rembold1991",
+  "authors": "Rembold CM",
+  "year": 1991,
+  "title": "Relaxation, [Ca2+]i, and the latch-bridge hypothesis in swine arterial smooth muscle",
+  "venue": "Am J Physiol 261:C41-50",
+  "url": "https://doi.org/10.1152/ajpcell.1991.261.1.C41",
+  "pmid": "1858859",
+  "kind": "paper",
+  "tags": [
+   "vascular",
+   "models"
+  ],
+  "note": "In arterial smooth muscle, relaxation is paced by the fall of calcium, not by latch-bridge detachment: the latch holds only while the calcium signal lasts."
  },
  {
   "id": "rivner2001",
@@ -753,5 +1048,20 @@
    "nerve"
   ],
   "note": "The whole model in one case: a tender point, a pulsating perforating artery beneath it on Doppler, resolution with hydrodissection."
+ },
+ {
+  "id": "zhang2007",
+  "authors": "Zhang RZ, Gashev AA, Zawieja DC et al.",
+  "year": 2007,
+  "title": "Length-tension relationships of small arteries, veins, and lymphatics from the rat mesenteric microcirculation",
+  "venue": "Am J Physiol Heart Circ Physiol 292:H1943-52",
+  "url": "https://doi.org/10.1152/ajpheart.01000.2005",
+  "pmid": "17172274",
+  "kind": "paper",
+  "tags": [
+   "vascular",
+   "animals"
+  ],
+  "note": "Small arteries of about 240 µm develop a maximal active wall tension of 3.4 mN/mm: the strength with which a vessel can close itself."
  }
 ]
