@@ -107,7 +107,11 @@ proponents of each theory, and a lab.
    needs pressure or movement to let go, which a piercing is placed to receive; the same hold deep in muscle or in the brain
    would be out of reach and not felt as a point. As a variant: a strain gain on the movement route at a piercing (guessed
    until measured). The measurement: ultrasound speckle tracking of a perforator's wall at its piercing against a vessel
-   within a layer, under a roller or a breath; it is also the unmeasured `breath_move`.
+   within a layer, under a roller or a breath; it is also the unmeasured `breath_move`. A first probe
+   (`exploratory/2026-09-26-set-knot-rolling.py`): at resting tone, breath movement of up to a full squeeze per breath does
+   not free a fully set knot (loosening at most 0.44; it needs about 0.5), where a roller's pass each second frees it in
+   5–25 s (loosening 0.62–0.87); a knot just set goes with either. Old knots need fast, large changes of shape, and a
+   piercing is where those would concentrate. To be run as trials with the strain gain (M1).
 
 **A hypothesis these suggest** (to be run through the same exam as everything else, not assumed). Knots form where drive is
 raised and the tissue is still. A shut vessel loses the pulse that stretches its wall with every heartbeat, and so may hold

@@ -13,3 +13,4 @@ Run from `sim/`, for example `uv run python exploratory/2026-09-26-tree-parent.p
 | `2026-09-26-tree-siblings-surge.py` | 8 | Eight siblings on one feed: how many a surge of stress shuts, and what a release or an easing root does |
 | `2026-09-26-tree-siblings-release.py` | 8 | A knot formed by a local surge among siblings: does releasing it shut a neighbour in its place? |
 | `2026-09-26-tree-parent.py` | 8, O13 | A parent vessel feeding four children: a knot in the parent, then its release |
+| `2026-09-26-set-knot-rolling.py` | 10 | A set knot at resting tone: does breath movement free it, or a roller's pass each second? |
