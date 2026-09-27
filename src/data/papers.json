@@ -210,6 +210,21 @@
   "note": "A single dry-needling stimulus raises local blood flow and oxygenation in the trapezius for fifteen minutes."
  },
  {
+  "id": "casiglia2006",
+  "authors": "Casiglia E, Rossi A, Tikhonoff V et al.",
+  "year": 2006,
+  "title": "Local and systemic vasodilation following hypnotic suggestion of warm tub bathing",
+  "venue": "Int J Psychophysiol 62:60-5",
+  "url": "https://doi.org/10.1016/j.ijpsycho.2006.01.012",
+  "pmid": "16504320",
+  "kind": "paper",
+  "tags": [
+   "vascular",
+   "mind"
+  ],
+  "note": "Under hypnosis, suggesting only the forearm was in warm water dilated that forearm (resistance -18%, flow +43%); suggesting the whole body dilated vessels everywhere."
+ },
+ {
   "id": "charkoudian2003",
   "authors": "Charkoudian N",
   "year": 2003,
@@ -427,6 +442,36 @@
    "models"
   ],
   "note": "The breath keeps airway smooth muscle from freezing: tidal stretch perturbs myosin binding and biases the muscle toward lengthening; without it the muscle virtually freezes at its static length."
+ },
+ {
+  "id": "freedman1988",
+  "authors": "Freedman RR, Sabharwal SC, Ianni P et al.",
+  "year": 1988,
+  "title": "Nonneural beta-adrenergic vasodilating mechanism in temperature biofeedback",
+  "venue": "Psychosom Med 50:394-401",
+  "url": "https://doi.org/10.1097/00006842-198807000-00007",
+  "pmid": "2842815",
+  "kind": "paper",
+  "tags": [
+   "vascular",
+   "mind"
+  ],
+  "note": "Learned finger warming with temperature feedback was blocked by propranolol infused in that arm only, and not by blocking the finger's nerves."
+ },
+ {
+  "id": "freedman1991",
+  "authors": "Freedman RR",
+  "year": 1991,
+  "title": "Physiological mechanisms of temperature biofeedback",
+  "venue": "Biofeedback Self Regul 16:95-115",
+  "url": "https://doi.org/10.1007/BF01000184",
+  "pmid": "1854864",
+  "kind": "paper",
+  "tags": [
+   "vascular",
+   "mind"
+  ],
+  "note": "A review: learned finger warming works through a non-neural, beta-adrenergic mechanism rather than through less sympathetic activity; learned cooling works through the sympathetic nerves."
  },
  {
   "id": "fronek1975",
@@ -962,6 +1007,21 @@
   "note": "A modern synthesis of perforator anatomy region by region."
  },
  {
+  "id": "morrison2001",
+  "authors": "Morrison SF",
+  "year": 2001,
+  "title": "Differential control of sympathetic outflow",
+  "venue": "Am J Physiol Regul Integr Comp Physiol 281:R683-98",
+  "url": "https://doi.org/10.1152/ajpregu.2001.281.3.R683",
+  "pmid": "11506981",
+  "kind": "paper",
+  "tags": [
+   "vascular",
+   "nerve"
+  ],
+  "note": "The sympathetic system is not one global switch: a review of tissue-specific output channels that can be activated or inhibited in combination."
+ },
+ {
   "id": "mulvany1979",
   "authors": "Mulvany MJ, Warshaw DM",
   "year": 1979,
@@ -1462,6 +1522,20 @@
    "models"
   ],
   "note": "A model of small arteries regulated by four adaptive processes (tone, smooth-muscle length adaptation, matrix rearrangement, growth): leave any one out and regulation fails, in some cases with unstable structure."
+ },
+ {
+  "id": "vissing1997",
+  "authors": "Vissing SF",
+  "year": 1997,
+  "title": "Differential activation of sympathetic discharge to skin and skeletal muscle in humans",
+  "venue": "Acta Physiol Scand Suppl 639:1-32",
+  "pmid": "9421582",
+  "kind": "paper",
+  "tags": [
+   "vascular",
+   "nerve"
+  ],
+  "note": "In humans, sympathetic outflow to skin and to muscle can be activated in a highly dissociated pattern: central command drives the skin's, feedback from working muscle the muscle's."
  },
  {
   "id": "whetzel1992",

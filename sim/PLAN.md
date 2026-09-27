@@ -30,6 +30,12 @@ different recording. The one that matches, at several sites and in several peopl
    result under each theory, sealed before any data. The output is a decision tree a lab can pick up: measure this first; if
    you see A, next measure that.
 
+**Useful, not impressive** (the author, 27 Sep 2026: "we're trying to do something useful given all the unknowns and not
+something that looks useful but is useless"). A result earns its place if it is a *can* or *cannot* that holds in every
+plausible setting; a question the author could answer by noticing (when a pressed knot lets go; whether a chosen hard knot can
+go before easier ones); or what a measurement would show and what each outcome would rule out. Shares of settings and numbers
+from guessed parameters are the map, not the finding. The work ends in a measurement, so the next effort goes to designing it.
+
 **Honest scope.** No model observes a knot. The strongest claims available are *cannot* (no plausible parameters produce an
 observation) and *would show* (what a measurement would record if a theory is right). *Is* waits for data, so the plan ends in
 a lab, and perhaps first in a pilot the author runs.
@@ -135,6 +141,20 @@ proponents of each theory, and a lab.
    edge, or a tight compartment under fascia. Not impossible: a stated condition, and a measurement (tissue pressure around
    a released knot).
 
+14. **A breath aimed at one place** (the author's hypothesis, route B6, §2; `knots_sim/aimed.py`, 32 settings). If a trained
+   breath could lower drive at one chosen place (focus_gain times as far at its centre, falling off over a footprint), then in
+   the perforators a hard knot that 30 broad breaths left lets go in 9 of 13 settings, within about
+   10 s (1 of 13 without the aim). Aimed within a quarter of a vessel spacing
+   (about 1 mm), it goes first and alone in 9; within half a spacing, alone in 7;
+   over a spacing or more, neighbours go too, and the open vessels around the spot flow +56% (one
+   spacing) to +105% (two) while it is aimed, far ones +1%. In trigger points an aimed
+   relaxation frees a hard knot in 2 of 22 settings, after about 4 minutes: its
+   ischaemia holds it whatever the drive does. So in the vessel view the aim need not be strong, but it must be narrow to take
+   one knot alone; one a spacing wide or more would show on a laser speckle camera as flow rising around the spot and not at
+   a sham site; a narrower one leaves nothing to see but the release. It rests on the guessed focus gain (1.5–6) and the
+   patch's representative geometry; what it adds is a question a practitioner could notice (can a chosen hard knot go before
+   others nearby?) and a measurement.
+
 **A hypothesis these suggest** (to be run through the same exam as everything else, not assumed). Knots form where drive is
 raised and the tissue is still. A shut vessel loses the pulse that stretches its wall with every heartbeat, and so may hold
 harder than an open one (a second loop that widens the band). The longer it is held, the more its muscle adapts to being
@@ -158,6 +178,7 @@ model as a set of routes, each a variant, and the data decide between them.
 | B3 Local nerve | sensory nerves releasing dilators in one place | one place | T1, T5 | lorenzo2007 (the nerves carry reactive hyperaemia); a breath-driven trigger has no source |
 | B4 Attention | what is felt, with no change in the tissue | anywhere | T6 | to define with the author (D4) |
 | B5 Chemistry | carbon dioxide (overbreathing) | everywhere | T6 (tingling anywhere); T1–T3 (CO₂ and small vessels: verify) | source needed |
+| B6 Aimed drive | sympathetic (or motor) drive lowered at one chosen place by a trained breath with attention: the author's hypothesis (27 Sep 2026), how unknown | one place, as narrow as the skill | T1, T3 (in T6 attention is already local) | morrison2001, vissing1997 (the outflow runs in separate channels); casiglia2006 (a suggestion dilates one forearm, not the rest); freedman1988, freedman1991 (learned finger warming is local but not sympathetic) |
 
 - **Skill** enters as the parameters practice could change: how much an out-breath lowers drive and how little the in-breath
   raises it; how long drive stays down; where the breath moves the tissue, and how much. The models then say what a skill
@@ -166,7 +187,12 @@ model as a set of routes, each a variant, and the data decide between them.
   release threshold, and, in the latch variants, how long it has been held.
 - **What tells the routes apart.** B1 changes flow at sham sites too; B2 follows local tissue strain (ultrasound speckle
   tracking during the breath); B3 flushes one place with no change in drive or strain; B4 changes nothing measurable in the
-  tissue; B5 follows end-tidal CO₂.
+  tissue; B5 follows end-tidal CO₂; B6 widens the open vessels around the attended place while the breath is aimed, and not
+  at a sham site; the narrower the aim, the less there is to see but the release itself (`knots_sim/aimed.py`).
+- **B6 as a question, not an assumption.** How precise would an aimed breath have to be to release one knot and not its
+  neighbours, and does it break the queue (a chosen hard knot going before easier ones, which a broad breath never does)?
+  The aimed variant in T1 and T3 (focus_gain lowers the drive at the attended place instead of moving the tissue there)
+  runs through the exam; `knots_sim/aimed.py` sweeps the footprint's width against the spacing of the units.
 
 ## 3. Full coverage: the theories
 
@@ -203,16 +229,17 @@ in a public table:
 - A plausible, publishable outcome: no single theory passes everything, and a hybrid does: a local switch that holds, with
   the nervous system setting its drive and much of what is felt.
 
-## 4. The exam (sealed v1, 26 Sep 2026)
+## 4. The exam (versioned; v1 sealed 26 Sep 2026, v3 27 Sep)
 
-**Sealed** in `observations/spec.yaml` (version 1, 26 Sep 2026; SHA-256 and the sealing commit in `observations/seal.yaml`),
-before any sweep. It changes only by a new, dated version; a test fails if the file differs from its seal, and every result
-names the version it used. The author asked that the wording rest on judgment, and that the site's introduction, not the
+**Versioned** in `observations/spec.yaml`: each change dated, with its reason, in its `changes`, and every result names the
+version it used. Version 1 (26 Sep 2026) was sealed before any sweep, and versions 1-3 by hash (`observations/seal.yaml`
+keeps that record); from 27 Sep 2026, at the author's word, the exam is versioned rather than sealed, since the reports are
+one person's and keep sharpening. Sealing is kept for predictions of a real experiment, before any data (§6). The author asked that the wording rest on judgment, and that the site's introduction, not the
 essays, be the record (the essays' text was generated and is sometimes off). So each observation takes the introduction's
 words or the author's own (quoted under `words` and checked against `src/data/tour.ts` and `observations/author.md` by a
 test), and reports found only in the essays are **set aside**, shown and unscored, until the author confirms them. The
 readings of the words ("within seconds" is within 10 s, during the out-breath; "many breaths" is the third to the thirtieth;
-and so on) and the scoring rules (pass, fail or silent per part; passes as shares of plausible parameter sets) are sealed
+and so on) and the scoring rules (pass, fail or silent per part; passes as shares of plausible parameter sets) are versioned
 with it.
 
 | ID | Observation (the introduction's words, or the author's) | Evidence |
@@ -270,13 +297,13 @@ Every theory takes the same inputs and gives the same outputs, or the comparison
 
 ## 5b. The harness and matrix v1 (designed and built 26 Sep 2026)
 
-`knots_sim/exam.py` loads the sealed spec and refuses to run if the file's hash differs from its seal. For each theory,
+`knots_sim/exam.py` loads the spec at its version (and refuses one without a `changes` entry for it). For each theory,
 each variant and each scored part it runs the part's trial over parameter sets sampled across the theory's own ranges,
 and records one of: **a pass share** (the share of plausible sets in which the part holds; never one tuned setting),
 **silent** (the theory's account says nothing), or **not run** (it says something, but no trial can test it yet). The
 matrix shows each variant's cells and its joint pass, and the best variant per part.
 
-**Parts** (the sealed readings in brackets; each part names the words it tests):
+**Parts** (the readings in brackets; each part names the words it tests):
 
 | Part | Trial and pass |
 |---|---|
@@ -337,7 +364,7 @@ ones not yet built included; any later change reruns them all):
   adler2019); every drive route gets that sustained fall (`breath_calm`, 0 in its range) as well as each breath's dip.
 - *A press as its own literature has it.* T3's pressure works through the band's slow lengthening, calibrated so that a
   knot of middle depth lets go in τ_p (60–90 s, pecosmartin2019); as first written it let go in seconds or never.
-- *Sparks within 10 s*, the sealed reading of "within seconds".
+- *Sparks within 10 s*, the exam's reading of "within seconds".
 
 A zero means none of 32 settings, not impossible; where a zero is structural (drive is not local, so focus changes
 nothing through drive alone), the adapter's notes say so, and the cell's hover carries it.
@@ -486,24 +513,39 @@ M5. The top-bar link comes when the author says (D2); the natural moment is matr
   ("could be either"); O2.2 takes either, and the timing is open question Q1, with each theory's prediction on the site.
   The perforators' migration trial (O8) had never run (its knot sat on a wall that cannot hold one): fixed, and every trial
   now reports how often it ran (finding 12).
-- **Exam v3 (27 Sep), and where to pick up.** The author reports a knot coming back to the spot a released one left ("a
-  rearrangement underneath and a new knot appears in what seems like the same place"; the same perforator or one moved
-  in, they cannot tell). Sealed as O8.2 in v3 (commit 14f3930) before any trial of it; the matrix marks it not run.
-  Next, in order:
-  1. *The O8.2 trials*, from the existing cluster trials (no new stimulus), recording after the worked knot lets go
-     whether a knot is back at its place within 10 minutes, and by which route (same / beneath / beside):
-     - T1: the parent tree (the parent shut again, or a child shut beneath it) and the sibling tree (the released
-       sibling again, or a sibling newly shut).
-     - T3: the key (contracted again; satellites lie in the referral zone and do not count) and the taut band as a line
-       (the released unit again, or an adjacent unit newly contracted).
-     - T6: the worked place felt again, or one of the eight around it on the patch grid newly felt.
-     - `ClusterOut` gains `same_spot` and `how`; `matrix.json` gains `back` (shares by route, median time).
-  2. *Pressure around a released knot* (the author's first question), exploratory. Each theory's single knot, released
-     by its own route; then, with the holding stress on and at rest, a sustained pressure around it (0–40 mmHg) for
-     10 minutes; whether it re-knots, how soon, and whether it holds or flickers. T1 as `Pext` (its instant push toward
-     shutting races the myogenic easing), T6 as input at the place, T3 as occlusion without lengthening (one optional
-     model input). Set against tissue pressure (christ1997).
-  3. On the site: where a knot comes back, per theory, as a finding generated from the matrix.
+- **Exam v3 (27 Sep).** The author reports a knot coming back to the spot a released one left ("a rearrangement underneath
+  and a new knot appears in what seems like the same place"; the same perforator or one moved in, they cannot tell). Sealed
+  as O8.2 in v3 (commit 14f3930) before any trial of it. From v3 on the exam is versioned, not sealed (the author: the
+  seal was "slightly the wrong focus"); preregistration is kept for a real experiment's predictions.
+- **Done after (27 Sep):** the O8.2 trials in every adapter (`ClusterOut.back`; `matrix.json` `back`: shares by route,
+  median time; finding 13); one hand for every theory's cluster (pressed until it lets go, a minute at most, and it does
+  not come back; the perforators' press had run its full minute, the others' had pressed again when a knot came back);
+  the flicker rule (`exam.held_again`: a unit back within 2 s never let go). The author's hypothesis of a breath aimed at
+  one place as route B6 (§2): the `aimed` variant in T1 and T3, and `knots_sim/aimed.py`, how precise it would have to
+  be (finding 14). Findings on the Research page marked by kind (below).
+- **Where to pick up: the measurement, before more breadth.** The author (27 Sep): "we're trying to do something useful
+  given all the unknowns and not something that looks useful but is useless." Every result is now one of three kinds (a
+  can or cannot in every plausible setting; something the author could notice; what an instrument would show), and the
+  next work is the one that ends in data:
+  1. *The measurement, designed from the models.* One page, generated: what to record at a release (laser speckle or a
+     thermal camera over the spot and a sham site; the breath; the moment the release is felt), what each surviving
+     theory and breath route predicts it would show, how big and how soon, how many releases it needs, and what each
+     outcome would rule out. Includes the aimed-breath fingerprint (flow in the open vessels around the attended place while the breath is aimed)
+     and the questions the author can answer by noticing (Q1, the hand; whether a chosen hard knot can go before easier
+     ones nearby; whether a knot back in the same place is there at once or half a minute later).
+  2. *Pressure around a released knot* (the author's question): `exploratory/2026-09-27-reknot-pressure.py` for the
+     perforators (the least outside pressure that shuts a released vessel again, with the stress on and at rest, against
+     christ1997's 2.5 mmHg); T3 needs an occlusion-only input in `models/triggerpoint.py`.
+  3. Robustness marked on the matrix itself: which cells hold in every setting, which turn on guessed parameters (and
+     which ones), as the drawers (Phase B) show.
+  4. *How fast a knot forms* (the author, 27 Sep: "are the sims exploring how the knots form over various timescales").
+     Today every trial forms knots one way, a 3-minute surge; holding is tested at 30 minutes and 3 hours (setting), and an
+     hour of mood. Nothing covers a startle (seconds) or days of posture and stillness. The theories part here: a vessel's
+     switch can shut within seconds once tone passes its fold; a trigger point's energy crisis builds over tens of minutes;
+     perception forms and fades as fast as arousal. A strength-duration study per theory (the least stress that forms a
+     knot, for a surge of 1 s to hours), and a question the author could answer by noticing (open question Q2 in the next
+     exam version): do knots appear within seconds of a stressful moment, only after sustained tension or stillness, or
+     days later?
 - **Next, from the matrix:** T2 live and T4, T5 behind the same harness (matrix v2); per-cell drawers on the site (a passing and a
   failing run, what decides it); the mechanics stage for O5 and O9, and ageing for T3; the base of the skull as a
   location test, once the author confirms it.

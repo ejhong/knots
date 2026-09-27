@@ -91,7 +91,7 @@ def simulate(P: dict[str, np.ndarray], a0: np.ndarray, inputs, duration: float, 
         rate_strain = np.zeros(n) if last_strain is None else np.abs(strain - last_strain) / dt
         last_strain = strain
         q = (1 - P["squeeze"] * st.c) * np.maximum(1 - press / P["occlude"], 0.0)
-        drive = a0 * (1 + P["stress_gain"] * s) * (1 + P["milieu_gain"] * st.m) * coupling
+        drive = a0 * np.maximum(1 + P["stress_gain"] * s, 0.0) * (1 + P["milieu_gain"] * st.m) * coupling  # no less than none
         dc = (drive * (1 - st.c) - P["relax"] * st.e ** P["coop"] * st.c - P["stretch_gain"] * rate_strain * st.c
               - k_press * st.l * st.c)
         st.c = np.clip(st.c + dt * dc, 0.0, 1.0)

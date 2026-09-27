@@ -1,9 +1,9 @@
 # The exam: what people report about knots, as tests every theory sits (sim/PLAN.md §4).
 #
-# SEALED. Version 3, 27 Sep 2026. Version 1 (26 Sep 2026) was frozen before any sweep; versions 2 and 3 change it at the
-# author's word, after earlier results (see `changes`). It changes only by a new, dated version:
-# observations/seal.yaml records each version's SHA-256, and a test fails if this file differs from its seal. Every result
-# names the version it used. An observation says what happens, never how.
+# VERSIONED. Version 3, 27 Sep 2026. Each change is dated, with its reason, in `changes`, and every result names the version
+# it used. Version 1 (26 Sep 2026) was frozen before any sweep, and versions 1-3 were also sealed by hash
+# (observations/seal.yaml keeps that record); from 27 Sep 2026 the exam is versioned, not sealed, at the author's word:
+# sealing is kept for predictions of a real experiment, before any data. An observation says what happens, never how.
 #
 # The record is the author's own account: the Observations chapter of the site's introduction (src/data/tour.ts), its
 # chapters on the ladder and on age, and the author's messages (observations/author.md). The author asked that the wording
@@ -12,7 +12,7 @@
 # The author's lines are quoted under `words`. Evidence: S, self-report; M, measured in the literature.
 
 version: 3
-status: sealed
+status: versioned
 sealed: 2026-09-27
 updated: 2026-09-27
 
@@ -22,6 +22,7 @@ changes:  # each version's changes, newest first
     items:
       - "O8: the author describes a knot coming back to the spot a released one left: 'a rearrangement underneath and a new knot appears in what seems like the same place', 'a feeling of migrating into the same or similar spot', the same perforator or one from elsewhere, they cannot tell. O8 is scored in two parts: a new knot nearby (as before) and a knot back in the same or a similar spot, with a reading that counts every way it could happen. Made after version 2's results, and after the tree model's queue was on the site: any match is found after the fact."
       - "It partly echoes a report set aside from the essays, 'released and then replaced, as if from a queue', now in the author's own words, without the paths to the skull; that report stays set aside."
+      - "From here the exam is versioned rather than sealed, at the author's word (27 Sep 2026): each change dated with its reason, every result naming the version it used; sealing is kept for predictions of a real experiment. The observations and readings of version 3 are unchanged."
   - version: 2
     date: 2026-09-27
     items:

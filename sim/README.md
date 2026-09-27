@@ -11,7 +11,7 @@ cd sim
 uv sync            # Python ≥ 3.11; installs the locked environment into .venv
 uv run pytest      # tests
 uv run python -m knots_sim.export   # regenerate what the site shows (minutes)
-uv run python -m knots_sim.exam     # every theory through the sealed exam: src/data/sim/matrix.json (about half an hour)
+uv run python -m knots_sim.exam     # every theory through the exam: src/data/sim/matrix.json (about half an hour)
 ```
 
 ## Layout
@@ -26,7 +26,7 @@ params/adapt.yaml        length adaptation: how fast and how far a held vessel's
 params/interface.yaml    what every theory shares in the trials: stress held, the breath, the hand (guessed or sourced)
 params/perception.yaml   T6, perception: gain, arousal, attention, the in-breath, overbreathing
 params/triggerpoint.yaml T3, trigger points: the energy crisis at an endplate, pressure release, the twitch
-observations/spec.yaml   the exam: what people report, as tests (sealed v1; seal.yaml holds its hash)
+observations/spec.yaml   the exam: what people report, as tests (versioned; seal.yaml keeps v1-v3's seals)
 knots_sim/
   pubmed.py              PubMed E-utilities and Europe PMC full texts, paced and cached (.cache/, ignored)
   library.py             papers the simulation stands on, merged into src/data/papers.json from PubMed records
@@ -36,6 +36,7 @@ knots_sim/
   models/perception.py   T6: places on a body map felt as knots through gain, arousal and attention
   models/triggerpoint.py T3: an endplate's contracture held by its own ischaemia
   exam.py                the harness: the shared trials and pass criteria, every theory through them, matrix.json
+  aimed.py               a breath aimed at one place (route B6, the author's hypothesis): how narrow it must be; aimed.json
   theories/t1.py t3.py t6.py   each theory's mapping onto the trials, written out for its proponents to check
   scenarios.py           the trials as input scores: a knot forms, holds, lets go
   breath.py              the breath's routes over knot depth: release maps, the least movement per breath
@@ -54,5 +55,5 @@ private/                 papers for reading (ignored by git: never commit PDFs)
 ```
 
 Still to come (PLAN.md §9–11): the latch (T2), densification (T4) and the nerve view (T5) behind the same harness; the other
-breath routes; the open vessel's missing loop for adaptation; the mechanics and body stages (O5, O9, O10.2); the instrument
+breath routes (local nerve, chemistry); the measurement designed from the models (PLAN.md §11); the open vessel's missing loop for adaptation; the mechanics and body stages (O5, O9, O10.2); the instrument
 models.

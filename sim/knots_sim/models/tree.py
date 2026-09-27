@@ -63,8 +63,9 @@ def pressures(tree: dict, x: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
     return np.column_stack([(tree["Ps"] + Pn) / 2] + [Pn] * tree["K"]), Pn
 
 
-def run(tree: dict, inputs, duration: float, dt: float = 0.02, every: int = 10) -> dict:
-    """Integrate every tree at once (RK4, inputs held over each step). inputs(t) -> (uS, Pext, mv), each (T, V).
+def run(tree: dict, inputs, duration: float, dt: float = 0.02, every: int = 10, sees: bool = False) -> dict:
+    """Integrate every tree at once (RK4, inputs held over each step). inputs(t) -> (uS, Pext, mv), each (T, V); with
+    `sees`, inputs(t, x) also sees the radii (a hand that lifts when its knot lets go).
     Returns radii and junction pressure every `every` steps."""
     f = _rhs()
     T, V = tree["T"], tree["V"]
@@ -90,7 +91,7 @@ def run(tree: dict, inputs, duration: float, dt: float = 0.02, every: int = 10) 
             ts.append(t)
             xs.append(Y[0].copy())
             Pns.append(pressures(tree, Y[0])[1])
-        u = inputs(t)
+        u = inputs(t, Y[0]) if sees else inputs(t)
         k1 = F(Y, u)
         k2 = F(Y + dt / 2 * k1, u)
         k3 = F(Y + dt / 2 * k2, u)

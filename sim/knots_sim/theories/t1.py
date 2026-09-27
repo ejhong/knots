@@ -11,7 +11,9 @@ checked for fairness:
   (U per unit) and the in-breath raises it by breath_in_share of that. Through movement: each breath deforms the
   tissue at the knot by breath_strain (the movement route, fitted to squeezed arteries).
 - Focused attention works through the breath's route at that place: the movement there is focus_gain times larger.
-  Drive is not local, so through drive alone focus changes nothing.
+  Drive is not local, so through drive alone focus changes nothing. In the aimed variant (route B6, the author's
+  hypothesis: a trained breath lowers the sympathetic signal at one chosen place), attention aims the drive: at the
+  attended place the breath lowers tone focus_gain times as far.
 - A press is palpation pressure outside the vessel, and a change of shape (press_strain) as the hand lands and lifts.
 - The sensation is the burst of the vessel's own sensory nerve (state n) as blood returns: confined to its own patch by
   construction.
@@ -24,8 +26,8 @@ from __future__ import annotations
 import numpy as np
 
 from .. import adapt
-from ..exam import (AGE_DEPTH, MOOD_FOR, PATCH, PERIOD, PRESS_FOR, SURGE, T0, WITHIN, AgeOut, ClusterOut, Density, Patch, PatchOut, Single,
-                    SingleOut, breath_wave, calm, coming_and_going, mood, out_breath, releases)
+from ..exam import (AGE_DEPTH, BACK_WITHIN, MOOD_FOR, PATCH, PERIOD, PRESS_FOR, ROUTES, SURGE, T0, WITHIN, AgeOut, ClusterOut, Density, Patch, PatchOut, Single,
+                    SingleOut, breath_wave, calm, coming_and_going, held_again, mood, out_breath, releases)
 from ..models import tree as tr
 from ..models import vessel as v
 from ..models.tree import _rhs
@@ -36,12 +38,13 @@ VARIANTS = {
     "drive": "the breath acts through sympathetic drive to the skin's small arteries",
     "movement": "the breath acts through the tissue's movement at the knot",
     "both": "through drive and movement together",
+    "aimed": "through sympathetic drive, aimed by attention: at the attended place it falls focus_gain times as far",
     "both+adaptation": "both, with the muscle adapting to a held length over hours (knots can set)",
 }
 SILENT = {"O3"}
 NOTES = {"O3": "Nothing in the vessel switch turns on hydration.",
          "O15": "Small vessels rise to the skin one every 4-5 mm, on the order of 100,000 (taylor1987, saintcyr2009).",
-         "O1.3": "Through drive alone the breath is not local, so focusing it changes nothing; through movement, focus concentrates the movement at the place.",
+         "O1.3": "Through drive alone the breath is not local, so focusing it changes nothing; through movement, focus concentrates the movement at the place; aimed, it lowers the drive there.",
          "O2.2": "Pressed, the vessel is squeezed and cannot open: it lets go within a second of the hand lifting, not under it.",
          "O8.1": "A release lowers the pressure its siblings share, by several mmHg, but not enough to shut one; a neighbour shuts only if something else pushes on it by 10 mmHg or more (exploratory/2026-09-27-migration-pressure.py), where tissue pressure under the skin rises only a few mmHg as it fills (christ1997).",
          "O10.1": "Without adaptation nothing remembers how long a knot was held; with it, a knot held for hours can set and hold at rest (findings 003)."}
@@ -138,7 +141,8 @@ def single(ps: list[dict], variant: str, depths: tuple, protocol: Single) -> Sin
     focus = _vec(ps, "focus_gain", D) if protocol.focus else 1.0
     palp, press_strain = _vec(ps, "palpation", D), _vec(ps, "press_strain", D)
     base = _base(variant)
-    drive, move = base in ("drive", "both"), base in ("movement", "both")
+    drive, move = base in ("drive", "both", "aimed"), base in ("movement", "both")
+    aimed = focus if base == "aimed" else 1.0  # how much further the drive falls where attention aims it
     zeros = np.zeros(K * D)
 
     def inputs(t):
@@ -148,7 +152,7 @@ def single(ps: list[dict], variant: str, depths: tuple, protocol: Single) -> Sin
             return np.clip(Afold + 0.03, 0, 1), zeros, zeros
         if t < T0:
             return hold, zeros, zeros
-        du, mv = _breath(t - T0, drive, move, fall, in_share, strain * focus, calm_by, calm_tau)
+        du, mv = _breath(t - T0, drive, move, fall * aimed, in_share, strain * focus, calm_by * aimed, calm_tau)
         pe = zeros
         if protocol.press and t - T0 < protocol.press_for:
             pe, mv = palp, np.maximum(mv, press_strain)
@@ -233,7 +237,8 @@ def patch(ps: list[dict], variant: str, protocol: Patch) -> PatchOut:
     focus = np.where(near, _vec(ps, "focus_gain", N), 1.0)
     palp, press_strain = _vec(ps, "palpation", N), _vec(ps, "press_strain", N)
     base = _base(variant)
-    drive, move = base in ("drive", "both"), base in ("movement", "both")
+    drive, move = base in ("drive", "both", "aimed"), base in ("movement", "both")
+    aimed = focus if base == "aimed" else 1.0
     zeros = np.zeros(K * N)
     kind = protocol.kind
     held_tone = urest + U * hold_s * zone
@@ -258,7 +263,9 @@ def patch(ps: list[dict], variant: str, protocol: Patch) -> PatchOut:
         breathing, local, pressing = protocol.at(t - T0)
         if not breathing:
             return np.clip(held_tone, 0, 1), zeros, zeros
-        du, mv = _breath(t - T0, drive, move, fall, in_share, strain * (focus if local else 1.0), calm_by, calm_tau)
+        at = aimed if local else 1.0
+        du, mv = _breath(t - T0, drive, move, fall * at, in_share, strain * (focus if local else 1.0), calm_by * at,
+                         calm_tau)
         pe = zeros
         if pressing:
             pe = np.where(near, palp, 0.0)
@@ -322,7 +329,7 @@ def cluster(ps: list[dict], variant: str) -> ClusterOut:
     wall_range = load("vessel")["wall"].range
     press = (T0, T0 + PRESS_FOR)
     base = _base(variant)
-    drive, move = base in ("drive", "both"), base in ("movement", "both")
+    drive, move = base in ("drive", "both", "aimed"), base in ("movement", "both")
     B = {k: np.array([p[k] for p in ps])[:, None] for k in ("breath_fall", "breath_in_share", "breath_strain",
                                                               "breath_calm", "tau_calm", "focus_gain")}
 
@@ -330,28 +337,42 @@ def cluster(ps: list[dict], variant: str) -> ClusterOut:
         u_m = tree["urest"] + (U * hold)[:, None]
         gain = np.ones(u_m.shape)
         gain[:, target] = B["focus_gain"][:, 0]  # attention at the worked knot
+        aimed = gain if base == "aimed" else 1.0
+        gone = np.zeros(len(ps), bool)  # the knot has let go: the hand lifts, and does not come back
 
-        def inputs(t):
+        def inputs(t, x):
             u = tree["urest"].copy() if t < SURGE[0] else u_m.copy()
             pe = np.zeros(u.shape)
             mv = np.zeros(u.shape)
             if SURGE[0] <= t < SURGE[1]:
                 u[:, target] = np.clip(tree["urest"][:, target] + U, 0, 1)
             if t >= press[0]:  # the knot is worked: pressed, attended, with slow breaths
-                du, mv = _breath(t - press[0], drive, move, B["breath_fall"] * U[:, None], B["breath_in_share"],
-                                 B["breath_strain"] * gain, B["breath_calm"] * U[:, None], B["tau_calm"])
+                du, mv = _breath(t - press[0], drive, move, B["breath_fall"] * U[:, None] * aimed, B["breath_in_share"],
+                                 B["breath_strain"] * gain, B["breath_calm"] * U[:, None] * aimed, B["tau_calm"])
                 u = u + du
                 mv = mv + np.zeros(u.shape)
-            if press[0] <= t < press[1]:
-                pe[:, target] = palp
-                mv[:, target] = np.maximum(mv[:, target], strain)
+            if t >= press[0]:
+                gone[:] |= x[:, target] >= SHUT * tree["xc"][:, 0]
+            if press[0] <= t < press[1]:  # worked until it lets go, for at most a minute
+                pe[:, target] = np.where(gone, 0.0, palp)
+                mv[:, target] = np.where(gone, mv[:, target], np.maximum(mv[:, target], strain))
             return np.clip(u, 0, 1), pe, np.clip(mv, 0, 1)
 
-        return tr.run(tree, inputs, duration, dt=0.02, every=10)
+        return tr.run(tree, inputs, duration, dt=0.02, every=10, sees=True)
 
-    # A parent and four children: release the parent; how many children go with it, within 10 s?
+    # O8.2, per set: within BACK_WITHIN s of the knot's release, a knot back at its place, by route, and how soon
+    how = {r_: np.zeros(K, bool) for r_ in ROUTES}
+    first = np.full(K, np.inf)
+
+    def came_back(k, route, times):
+        if len(times):
+            how[route][k] = True
+            first[k] = min(first[k], float(times[0]))
+
+    # A parent and four children: release the parent; how many children go with it, within 10 s? And after it: is the
+    # parent shut again, or is a child still (or again) shut beneath it?
     parent = _trees(ps, np.array([0.30] + list(np.linspace(*wall_range, 4))), rigid=False)
-    r = run_tree(parent, 0, press[1] + 60.0)
+    r = run_tree(parent, 0, press[1] + BACK_WITHIN + 10.0)
     s = r["x"] < SHUT * parent["xc"][None]
     t = r["t"]
     before = s[np.searchsorted(t, press[0]) - 1]
@@ -367,12 +388,15 @@ def cluster(ps: list[dict], variant: str) -> ClusterOut:
         t_open = t[opened[0]]
         win = s[(t >= t_open) & (t <= t_open + 10.0), k, 1:]
         with_[k] = int((before[k, 1:] & ~win[-1]).sum())
+        came_back(k, "same", held_again(t, s[:, k, 0], t_open))
+        settled = (t >= t_open + 10.0) & (t <= t_open + BACK_WITHIN)  # the children have had 10 s to open with it
+        came_back(k, "beneath", t[settled][s[settled, k, 1:].any(axis=1)] - t_open)
     # Siblings on a feed: release one; does a neighbour shut within 10 minutes? The knot is the thickest-walled sibling
     # (0.30, as for the parent), the one most able to hold; the rest are its neighbours.
     sib = _trees(ps, np.array([0.30] + list(np.linspace(*wall_range, 6))), rigid=True)
     knot = sib["V"] - 1
     near = list(range(1, knot))
-    r2 = run_tree(sib, knot, press[1] + 600.0)
+    r2 = run_tree(sib, knot, press[1] + BACK_WITHIN + 10.0)
     s2 = r2["x"] < SHUT * sib["xc"][None]
     t2 = r2["t"]
     before2 = s2[np.searchsorted(t2, press[0]) - 1]
@@ -385,9 +409,17 @@ def cluster(ps: list[dict], variant: str) -> ClusterOut:
         if not len(opened):
             continue
         tested_new[k] = True
-        later = s2[t2 >= t2[opened[0]], k][:, near]
-        new[k] = bool((~before2[k, near] & later.any(axis=0)).any())
-    out = ClusterOut(with_=with_, new_nearby=new, tested_with=tested_with, tested_new=tested_new)
+        t_open = t2[opened[0]]
+        window = (t2 >= t_open) & (t2 <= t_open + BACK_WITHIN)
+        later = s2[window, k][:, near]
+        newly = ~before2[k, near] & later.any(axis=0)
+        new[k] = bool(newly.any())
+        came_back(k, "same", held_again(t2, s2[:, k, knot], t_open))
+        came_back(k, "beside", t2[window][(later & ~before2[k, near]).any(axis=1)] - t_open)
+    back = how["same"] | how["beneath"] | how["beside"]
+    out = ClusterOut(with_=with_, new_nearby=new, tested_with=tested_with, tested_new=tested_new, back=back,
+                     back_how=how, back_t=np.where(np.isfinite(first), first, np.nan),
+                     tested_back=tested_with | tested_new)
     _CACHE[key] = out
     return out
 

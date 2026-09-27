@@ -172,9 +172,10 @@ def main() -> dict:
     for k in ("updated", "sealed"):
         if k in exam:
             exam[k] = str(exam[k])
-    seal = yaml.safe_load((SIM / "observations" / "seal.yaml").read_text())["seals"][-1]
-    exam["seal"] = {"version": seal["version"], "date": str(seal["date"]), "sha256": seal["sha256"],
-                    "commit": seal.get("commit")}
+    # Versions 1-3 were sealed by hash; that record goes with the exam, as history.
+    seals = yaml.safe_load((SIM / "observations" / "seal.yaml").read_text())["seals"]
+    exam["history"] = [{"version": s["version"], "date": str(s["date"]), "sha256": s["sha256"], "commit": s.get("commit")}
+                       for s in seals]
     (SITE_DATA / "exam.json").write_text(json.dumps(exam, ensure_ascii=False, indent=1, default=str) + "\n")
 
     # Length adaptation: its own file, stamped with the same run.

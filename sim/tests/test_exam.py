@@ -1,6 +1,5 @@
-"""The exam (observations/spec.yaml): sealed, quoted faithfully, and well formed."""
+"""The exam (observations/spec.yaml): versioned, quoted faithfully, and well formed."""
 
-import hashlib
 import json
 import re
 import unicodedata
@@ -23,13 +22,21 @@ def _norm(s: str) -> str:
     return re.sub(r"\s+", " ", s).strip().lower()
 
 
-def test_the_exam_matches_its_seal():
+def test_the_exam_says_what_changed_in_each_version():
+    """The exam is versioned: its current version is dated and has an entry in `changes`, saying what changed and why."""
     spec = yaml.safe_load(SPEC.read_text())
+    assert isinstance(spec["version"], int) and spec["updated"]
+    entries = {c["version"]: c for c in spec["changes"]}
+    assert spec["version"] in entries, "a new version needs an entry in `changes`"
+    assert entries[spec["version"]]["items"], "say what changed, and why"
+    assert sorted(entries, reverse=True) == [c["version"] for c in spec["changes"]], "changes run newest first"
+
+
+def test_the_sealed_versions_stay_on_record():
+    """Versions 1-3 were sealed by hash (observations/seal.yaml); that record is history and stays."""
     seals = yaml.safe_load((SIM / "observations" / "seal.yaml").read_text())["seals"]
-    last = seals[-1]
-    assert spec["status"] == "sealed" and spec["version"] == last["version"]
-    digest = hashlib.sha256(SPEC.read_bytes()).hexdigest()
-    assert digest == last["sha256"], "the sealed exam changed: make a new, dated version (observations/seal.yaml)"
+    assert [s["version"] for s in seals[:3]] == [1, 2, 3]
+    assert all(len(s["sha256"]) == 64 and s.get("commit") for s in seals)
 
 
 def test_every_quote_is_in_its_source():

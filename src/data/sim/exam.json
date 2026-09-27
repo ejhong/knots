@@ -1,6 +1,6 @@
 {
  "version": 3,
- "status": "sealed",
+ "status": "versioned",
  "sealed": "2026-09-27",
  "updated": "2026-09-27",
  "changes": [
@@ -9,7 +9,8 @@
    "date": "2026-09-27",
    "items": [
     "O8: the author describes a knot coming back to the spot a released one left: 'a rearrangement underneath and a new knot appears in what seems like the same place', 'a feeling of migrating into the same or similar spot', the same perforator or one from elsewhere, they cannot tell. O8 is scored in two parts: a new knot nearby (as before) and a knot back in the same or a similar spot, with a reading that counts every way it could happen. Made after version 2's results, and after the tree model's queue was on the site: any match is found after the fact.",
-    "It partly echoes a report set aside from the essays, 'released and then replaced, as if from a queue', now in the author's own words, without the paths to the skull; that report stays set aside."
+    "It partly echoes a report set aside from the essays, 'released and then replaced, as if from a queue', now in the author's own words, without the paths to the skull; that report stays set aside.",
+    "From here the exam is versioned rather than sealed, at the author's word (27 Sep 2026): each change dated with its reason, every result naming the version it used; sealing is kept for predictions of a real experiment. The observations and readings of version 3 are unchanged."
    ]
   },
   {
@@ -393,10 +394,24 @@
   "A pass is reported as the share of plausible parameter sets in which the part holds, never as one tuned setting.",
   "Observations in the group 'noted' are shown and not scored; the set-aside reports are shown and not scored."
  ],
- "seal": {
-  "version": 3,
-  "date": "2026-09-27",
-  "sha256": "b4b0c5eadf2784f8b338a280c05efab10e4fa18b66a92c2671144f511044fd9f",
-  "commit": "14f3930127d05441020ecac4dffe3890f15351bc"
- }
+ "history": [
+  {
+   "version": 1,
+   "date": "2026-09-26",
+   "sha256": "5f81bbfc69cebdcf061e1689c4a1e1a37f41c0189323942c1a418cca9344701a",
+   "commit": "9dc8c337c5f7eb76d16794109f42c6a031cdcce0"
+  },
+  {
+   "version": 2,
+   "date": "2026-09-27",
+   "sha256": "d692ade4e198388ba5f478d15e6a18527cd810ab49d1ed0f73b233030e8fc3ff",
+   "commit": "aacd7362462dfe56cb31af01d26f435ac61ab784"
+  },
+  {
+   "version": 3,
+   "date": "2026-09-27",
+   "sha256": "b4b0c5eadf2784f8b338a280c05efab10e4fa18b66a92c2671144f511044fd9f",
+   "commit": "14f3930127d05441020ecac4dffe3890f15351bc"
+  }
+ ]
 }

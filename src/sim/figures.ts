@@ -538,6 +538,8 @@ export interface MatrixVariant {
   joint: number;
   passes: Record<string, number[]>;
   count: Count | null;
+  /** O8.2: after the worked knot lets go, where one comes back within 10 minutes (shares of the settings it ran in). */
+  back?: { settings: number; same: number; beneath: number; beside: number; none: number; median_s: number | null };
 }
 export interface MatrixTheory {
   id: string;
@@ -548,7 +550,7 @@ export interface MatrixTheory {
 }
 export interface Matrix {
   run: { inputs: string; commit: string; dirty: boolean };
-  exam: { version: number; sealed: string; sha256: string };
+  exam: { version: number; updated: string; sha256: string };
   trials: { surge_s: number; settle_s: number; breath_s: number[]; breaths: number; press_s: number; hold_s: number; mood_s: number; depths: number[]; patch: number; samples: number; seed: number };
   parts: { id: string; obs: string; says: string; short: string; not_run?: string | null }[];
   theories: MatrixTheory[];

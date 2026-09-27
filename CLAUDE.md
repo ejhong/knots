@@ -27,10 +27,18 @@ show all of it. Read `sim/PLAN.md` (the research plan: its path, next steps, pap
 - **Simulation: *can*, not *is*.** The models ask which theories can produce which observations, at what parameter cost, and what
   would tell them apart; never which theory is true. Each theory in its strongest form, as `hypotheses.ts` states it, with
   variants wherever the equations are a choice. Every parameter carries its source (`papers.json` id, locator, quoted line) or is
-  marked as guessed: never a number from memory. The exam (`sim/observations/spec.yaml`) is frozen before any sweep (the site
-  shows it sealed) and changes only by a new, dated version. Results are generated, never edited by hand, and each names its
+  marked as guessed: never a number from memory. The exam (`sim/observations/spec.yaml`) is versioned: each change dated, with
+  its reason, in its `changes`, and every result names the version it used (v1–v3 were also sealed by hash: history in
+  `seal.yaml`). Preregistration, sealed and timestamped, is for predictions of a real experiment, before any data. Results are
+  shown first as what each theory does; pass shares are the map. Results are generated, never edited by hand, and each names its
   run. On the site, simulated inputs are *trials*. How the breath acts is kept open: it enters every model as routes (drive,
-  movement, local nerve, attention, chemistry), each a variant, never one assumed mechanism (`sim/PLAN.md` §2).
+  movement, local nerve, attention, chemistry, and drive aimed at one place: the author's hypothesis), each a variant, never
+  one assumed mechanism (`sim/PLAN.md` §2).
+- **Useful, not impressive** (the author, 27 Sep 2026). With this many unknowns, a result earns its place only if it is one of
+  three kinds: a *can* or *cannot* that holds in every plausible setting; a question the author could answer by noticing;
+  or what a measurement would show, and what each outcome would rule out. Say which kind, and whether it rests on guessed
+  numbers. Shares of settings and precise-looking numbers from guessed parameters are secondary, never the headline. The
+  work ends in a measurement: favour what designs it over more model breadth or polish.
 
 ## Layout
 

@@ -51,7 +51,7 @@ visualisation card, like the atlas) for the switch and the bench.
 ### 1. Opening
 
 The title, and one paragraph with the question: which theories can produce what people report, at what cost, and what would tell
-them apart. Beneath it, one line of state in mono, for example `exam v1 · sealed 2026-10-… · last run 2026-10-… · a1b2c3d`.
+them apart. Beneath it, one line of state in mono, for example `exam v3 · 2026-09-27 · last run 2026-10-… · a1b2c3d`.
 
 ### 2. The switch
 
@@ -98,14 +98,16 @@ The model, running live, laid out like the atlas: an ink panel of controls and r
 
 ### 4. The exam
 
-The observations as tests (sealed v1: `sim/observations/spec.yaml`); O7 and O11 shown as noted, and the essay-only reports as set aside.
+The observations as tests (versioned: `sim/observations/spec.yaml`); O7 and O11 shown as noted, and the essay-only reports as set aside.
 
 - **Cards.** Each is a small card: the observation in one plain line, the test with its tolerances, an evidence badge (**M**
   measured or **S** self-report, with sources), and notes (for example, *most theories expected to be silent*).
 - **Groups:** the breath and the hand (O1–O3), load (O4, O16, O5), the spark (O6), clusters and spread (O8, O13), how many (O15),
   across the body (O9, O10), noted only (O7, O11).
-- **The seal.** The indigo seal 結 is stamped *sealed v1*, with the date and the file's SHA-256, linked to the file at the commit that sealed it (an OSF
-  link can join it, D7): the exam was written before any theory sat it. *Sealed 26 Sep 2026.*
+- **The version line.** The indigo 結 beside *exam v3 · 27 Sep 2026*, linked to the file, with *what changed* folded
+  beneath: each version's date and reasons, and for v1-v3 the commit that sealed them. Versioned rather than sealed since
+  27 Sep 2026 (the author's decision): the reports are one person's and keep sharpening. The seal is kept for the
+  experiment's predictions (§6).
 
 ### 5. The matrix
 
@@ -196,10 +198,11 @@ All written by `sim/knots_sim/export`, never by hand. Each file carries the run 
 | File | Contents |
 |---|---|
 | `src/data/sim/manifest.json` | run id, date, commit, exam version, package versions |
-| `src/data/sim/exam.json` | O1–O12: id, title, test, tolerances, evidence, sources, notes; version, date sealed, OSF link |
+| `src/data/sim/exam.json` | the spec as written: observations (id, title, text, words, evidence, sources, notes), readings, open questions, set-aside reports; `version`, `updated`, `changes` (per version: date and reasons) and `history` (the seals of v1-v3) |
 | `src/data/sim/theories.json` | per theory and variant: id (as in `hypotheses.ts`), variant, equations (MathML), parameters with provenance |
 | `src/data/sim/switch/<theory>.json` | bifurcation branches (S, state, stability), folds, loop width |
-| `src/data/sim/matrix.json` | written by `knots_sim.exam` (v1): the run (inputs hash, commit), the exam's seal, the trials; per part its id, observation, statement and short phrase (and why it is not run, if not); per theory its variants, each with a cell per part (the share of sampled settings that pass, or `silent`, or `not run`), the per-setting passes, the joint pass and the count (units in a body, share held, median and 10–90% knots, median where any hold); `hand`, when a pressed knot lets go (under the hand, as it lifts, later, holds: open question Q1); `tested`, in how many settings each trial with a precondition ran; the theory's notes (why a cell is what it is) |
+| `src/data/sim/matrix.json` | written by `knots_sim.exam` (v1): the run (inputs hash, commit), the exam's version and date, the trials; per part its id, observation, statement and short phrase (and why it is not run, if not); per theory its variants, each with a cell per part (the share of sampled settings that pass, or `silent`, or `not run`), the per-setting passes, the joint pass and the count (units in a body, share held, median and 10–90% knots, median where any hold); `hand`, when a pressed knot lets go (under the hand, as it lifts, later, holds: open question Q1); `tested`, in how many settings each trial with a precondition ran; `back` (O8.2), after the worked knot lets go, where one comes back within 10 minutes: shares of the settings its trial ran in by route (`same` unit, `beneath` it, `beside` it, `none`) and the median time, from each adapter's `ClusterOut` (`back`, `back_how`, `back_t`, `tested_back`); the theory's notes (why a cell is what it is) |
+| `src/data/sim/aimed.json` | written by `knots_sim.aimed`: a breath aimed at a place (route B6, the author's hypothesis). The run (inputs: the exam's and the study's own); per theory with a drive to aim (T1, T3) and per footprint width (in grid spacings; `0` not aimed, `all` the whole patch): the share of settings in which the aimed knot lets go, lets go with no other knot besides, goes first; the other knots it lets go besides (near, far); the median time; for T1 the change in flow of open vessels near and far, 20 s into the aimed breaths |
 | `src/data/sim/runs/<theory>-<trial>.json` | representative trajectories, downsampled: passing and failing |
 | `src/data/sim/requirements/<theory>.json` | passing parameter ranges against literature ranges; Sobol indices |
 | `src/data/sim/log.json` | the run log |

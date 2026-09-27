@@ -20,8 +20,8 @@ from __future__ import annotations
 
 import numpy as np
 
-from ..exam import (AGE_DEPTH, MOOD_FOR, PATCH, PERIOD, PRESS_FOR, SURGE, T0, AgeOut, ClusterOut, Patch, PatchOut, Single, SingleOut,
-                    calm, coming_and_going, mood, out_breath, releases)
+from ..exam import (AGE_DEPTH, BACK_WITHIN, MOOD_FOR, PATCH, PERIOD, PRESS_FOR, ROUTES, SURGE, T0, AgeOut, ClusterOut, Patch,
+                    PatchOut, Single, SingleOut, calm, coming_and_going, held_again, mood, out_breath, releases)
 from ..models.perception import State, simulate
 from ..params import load, values
 
@@ -210,33 +210,51 @@ def cluster(ps: list[dict], variant: str) -> ClusterOut:
     released_at = np.full(K, np.nan)
 
     def inputs(t, st_):
-        live = work & st_.h & (t < PRESS_FOR)  # worked for a minute, then the hand lifts
         for k in np.flatnonzero((target >= 0) & np.isnan(released_at)):
             if not st_.h[target[k]]:
                 released_at[k] = t
+        live = work & np.repeat(np.isnan(released_at), N) & (t < PRESS_FOR)  # until it lets go, for at most a minute
         return (P["hold"] - calm(t, P["breath_calm"], P["tau_calm"]), True, live.astype(float),
                 np.where(live, P["palpation"][S["group"]], 0.0))
 
-    r = simulate(P, S["group"], S["b"], S["g0"], S["zone"], inputs, 300.0 + 600.0, dt=0.1, every=10, state=st)
+    r = simulate(P, S["group"], S["b"], S["g0"], S["zone"], inputs, PRESS_FOR + BACK_WITHIN + 240.0, dt=0.1, every=10,
+                 state=st)
     t, h = r["t"], r["h"]
     pos = PATCH["pos"]
+    side = int(np.ceil(np.sqrt(N)))
+    grid = np.stack([np.arange(N) % side, np.arange(N) // side], -1)  # each place's cell on the patch's grid
     with_ = np.zeros(K, int)
     new = np.zeros(K, bool)
+    # O8.2, per set: within BACK_WITHIN s of the worked knot's release, a knot back at its place, by route, how soon
+    how = {r_: np.zeros(K, bool) for r_ in ROUTES}
+    first_back = np.full(K, np.inf)
     for k in range(K):
         if target[k] < 0 or np.isnan(released_at[k]):
             continue
         sl = slice(k * N, (k + 1) * N)
         t_rel = released_at[k]
+        j = target[k] - k * N
         others = held[sl].copy()
-        others[target[k] - k * N] = False
+        others[j] = False
         at10 = h[np.searchsorted(t, t_rel + 10.0) - 1, sl]
         with_[k] = int((others & ~at10).sum())
-        close = ((pos - pos[target[k] - k * N]) ** 2).sum(axis=1) < PATCH["radius"] ** 2
+        close = ((pos - pos[j]) ** 2).sum(axis=1) < PATCH["radius"] ** 2
         before = h[np.searchsorted(t, t_rel) - 1, sl]
-        after = h[(t > t_rel) & (t <= t_rel + 600.0), sl]
+        after = h[(t > t_rel) & (t <= t_rel + BACK_WITHIN), sl]
         new[k] = bool((close & ~before & after.any(axis=0)).any())
+        # the worked place felt again, or one of the eight around it on the grid newly felt
+        felt = held_again(t, h[:, target[k]], t_rel)
+        ring = np.abs(grid - grid[j]).max(axis=1) == 1
+        window = (t > t_rel) & (t <= t_rel + BACK_WITHIN)
+        beside = t[window][(h[window, sl] & ring & ~before).any(axis=1)] - t_rel
+        for route, times in (("same", felt), ("beside", beside)):
+            if len(times):
+                how[route][k] = True
+                first_back[k] = min(first_back[k], float(times[0]))
     ran = (target >= 0) & ~np.isnan(released_at)
-    out = ClusterOut(with_=with_, new_nearby=new, tested_with=ran, tested_new=ran)
+    back = how["same"] | how["beneath"] | how["beside"]
+    out = ClusterOut(with_=with_, new_nearby=new, tested_with=ran, tested_new=ran, back=back, back_how=how,
+                     back_t=np.where(np.isfinite(first_back), first_back, np.nan), tested_back=ran)
     _CACHE[key] = out
     return out
 

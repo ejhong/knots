@@ -76,7 +76,7 @@ def test_a_press_lets_a_middle_knot_go_in_its_quoted_time():
 def test_the_matrix_is_current_and_well_formed():
     m = json.loads(exam.SITE.read_text())
     assert m["run"]["inputs"] == exam.inputs_hash(), "the matrix is stale: run `uv run python -m knots_sim.exam`"
-    assert m["exam"]["sha256"] == exam.sealed()["seal"]["sha256"]
+    assert m["exam"]["version"] == exam.spec()["version"]
     parts = [p.id for p in exam.PARTS]
     assert [p["id"] for p in m["parts"]] == parts
     assert [t["id"] for t in m["theories"]] == [exam._theory(n).ID for n in exam.THEORIES]
@@ -92,6 +92,22 @@ def test_the_matrix_is_current_and_well_formed():
                 assert v["count"]["lo"] <= v["count"]["median"] <= v["count"]["hi"] <= v["count"]["units"]
             for pid, share in v["tested"].items():  # a trial whose knot never formed and let go never ran
                 assert v["cells"][pid] in (exam.SILENT, exam.NOT_RUN) or (share or 0) > 0, (t["id"], v["name"], pid)
+            b = v["back"]  # O8.2's routes: over the settings its trial ran in; a setting can come back by more than one
+            assert b["settings"] == round((v["tested"]["O8.2"] or 0) * t["samples"])
+            assert all(0 <= b[r] <= 1 - b["none"] + 1e-3 for r in exam.ROUTES)
+            assert b["none"] == pytest.approx(1 - v["cells"]["O8.2"] * t["samples"] / max(b["settings"], 1), abs=2e-3)
+
+
+def test_the_aimed_breath_study_is_current():
+    from knots_sim import aimed
+
+    a = json.loads(aimed.SITE.read_text())
+    assert a["run"]["inputs"] == aimed.inputs_hash(), "aimed.json is stale: run `uv run python -m knots_sim.aimed`"
+    for th in ("T1", "T3"):
+        assert list(a[th]) == a["widths"]
+        for row in a[th].values():
+            assert 0 <= row["alone"] <= row["target"] <= 1 and row["first"] <= row["target"]
+        assert a[th]["0"]["near"] == a[th]["0"]["far"] == 0  # not aimed, nothing is let go besides
 
 
 def test_the_findings_note_names_the_matrix_run():

@@ -135,6 +135,17 @@ NEW = [
     # Other candidate mechanisms for full coverage.
     ("1943863", "johansson1991", ["trigger-points", "nerve"],
      "A proposed loop: metabolites of static contraction drive the gamma system and the muscle spindles, raising stiffness and metabolites again, so muscle tension perpetuates itself and spreads to other muscles."),
+    # A breath aimed at a place (route B6): can the sympathetic signal, or the mind, act on one region?
+    ("11506981", "morrison2001", ["vascular", "nerve"],
+     "The sympathetic system is not one global switch: a review of tissue-specific output channels that can be activated or inhibited in combination."),
+    ("9421582", "vissing1997", ["vascular", "nerve"],
+     "In humans, sympathetic outflow to skin and to muscle can be activated in a highly dissociated pattern: central command drives the skin's, feedback from working muscle the muscle's."),
+    ("16504320", "casiglia2006", ["vascular", "mind"],
+     "Under hypnosis, suggesting only the forearm was in warm water dilated that forearm (resistance -18%, flow +43%); suggesting the whole body dilated vessels everywhere."),
+    ("2842815", "freedman1988", ["vascular", "mind"],
+     "Learned finger warming with temperature feedback was blocked by propranolol infused in that arm only, and not by blocking the finger's nerves."),
+    ("1854864", "freedman1991", ["vascular", "mind"],
+     "A review: learned finger warming works through a non-neural, beta-adrenergic mechanism rather than through less sympathetic activity; learned cooling works through the sympathetic nerves."),
 ]
 
 # Existing entries that the simulation also leans on gain the models tag.

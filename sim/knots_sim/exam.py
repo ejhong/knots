@@ -1,11 +1,11 @@
-"""The harness: every theory through the sealed exam (observations/spec.yaml, v1), part by part (sim/PLAN.md §5b).
+"""The harness: every theory through the exam (observations/spec.yaml, versioned), part by part (sim/PLAN.md §5b).
 
 For each theory and each of its variants, every scored part's trial runs over parameter sets sampled across the theory's
 own plausible ranges, and the cell records the share of sets in which the part holds (never one tuned setting). A theory
 whose account says nothing about a part is *silent* on it; a part that no trial can test yet is *not run*. A variant's
 joint pass is the share of sets that pass every part it is scored on, at once.
 
-The trials and the pass criteria live here, once, in the sealed readings: the same for every theory. Each theory maps
+The trials and the pass criteria live here, once, from the exam's readings: the same for every theory. Each theory maps
 them onto its own states in its adapter (knots_sim/theories/), where the mapping can be read and checked for fairness:
 a single held knot at a range of depths (its own margin: 0 at its release threshold), a patch of knots on a shared
 geometry, a cluster, and the count its unit allows.
@@ -32,7 +32,6 @@ import yaml
 
 SIM = Path(__file__).resolve().parents[1]
 SPEC = SIM / "observations" / "spec.yaml"
-SEAL = SIM / "observations" / "seal.yaml"
 SITE = SIM.parent / "src" / "data" / "sim" / "matrix.json"
 THEORIES = ("t1", "t3", "t6")
 SILENT, NOT_RUN = "silent", "not run"
@@ -40,23 +39,24 @@ K = 32  # parameter sets per theory (a power of two, as the Sobol sampler wants)
 SEED = 17
 
 
-def sealed() -> dict:
-    """The sealed exam. Refuses a file that differs from its seal."""
-    seal = yaml.safe_load(SEAL.read_text())["seals"][-1]
-    if hashlib.sha256(SPEC.read_bytes()).hexdigest() != seal["sha256"]:
-        raise RuntimeError("the exam differs from its seal: only a new, dated version may change it")
-    return yaml.safe_load(SPEC.read_text()) | {"seal": seal}
+def spec() -> dict:
+    """The exam, at its current version. Each change is dated, with its reason, in its `changes`; every result names the
+    version it used. (Versions 1-3 were also sealed by hash: observations/seal.yaml keeps that record.)"""
+    s = yaml.safe_load(SPEC.read_text())
+    if not any(c.get("version") == s["version"] for c in s.get("changes", [])):
+        raise RuntimeError(f"exam v{s['version']} has no entry in `changes`: say what changed, and why")
+    return s
 
 
 # ---------- The shared trials ----------
 
-PERIOD, INHALE = 10.0, 4.0  # a slow breath: 4 s in, 6 s out (the sealed reading of "a breath")
+PERIOD, INHALE = 10.0, 4.0  # a slow breath: 4 s in, 6 s out (the reading of "a breath")
 BREATHS = 30  # "many breaths": from the third to the thirtieth
 DEPTHS = (0.02, 0.1, 0.25, 0.4, 0.55, 0.7, 0.85)  # a knot's margin, in its theory's own terms
 DEEP = 0.5  # "deeper, persistent knots": the upper half of the margins
 AGE_DEPTH = 0.3  # the knot that ages: a third of the way up its band
 SPARK = 0.05  # a sensation, on each theory's own 0-1 scale
-WITHIN = 10.0  # "within seconds" (the sealed reading): a spark counts if it comes within 10 s of the release
+WITHIN = 10.0  # "within seconds" (the reading): a spark counts if it comes within 10 s of the release
 PRESS_FOR = 60.0  # a press held for six breaths, then lifted
 EASE_AT = INHALE + (PERIOD - INHALE) / 2  # or a hand that eases off halfway through the first out-breath (reading, v2)
 SURGE = (5.0, 185.0)  # a surge of stress (1 in the shared unit), three minutes long, forms the knots
@@ -207,6 +207,13 @@ class ClusterOut:
     new_nearby: np.ndarray  # per set: a new knot formed nearby within 10 min
     tested_with: np.ndarray | None = None  # per set: the worked knot of the O13 trial held, and let go (the trial ran)
     tested_new: np.ndarray | None = None  # the same for the O8.1 trial
+    # O8.2: within BACK_WITHIN s of the worked knot letting go, a knot back at its place, per set; by which route
+    # ("same": the same unit held again; "beneath": a unit beneath it held; "beside": an immediate neighbour newly held);
+    # how soon (s after the release; nan if none); and whether the trial ran
+    back: np.ndarray | None = None
+    back_how: dict | None = None
+    back_t: np.ndarray | None = None
+    tested_back: np.ndarray | None = None
 
 
 @dataclass
@@ -226,7 +233,7 @@ class Density:
     note: str
 
 
-# ---------- The parts and their pass criteria (the sealed readings) ----------
+# ---------- The parts and their pass criteria (the exam's readings) ----------
 
 
 @dataclass(frozen=True)
@@ -278,8 +285,19 @@ NOT_RUN_YET = {  # parts no trial can test yet, and why
     "O5": "it needs the mechanics stage (stiffness and stretch)",
     "O9": "it needs the body stage (both sides)",
     "O10.2": "it needs the body stage (a life's accumulation)",
-    "O8.2": "added in exam v3 (27 Sep 2026); its trials are being built",
 }
+BACK_WITHIN = 600.0  # O8.2: "a new knot appears in what seems like the same place", within 10 minutes (v3's reading)
+ROUTES = ("same", "beneath", "beside")
+GONE_FOR = 2.0  # a knot that is held again sooner never let go: a flicker across the threshold, not a release
+
+
+def held_again(t: np.ndarray, held: np.ndarray, t_rel: float) -> np.ndarray:
+    """O8.2's "same" route for one unit that let go at t_rel: the times (s after it) at which it is held again within
+    BACK_WITHIN s, once it has stayed let go for GONE_FOR s. Empty if it is not, or if it came back sooner."""
+    if held[(t >= t_rel) & (t < t_rel + GONE_FOR)].any():
+        return np.zeros(0)
+    later = (t >= t_rel + GONE_FOR) & (t <= t_rel + BACK_WITHIN)
+    return t[later][held[later]] - t_rel
 
 
 def _count(rel: np.ndarray, lo: float, hi: float) -> int:
@@ -344,9 +362,10 @@ def score_variant(theory, ps: list[dict], variant: str, meta: dict | None = None
              **{f"hold{x}": Patch("hold", float(x)) for x in ("0.6", "1.0", "1.4")}}
     cells |= _patch_parts({k: theory.patch(ps, variant, pr_) for k, pr_ in kinds.items()})
     c = theory.cluster(ps, variant)
-    cells["O8.1"], cells["O13"] = c.new_nearby, c.with_ >= 3
+    cells["O8.1"], cells["O13"], cells["O8.2"] = c.new_nearby, c.with_ >= 3, c.back
     if meta is not None:
-        meta["tested"] = {"O8.1": c.tested_new, "O13": c.tested_with}
+        meta["tested"] = {"O8.1": c.tested_new, "O8.2": c.tested_back, "O13": c.tested_with}
+        meta["back"] = back_summary(c)
     age = theory.ageing(ps, variant)
     cells["O10.1"] = NOT_RUN if age is None else age.brief_released & age.long_persists
     d = theory.density()
@@ -361,6 +380,17 @@ def score_variant(theory, ps: list[dict], variant: str, meta: dict | None = None
 
 HELD = Single(press=True, breaths=9)  # held PRESS_FOR s, lifted, then 30 s more
 EASED = Single(press=True, breaths=2, press_for=EASE_AT)
+
+
+def back_summary(c: ClusterOut) -> dict:
+    """Where a knot comes back after a release (O8.2), over the settings whose trial ran: the share by route, the share
+    with none, and the median time to the return."""
+    ran = c.tested_back
+    n = max(int(ran.sum()), 1)
+    t = c.back_t[ran & c.back]
+    return {"settings": int(ran.sum()), **{r: round(float((c.back_how[r] & ran).sum() / n), 3) for r in ROUTES},
+            "none": round(float((ran & ~c.back).sum() / n), 3),
+            "median_s": round(float(np.median(t)), 1) if len(t) else None}
 
 
 def hand(theory, ps: list[dict], variant: str) -> dict:
@@ -414,6 +444,7 @@ def run_variant(name: str, variant: str, k: int = K, seed: int = SEED) -> dict:
         "hand": hand(theory, ps, variant),
         # in how many settings a trial with a precondition ran at all (its knot formed and let go)
         "tested": {pid: None if x is None else round(float(np.mean(x)), 3) for pid, x in meta["tested"].items()},
+        "back": meta["back"],
     }
 
 
@@ -431,8 +462,7 @@ def _job(args) -> dict:
 
 def inputs_hash() -> str:
     """A hash of everything the exam depends on: the harness, the theories and their models, the parameter tables and
-    the exam itself. matrix.json carries it; a test fails when it is stale. The seal file is left out: it only records
-    the exam's hash and commit, and `sealed()` refuses to run an exam that differs from its seal."""
+    the exam itself. matrix.json carries it; a test fails when it is stale."""
     pkg = SIM / "knots_sim"
     files = [pkg / "exam.py", pkg / "adapt.py", pkg / "params.py", *(pkg / "theories").glob("*.py"),
              *(pkg / "models").glob("*.py"), *(SIM / "params").glob("*.yaml"), SPEC]
@@ -448,7 +478,7 @@ def main(workers: int = 4) -> dict:
 
     from .export import _git
 
-    spec = sealed()
+    exam = spec()
     with ProcessPoolExecutor(workers) as pool:
         # every variant of every theory at once; the slowest first
         jobs = [(name, variant, K, SEED) for name in THEORIES for variant in _theory(name).VARIANTS]
@@ -460,7 +490,8 @@ def main(workers: int = 4) -> dict:
                          "variants": [done[(name, v)] for v in theory.VARIANTS], "notes": getattr(theory, "NOTES", {})})
     out = {
         "run": {"inputs": inputs_hash(), **_git()},
-        "exam": {"version": spec["version"], "sealed": str(spec["sealed"]), "sha256": spec["seal"]["sha256"]},
+        "exam": {"version": exam["version"], "updated": str(exam["updated"]),
+                 "sha256": hashlib.sha256(SPEC.read_bytes()).hexdigest()},
         "trials": {"surge_s": SURGE[1] - SURGE[0], "settle_s": T0 - SURGE[1], "breath_s": [INHALE, PERIOD - INHALE],
                    "breaths": BREATHS, "press_s": PRESS_FOR, "ease_s": EASE_AT, "hold_s": HOLD_FOR, "mood_s": MOOD_FOR,
                    "depths": list(DEPTHS), "patch": PATCH["n"],

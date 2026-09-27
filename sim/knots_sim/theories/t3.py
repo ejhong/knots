@@ -11,7 +11,8 @@ to be checked for fairness:
 - A slow breath lowers stress by the shared breath quantities: relaxation lowers motor drive (the account's own breath).
   In the variant with stretch, each breath also changes the band's length by breath_strain, and a change of length
   loosens the contracture; focused attention concentrates that movement at the place (focus_gain), as for every
-  theory with a movement route.
+  theory with a movement route. In the aimed variant (route B6, the author's hypothesis), attention aims the relaxation
+  instead: at the attended place the breath lowers drive focus_gain times as far, as for every theory with a drive.
 - A press is sustained pressure: it squeezes the capillaries and, held, lengthens the contracture, at a rate set so
   that a knot of middle depth lets go in τ_p, the 60-90 s of the pressure-release technique (pecosmartin2019). It is
   not treated as a stretch.
@@ -24,8 +25,8 @@ from __future__ import annotations
 
 import numpy as np
 
-from ..exam import (MOOD_FOR, PATCH, PERIOD, PRESS_FOR, SURGE, T0, WITHIN, AgeOut, ClusterOut, Density, Patch, PatchOut, Single,
-                    SingleOut, breath_wave, calm, coming_and_going, mood, out_breath, releases)
+from ..exam import (BACK_WITHIN, MOOD_FOR, PATCH, PERIOD, PRESS_FOR, ROUTES, SURGE, T0, WITHIN, AgeOut, ClusterOut, Density, Patch, PatchOut, Single,
+                    SingleOut, breath_wave, calm, coming_and_going, held_again, mood, out_breath, releases)
 from ..models import triggerpoint as tp
 from ..params import load, values
 
@@ -33,6 +34,7 @@ ID, NAME = "T3", "Trigger points"
 VARIANTS = {
     "drive": "the breath acts as relaxation lowering motor drive (the account's own)",
     "drive+stretch": "and the breath's movement stretches the band",
+    "aimed": "relaxation, aimed by attention: at the attended place the breath lowers drive focus_gain times as far",
 }
 SILENT = {"O3"}
 NOTES = {"O3": "Nothing in the energy crisis turns on hydration.",
@@ -95,11 +97,12 @@ def _P(ps: list[dict], repeat: int = 1) -> dict[str, np.ndarray]:
     return {k: np.repeat(np.array([p[k] for p in ps], float), repeat) for k in ps[0] if k != "seed"}
 
 
-def _breath(t: float, stretch: bool, P: dict, strain_gain=1.0):
+def _breath(t: float, stretch: bool, P: dict, strain_gain=1.0, drive_gain=1.0):
     """(stress change, band length) a slow breath makes at time t (s since breathing began): each out-breath eases
-    stress and the in-breath raises it again, while minutes of it calm."""
+    stress and the in-breath raises it again, while minutes of it calm; drive_gain where it is aimed."""
     w = float(breath_wave(np.array([t]))[0])
-    ds = P["breath_fall"] * (P["breath_in_share"] * max(w, 0.0) + min(w, 0.0)) - calm(t, P["breath_calm"], P["tau_calm"])
+    ds = drive_gain * (P["breath_fall"] * (P["breath_in_share"] * max(w, 0.0) + min(w, 0.0))
+                       - calm(t, P["breath_calm"], P["tau_calm"]))
     strain = P["breath_strain"] * strain_gain
     return ds, (strain * (1 + w) / 2 if stretch else 0.0 * strain)
 
@@ -138,11 +141,11 @@ def single(ps: list[dict], variant: str, depths: tuple, protocol: Single) -> Sin
             a0[j] = b[0] + d * (b[1] - b[0])
             formed[j] = True
             c0[j], e0[j], m0[j] = tp.held_state(p, a0[j], p["hold"])
-    stretch = variant == "drive+stretch"
+    stretch, aim = variant == "drive+stretch", variant == "aimed"
     focus = P["focus_gain"] if protocol.focus else 1.0
 
     def inputs(t, st):
-        ds, strain = _breath(t, stretch, P, focus)
+        ds, strain = _breath(t, stretch, P, focus, focus if aim else 1.0)
         press = P["palpation"] if protocol.press and t < protocol.press_for else np.zeros(M)
         return P["hold"] + ds, strain + np.zeros(M), press, np.ones(M)
 
@@ -188,7 +191,7 @@ def patch(ps: list[dict], variant: str, protocol: Patch) -> PatchOut:
     S = _setup(ps)
     K, N, P, zone, near = S["K"], S["N"], S["P"], S["zone"], S["near"]
     n = K * N
-    stretch = variant == "drive+stretch"
+    stretch, aim = variant == "drive+stretch", variant == "aimed"
     kind = protocol.kind
     held0s, rels, cycles, shortest = [], [], [], []
     if kind == "mood":
@@ -227,7 +230,7 @@ def patch(ps: list[dict], variant: str, protocol: Patch) -> PatchOut:
     def inputs(t, st_):
         breathing, local, pressing = protocol.at(t)
         if breathing:
-            ds, strain = _breath(t, stretch, P, focus if local else 1.0)
+            ds, strain = _breath(t, stretch, P, focus if local else 1.0, focus if local and aim else 1.0)
         else:
             ds, strain = 0.0, 0.0
         press = np.where(near, P["palpation"], 0.0) if pressing else np.zeros(n)
@@ -248,8 +251,8 @@ def patch(ps: list[dict], variant: str, protocol: Patch) -> PatchOut:
 
 def _work_first(P1, a0, st, coupling, K, V, variant, duration):
     """Press and breathe at unit 0 of each group of V (with attention there) until it lets go, for at most PRESS_FOR s
-    (the hand then lifts, as for every theory); keep breathing."""
-    stretch = variant == "drive+stretch"
+    (the hand then lifts and does not come back, as for every theory); keep breathing."""
+    stretch, aim = variant == "drive+stretch", variant == "aimed"
     n = K * V
     first = np.arange(K) * V
     released_at = np.full(K, np.nan)
@@ -259,9 +262,9 @@ def _work_first(P1, a0, st, coupling, K, V, variant, duration):
         for k in np.flatnonzero(np.isnan(released_at) & ~held):
             released_at[k] = t
         live = np.zeros(n, bool)
-        live[first] = held & (t < PRESS_FOR)  # worked for a minute, then the hand lifts
+        live[first] = np.isnan(released_at) & (t < PRESS_FOR)  # worked until it lets go, for at most a minute
         local = np.where(live, P1["focus_gain"], 1.0)
-        ds, strain = _breath(t, stretch, P1, local)
+        ds, strain = _breath(t, stretch, P1, local, local if aim else 1.0)
         return P1["hold"] + ds, strain + np.zeros(n), np.where(live, P1["palpation"], 0.0), coupling(st_)
 
     r = tp.simulate(P1, a0, inputs, duration, dt=0.05, every=20, state=st)
@@ -301,8 +304,17 @@ def cluster(ps: list[dict], variant: str) -> ClusterOut:
             f[keys + i] = 1 + P1["satellite"][keys] * st_.m[keys]
         return f
 
+    # O8.2, per set: within BACK_WITHIN s of the worked knot's release, a knot back at its place, by route, how soon
+    how = {r_: np.zeros(K, bool) for r_ in ROUTES}
+    first_back = np.full(K, np.inf)
+
+    def came_back(k, route, times):
+        if len(times):
+            how[route][k] = True
+            first_back[k] = min(first_back[k], float(times[0]))
+
     r, rel_at = _work_first(P1, np.where(np.repeat(ok, V), a0, 0.0), tp.State(c=c0, e=e0, m=m0), coupling, K, V,
-                            variant, 300.0 + 60.0)
+                            variant, PRESS_FOR + BACK_WITHIN + 10.0)
     ok_key = ok.copy()
     t, c = r["t"], r["c"]
     for k in np.flatnonzero(ok & ~np.isnan(rel_at)):
@@ -310,7 +322,10 @@ def cluster(ps: list[dict], variant: str) -> ClusterOut:
         before = c[np.searchsorted(t, rel_at[k]) - 1, sats] > tp.HELD
         after = c[np.searchsorted(t, rel_at[k] + 10.0) - 1, sats] > tp.HELD
         with_[k] = int((before & ~after).sum())
-    # A taut band of six: one held, five relaxed near their tops; a released unit's load falls on the rest.
+        # the key itself contracting again (its satellites lie in its referral zone, not its spot: they do not count)
+        came_back(k, "same", held_again(t, c[:, k * V] > tp.HELD, rel_at[k]))
+    # A taut band of six, laid out as a line with the held unit in the middle and units 1 and 2 on either side of it (its
+    # immediate neighbours, for O8.2); five relaxed near their tops; a released unit's load falls on the rest.
     V = 6
     P2 = _P(ps, V)
     a0, c0, e0, m0 = (np.zeros(K * V) for _ in range(4))
@@ -335,13 +350,22 @@ def cluster(ps: list[dict], variant: str) -> ClusterOut:
         return f
 
     r2, rel2 = _work_first(P2, np.where(np.repeat(ok, V), a0, 0.0), tp.State(c=c0, e=e0, m=m0), band_load, K, V,
-                           variant, 300.0 + 600.0)
+                           variant, PRESS_FOR + BACK_WITHIN + 10.0)
     t2, c2 = r2["t"], r2["c"]
     for k in np.flatnonzero(ok & ~np.isnan(rel2)):
         rest = slice(k * V + 1, (k + 1) * V)
-        later = c2[(t2 > rel2[k]) & (t2 <= rel2[k] + 600.0), rest] > tp.HELD
+        window = (t2 > rel2[k]) & (t2 <= rel2[k] + BACK_WITHIN)
+        later = c2[window, rest] > tp.HELD
         new[k] = bool(later.any())
-    out = ClusterOut(with_=with_, new_nearby=new, tested_with=ok_key & ~np.isnan(rel_at), tested_new=ok & ~np.isnan(rel2))
+        came_back(k, "same", held_again(t2, c2[:, k * V] > tp.HELD, rel2[k]))
+        was = c2[np.searchsorted(t2, rel2[k]) - 1, k * V + 1:k * V + 3] > tp.HELD
+        beside = (c2[window, k * V + 1:k * V + 3] > tp.HELD) & ~was
+        came_back(k, "beside", t2[window][beside.any(axis=1)] - rel2[k])
+    ran = (ok_key & ~np.isnan(rel_at)) | (ok & ~np.isnan(rel2))
+    back = how["same"] | how["beneath"] | how["beside"]
+    out = ClusterOut(with_=with_, new_nearby=new, tested_with=ok_key & ~np.isnan(rel_at), tested_new=ok & ~np.isnan(rel2),
+                     back=back, back_how=how, back_t=np.where(np.isfinite(first_back), first_back, np.nan),
+                     tested_back=ran)
     _CACHE[key] = out
     return out
 
