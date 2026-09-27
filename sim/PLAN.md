@@ -141,6 +141,15 @@ proponents of each theory, and a lab.
    edge, or a tight compartment under fascia. Not impossible: a stated condition, and a measurement (tissue pressure around
    a released knot).
 
+13. **A knot back in the same place** (O8.2, exam v3; the author: "a new knot appears in what seems like the same place").
+   After the worked knot lets go (pressed until it does, a minute at most; the hand lifts; the stress and the breaths go
+   on), a knot is held at its place again within 10 minutes: in the perforators in 24%–50% of settings,
+   almost always a child vessel the parent's release leaves shut (there all along, felt once the parent no longer masks it;
+   the vessel itself shut again in 0%–6%); in trigger points the same endplate contracts again in
+   36%–64%, a median 3–32 s after (within the breath in the stretch variant), while the
+   drive lasts; in perception the place (25%) or one beside it (50%) is felt again, after about
+   26 s. Which it is, a Doppler probe (a deeper vessel), a needle EMG (the same endplate) or nothing in the tissue
+   would tell. Building it found the cluster trials' hand differing by theory; now one hand for all (§11).
 14. **A breath aimed at one place** (the author's hypothesis, route B6, §2; `knots_sim/aimed.py`, 32 settings). If a trained
    breath could lower drive at one chosen place (focus_gain times as far at its centre, falling off over a footprint), then in
    the perforators a hard knot that 30 broad breaths left lets go in 9 of 13 settings, within about
@@ -154,6 +163,16 @@ proponents of each theory, and a lab.
    a sham site; a narrower one leaves nothing to see but the release. It rests on the guessed focus gain (1.5–6) and the
    patch's representative geometry; what it adds is a question a practitioner could notice (can a chosen hard knot go before
    others nearby?) and a measurement.
+
+15. **Pressure around a released knot can knot it again, if the stress lasts and the knot was deep** (the author's question;
+   `exploratory/2026-09-27-reknot-pressure.py`, the perforators). The matrix's single knot, pressed a minute and lifted, then
+   a sustained pressure on the vessel from outside for 10 minutes. With the holding stress still on, a deep knot (0.85 of its
+   band) shuts again at 5 mmHg in 9 of 16 settings and at 10 mmHg in 15; a middling one (0.4) needs 20 mmHg in most; the
+   easiest (0.02) 20–40. With the stress gone, nothing below 40 mmHg shuts one. Tissue pressure under the skin rises about
+   2.5 mmHg as it fills (christ1997): at 2 mmHg 1 deep knot of 16 shut again. So in the vessel view the same knot comes back
+   where it was deep, the stress has not ended, and the tissue around it is tight (a compartment under fascia, a swelling);
+   an easy knot, or one released once the stress has gone, stays open. The measurement: tissue pressure around a knot as it
+   lets go, and whether the knots that return are the deep ones. The trigger point's version needs an occlusion-only input.
 
 **A hypothesis these suggest** (to be run through the same exam as everything else, not assumed). Knots form where drive is
 raised and the tissue is still. A shut vessel loses the pulse that stretches its wall with every heartbeat, and so may hold
@@ -533,9 +552,8 @@ M5. The top-bar link comes when the author says (D2); the natural moment is matr
      outcome would rule out. Includes the aimed-breath fingerprint (flow in the open vessels around the attended place while the breath is aimed)
      and the questions the author can answer by noticing (Q1, the hand; whether a chosen hard knot can go before easier
      ones nearby; whether a knot back in the same place is there at once or half a minute later).
-  2. *Pressure around a released knot* (the author's question): `exploratory/2026-09-27-reknot-pressure.py` for the
-     perforators (the least outside pressure that shuts a released vessel again, with the stress on and at rest, against
-     christ1997's 2.5 mmHg); T3 needs an occlusion-only input in `models/triggerpoint.py`.
+  2. *Pressure around a released knot:* done for the perforators (finding 15); T3 needs an occlusion-only input in
+     `models/triggerpoint.py` (it changes the exam's inputs, so with the next matrix run), T6 as input at the place.
   3. Robustness marked on the matrix itself: which cells hold in every setting, which turn on guessed parameters (and
      which ones), as the drawers (Phase B) show.
   4. *How fast a knot forms* (the author, 27 Sep: "are the sims exploring how the knots form over various timescales").
