@@ -32,3 +32,6 @@ discussion's table is in `sim/BRIEF.md`.
   penny?"
 - 27 Sep 2026, on adding theories: "We don’t need less plausible theories. Maybe go with what we have unless you think they
   really have a good chance."
+- 27 Sep 2026, asked about knots over bone, whether a knot pinches up with the skin, and a twitch at a release: "Maybe
+  less over bone. Doesn’t seem to pinch with the skin. Not sure about a twitch more like a release feel like unclenching
+  might be right or relaxing."

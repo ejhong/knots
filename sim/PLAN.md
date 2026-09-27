@@ -225,6 +225,21 @@ proponents of each theory, and a lab.
    go (in muscle or not; stiffness) with surface EMG that picks out single motor units (does one fall silent at the felt
    release?) and laser speckle (does the skin's flow change first?).
 
+19. **The motor switch with its metabolic loop (T7, strongest form) fits the author's newest reports best of all the views**
+   (`exploratory/2026-09-27-motor-loop.py`, kept as run: finding 18's pool, plus johansson1991's loop: each firing unit
+   squeezes its own supply, its metabolites build over tau_m and drive it, and a little its neighbours; 32 settings of
+   guessed numbers). Knots now last and deepen: all still held after half an hour of held stress. Thirty broad breaths let
+   two-thirds go, within seconds (median 4 s), the deeper somewhat less often; aimed at the spot, 16% of those left there go,
+   against 6% for more broad breaths. The holding stress alone spreads knots through the loop from the units it drives (7
+   per setting with no surge). A held press that inhibits lets 77% of the knots at the spot go under the hand, and after a
+   release a neighbour newly latches in 97% ("a knot from somewhere else moved there"), the same unit in 9%. Rolling brought
+   none out where units sat silent (a weak test: about one silent unit per setting there). Against the author's reports of
+   27 Sep: deep, not in the skin, less over bone (it lives in muscle); the bump that goes, "like unclenching" (a unit falling
+   silent); migration into a similar spot. The perforator view still carries the tingle at a release and the breath's
+   timing, and its vessel sits at the same deep layer: it may be part of the picture rather than the whole. The test:
+   surface EMG that picks out single motor units over a knot as it lets go (does one fall silent at the felt unclench?),
+   with ultrasound placing the bump in muscle. Next: T7 into the exam beside the others, with exam v4.
+
 **A hypothesis these suggest** (to be run through the same exam as everything else, not assumed). Knots form where drive is
 raised and the tissue is still. A shut vessel loses the pulse that stretches its wall with every heartbeat, and so may hold
 harder than an open one (a second loop that widens the band). The longer it is held, the more its muscle adapts to being
@@ -632,12 +647,17 @@ M5. The top-bar link comes when the author says (D2); the natural moment is matr
      `models/triggerpoint.py` (it changes the exam's inputs, so with the next matrix run), T6 as input at the place.
   3. Robustness marked on the matrix itself: which cells hold in every setting, which turn on guessed parameters (and
      which ones), as the drawers (Phase B) show.
-  0a. *Three questions for the author* (27 Sep): knots over bone with little muscle between it and the skin (the shin's
+  0a. *Three questions for the author* (27 Sep), answered: "Maybe less over bone. Doesn't seem to pinch with the skin.
+     Not sure about a twitch more like a release feel like unclenching might be right or relaxing." The knot is deep (at or
+     below the deep fascia, not in the skin), leans to where there is muscle, and lets go like a contraction letting go.
+     Asked: knots over bone with little muscle between it and the skin (the shin's
      flat face, the kneecap, the back of the hand, the top of the skull)? In the skin and the layer under it (pinched up
      with the skin), or deeper, in the muscle? A small twitch at a release? The first two split the views that need
      muscle (T3, T7) from those that do not (T1, T4, T5); the third, T3's twitch.
-  0b. *The motor switch (T7), exploratory:* first version done (finding 18): fast, with a bump, but shallow. Next, the
-     deep latch it would need, and whether warm-up brings a knot out over minutes. First version as planned: a pool of units with persistent inward currents (bistable), their
+  0b. *The motor switch (T7), exploratory:* done: shallow alone (finding 18); with johansson1991's metabolic loop, deep,
+     lasting, fast to release, and migrating (finding 19). Next: T7 as the seventh theory in the exam (an adapter, its
+     parameters sourced or marked guessed, hypotheses.ts), with exam v4 (the bump, its depth, its release like unclenching,
+     grain to penny, rolling), one run for all. First version as planned: a pool of units with persistent inward currents (bistable), their
      facilitation set by stress, inhibition from the breath or a hand; can it make a bump that comes in seconds, lasts, and
      goes in about a second; does rolling bring one out over minutes; does a released unit's load bring another out nearby?
   0. *The switch feeds the crisis (H2), exploratory:* done (finding 17): it makes the bump and keeps T3's slow release. can a shut perforator's ischaemia make the tissue it feeds contract

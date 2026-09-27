@@ -18,3 +18,4 @@ Run from `sim/`, for example `uv run python exploratory/2026-09-26-tree-parent.p
 | `2026-09-27-reknot-pressure.py` | 15, O8.2 | A released knot, then pressure around it for 10 minutes: the least that shuts the same vessel again, with the stress on and at rest |
 | `2026-09-27-switch-fed-crisis.py` | 17 | A shut perforator feeding an ordinary muscle unit (T1 into T3, one way): does it make the bump, and does the bump go when the vessel reopens? |
 | `2026-09-27-motor-switch.py` | 18 | Motor units that latch on (persistent inward currents): can they make a bump that forms under stress, lasts, and goes in about a second? |
+| `2026-09-27-motor-loop.py` | 19 | The motor switch with johansson1991's metabolic loop: deep knots that last, release in seconds, spread, and migrate to a neighbour |
