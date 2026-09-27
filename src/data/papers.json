@@ -532,6 +532,35 @@
   "note": "The inspiratory vasoconstriction reflex studied after spinal injury — the pathway runs through the sympathetic outflow."
  },
  {
+  "id": "goodlich2024",
+  "authors": "Goodlich BI, Pearcey GEP, Del Vecchio A et al.",
+  "year": 2024,
+  "title": "Antagonism of 5-HT(2) receptors attenuates self-sustained firing of human motor units",
+  "venue": "J Physiol 602:1759-1774",
+  "url": "https://doi.org/10.1113/JP285867",
+  "pmid": "38502567",
+  "kind": "paper",
+  "tags": [
+   "nerve"
+  ],
+  "note": "Blocking serotonin 5-HT2 receptors shortened human motor units' self-sustained firing: units recruited by extra drive could not switch off when it was removed, and less so under the blocker."
+ },
+ {
+  "id": "gorassini1998",
+  "authors": "Gorassini MA, Bennett DJ, Yang JF",
+  "year": 1998,
+  "title": "Self-sustained firing of human motor units",
+  "venue": "Neurosci Lett 247:13-6",
+  "url": "https://doi.org/10.1016/s0304-3940(98)00277-8",
+  "pmid": "9637398",
+  "kind": "paper",
+  "tags": [
+   "nerve",
+   "models"
+  ],
+  "note": "Self-sustained firing measured in people: a motor unit recruited by a brief input (tendon vibration) kept firing after the input stopped, with the common drive unchanged."
+ },
+ {
   "id": "goto1996",
   "authors": "Goto M, VanBavel E, Giezeman MJ et al.",
   "year": 1996,
@@ -574,6 +603,21 @@
    "models"
   ],
   "note": "The latch-bridge model: dephosphorylated cross-bridges that hold smooth-muscle tension cheaply."
+ },
+ {
+  "id": "heckman2008",
+  "authors": "Heckman CJ, Johnson M, Mottram C et al.",
+  "year": 2008,
+  "title": "Persistent inward currents in spinal motoneurons and their influence on human motoneuron firing patterns",
+  "venue": "Neuroscientist 14:264-75",
+  "url": "https://doi.org/10.1177/1073858408314986",
+  "pmid": "18381974",
+  "kind": "paper",
+  "tags": [
+   "nerve",
+   "models"
+  ],
+  "note": "Persistent inward currents in motor neurons amplify synaptic input up to fivefold or more, set by serotonin and noradrenaline; brief inputs can start long-lasting self-sustained firing (bistable behaviour), and turning it off usually needs inhibitory input."
  },
  {
   "id": "heine1988",
@@ -1611,6 +1655,21 @@
    "models"
   ],
   "note": "Review: vascular smooth muscle adapts its length like airway and bladder muscle; under strong constriction this may prevent immediate full dilation and lead to inward remodelling."
+ },
+ {
+  "id": "turo2015",
+  "authors": "Turo D, Otto P, Hossain M et al.",
+  "year": 2015,
+  "title": "Novel Use of Ultrasound Elastography to Quantify Muscle Tissue Changes After Dry Needling of Myofascial Trigger Points in Patients With Chronic Myofascial Pain",
+  "venue": "J Ultrasound Med 34:2149-61",
+  "url": "https://doi.org/10.7863/ultra.14.08033",
+  "pmid": "26491094",
+  "kind": "paper",
+  "tags": [
+   "trigger-points",
+   "imaging"
+  ],
+  "note": "Ultrasound elastography measured the stiffer share of the trapezius around trigger points falling as they responded to dry needling."
  },
  {
   "id": "vanbavel2014",

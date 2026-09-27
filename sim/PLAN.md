@@ -196,6 +196,35 @@ proponents of each theory, and a lab.
      chosen hard knot can go while easier ones beside it stay; whether a knot back in the same place is there at once or
      after a while; how fast knots form.
 
+17. **The switch feeds the crisis (H2) makes the bump, but not its quick release**
+   (`exploratory/2026-09-27-switch-fed-crisis.py`: T1's single knot feeding an ordinary T3 unit beneath it, one way,
+   through its flow; 32 paired settings, three depths). A shut perforator starves the unit and it contracts: a bump in
+   75-100% of held knots where the vessel feeds 60% or more of the unit, 1.5-5 minutes after the vessel shuts (at 30%,
+   only in units already near their own threshold: 62% of those, none of the rest); with its full supply the same unit
+   never contracts, so the bump is the vessel's doing. It lasts twenty minutes and more. But once
+   formed it does not go when the vessel reopens: under thirty slow breaths the vessel opens and the bump stays in 92-100%,
+   because under held stress even an open vessel is narrowed and the crisis holds itself (T3's own loop); a press lets it
+   go under the hand (the muscle's lengthening), 20-35 s before the vessel reopens at the lift, and it comes back within
+   two minutes in a third to nearly nine in ten. Rolling an open vessel in its band shuts it for
+   a moment in 88% but it reopens, and a bump comes out in at most a fifth. So H2 keeps T3's slow release: the one
+   combination of what we have does not make a bump that goes in seconds. The crux, stated: something must hold a
+   palpable bump for years and let it go within seconds.
+
+18. **The motor switch (T7) makes a bump that comes and goes in seconds, but not a deep one**
+   (`exploratory/2026-09-27-motor-switch.py`, kept as run: 64 units on the exam's patch, 32 settings of guessed numbers;
+   a knot is a unit on only by its latch, silent without it). The surge latches a median of 15 units per setting within a
+   second of its start, and the holding stress alone latches none: knots form at once under stress and persist after it
+   falls. But they are shallow: thirty broad breaths let 94% go, most on the first out-breath, deep and easy alike
+   (r = 0.13 between depth and when). A press held a minute lets 96% of the knots at the spot go under the hand only if
+   held pressure inhibits the units (excitation alone, 69%, is the breath's doing); rolling brings no knot out where the
+   drive sits far below threshold; pooling (the muscle keeping its tone) brings units out everywhere, not in the spot. What
+   would have to be true: a latch much deeper than the breath's swing, kept deep by sustained facilitation, for deep knots;
+   held pressure inhibiting; warm-up deepening the latch over minutes where the drive is already near threshold, for
+   rolling. The crux of finding 17 stands: of what we have, the fast switches (T1, T7) and the bumps (T3, H2) are not
+   yet one mechanism. The measurement that would tell what the bump is and how it goes: ultrasound over a knot as it lets
+   go (in muscle or not; stiffness) with surface EMG that picks out single motor units (does one fall silent at the felt
+   release?) and laser speckle (does the skin's flow change first?).
+
 **A hypothesis these suggest** (to be run through the same exam as everything else, not assumed). Knots form where drive is
 raised and the tissue is still. A shut vessel loses the pulse that stretches its wall with every heartbeat, and so may hold
 harder than an open one (a second loop that widens the band). The longer it is held, the more its muscle adapts to being
@@ -259,10 +288,12 @@ in a public table:
 | Fascial contractility: fascia contracting like smooth muscle (schleip2005) | variant of T4; slow |
 | Structural adhesion or fibrosis | a control that should fail: it cannot release in seconds. It shows the exam has teeth |
 | Hybrids: local switches plus a global loop (held units raise drive everywhere) | H |
-| Fat herniated through a fascial opening: firm, rubbery, mobile nodules, common in the low back (bicket2016, martineznunez2021), at the openings where neurovascular bundles pierce the fascia | a candidate for the bump itself (static: it cannot let go in a breath); with T1 or T5, a structure whose tone or tenderness changes |
-| Motor units taking turns in a postural muscle: more load or less strength shortens each unit's rest (minerbi2018, replacing the Cinderella hypothesis) | the drive into T3's energy crisis; micro knots as single motor units |
-| Local swelling (interstitial fluid, lymph) | to assess: a soft bump, slow to come and go; sources needed |
-| Ordinary structures made tender (a vessel, a fat lobule, a band of muscle, a node), felt as knots | T6's strongest form; examiners agree only moderately on trigger points by touch, tenderness best (rathbone2017) |
+| Fat herniated through a fascial opening: firm, rubbery, mobile nodules, common in the low back (bicket2016, martineznunez2021) | set aside as the knot itself: the bump goes when a knot lets go (the author, 27 Sep), and a lump of fat cannot |
+| Ordinary structures made tender (a vessel, a fat lobule, a band of muscle), felt as knots | set aside as the knot itself, for the same reason; examiners agree only moderately on trigger points by touch, tenderness best (rathbone2017), so it stays a caution for palpation |
+| Local swelling (interstitial fluid, lymph) | set aside: nothing sourced makes it come and go in seconds |
+| Motor units taking turns in a postural muscle: more load or less strength shortens each unit's rest (minerbi2018, replacing the Cinderella hypothesis) | not a theory: a drive into T3's energy crisis, and micro knots as single motor units |
+| **The motor switch** (T7): spinal motor neurons that latch on. A brief input starts self-sustained firing that outlasts it, measured in people (gorassini1998); persistent inward currents make it, amplify input up to fivefold or more under serotonin and noradrenaline (stress, arousal), and switching it off usually needs inhibitory input (heckman2008; a 5-HT2 blocker shortens it, goodlich2024). A latched unit keeps its patch of muscle contracted: the bump, on in seconds under stress, off in about a second when inhibited, amplified by repeated activation (rolling "over minutes"), handed between units (minerbi2018: a knot moving into a similar spot); "diffuse descending neuromodulation, focused local inhibition" (heckman2008's title) as the broad and the focused breath | a candidate with a real chance (added 27 Sep, the author: "use your best judgment"); untested for knots; needs muscle under the knot, and leaves the spark unexplained. Its test: a motor unit falling silent at the felt release, on surface EMG that picks out single units; ultrasound places the bump in muscle. Exploratory model next, after the author's three questions (§11) |
+| **The switch feeds the crisis** (H2): a perforator shut by its own wall (T1) starves the muscle or fascia it feeds, which contracts in T3's energy crisis and cannot relax: the bump. When the vessel reopens, energy returns and the bump goes | the one addition with a real chance (the author, 27 Sep: none but those): built from T1 and T3 as they are, coupled through the vessel's flow. Exploratory first (`exploratory/2026-09-27-switch-fed-crisis.py`); into the exam only if it earns it |
 
 - **What the hand feels: the most basic observation, and the least modelled** (the author, 27 Sep 2026: "the knots can
   def be felt"; "May be the most basic point"). Only trigger points build a bump in: a contracture in a taut band, stiffer
@@ -274,7 +305,10 @@ in a public table:
   only its tenderness? And the author's impression (tentative) that knots "can quickly grow if aggravated or feeling
   stress": a vessel cluster can grow in seconds as drive recruits its neighbours, perception as fast as arousal, a trigger
   point's energy crisis only over tens of minutes (so a fast growth would be the motor activity around it), a herniation not
-  at all.
+  at all. **The author's answers (27 Sep):** the bump itself goes when a knot lets go (so it is no fixed structure); knots
+  run "from grain to maybe penny"; growth under stress, not sure; "foam rolling or palpating can bring it out at least over
+  minutes". The bump that goes is built into T3 alone; the vessel view needs something to firm with the vessel (H2 above).
+  No new theories beyond that (the author: "We don't need less plausible theories").
 - T6 is the site's **Perception** theory, broader than central sensitisation: attention, sleep and overbreathing (which makes
   tingling anywhere) are part of it. Model that version. It is the physician's first answer and the account every other view
   has to beat, so it runs early.
@@ -598,6 +632,17 @@ M5. The top-bar link comes when the author says (D2); the natural moment is matr
      `models/triggerpoint.py` (it changes the exam's inputs, so with the next matrix run), T6 as input at the place.
   3. Robustness marked on the matrix itself: which cells hold in every setting, which turn on guessed parameters (and
      which ones), as the drawers (Phase B) show.
+  0a. *Three questions for the author* (27 Sep): knots over bone with little muscle between it and the skin (the shin's
+     flat face, the kneecap, the back of the hand, the top of the skull)? In the skin and the layer under it (pinched up
+     with the skin), or deeper, in the muscle? A small twitch at a release? The first two split the views that need
+     muscle (T3, T7) from those that do not (T1, T4, T5); the third, T3's twitch.
+  0b. *The motor switch (T7), exploratory:* first version done (finding 18): fast, with a bump, but shallow. Next, the
+     deep latch it would need, and whether warm-up brings a knot out over minutes. First version as planned: a pool of units with persistent inward currents (bistable), their
+     facilitation set by stress, inhibition from the breath or a hand; can it make a bump that comes in seconds, lasts, and
+     goes in about a second; does rolling bring one out over minutes; does a released unit's load bring another out nearby?
+  0. *The switch feeds the crisis (H2), exploratory:* done (finding 17): it makes the bump and keeps T3's slow release. can a shut perforator's ischaemia make the tissue it feeds contract
+     (the bump), and its reopening let it go; how soon after the flow returns; does pressing bring one out over minutes?
+     If it earns a place, an adapter from T1 and T3 as they are, and the exam.
   5. *The felt bump, and exam v4.* Palpability as an observation, in the author's words (above, §3), with its reading
      (a bump under the fingers; whether it softens or goes as the knot lets go), and growth under aggravation or stress
      (tentative), beside formation speed (item 4); then the mechanics stage (O5) moves up, since the bump is the most

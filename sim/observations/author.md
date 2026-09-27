@@ -26,3 +26,9 @@ discussion's table is in `sim/BRIEF.md`.
 - 27 Sep 2026: "Btw the knots can def be felt imo. What would explain a bump feel or knot feel in dift theories. What makes
   the knot in each one." Then: "May be the most basic point. And my felt experience is the knots can quickly grow if
   aggravated or feeling stress. Maybe. Just my impression."
+- 27 Sep 2026, asked whether the bump itself goes when a knot lets go, how fast knots grow, and how big they are: "The
+  knot seems to let go and disappear but like I said earlier it feels like other ones can migrate there. I’m not sure on
+  two but it seems foam rolling or palpating can bring it out at least over minutes. Can vary in size from grain to maybe
+  penny?"
+- 27 Sep 2026, on adding theories: "We don’t need less plausible theories. Maybe go with what we have unless you think they
+  really have a good chance."

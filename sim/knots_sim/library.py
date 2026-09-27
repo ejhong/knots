@@ -164,6 +164,15 @@ NEW = [
      "A model of a postural muscle whose motor units take turns: more load or less strength shortens each unit's rest, a route into the energy crisis that replaces the Cinderella hypothesis."),
     ("28098584", "rathbone2017", ["trigger-points", "critique"],
      "Examiners agree only moderately on where trigger points are by touch (kappa 0.45); tenderness and the patient recognising the pain agree best."),
+    # A fast switch with a muscular on-state: spinal motor neurons that latch on.
+    ("9637398", "gorassini1998", ["nerve", "models"],
+     "Self-sustained firing measured in people: a motor unit recruited by a brief input (tendon vibration) kept firing after the input stopped, with the common drive unchanged."),
+    ("18381974", "heckman2008", ["nerve", "models"],
+     "Persistent inward currents in motor neurons amplify synaptic input up to fivefold or more, set by serotonin and noradrenaline; brief inputs can start long-lasting self-sustained firing (bistable behaviour), and turning it off usually needs inhibitory input."),
+    ("38502567", "goodlich2024", ["nerve"],
+     "Blocking serotonin 5-HT2 receptors shortened human motor units' self-sustained firing: units recruited by extra drive could not switch off when it was removed, and less so under the blocker."),
+    ("26491094", "turo2015", ["trigger-points", "imaging"],
+     "Ultrasound elastography measured the stiffer share of the trapezius around trigger points falling as they responded to dry needling."),
 ]
 
 # Existing entries that the simulation also leans on gain the models tag.
