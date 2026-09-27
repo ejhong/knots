@@ -550,7 +550,7 @@ export interface Matrix {
   run: { inputs: string; commit: string; dirty: boolean };
   exam: { version: number; sealed: string; sha256: string };
   trials: { surge_s: number; settle_s: number; breath_s: number[]; breaths: number; press_s: number; hold_s: number; mood_s: number; depths: number[]; patch: number; samples: number; seed: number };
-  parts: { id: string; obs: string; says: string; short: string }[];
+  parts: { id: string; obs: string; says: string; short: string; not_run?: string | null }[];
   theories: MatrixTheory[];
 }
 

@@ -293,7 +293,8 @@ matrix shows each variant's cells and its joint pass, and the best variant per p
 | O16.1 | Drive that moves with breath and mood: some knot forms and lets go at least twice in an hour |
 | O16.2 | Some knot forms and lets go within a single breath |
 | O6 | A release brings, within seconds, a brief sensory signal confined to the released knot's own patch |
-| O8 | After one knot lets go, a new knot forms nearby within minutes, and the held count evens out |
+| O8.1 | After one knot lets go, a new knot forms nearby within minutes, and the held count evens out |
+| O8.2 | (exam v3) Sometimes, within 10 minutes of a knot letting go, a knot is back at its place: the same unit again, one beneath it (a vessel's children), or an immediate neighbour newly held (siblings on a feed, adjacent band units, the eight places around it). Not run yet: see §11 |
 | O13 | Releasing one knot lets ≥ 3 others go with it, within seconds |
 | O15 | The theory's unit exists at ≥ dozens per square inch and ~10⁵ in a body (anatomical counts, sourced) |
 | O5, O9, O10 | Not run until the mechanics and body stages (O10's young-and-old part can run with T1's adaptation); O7, O11 noted |
@@ -485,6 +486,24 @@ M5. The top-bar link comes when the author says (D2); the natural moment is matr
   ("could be either"); O2.2 takes either, and the timing is open question Q1, with each theory's prediction on the site.
   The perforators' migration trial (O8) had never run (its knot sat on a wall that cannot hold one): fixed, and every trial
   now reports how often it ran (finding 12).
+- **Exam v3 (27 Sep), and where to pick up.** The author reports a knot coming back to the spot a released one left ("a
+  rearrangement underneath and a new knot appears in what seems like the same place"; the same perforator or one moved
+  in, they cannot tell). Sealed as O8.2 in v3 (commit 14f3930) before any trial of it; the matrix marks it not run.
+  Next, in order:
+  1. *The O8.2 trials*, from the existing cluster trials (no new stimulus), recording after the worked knot lets go
+     whether a knot is back at its place within 10 minutes, and by which route (same / beneath / beside):
+     - T1: the parent tree (the parent shut again, or a child shut beneath it) and the sibling tree (the released
+       sibling again, or a sibling newly shut).
+     - T3: the key (contracted again; satellites lie in the referral zone and do not count) and the taut band as a line
+       (the released unit again, or an adjacent unit newly contracted).
+     - T6: the worked place felt again, or one of the eight around it on the patch grid newly felt.
+     - `ClusterOut` gains `same_spot` and `how`; `matrix.json` gains `back` (shares by route, median time).
+  2. *Pressure around a released knot* (the author's first question), exploratory. Each theory's single knot, released
+     by its own route; then, with the holding stress on and at rest, a sustained pressure around it (0–40 mmHg) for
+     10 minutes; whether it re-knots, how soon, and whether it holds or flickers. T1 as `Pext` (its instant push toward
+     shutting races the myogenic easing), T6 as input at the place, T3 as occlusion without lengthening (one optional
+     model input). Set against tissue pressure (christ1997).
+  3. On the site: where a knot comes back, per theory, as a finding generated from the matrix.
 - **Next, from the matrix:** T2 live and T4, T5 behind the same harness (matrix v2); per-cell drawers on the site (a passing and a
   failing run, what decides it); the mechanics stage for O5 and O9, and ageing for T3; the base of the skull as a
   location test, once the author confirms it.

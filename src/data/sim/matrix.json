@@ -1,13 +1,13 @@
 {
  "run": {
-  "inputs": "8099f705a0e9",
-  "commit": "aacd736",
+  "inputs": "0421b9d00eac",
+  "commit": "14f3930",
   "dirty": true
  },
  "exam": {
-  "version": 2,
+  "version": 3,
   "sealed": "2026-09-27",
-  "sha256": "d692ade4e198388ba5f478d15e6a18527cd810ab49d1ed0f73b233030e8fc3ff"
+  "sha256": "b4b0c5eadf2784f8b338a280c05efab10e4fa18b66a92c2671144f511044fd9f"
  },
  "trials": {
   "surge_s": 180.0,
@@ -39,121 +39,148 @@
    "id": "O1.1",
    "obs": "O1",
    "says": "A slow out-breath lets the easiest knots go, during an out-breath",
-   "short": "let an easy knot go on the out-breath"
+   "short": "let an easy knot go on the out-breath",
+   "not_run": null
   },
   {
    "id": "O1.2",
    "obs": "O1",
    "says": "One relaxing breath lets three or more knots go, within that breath",
-   "short": "let three or more go in one relaxing breath"
+   "short": "let three or more go in one relaxing breath",
+   "not_run": null
   },
   {
    "id": "O1.3",
    "obs": "O1",
    "says": "Deep knots hold through 30 relaxing breaths, and let go to focused attention and breath within 30",
-   "short": "keep deep knots through calm breathing and let them go to focus"
+   "short": "keep deep knots through calm breathing and let them go to focus",
+   "not_run": null
   },
   {
    "id": "O1.4",
    "obs": "O1",
    "says": "Release can be broad (spread across the patch) and focused (most of it at one place)",
-   "short": "release both broadly and at one place"
+   "short": "release both broadly and at one place",
+   "not_run": null
   },
   {
    "id": "O1.5",
    "obs": "O1",
    "says": "Under one way of breathing, some knots go by the 2nd breath and others from the 3rd to the 30th",
-   "short": "let easy knots go in a breath or two and hard ones over many"
+   "short": "let easy knots go in a breath or two and hard ones over many",
+   "not_run": null
   },
   {
    "id": "O2.1",
    "obs": "O2",
    "says": "Pressure and attention at one place let knots go there, few elsewhere",
-   "short": "release one place at a time under a hand"
+   "short": "release one place at a time under a hand",
+   "not_run": null
   },
   {
    "id": "O2.2",
    "obs": "O2",
    "says": "Pressed, with a slow out-breath, at least half of knots let go within seconds: under the hand or as it eases off",
-   "short": "let a pressed knot go within seconds of breathing out"
+   "short": "let a pressed knot go within seconds of breathing out",
+   "not_run": null
   },
   {
    "id": "O3",
    "obs": "O3",
    "says": "Drinking water eases release, and speeds it",
-   "short": "answer to water"
+   "short": "answer to water",
+   "not_run": null
   },
   {
    "id": "O4.1",
    "obs": "O4",
    "says": "More stress holds more knots",
-   "short": "hold more knots under more stress"
+   "short": "hold more knots under more stress",
+   "not_run": null
   },
   {
    "id": "O4.2",
    "obs": "O4",
    "says": "Knots gather where stress is held",
-   "short": "gather knots where stress is held"
+   "short": "gather knots where stress is held",
+   "not_run": null
   },
   {
    "id": "O16.1",
    "obs": "O16",
    "says": "Under breath and mood, a knot forms and lets go at least twice in an hour",
-   "short": "let knots come and go with breath and mood"
+   "short": "let knots come and go with breath and mood",
+   "not_run": null
   },
   {
    "id": "O16.2",
    "obs": "O16",
    "says": "A knot forms and lets go within a single breath",
-   "short": "form and release a knot within one breath"
+   "short": "form and release a knot within one breath",
+   "not_run": null
   },
   {
    "id": "O5",
    "obs": "O5",
    "says": "Knots limit movement; a stretch meets them as dull, deep blocks",
-   "short": "limit movement"
+   "short": "limit movement",
+   "not_run": "it needs the mechanics stage (stiffness and stretch)"
   },
   {
    "id": "O6",
    "obs": "O6",
    "says": "A release brings, within seconds, a brief sensation confined to the knot's own place",
-   "short": "spark at the knot's own place as it goes"
+   "short": "spark at the knot's own place as it goes",
+   "not_run": null
   },
   {
-   "id": "O8",
+   "id": "O8.1",
    "obs": "O8",
    "says": "After one knot lets go, a new one forms nearby within minutes",
-   "short": "form a new knot nearby after a release"
+   "short": "form a new knot nearby after a release",
+   "not_run": null
+  },
+  {
+   "id": "O8.2",
+   "obs": "O8",
+   "says": "Sometimes, after a knot lets go, a knot is back in the same or a similar spot within 10 minutes",
+   "short": "put a knot back in the same spot after a release",
+   "not_run": "added in exam v3 (27 Sep 2026); its trials are being built"
   },
   {
    "id": "O13",
    "obs": "O13",
    "says": "Releasing one knot lets three or more others go with it, within seconds",
-   "short": "let three or more go with one"
+   "short": "let three or more go with one",
+   "not_run": null
   },
   {
    "id": "O15",
    "obs": "O15",
    "says": "The unit exists at dozens per square inch and about 100,000 in a body",
-   "short": "have a unit as dense as micro knots"
+   "short": "have a unit as dense as micro knots",
+   "not_run": null
   },
   {
    "id": "O9",
    "obs": "O9",
    "says": "Working one side eases the other",
-   "short": "ease the other side"
+   "short": "ease the other side",
+   "not_run": "it needs the body stage (both sides)"
   },
   {
    "id": "O10.1",
    "obs": "O10",
    "says": "A knot held briefly lets go when its stress ends; one held for hours persists",
-   "short": "let a brief knot go and keep an old one"
+   "short": "let a brief knot go and keep an old one",
+   "not_run": null
   },
   {
    "id": "O10.2",
    "obs": "O10",
    "says": "Knots accumulate with age",
-   "short": "accumulate knots with age"
+   "short": "accumulate knots with age",
+   "not_run": "it needs the body stage (a life's accumulation)"
   }
  ],
  "theories": [
@@ -180,7 +207,8 @@
       "O16.2": 0.094,
       "O5": "not run",
       "O6": 0.125,
-      "O8": 0.0,
+      "O8.1": 0.0,
+      "O8.2": "not run",
       "O13": 0.25,
       "O15": 1.0,
       "O9": "not run",
@@ -597,7 +625,7 @@
        0,
        1
       ],
-      "O8": [
+      "O8.1": [
        0,
        0,
        0,
@@ -754,7 +782,7 @@
       "under_s": null
      },
      "tested": {
-      "O8": 0.312,
+      "O8.1": 0.312,
       "O13": 0.375
      }
     },
@@ -776,7 +804,8 @@
       "O16.2": 0.0,
       "O5": "not run",
       "O6": 0.156,
-      "O8": 0.0,
+      "O8.1": 0.0,
+      "O8.2": "not run",
       "O13": 0.281,
       "O15": 1.0,
       "O9": "not run",
@@ -1193,7 +1222,7 @@
        0,
        1
       ],
-      "O8": [
+      "O8.1": [
        0,
        0,
        0,
@@ -1350,7 +1379,7 @@
       "under_s": null
      },
      "tested": {
-      "O8": 0.344,
+      "O8.1": 0.344,
       "O13": 0.406
      }
     },
@@ -1372,7 +1401,8 @@
       "O16.2": 0.031,
       "O5": "not run",
       "O6": 0.156,
-      "O8": 0.0,
+      "O8.1": 0.0,
+      "O8.2": "not run",
       "O13": 0.312,
       "O15": 1.0,
       "O9": "not run",
@@ -1789,7 +1819,7 @@
        0,
        1
       ],
-      "O8": [
+      "O8.1": [
        0,
        0,
        0,
@@ -1946,7 +1976,7 @@
       "under_s": null
      },
      "tested": {
-      "O8": 0.344,
+      "O8.1": 0.344,
       "O13": 0.438
      }
     },
@@ -1968,7 +1998,8 @@
       "O16.2": 0.031,
       "O5": "not run",
       "O6": 0.156,
-      "O8": 0.0,
+      "O8.1": 0.0,
+      "O8.2": "not run",
       "O13": 0.312,
       "O15": 1.0,
       "O9": "not run",
@@ -2385,7 +2416,7 @@
        0,
        1
       ],
-      "O8": [
+      "O8.1": [
        0,
        0,
        0,
@@ -2542,7 +2573,7 @@
       "under_s": null
      },
      "tested": {
-      "O8": 0.344,
+      "O8.1": 0.344,
       "O13": 0.438
      }
     }
@@ -2552,7 +2583,7 @@
     "O15": "Small vessels rise to the skin one every 4-5 mm, on the order of 100,000 (taylor1987, saintcyr2009).",
     "O1.3": "Through drive alone the breath is not local, so focusing it changes nothing; through movement, focus concentrates the movement at the place.",
     "O2.2": "Pressed, the vessel is squeezed and cannot open: it lets go within a second of the hand lifting, not under it.",
-    "O8": "A release lowers the pressure its siblings share, by several mmHg, but not enough to shut one; a neighbour shuts only if something else pushes on it by 10 mmHg or more (exploratory/2026-09-27-migration-pressure.py), where tissue pressure under the skin rises only a few mmHg as it fills (christ1997).",
+    "O8.1": "A release lowers the pressure its siblings share, by several mmHg, but not enough to shut one; a neighbour shuts only if something else pushes on it by 10 mmHg or more (exploratory/2026-09-27-migration-pressure.py), where tissue pressure under the skin rises only a few mmHg as it fills (christ1997).",
     "O10.1": "Without adaptation nothing remembers how long a knot was held; with it, a knot held for hours can set and hold at rest (findings 003)."
    }
   },
@@ -2579,7 +2610,8 @@
       "O16.2": 0.188,
       "O5": "not run",
       "O6": 0.0,
-      "O8": 0.0,
+      "O8.1": 0.0,
+      "O8.2": "not run",
       "O13": 0.0,
       "O15": 0.0,
       "O9": "not run",
@@ -2996,7 +3028,7 @@
        0,
        0
       ],
-      "O8": [
+      "O8.1": [
        0,
        0,
        0,
@@ -3119,7 +3151,7 @@
       "under_s": 36.6
      },
      "tested": {
-      "O8": 0.688,
+      "O8.1": 0.688,
       "O13": 0.688
      }
     },
@@ -3141,7 +3173,8 @@
       "O16.2": 0.469,
       "O5": "not run",
       "O6": 0.219,
-      "O8": 0.0,
+      "O8.1": 0.0,
+      "O8.2": "not run",
       "O13": 0.125,
       "O15": 0.0,
       "O9": "not run",
@@ -3558,7 +3591,7 @@
        0,
        0
       ],
-      "O8": [
+      "O8.1": [
        0,
        0,
        0,
@@ -3681,7 +3714,7 @@
       "under_s": 16.6
      },
      "tested": {
-      "O8": 0.688,
+      "O8.1": 0.688,
       "O13": 0.688
      }
     }
@@ -3690,7 +3723,7 @@
     "O3": "Nothing in the energy crisis turns on hydration.",
     "O10.1": "Its slow sustaining factors (weeks) are not modelled yet.",
     "O15": "Hundreds of sites, a few regions in each muscle (300 taken as representative); the active nidus is 1-2 mm (hubbard1993).",
-    "O8": "New knots after a release come from the taut band's load shifting to its neighbours: an extension of the account.",
+    "O8.1": "New knots after a release come from the taut band's load shifting to its neighbours: an extension of the account.",
     "O2.2": "Pressure release takes tens of seconds (60-90 s at the pressures used, pecosmartin2019), not one out-breath.",
     "O4.2": "Which endplates hold a knot is set more by their own activity than by where stress is held."
    }
@@ -3718,7 +3751,8 @@
       "O16.2": 0.094,
       "O5": "not run",
       "O6": 0.0,
-      "O8": 0.156,
+      "O8.1": 0.156,
+      "O8.2": "not run",
       "O13": 0.344,
       "O15": "silent",
       "O9": "not run",
@@ -4135,7 +4169,7 @@
        0,
        0
       ],
-      "O8": [
+      "O8.1": [
        0,
        0,
        0,
@@ -4248,7 +4282,7 @@
       "under_s": null
      },
      "tested": {
-      "O8": 0.375,
+      "O8.1": 0.375,
       "O13": 0.375
      }
     }

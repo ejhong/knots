@@ -83,6 +83,8 @@ design: `docs/SIMULATION.md`.
 - [ ] M1, the rest: the other breath routes (local nerve, attention, chemistry) in a shared interface; the pulse variant; the field (a patch of perforators under one breath, broad against focused)
 - [x] The exam sealed (v1, 26 Sep 2026): from the introduction and the author's words, with its readings and scoring; essay-only reports set aside
 - [x] Exam v2 (27 Sep 2026): O2 takes a hand that holds or eases off; Q1 (under the hand or as it lifts) open, with each theory's prediction; the perforators' migration trial fixed and every trial's run count reported
+- [x] Exam v3 (27 Sep 2026): O8.2, a knot back in the same place, in the author's words; sealed before its trials (not run yet)
+- [ ] O8.2's trials in every theory, and pressure around a released knot (sim/PLAN.md §11)
 - [x] M2: T6 and T3 as models; the harness (`knots_sim/exam.py`) with its fairness rules; matrix v1 with counts, on the Research page (`#exam`); findings 004
 - [ ] M3: T2 live (Hai–Murphy; needs the paper) with latch hardening; T4, T5, the gamma loop, hybrids; matrix v2
 - [ ] M4: instrument models; each theory's fingerprint at a release; the decision tree for labs, its predictions sealed

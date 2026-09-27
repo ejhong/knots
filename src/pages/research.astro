@@ -84,10 +84,11 @@ const partGroups = mx.parts.reduce<{ obs: string; parts: typeof mx.parts }[]>((a
   return acc;
 }, []);
 const nSets = mx.trials.samples;
+const notRunWhy = Object.fromEntries(mx.parts.map((part) => [part.id, part.not_run ?? null]));
 const cellText = (t: { name: string; samples: number; notes: Record<string, string> }, pid: string, says: string, c: Cell, tested?: number | null) => {
   const note = t.notes[pid] ? ` ${t.notes[pid]}` : '';
   if (c === 'silent') return `${pid} ${says}: ${t.name} is silent: its account says nothing about this.${note}`;
-  if (c === 'not run') return `${pid} ${says}: not run yet (it needs the mechanics or body stage).${note}`;
+  if (c === 'not run') return `${pid} ${says}: not run yet${notRunWhy[pid] ? ` (${notRunWhy[pid]})` : ''}.${note}`;
   const k = Math.round(c * t.samples);
   const ran = tested === undefined || tested === null ? '' : ` The trial ran (its knot held, then let go) in ${Math.round(tested * t.samples)} of them.`;
   return `${pid} ${says}: holds in ${k} of ${t.samples} plausible settings (${Math.round(100 * c)}%).${ran}${note}`;

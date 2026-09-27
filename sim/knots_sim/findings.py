@@ -458,7 +458,7 @@ true.
         lines.append("")
 
     lines.append("## Corrections since the first run (26 Sep 2026)\n")
-    lines.append("- *O8 for the perforators never ran.* Its sibling test put the knot to be released on the thinnest wall, which"
+    lines.append("- *O8 (now O8.1) for the perforators never ran.* Its sibling test put the knot to be released on the thinnest wall, which"
                  " cannot hold one, so its zeros said nothing. Found on the author's question about migration (27 Sep 2026); the"
                  " knot is now the thickest-walled sibling, as in the parent test, and every trial with a precondition reports"
                  " in how many settings it ran (a test fails if one never does).")

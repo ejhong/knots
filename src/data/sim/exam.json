@@ -1,9 +1,17 @@
 {
- "version": 2,
+ "version": 3,
  "status": "sealed",
  "sealed": "2026-09-27",
  "updated": "2026-09-27",
  "changes": [
+  {
+   "version": 3,
+   "date": "2026-09-27",
+   "items": [
+    "O8: the author describes a knot coming back to the spot a released one left: 'a rearrangement underneath and a new knot appears in what seems like the same place', 'a feeling of migrating into the same or similar spot', the same perforator or one from elsewhere, they cannot tell. O8 is scored in two parts: a new knot nearby (as before) and a knot back in the same or a similar spot, with a reading that counts every way it could happen. Made after version 2's results, and after the tree model's queue was on the site: any match is found after the fact.",
+    "It partly echoes a report set aside from the essays, 'released and then replaced, as if from a queue', now in the author's own words, without the paths to the skull; that report stays set aside."
+   ]
+  },
   {
    "version": 2,
    "date": "2026-09-27",
@@ -176,14 +184,27 @@
    "id": "O8",
    "group": "clusters",
    "title": "Migration",
-   "text": "When one knot lets go, others move in to fill the gap and settle into new places, as if the body were evening itself out.",
+   "text": "When one knot lets go, others move in to fill the gap and settle into new places, as if the body were evening itself out. Sometimes a rearrangement follows underneath and a knot appears in what seems the same place: one moved in from elsewhere, or the same one re-formed.",
    "evidence": "S",
    "words": [
     {
      "quote": "When one knot lets go, others move in to fill the gap and settle into new places, as if the body were evening itself out.",
      "from": "the introduction, Observations"
+    },
+    {
+     "quote": "I notice when I release a knot it feels like that sometimes produces a rearrangement underneath and a new knot appears in what seems like the same place.",
+     "from": "the author, 27 Sep 2026"
+    },
+    {
+     "quote": "I don't know what causes it. But it's very noticeable.",
+     "from": "the author, 27 Sep 2026"
+    },
+    {
+     "quote": "Although it feels kind of like a knot from somewhere else moved there. But it could be the same perforator for example. It's a feeling of migrating into the same or similar spot.",
+     "from": "the author, 27 Sep 2026"
     }
-   ]
+   ],
+   "note": "Whether the knot back in the spot is the same one re-forming or another moving in is not known; the trials count either. Written down after the tree model's queue was on the site: its match, if any, is found after the fact."
   },
   {
    "id": "O13",
@@ -314,6 +335,14 @@
    "reads": "a hand that holds through the out-breath, or one that eases off halfway through it: either counts (v2)"
   },
   {
+   "words": "a new knot appears in what seems like the same place",
+   "reads": "within 10 minutes of a knot letting go, a knot is held at its place: the same unit held again; a unit beneath it (a vessel's children, which a released parent can leave shut); or one of its immediate neighbours that was not held before (siblings on one feed, the adjacent units of a taut band, the eight places around it on a body map) (v3)"
+  },
+  {
+   "words": "sometimes",
+   "reads": "where it happens in the trial: not required every time (v3)"
+  },
+  {
    "words": "within a breath or two",
    "reads": "by the end of the second breath"
   },
@@ -365,9 +394,9 @@
   "Observations in the group 'noted' are shown and not scored; the set-aside reports are shown and not scored."
  ],
  "seal": {
-  "version": 2,
+  "version": 3,
   "date": "2026-09-27",
-  "sha256": "d692ade4e198388ba5f478d15e6a18527cd810ab49d1ed0f73b233030e8fc3ff",
-  "commit": "aacd7362462dfe56cb31af01d26f435ac61ab784"
+  "sha256": "b4b0c5eadf2784f8b338a280c05efab10e4fa18b66a92c2671144f511044fd9f",
+  "commit": "14f3930127d05441020ecac4dffe3890f15351bc"
  }
 }

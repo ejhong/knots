@@ -206,7 +206,7 @@ class ClusterOut:
     with_: np.ndarray  # per set: others that let go within 10 s of the worked knot
     new_nearby: np.ndarray  # per set: a new knot formed nearby within 10 min
     tested_with: np.ndarray | None = None  # per set: the worked knot of the O13 trial held, and let go (the trial ran)
-    tested_new: np.ndarray | None = None  # the same for the O8 trial
+    tested_new: np.ndarray | None = None  # the same for the O8.1 trial
 
 
 @dataclass
@@ -261,8 +261,10 @@ PARTS = (
     Part("O5", "O5", "Knots limit movement; a stretch meets them as dull, deep blocks", "limit movement"),
     Part("O6", "O6", "A release brings, within seconds, a brief sensation confined to the knot's own place",
          "spark at the knot's own place as it goes"),
-    Part("O8", "O8", "After one knot lets go, a new one forms nearby within minutes",
+    Part("O8.1", "O8", "After one knot lets go, a new one forms nearby within minutes",
          "form a new knot nearby after a release"),
+    Part("O8.2", "O8", "Sometimes, after a knot lets go, a knot is back in the same or a similar spot within 10 minutes",
+         "put a knot back in the same spot after a release"),
     Part("O13", "O13", "Releasing one knot lets three or more others go with it, within seconds",
          "let three or more go with one"),
     Part("O15", "O15", "The unit exists at dozens per square inch and about 100,000 in a body",
@@ -272,7 +274,12 @@ PARTS = (
          "let a brief knot go and keep an old one"),
     Part("O10.2", "O10", "Knots accumulate with age", "accumulate knots with age"),
 )
-NOT_RUN_YET = {"O5", "O9", "O10.2"}  # the mechanics and body stages (PLAN §5b)
+NOT_RUN_YET = {  # parts no trial can test yet, and why
+    "O5": "it needs the mechanics stage (stiffness and stretch)",
+    "O9": "it needs the body stage (both sides)",
+    "O10.2": "it needs the body stage (a life's accumulation)",
+    "O8.2": "added in exam v3 (27 Sep 2026); its trials are being built",
+}
 
 
 def _count(rel: np.ndarray, lo: float, hi: float) -> int:
@@ -337,9 +344,9 @@ def score_variant(theory, ps: list[dict], variant: str, meta: dict | None = None
              **{f"hold{x}": Patch("hold", float(x)) for x in ("0.6", "1.0", "1.4")}}
     cells |= _patch_parts({k: theory.patch(ps, variant, pr_) for k, pr_ in kinds.items()})
     c = theory.cluster(ps, variant)
-    cells["O8"], cells["O13"] = c.new_nearby, c.with_ >= 3
+    cells["O8.1"], cells["O13"] = c.new_nearby, c.with_ >= 3
     if meta is not None:
-        meta["tested"] = {"O8": c.tested_new, "O13": c.tested_with}
+        meta["tested"] = {"O8.1": c.tested_new, "O13": c.tested_with}
     age = theory.ageing(ps, variant)
     cells["O10.1"] = NOT_RUN if age is None else age.brief_released & age.long_persists
     d = theory.density()
@@ -458,7 +465,8 @@ def main(workers: int = 4) -> dict:
                    "breaths": BREATHS, "press_s": PRESS_FOR, "ease_s": EASE_AT, "hold_s": HOLD_FOR, "mood_s": MOOD_FOR,
                    "depths": list(DEPTHS), "patch": PATCH["n"],
                    "samples": K, "seed": SEED},
-        "parts": [{"id": p.id, "obs": p.obs, "says": p.says, "short": p.short} for p in PARTS],
+        "parts": [{"id": p.id, "obs": p.obs, "says": p.says, "short": p.short, "not_run": NOT_RUN_YET.get(p.id)}
+                  for p in PARTS],
         "theories": theories,
     }
     SITE.parent.mkdir(parents=True, exist_ok=True)

@@ -4,4 +4,4 @@
 seals:
   - {version: 1, date: 2026-09-26, sha256: 5f81bbfc69cebdcf061e1689c4a1e1a37f41c0189323942c1a418cca9344701a, commit: 9dc8c337c5f7eb76d16794109f42c6a031cdcce0}
   - {version: 2, date: 2026-09-27, sha256: d692ade4e198388ba5f478d15e6a18527cd810ab49d1ed0f73b233030e8fc3ff, commit: aacd7362462dfe56cb31af01d26f435ac61ab784}
-  - {version: 3, date: 2026-09-27, sha256: b4b0c5eadf2784f8b338a280c05efab10e4fa18b66a92c2671144f511044fd9f, commit: null}
+  - {version: 3, date: 2026-09-27, sha256: b4b0c5eadf2784f8b338a280c05efab10e4fa18b66a92c2671144f511044fd9f, commit: 14f3930127d05441020ecac4dffe3890f15351bc}

@@ -38,7 +38,7 @@ SILENT = {"O3"}
 NOTES = {"O3": "Nothing in the energy crisis turns on hydration.",
          "O10.1": "Its slow sustaining factors (weeks) are not modelled yet.",
          "O15": "Hundreds of sites, a few regions in each muscle (300 taken as representative); the active nidus is 1-2 mm (hubbard1993).",
-         "O8": "New knots after a release come from the taut band's load shifting to its neighbours: an extension of the account.",
+         "O8.1": "New knots after a release come from the taut band's load shifting to its neighbours: an extension of the account.",
          "O2.2": "Pressure release takes tens of seconds (60-90 s at the pressures used, pecosmartin2019), not one out-breath.",
          "O4.2": "Which endplates hold a knot is set more by their own activity than by where stress is held."}
 _CACHE: dict = {}
