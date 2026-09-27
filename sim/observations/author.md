@@ -13,3 +13,9 @@ discussion's table is in `sim/BRIEF.md`.
   your best judgment on what the observations should be."
 - 27 Sep 2026, asked whether a pressed knot lets go under the hand or as the hand eases off: "I never was that observant of
   exactly when it lets go so could be either."
+- 27 Sep 2026, asked what they meant by pressure around a released knot: "I mean just in general in the overall system I
+  notice when I release a knot it feels like that sometimes produces a rearrangement underneath and a new knot appears in
+  what seems like the same place. It feels like that. I don’t know what causes it. But it’s very noticeable."
+- 27 Sep 2026, asked whether a released knot comes back: "That’s what it seems like. Although it feels kind of like a knot
+  from somewhere else moved there. But it could be the same perforator for example. It’s a feeling of migrating into the
+  same or similar spot."

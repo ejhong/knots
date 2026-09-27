@@ -1,7 +1,7 @@
 # The exam: what people report about knots, as tests every theory sits (sim/PLAN.md §4).
 #
-# SEALED. Version 2, 27 Sep 2026. Version 1 (26 Sep 2026) was frozen before any sweep; version 2 changes one reading, at
-# the author's word, after version 1's results (see `changes`). It changes only by a new, dated version:
+# SEALED. Version 3, 27 Sep 2026. Version 1 (26 Sep 2026) was frozen before any sweep; versions 2 and 3 change it at the
+# author's word, after earlier results (see `changes`). It changes only by a new, dated version:
 # observations/seal.yaml records each version's SHA-256, and a test fails if this file differs from its seal. Every result
 # names the version it used. An observation says what happens, never how.
 #
@@ -11,12 +11,17 @@
 # sometimes off. Reports found only in the essays are listed under `set_aside`, unscored, until the author confirms them.
 # The author's lines are quoted under `words`. Evidence: S, self-report; M, measured in the literature.
 
-version: 2
+version: 3
 status: sealed
 sealed: 2026-09-27
 updated: 2026-09-27
 
 changes:  # each version's changes, newest first
+  - version: 3
+    date: 2026-09-27
+    items:
+      - "O8: the author describes a knot coming back to the spot a released one left: 'a rearrangement underneath and a new knot appears in what seems like the same place', 'a feeling of migrating into the same or similar spot', the same perforator or one from elsewhere, they cannot tell. O8 is scored in two parts: a new knot nearby (as before) and a knot back in the same or a similar spot, with a reading that counts every way it could happen. Made after version 2's results, and after the tree model's queue was on the site: any match is found after the fact."
+      - "It partly echoes a report set aside from the essays, 'released and then replaced, as if from a queue', now in the author's own words, without the paths to the skull; that report stays set aside."
   - version: 2
     date: 2026-09-27
     items:
@@ -116,11 +121,18 @@ observations:
   - id: O8
     group: clusters
     title: Migration
-    text: "When one knot lets go, others move in to fill the gap and settle into new places, as if the body were evening itself out."
+    text: "When one knot lets go, others move in to fill the gap and settle into new places, as if the body were evening itself out. Sometimes a rearrangement follows underneath and a knot appears in what seems the same place: one moved in from elsewhere, or the same one re-formed."
     evidence: S
     words:
       - quote: "When one knot lets go, others move in to fill the gap and settle into new places, as if the body were evening itself out."
         from: "the introduction, Observations"
+      - quote: "I notice when I release a knot it feels like that sometimes produces a rearrangement underneath and a new knot appears in what seems like the same place."
+        from: "the author, 27 Sep 2026"
+      - quote: "I don't know what causes it. But it's very noticeable."
+        from: "the author, 27 Sep 2026"
+      - quote: "Although it feels kind of like a knot from somewhere else moved there. But it could be the same perforator for example. It's a feeling of migrating into the same or similar spot."
+        from: "the author, 27 Sep 2026"
+    note: "Whether the knot back in the spot is the same one re-forming or another moving in is not known; the trials count either. Written down after the tree model's queue was on the site: its match, if any, is found after the fact."
   - id: O13
     group: clusters
     title: A parent releases its children
@@ -201,6 +213,8 @@ readings:
   - {words: "a single relaxing breath", reads: "one slow breath with a long out-breath, with no pressure and no focus on a place"}
   - {words: "within seconds", reads: "within 10 s, during the out-breath"}
   - {words: "press into a knot, breathe out slowly", reads: "a hand that holds through the out-breath, or one that eases off halfway through it: either counts (v2)"}
+  - {words: "a new knot appears in what seems like the same place", reads: "within 10 minutes of a knot letting go, a knot is held at its place: the same unit held again; a unit beneath it (a vessel's children, which a released parent can leave shut); or one of its immediate neighbours that was not held before (siblings on one feed, the adjacent units of a taut band, the eight places around it on a body map) (v3)"}
+  - {words: "sometimes", reads: "where it happens in the trial: not required every time (v3)"}
   - {words: "within a breath or two", reads: "by the end of the second breath"}
   - {words: "many breaths", reads: "from the third breath to the thirtieth"}
   - {words: "often", reads: "in at least half of the trials"}
