@@ -1,8 +1,9 @@
 # The exam: what people report about knots, as tests every theory sits (sim/PLAN.md §4).
 #
-# SEALED. Version 1, 26 Sep 2026, frozen before any sweep. It changes only by a new, dated version: observations/seal.yaml
-# records each version's SHA-256, and a test fails if this file differs from its seal. Every result names the version it
-# used. An observation says what happens, never how.
+# SEALED. Version 2, 27 Sep 2026. Version 1 (26 Sep 2026) was frozen before any sweep; version 2 changes one reading, at
+# the author's word, after version 1's results (see `changes`). It changes only by a new, dated version:
+# observations/seal.yaml records each version's SHA-256, and a test fails if this file differs from its seal. Every result
+# names the version it used. An observation says what happens, never how.
 #
 # The record is the author's own account: the Observations chapter of the site's introduction (src/data/tour.ts), its
 # chapters on the ladder and on age, and the author's messages (observations/author.md). The author asked that the wording
@@ -10,18 +11,27 @@
 # sometimes off. Reports found only in the essays are listed under `set_aside`, unscored, until the author confirms them.
 # The author's lines are quoted under `words`. Evidence: S, self-report; M, measured in the literature.
 
-version: 1
+version: 2
 status: sealed
-sealed: 2026-09-26
-updated: 2026-09-26
+sealed: 2026-09-27
+updated: 2026-09-27
 
-changes:  # from the draft of 26 Sep 2026
-  - "The introduction is the record: each observation takes its words, and the essays are no longer a source."
-  - "O2 is the introduction's: pressure and focused attention release knots one place at a time, and pressed, with a slow out-breath, a knot often lets go within seconds. The draft's 'pressure, then release, lets go faster than calm alone' was the vessel model's trial, not a report."
-  - "O2b (focus alone) is folded into O2, where the introduction puts attention: with pressure."
-  - "O16 is added from the introduction: some knots come and go with breath and mood."
-  - "O14 (clusters at the base of the skull; warmth from an old cluster) is set aside: it is only in the essays. Where knots gather is in O4."
-  - "The readings of the words and the scoring rules are fixed here, so that no reading can be stretched to fit a model."
+changes:  # each version's changes, newest first
+  - version: 2
+    date: 2026-09-27
+    items:
+      - "O2: asked whether a pressed knot lets go under the hand or as the hand eases off, the author could not say: 'I never was that observant of exactly when it lets go so could be either.' A reading now takes either. The first matrix read O2 with the hand still pressing (the harness's reading, stricter than the words), and no theory passed it; that result stays on record. Made after version 1's results, at the author's word."
+      - "An open question is added, not scored: does a pressed knot let go under the hand, or as it eases off? The theories split on it, and anyone pressing a knot can watch for it."
+  - version: 1
+    date: 2026-09-26
+    from: "the draft of 26 Sep 2026"
+    items:
+      - "The introduction is the record: each observation takes its words, and the essays are no longer a source."
+      - "O2 is the introduction's: pressure and focused attention release knots one place at a time, and pressed, with a slow out-breath, a knot often lets go within seconds. The draft's 'pressure, then release, lets go faster than calm alone' was the vessel model's trial, not a report."
+      - "O2b (focus alone) is folded into O2, where the introduction puts attention: with pressure."
+      - "O16 is added from the introduction: some knots come and go with breath and mood."
+      - "O14 (clusters at the base of the skull; warmth from an old cluster) is set aside: it is only in the essays. Where knots gather is in O4."
+      - "The readings of the words and the scoring rules are fixed here, so that no reading can be stretched to fit a model."
 
 groups:
   - {id: breath, label: "The breath and the hand"}
@@ -58,6 +68,9 @@ observations:
         from: "the introduction, Observations"
       - quote: "Pressure and focused attention — a foam roller, a patient hand — release knots one place at a time."
         from: "the introduction, Observations"
+      - quote: "I never was that observant of exactly when it lets go so could be either."
+        from: "the author, 27 Sep 2026, asked whether a pressed knot lets go under the hand or as it eases off"
+    note: "When exactly a pressed knot lets go, under the hand or as it eases off, was not watched for: either counts (a reading), and the question is open."
   - id: O3
     group: breath
     title: Water
@@ -176,11 +189,18 @@ set_aside:
   - "Fresh knots yield in a session; old ones take months."
   - "The knots go first: the fascia's separating cannot begin at a site until its knots are gone."
 
+# Questions the reports cannot answer yet, and that would tell the theories apart. Shown, not scored.
+open:
+  - id: Q1
+    question: "Pressed, with a slow out-breath, does a knot let go under the hand, or as the hand eases off?"
+    why: "The author was not watching for it (O2). The theories split: the harness reports when each lets a pressed knot go."
+
 # How the words are read when a trial is scored: fixed with the seal, so that no reading can be stretched to fit a model.
 readings:
   - {words: "a breath", reads: "one slow breath: 4 s in, 6 s out"}
   - {words: "a single relaxing breath", reads: "one slow breath with a long out-breath, with no pressure and no focus on a place"}
   - {words: "within seconds", reads: "within 10 s, during the out-breath"}
+  - {words: "press into a knot, breathe out slowly", reads: "a hand that holds through the out-breath, or one that eases off halfway through it: either counts (v2)"}
   - {words: "within a breath or two", reads: "by the end of the second breath"}
   - {words: "many breaths", reads: "from the third breath to the thirtieth"}
   - {words: "often", reads: "in at least half of the trials"}

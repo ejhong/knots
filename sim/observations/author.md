@@ -11,3 +11,5 @@ discussion's table is in `sim/BRIEF.md`.
 - 26 Sep 2026: "Clustering can be an observation - parent release many children. I’ve felt this."
 - 26 Sep 2026, on sealing: "Do inneed my own words? You have lots of my info. I think your judgment is best." Then: "But use
   your best judgment on what the observations should be."
+- 27 Sep 2026, asked whether a pressed knot lets go under the hand or as the hand eases off: "I never was that observant of
+  exactly when it lets go so could be either."
