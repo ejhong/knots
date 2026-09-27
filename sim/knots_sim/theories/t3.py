@@ -143,7 +143,7 @@ def single(ps: list[dict], variant: str, depths: tuple, protocol: Single) -> Sin
 
     def inputs(t, st):
         ds, strain = _breath(t, stretch, P, focus)
-        press = P["palpation"] if protocol.press and t < PRESS_FOR else np.zeros(M)
+        press = P["palpation"] if protocol.press and t < protocol.press_for else np.zeros(M)
         return P["hold"] + ds, strain + np.zeros(M), press, np.ones(M)
 
     r = tp.simulate(P, np.where(formed, a0, 0.0), inputs, protocol.breaths * PERIOD + WITHIN, dt=0.05, every=4,
@@ -152,7 +152,7 @@ def single(ps: list[dict], variant: str, depths: tuple, protocol: Single) -> Sin
     shape = (K, D)
     out = SingleOut(formed=formed.reshape(shape), rel_t=rel.reshape(shape),
                     during_out=np.where(np.isnan(rel), False, out_breath(np.nan_to_num(rel))).reshape(shape),
-                    pressed=(protocol.press & (np.nan_to_num(rel, nan=np.inf) < PRESS_FOR)).reshape(shape),
+                    pressed=(protocol.press & (np.nan_to_num(rel, nan=np.inf) < protocol.press_for)).reshape(shape),
                     spark_here=np.where(np.isnan(rel), np.nan, twitch).reshape(shape), spark_far=np.zeros(shape))
     _CACHE[key] = out
     return out
@@ -247,17 +247,19 @@ def patch(ps: list[dict], variant: str, protocol: Patch) -> PatchOut:
 
 
 def _work_first(P1, a0, st, coupling, K, V, variant, duration):
-    """Press and breathe at unit 0 of each group of V (with attention there) until it lets go; then keep breathing."""
+    """Press and breathe at unit 0 of each group of V (with attention there) until it lets go, for at most PRESS_FOR s
+    (the hand then lifts, as for every theory); keep breathing."""
     stretch = variant == "drive+stretch"
     n = K * V
     first = np.arange(K) * V
     released_at = np.full(K, np.nan)
 
     def inputs(t, st_):
-        live = np.zeros(n, bool)
-        live[first] = st_.c[first] > tp.HELD
-        for k in np.flatnonzero(np.isnan(released_at) & ~live[first]):
+        held = st_.c[first] > tp.HELD
+        for k in np.flatnonzero(np.isnan(released_at) & ~held):
             released_at[k] = t
+        live = np.zeros(n, bool)
+        live[first] = held & (t < PRESS_FOR)  # worked for a minute, then the hand lifts
         local = np.where(live, P1["focus_gain"], 1.0)
         ds, strain = _breath(t, stretch, P1, local)
         return P1["hold"] + ds, strain + np.zeros(n), np.where(live, P1["palpation"], 0.0), coupling(st_)
@@ -301,6 +303,7 @@ def cluster(ps: list[dict], variant: str) -> ClusterOut:
 
     r, rel_at = _work_first(P1, np.where(np.repeat(ok, V), a0, 0.0), tp.State(c=c0, e=e0, m=m0), coupling, K, V,
                             variant, 300.0 + 60.0)
+    ok_key = ok.copy()
     t, c = r["t"], r["c"]
     for k in np.flatnonzero(ok & ~np.isnan(rel_at)):
         sats = slice(k * V + 1, (k + 1) * V)
@@ -338,7 +341,7 @@ def cluster(ps: list[dict], variant: str) -> ClusterOut:
         rest = slice(k * V + 1, (k + 1) * V)
         later = c2[(t2 > rel2[k]) & (t2 <= rel2[k] + 600.0), rest] > tp.HELD
         new[k] = bool(later.any())
-    out = ClusterOut(with_=with_, new_nearby=new)
+    out = ClusterOut(with_=with_, new_nearby=new, tested_with=ok_key & ~np.isnan(rel_at), tested_new=ok & ~np.isnan(rel2))
     _CACHE[key] = out
     return out
 

@@ -90,6 +90,8 @@ def test_the_matrix_is_current_and_well_formed():
             assert 0 <= v["joint"] <= min(c for c in v["cells"].values() if not isinstance(c, str))
             if v["count"] is not None:
                 assert v["count"]["lo"] <= v["count"]["median"] <= v["count"]["hi"] <= v["count"]["units"]
+            for pid, share in v["tested"].items():  # a trial whose knot never formed and let go never ran
+                assert v["cells"][pid] in (exam.SILENT, exam.NOT_RUN) or (share or 0) > 0, (t["id"], v["name"], pid)
 
 
 def test_the_findings_note_names_the_matrix_run():

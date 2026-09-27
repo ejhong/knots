@@ -254,6 +254,20 @@
   "note": "Taut bands identified and quantified with magnetic resonance elastography."
  },
  {
+  "id": "christ1997",
+  "authors": "Christ F, Dellian M, Goetz AE et al.",
+  "year": 1997,
+  "title": "Changes in subcutaneous interstitial fluid pressure, tissue oxygenation, and skin red cell flux during venous congestion plethysmography in men",
+  "venue": "Microcirculation 4:75-81",
+  "url": "https://doi.org/10.3109/10739689709148319",
+  "pmid": "9110285",
+  "kind": "paper",
+  "tags": [
+   "vascular"
+  ],
+  "note": "Subcutaneous interstitial fluid pressure in the calf, -0.9 mmHg at rest, rose only to about 1.6 mmHg as venous congestion filled the tissue."
+ },
+ {
   "id": "clifford2006",
   "authors": "Clifford PS, Kluess HA, Hamann JJ et al.",
   "year": 2006,

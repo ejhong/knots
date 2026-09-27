@@ -114,15 +114,26 @@ proponents of each theory, and a lab.
    piercing is where those would concentrate. To be run as trials with the strain gain (M1).
 
 11. **Three theories through one exam** (matrix v1, `knots_sim/exam.py`, findings 004; T1 with four variants, T3 with two,
-   T6 with one; 32 settings each, all on the site at /research/#exam). No variant of any passes every part at once; none
-   forms a new knot nearby after a release (O8). Each leads somewhere different: T1 on an easy knot going on the out-breath
-   and a parent releasing its children, T3 on knots forming and letting go within a breath (with the breath's stretch), T6
-   on stress, where it is held, mood, and deep knots yielding to focus. The sharpest single test is the hand (O2.2): the
-   vessel lets go within a second of the hand lifting, never under it; perception's knots also go when the hand lifts; a
-   trigger point's pressure release takes tens of seconds. Whether a knot lets go under a held hand or as it lifts would
-   tell them apart; a question for the author. Perception releases on the in-breath (arsenault2013's measured analgesia),
-   against O1.1. Counts: T1 about 19,000 knots where it holds any (none in 47% of settings), T3 about 170 of its 300
-   sites, T6 no unit; practitioners report hundreds of thousands.
+   T6 with one; 32 settings each, on the site at /research/#exam; exam v2 since 27 Sep). No variant of any passes every
+   part at once. Each leads somewhere different: T1 on an easy knot going on the out-breath, a pressed knot letting go
+   within seconds (as the hand eases off) and a parent releasing its children; T3 on knots forming and letting go within
+   a breath (with the breath's stretch); T6 on stress, where it is held, mood, deep knots yielding to focus, and the only
+   one to make a new knot nearby after a release (O8, by masking lifting as the worked knot fades). The hand splits them
+   (Q1, open): the vessel lets go within a second of the hand lifting, never under it; perception's knots fade, if at
+   all, as the hand lifts; a trigger point goes under the hand after tens of seconds. The author could not say which
+   happens. Perception releases on the in-breath (arsenault2013's measured analgesia), against O1.1. Counts: T1 about
+   19,000 knots where it holds any (none in 47% of settings), T3 about 170 of its 300 sites, T6 no unit; practitioners
+   report hundreds of thousands. Two of the first run's zeros were trials that never ran (T1's O8, T6's O8 and O13);
+   every trial with a precondition now reports how often it ran, and a test fails if one never does.
+12. **Migration needs a push** (the author's question; `exploratory/2026-09-27-migration-pressure.py`). The first
+   matrix's sibling test put its knot on the thinnest wall, which cannot hold one, so the perforators' O8 never ran; fixed,
+   with every trial now reporting how often it ran. With the knot on the thickest sibling (formed and released in 10 of 32
+   settings), its release lowers the pressure its siblings share by 8 mmHg (median; 3–10), and no neighbour shuts. Pushing
+   on the neighbours from outside as the knot opens (the flush filling the tissue: the atlas's "positive pressure")
+   makes a new knot nearby at 10 mmHg in 2 of 10 settings, 20 mmHg in 5, 40 mmHg in all. Tissue pressure under the skin
+   rises only about 2.5 mmHg as it fills (christ1997), so in the vessel view migration needs neighbours already near their
+   edge, or a tight compartment under fascia. Not impossible: a stated condition, and a measurement (tissue pressure around
+   a released knot).
 
 **A hypothesis these suggest** (to be run through the same exam as everything else, not assumed). Knots form where drive is
 raised and the tissue is still. A shut vessel loses the pulse that stretches its wall with every heartbeat, and so may hold
@@ -275,7 +286,7 @@ matrix shows each variant's cells and its joint pass, and the best variant per p
 | O1.4 | Both patterns occur under the theory's breath variants: releases spread across regions (broad), and most in one region (focused) |
 | O1.5 | Under one way of breathing, some knots go by the end of the 2nd breath and others between the 3rd and the 30th |
 | O2.1 | Pressure (and attention) at one place in a patch: knots let go there, few elsewhere |
-| O2.2 | A held knot pressed (palpation pressure, not occlusion; a guessed range until measured), slow breathing: ≥ half of knots across depths let go during an out-breath [within 10 s] while still pressed. T1 today lets go when pressure lifts: scored as it is |
+| O2.2 | A held knot pressed (palpation pressure, not occlusion; a guessed range until measured), slow breathing: ≥ half of knots across depths let go during an out-breath [within 10 s], under a hand that holds or one that eases off halfway through the out-breath (exam v2: the author could not say which; v1's harness required the hand still pressing) |
 | O3 | Hydration eases or speeds release (most theories expected silent) |
 | O4.1 | Raised sustained drive: more held knots in a patch |
 | O4.2 | Held knots concentrate where drive or load is highest |
@@ -470,8 +481,11 @@ M5. The top-bar link comes when the author says (D2); the natural moment is matr
   `models/perception.py`, `theories/`), every theory through the sealed exam in 32 settings; the fairness corrections
   (§5b); counts; findings 004; the Research page's exam section, the verdicts rewritten from it, and each modelled card's
   exam line on Hypotheses (finding 11).
-- **Next, from the matrix:** ask the author whether a pressed knot lets go under the hand or as it lifts (O2.2 splits
-  the theories); T2 live and T4, T5 behind the same harness (matrix v2); per-cell drawers on the site (a passing and a
+- **Exam v2 (27 Sep):** asked whether a pressed knot lets go under the hand or as it eases off, the author could not say
+  ("could be either"); O2.2 takes either, and the timing is open question Q1, with each theory's prediction on the site.
+  The perforators' migration trial (O8) had never run (its knot sat on a wall that cannot hold one): fixed, and every trial
+  now reports how often it ran (finding 12).
+- **Next, from the matrix:** T2 live and T4, T5 behind the same harness (matrix v2); per-cell drawers on the site (a passing and a
   failing run, what decides it); the mechanics stage for O5 and O9, and ageing for T3; the base of the skull as a
   location test, once the author confirms it.
 - **Next, from finding 9:** the open vessel's missing loop (activation easing as the muscle adapts, or flow and metabolic

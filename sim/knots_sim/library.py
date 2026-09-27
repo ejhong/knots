@@ -122,6 +122,9 @@ NEW = [
      "Fifteen minutes of device-guided slow breathing (about 5.5 breaths a minute) lowered muscle sympathetic nerve activity by 8 bursts a minute; calm music lowered blood pressure but not sympathetic activity."),
     ("31436511", "adler2019", ["breath", "vascular"],
      "In young normotensive women and men, 15 minutes of slow breathing lowered muscle sympathetic burst incidence by 5 bursts per 100 heartbeats and blood pressure by 3 mmHg."),
+    # Migration: how far tissue pressure rises when blood volume does.
+    ("9110285", "christ1997", ["vascular"],
+     "Subcutaneous interstitial fluid pressure in the calf, -0.9 mmHg at rest, rose only to about 1.6 mmHg as venous congestion filled the tissue."),
     # T3, trigger points: how fast pressure releases one, and the twitch.
     ("31060367", "pecosmartin2019", ["trigger-points"],
      "Pressure release held on a latent trigger point for 60 or 90 s raised its pressure-pain threshold more than 30 s did."),

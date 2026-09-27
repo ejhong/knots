@@ -84,12 +84,13 @@ const partGroups = mx.parts.reduce<{ obs: string; parts: typeof mx.parts }[]>((a
   return acc;
 }, []);
 const nSets = mx.trials.samples;
-const cellText = (t: { name: string; samples: number; notes: Record<string, string> }, pid: string, says: string, c: Cell) => {
+const cellText = (t: { name: string; samples: number; notes: Record<string, string> }, pid: string, says: string, c: Cell, tested?: number | null) => {
   const note = t.notes[pid] ? ` ${t.notes[pid]}` : '';
   if (c === 'silent') return `${pid} ${says}: ${t.name} is silent: its account says nothing about this.${note}`;
   if (c === 'not run') return `${pid} ${says}: not run yet (it needs the mechanics or body stage).${note}`;
   const k = Math.round(c * t.samples);
-  return `${pid} ${says}: holds in ${k} of ${t.samples} plausible settings (${Math.round(100 * c)}%).${note}`;
+  const ran = tested === undefined || tested === null ? '' : ` The trial ran (its knot held, then let go) in ${Math.round(tested * t.samples)} of them.`;
+  return `${pid} ${says}: holds in ${k} of ${t.samples} plausible settings (${Math.round(100 * c)}%).${ran}${note}`;
 };
 const bestShare = (t: (typeof mx.theories)[number], pid: string) => {
   const vals = t.variants.map((v) => v.cells[pid]).filter((c): c is number => typeof c === 'number');
@@ -122,6 +123,19 @@ const bestOf = (id: string, pid: string) => {
   return t ? (bestShare(t, pid) ?? 0) : 0;
 };
 const o22best = Math.max(...mx.theories.map((t) => bestShare(t, 'O2.2') ?? 0));
+// The open question (Q1): when a pressed knot lets go, under the hand or as it eases off, per theory and variant.
+type Hand = { knots: number; under: number; lift: number; later: number; held: number; under_s: number | null };
+const handOf = (id: string, variant?: string) => {
+  const t = mxTheory(id);
+  const v = t?.variants.find((x) => !variant || x.name === variant) ?? t?.variants[0];
+  return (v as unknown as { hand: Hand } | undefined)?.hand;
+};
+const h1 = handOf('T1');
+const h3 = handOf('T3', 'drive');
+const h6 = handOf('T6');
+type Change = { version: number; date: string; items: string[] };
+const lastChange = ((exam as unknown as { changes: Change[] }).changes ?? [])[0];
+const openQs = ((exam as unknown as { open?: { id: string; question: string; why: string }[] }).open ?? []);
 // Where a theory leads: the parts in which its best share beats every other modelled theory's.
 const strengths = (id: string) =>
   mx.parts
@@ -270,12 +284,14 @@ const index = [
         of any produces every report at once{noneCan.length > 0 && <>, and none can {phrases(noneCan)}</>}. Each leads somewhere
         different: perforators are the likeliest {strengths('T1')}; trigger points, {strengths('T3')}; perception,{' '}
         {strengths('T6')}.</li>
-      <li><strong>The hand is the sharpest test so far.</strong> Pressed, with a slow out-breath, a knot often lets go within seconds,
-        under the hand (O2.2). No theory does it in more than {pct(o22best)} of its settings. The perforator switch lets go only as
-        the hand lifts: pressed, the vessel cannot open. Perception's knots too: a press is felt more, not less. A trigger point's
-        pressure release takes tens of seconds, as its own literature has it. Whether a knot lets go under a held hand or as the hand
-        lifts would tell them apart; if under the hand, within a breath, something the press itself undoes is missing from all
-        three.</li>
+      <li><strong>When a pressed knot lets go splits the theories.</strong> Pressed, with a slow out-breath, a knot often lets go within
+        seconds (O2); asked, the author could not say whether under the hand or as it eases off, so the exam takes either (v2) and
+        the question stays <a href="#open">open</a>. The theories part on exactly that. Held a minute and lifted, the perforator
+        switch lets {h1 ? pct(h1.lift) : '–'} of its pressed knots go within 5 s of the lift and {h1 ? pct(h1.under) : '–'} under the
+        hand: pressed, the vessel cannot open. Perception, {h6 ? pct(h6.lift) : '–'} as the hand lifts: a press is felt more, not
+        less. A trigger point, {h3 ? pct(h3.under) : '–'} under the hand{h3?.under_s ? <>, after {Math.round(h3.under_s)} s at the median</> : null}, its
+        pressure release taking tens of seconds, as its own literature has it. It is the cheapest observation that would tell them
+        apart.</li>
       <li><strong>A knot can be a small artery holding itself shut, but in healthy vessels only under strong, sustained tone.</strong> With measured wall
         strength and thickness, pressure and reflex timings, a small artery has two stable states over a band of tone, in {pct(r.share_bistable)} of{' '}
         {r.samples.toLocaleString('en-GB')} plausible settings: held until released, by mechanics alone. With the walls of healthy human small arteries the
@@ -340,6 +356,13 @@ const index = [
       <span class="seal-sealed">sealed · v{exam.seal.version} · {exam.seal.date}</span>
       <a class="seal-hash mono" href={`https://github.com/ejhong/knots/blob/${exam.seal.commit ?? 'main'}/sim/observations/spec.yaml`} title={`SHA-256 ${exam.seal.sha256}, sealed in commit ${exam.seal.commit ?? ''}`}>sha256 {exam.seal.sha256.slice(0, 12)}…</a>
     </p>
+    {
+      lastChange && lastChange.version > 1 && (
+        <p class="set-aside-sub">
+          <strong>Changed in v{lastChange.version}</strong> ({lastChange.date}): {lastChange.items[0]}
+        </p>
+      )
+    }
     <div class="obs-groups">
       {
         groups.map((g) => {
@@ -369,6 +392,44 @@ const index = [
       <p class="set-aside-sub">Reports that appear only in the essays, whose text was generated and is sometimes off, until the author confirms them:</p>
       <ul>{(exam.set_aside as string[]).map((x) => <li>{x}</li>)}</ul>
     </div>
+    {
+      openQs.length > 0 && (
+        <div class="set-aside" id="open">
+          <p class="obs-head">Open, not scored</p>
+          {openQs.map((q) => (
+            <p class="obs-text"><span class="oid mono">{q.id}</span> {q.question} <span class="set-aside-sub">{q.why}</span></p>
+          ))}
+          <div class="table-wrap hand-wrap">
+            <table class="hand">
+              <caption class="sr-only">When each theory lets a pressed knot go: a press held a minute, then lifted</caption>
+              <thead><tr><th scope="col">theory · variant</th><th scope="col">under the hand</th><th scope="col">as it lifts (5 s)</th><th scope="col">later</th><th scope="col">holds</th></tr></thead>
+              <tbody>
+                {
+                  mx.theories.flatMap((t) =>
+                    t.variants.map((v) => {
+                      const h = (v as unknown as { hand: Hand }).hand;
+                      return (
+                        <tr>
+                          <th scope="row">{t.name} <span class="mx-variant">{variantLabel(v.name)}</span></th>
+                          <td class="mono">{pct(h.under)}{h.under_s ? <span class="who">median {Math.round(h.under_s)} s</span> : null}</td>
+                          <td class="mono">{pct(h.lift)}</td>
+                          <td class="mono">{pct(h.later)}</td>
+                          <td class="mono">{pct(h.held)}</td>
+                        </tr>
+                      );
+                    }),
+                  )
+                }
+              </tbody>
+            </table>
+          </div>
+          <p class="set-aside-sub">
+            Shares of the knots each model holds, over its {nSets} settings and the knot depths, pressed for a minute with slow
+            breaths and then lifted. Generated with the matrix (below).
+          </p>
+        </div>
+      )
+    }
   </section>
 
   <section id="exam" class="sec full" data-glyph="試">
@@ -420,7 +481,7 @@ const index = [
                   </th>
                   {mx.parts.map((part) => {
                     const c = v.cells[part.id] as Cell;
-                    const text = cellText(t, part.id, part.says, c);
+                    const text = cellText(t, part.id, part.says, c, (v as unknown as { tested?: Record<string, number | null> }).tested?.[part.id]);
                     return (
                       <td class:list={['mx-cell', { 'mx-dim': typeof c !== 'number' }]} title={text}>
                         <Fragment set:html={cellMark(c)} />
@@ -953,6 +1014,17 @@ const index = [
     font-size: 12px;
     color: var(--muted);
     margin: 0 0 6px;
+  }
+  .hand-wrap {
+    max-width: 640px;
+    margin-top: 8px;
+  }
+  .hand th,
+  .hand td {
+    padding: 6px 10px;
+  }
+  .hand td {
+    font-size: 11px;
   }
   .set-aside ul {
     margin: 0;

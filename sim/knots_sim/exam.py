@@ -58,6 +58,7 @@ AGE_DEPTH = 0.3  # the knot that ages: a third of the way up its band
 SPARK = 0.05  # a sensation, on each theory's own 0-1 scale
 WITHIN = 10.0  # "within seconds" (the sealed reading): a spark counts if it comes within 10 s of the release
 PRESS_FOR = 60.0  # a press held for six breaths, then lifted
+EASE_AT = INHALE + (PERIOD - INHALE) / 2  # or a hand that eases off halfway through the first out-breath (reading, v2)
 SURGE = (5.0, 185.0)  # a surge of stress (1 in the shared unit), three minutes long, forms the knots
 T0 = SURGE[1] + 200.0  # then the holding stress, 200 s, before any trial starts
 PREP = BREATHS * PERIOD  # a local trial starts after 30 broad breaths
@@ -84,14 +85,15 @@ class Single:
     """One held knot, then slow breaths from t = 0 (starting with an in-breath)."""
 
     focus: bool = False  # focused attention, and the breath, at the knot's place
-    press: bool = False  # a hand or roller on the knot from t = 0 for PRESS_FOR s
+    press: bool = False  # a hand or roller on the knot from t = 0 for press_for s
     breaths: int = BREATHS
+    press_for: float = PRESS_FOR
 
 
 @dataclass
 class SingleOut:
     """Per parameter set and depth ([K, len(DEPTHS)]): whether the knot formed; when it let go (s from the first breath,
-    nan if it held); whether that was during an out-breath, and while still pressed; the strongest sensation at the knot
+    nan if it held); whether that was during an out-breath, and before the hand lifted; the strongest sensation at the knot
     within WITHIN s of its release, and at a distant place at the same time (nan where the theory has no sensation)."""
 
     formed: np.ndarray
@@ -203,6 +205,8 @@ def coming_and_going(t: np.ndarray, held: np.ndarray) -> tuple[np.ndarray, np.nd
 class ClusterOut:
     with_: np.ndarray  # per set: others that let go within 10 s of the worked knot
     new_nearby: np.ndarray  # per set: a new knot formed nearby within 10 min
+    tested_with: np.ndarray | None = None  # per set: the worked knot of the O13 trial held, and let go (the trial ran)
+    tested_new: np.ndarray | None = None  # the same for the O8 trial
 
 
 @dataclass
@@ -246,8 +250,8 @@ PARTS = (
          "let easy knots go in a breath or two and hard ones over many"),
     Part("O2.1", "O2", "Pressure and attention at one place let knots go there, few elsewhere",
          "release one place at a time under a hand"),
-    Part("O2.2", "O2", "Pressed, breathing slowly, at least half of knots let go during the first out-breath, still pressed",
-         "let a pressed knot go within the first out-breath, still pressed"),
+    Part("O2.2", "O2", "Pressed, with a slow out-breath, at least half of knots let go within seconds: under the hand or as it eases off",
+         "let a pressed knot go within seconds of breathing out"),
     Part("O3", "O3", "Drinking water eases release, and speeds it", "answer to water"),
     Part("O4.1", "O4", "More stress holds more knots", "hold more knots under more stress"),
     Part("O4.2", "O4", "Knots gather where stress is held", "gather knots where stress is held"),
@@ -275,17 +279,23 @@ def _count(rel: np.ndarray, lo: float, hi: float) -> int:
     return int(((rel >= lo) & (rel < hi)).sum())
 
 
-def _single_parts(s: SingleOut, focused: SingleOut, pressed: SingleOut) -> dict[str, np.ndarray]:
+def _within_seconds(pressed: SingleOut) -> np.ndarray:
+    """Per set: at least half of the knots let go within 10 s of the out-breath's start, during it (O2's readings)."""
+    first_out = (pressed.rel_t >= INHALE) & (pressed.rel_t < INHALE + 10.0) & pressed.during_out
+    n = pressed.formed.sum(axis=1)
+    return (np.where(pressed.formed, first_out, False).sum(axis=1) >= 0.5 * n) & (n > 0)
+
+
+def _single_parts(s: SingleOut, focused: SingleOut, held: SingleOut, eased: SingleOut) -> dict[str, np.ndarray]:
     d = np.array(DEPTHS)
     released = ~np.isnan(s.rel_t)
     deep = d >= DEEP
-    first_out = (pressed.rel_t >= INHALE) & (pressed.rel_t < INHALE + 10.0) & pressed.during_out & pressed.pressed
     spark = released & (s.spark_here >= SPARK) & ~(s.spark_far >= SPARK / 2)
     return {
         "O1.1": s.formed[:, 0] & released[:, 0] & s.during_out[:, 0],
         "O1.3": (s.formed[:, deep] & ~released[:, deep]).all(axis=1) & (~np.isnan(focused.rel_t[:, deep])).any(axis=1),
-        "O2.2": (np.where(pressed.formed, first_out, False).sum(axis=1) >= 0.5 * pressed.formed.sum(axis=1))
-        & (pressed.formed.sum(axis=1) > 0),
+        # a hand that holds, or one that eases off halfway through the out-breath: either counts (v2)
+        "O2.2": _within_seconds(held) | _within_seconds(eased),
         "O6": np.where(np.isnan(s.spark_here).all(axis=1), False, spark.any(axis=1) & (spark | ~released).all(axis=1)),
     }
 
@@ -315,19 +325,21 @@ def _patch_parts(p: dict[str, PatchOut]) -> dict[str, np.ndarray]:
     return {k: np.array(v) for k, v in out.items()}
 
 
-def score_variant(theory, ps: list[dict], variant: str) -> dict[str, np.ndarray | str]:
-    """Every part for one variant: a pass per parameter set, or SILENT or NOT_RUN."""
+def score_variant(theory, ps: list[dict], variant: str, meta: dict | None = None) -> dict[str, np.ndarray | str]:
+    """Every part for one variant: a pass per parameter set, or SILENT or NOT_RUN. `meta`, if given, receives per set
+    whether each trial with a precondition ran at all (its knot formed and let go)."""
     cells: dict[str, np.ndarray | str] = {}
     s = theory.single(ps, variant, DEPTHS, Single())
     f = theory.single(ps, variant, DEPTHS, Single(focus=True))
-    pr = theory.single(ps, variant, DEPTHS, Single(press=True, breaths=int(PRESS_FOR / PERIOD)))
-    cells |= _single_parts(s, f, pr)
+    cells |= _single_parts(s, f, theory.single(ps, variant, DEPTHS, HELD), theory.single(ps, variant, DEPTHS, EASED))
     kinds = {"one_breath": Patch("one_breath"), "broad": Patch("broad"), "focused": Patch("focused"),
              "press": Patch("press"), "mood": Patch("mood"),
              **{f"hold{x}": Patch("hold", float(x)) for x in ("0.6", "1.0", "1.4")}}
     cells |= _patch_parts({k: theory.patch(ps, variant, pr_) for k, pr_ in kinds.items()})
     c = theory.cluster(ps, variant)
     cells["O8"], cells["O13"] = c.new_nearby, c.with_ >= 3
+    if meta is not None:
+        meta["tested"] = {"O8": c.tested_new, "O13": c.tested_with}
     age = theory.ageing(ps, variant)
     cells["O10.1"] = NOT_RUN if age is None else age.brief_released & age.long_persists
     d = theory.density()
@@ -338,6 +350,23 @@ def score_variant(theory, ps: list[dict], variant: str) -> dict[str, np.ndarray 
         cells[pid] = SILENT
     cells.setdefault("O3", SILENT)
     return cells
+
+
+HELD = Single(press=True, breaths=9)  # held PRESS_FOR s, lifted, then 30 s more
+EASED = Single(press=True, breaths=2, press_for=EASE_AT)
+
+
+def hand(theory, ps: list[dict], variant: str) -> dict:
+    """The open question (Q1): when a knot pressed for PRESS_FOR s, then lifted, lets go. Shares of the knots formed,
+    over all settings and depths: under the hand; within 5 s of the lift; later; not within 30 s of it."""
+    h = theory.single(ps, variant, DEPTHS, HELD)
+    r = h.rel_t[h.formed]
+    n = max(len(r), 1)
+    lifted = (r >= PRESS_FOR) & (r < PRESS_FOR + 5.0)
+    return {"knots": int(len(r)), "under": round(float((r < PRESS_FOR).sum() / n), 3),
+            "lift": round(float(lifted.sum() / n), 3), "later": round(float((r >= PRESS_FOR + 5.0).sum() / n), 3),
+            "held": round(float(np.isnan(r).sum() / n), 3),
+            "under_s": round(float(np.median(r[r < PRESS_FOR])), 1) if (r < PRESS_FOR).any() else None}
 
 
 def count(theory, ps: list[dict], variant: str) -> dict | None:
@@ -364,7 +393,8 @@ def run_variant(name: str, variant: str, k: int = K, seed: int = SEED) -> dict:
     """One variant of one theory through every part: its cells, joint pass and count."""
     theory = _theory(name)
     ps = theory.sample(k, seed)
-    cells = score_variant(theory, ps, variant)
+    meta: dict = {}
+    cells = score_variant(theory, ps, variant, meta)
     scored = [v for v in cells.values() if not isinstance(v, str)]
     joint = np.all(np.array(scored), axis=0) if scored else np.zeros(len(ps), bool)
     return {
@@ -374,6 +404,9 @@ def run_variant(name: str, variant: str, k: int = K, seed: int = SEED) -> dict:
         "joint": round(float(joint.mean()), 3),
         "passes": {p.id: cells[p.id].astype(int).tolist() for p in PARTS if not isinstance(cells[p.id], str)},
         "count": count(theory, ps, variant),
+        "hand": hand(theory, ps, variant),
+        # in how many settings a trial with a precondition ran at all (its knot formed and let go)
+        "tested": {pid: None if x is None else round(float(np.mean(x)), 3) for pid, x in meta["tested"].items()},
     }
 
 
@@ -391,10 +424,11 @@ def _job(args) -> dict:
 
 def inputs_hash() -> str:
     """A hash of everything the exam depends on: the harness, the theories and their models, the parameter tables and
-    the sealed exam. matrix.json carries it; a test fails when it is stale."""
+    the exam itself. matrix.json carries it; a test fails when it is stale. The seal file is left out: it only records
+    the exam's hash and commit, and `sealed()` refuses to run an exam that differs from its seal."""
     pkg = SIM / "knots_sim"
     files = [pkg / "exam.py", pkg / "adapt.py", pkg / "params.py", *(pkg / "theories").glob("*.py"),
-             *(pkg / "models").glob("*.py"), *(SIM / "params").glob("*.yaml"), SPEC, SEAL]
+             *(pkg / "models").glob("*.py"), *(SIM / "params").glob("*.yaml"), SPEC]
     h = hashlib.sha256()
     for f in sorted(files):
         h.update(f.relative_to(SIM).as_posix().encode())
@@ -421,7 +455,7 @@ def main(workers: int = 4) -> dict:
         "run": {"inputs": inputs_hash(), **_git()},
         "exam": {"version": spec["version"], "sealed": str(spec["sealed"]), "sha256": spec["seal"]["sha256"]},
         "trials": {"surge_s": SURGE[1] - SURGE[0], "settle_s": T0 - SURGE[1], "breath_s": [INHALE, PERIOD - INHALE],
-                   "breaths": BREATHS, "press_s": PRESS_FOR, "hold_s": HOLD_FOR, "mood_s": MOOD_FOR,
+                   "breaths": BREATHS, "press_s": PRESS_FOR, "ease_s": EASE_AT, "hold_s": HOLD_FOR, "mood_s": MOOD_FOR,
                    "depths": list(DEPTHS), "patch": PATCH["n"],
                    "samples": K, "seed": SEED},
         "parts": [{"id": p.id, "obs": p.obs, "says": p.says, "short": p.short} for p in PARTS],

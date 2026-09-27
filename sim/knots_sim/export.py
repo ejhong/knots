@@ -175,7 +175,7 @@ def main() -> dict:
     seal = yaml.safe_load((SIM / "observations" / "seal.yaml").read_text())["seals"][-1]
     exam["seal"] = {"version": seal["version"], "date": str(seal["date"]), "sha256": seal["sha256"],
                     "commit": seal.get("commit")}
-    (SITE_DATA / "exam.json").write_text(json.dumps(exam, ensure_ascii=False, indent=1) + "\n")
+    (SITE_DATA / "exam.json").write_text(json.dumps(exam, ensure_ascii=False, indent=1, default=str) + "\n")
 
     # Length adaptation: its own file, stamped with the same run.
     adapted = _round({"run": data["run"], "params": param_table("adapt", {"adapt_share": adapt.params(fitted=False)["adapt_share"]}),

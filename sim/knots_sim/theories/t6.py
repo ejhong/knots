@@ -32,7 +32,7 @@ NOTES = {"O3": "Nothing in the account turns on hydration.",
          "O15": "The account has no unit to count: knots are places made tender, as many as the body map resolves.",
          "O6": "Its tingling comes from overbreathing, in the hands, face and trunk at once (macefield1991), not at a release.",
          "O1.1": "Its easy knots fade on the in-breath, when pain is felt less (arsenault2013), not on the out-breath.",
-         "O2.2": "A press adds input and draws attention, so a pressed knot is felt more: it fades when the hand lifts, not under it."}
+         "O2.2": "A press adds input and draws attention, so a pressed knot is felt more: it fades, if at all, when the hand lifts, not under it."}
 _CACHE: dict = {}
 
 
@@ -86,7 +86,7 @@ def single(ps: list[dict], variant: str, depths: tuple, protocol: Single) -> Sin
     duration = protocol.breaths * PERIOD
 
     def inputs(t, st_):
-        pressing = protocol.press and t < PRESS_FOR
+        pressing = protocol.press and t < protocol.press_for
         return (s_h - calm(t, P["breath_calm"], P["tau_calm"]), True, (np.ones(M) if pressing else att),
                 (P["palpation"] if pressing else np.zeros(M)))
 
@@ -100,7 +100,7 @@ def single(ps: list[dict], variant: str, depths: tuple, protocol: Single) -> Sin
     shape = (K, D)
     out = SingleOut(formed=formed.reshape(shape), rel_t=rel.reshape(shape),
                     during_out=np.where(np.isnan(rel), False, out_breath(np.nan_to_num(rel))).reshape(shape),
-                    pressed=(protocol.press & (np.nan_to_num(rel, nan=np.inf) < PRESS_FOR)).reshape(shape),
+                    pressed=(protocol.press & (np.nan_to_num(rel, nan=np.inf) < protocol.press_for)).reshape(shape),
                     spark_here=np.zeros(shape), spark_far=np.zeros(shape))
     _CACHE[key] = out
     return out
@@ -210,7 +210,7 @@ def cluster(ps: list[dict], variant: str) -> ClusterOut:
     released_at = np.full(K, np.nan)
 
     def inputs(t, st_):
-        live = work & st_.h
+        live = work & st_.h & (t < PRESS_FOR)  # worked for a minute, then the hand lifts
         for k in np.flatnonzero((target >= 0) & np.isnan(released_at)):
             if not st_.h[target[k]]:
                 released_at[k] = t
@@ -235,7 +235,8 @@ def cluster(ps: list[dict], variant: str) -> ClusterOut:
         before = h[np.searchsorted(t, t_rel) - 1, sl]
         after = h[(t > t_rel) & (t <= t_rel + 600.0), sl]
         new[k] = bool((close & ~before & after.any(axis=0)).any())
-    out = ClusterOut(with_=with_, new_nearby=new)
+    ran = (target >= 0) & ~np.isnan(released_at)
+    out = ClusterOut(with_=with_, new_nearby=new, tested_with=ran, tested_new=ran)
     _CACHE[key] = out
     return out
 

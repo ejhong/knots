@@ -398,6 +398,11 @@ true.
     lines.append("- **How many.** " + "; ".join(many(t, c) for t, c in counts)
                  + ". Practitioners who count report hundreds of thousands.")
 
+    lines.append("- **The hand (open, Q1).** Pressed, with a slow out-breath, a knot often lets go within seconds; the author could"
+                 " not say whether under the hand or as it eases off, so the exam takes either (v2). The theories split on it: "
+                 + "; ".join(f"{t['name']} lets {_share(t['variants'][0]['hand']['under'])} go under the hand and"
+                             f" {_share(t['variants'][0]['hand']['lift'])} as it lifts" for t in th) + ".")
+
     cols = [(t, v) for t in th for v in t["variants"]]
     lines.append("\n## The matrix\n")
     lines.append("| part | " + " | ".join(f"{t['id']} {v['name']}" for t, v in cols) + " |")
@@ -419,6 +424,21 @@ true.
         else:
             lines.append(f"| {t['name']} | none: {t['notes'].get('O15', 'no unit')} | | | | |")
 
+    lines.append("\n## When a pressed knot lets go (Q1, open)\n")
+    lines.append("A press held a minute with slow breaths, then lifted: the share of each model's knots (over its settings and"
+                 " the knot depths) that let go under the hand, within 5 s of the lift, later, or not within 30 s. The reports"
+                 " cannot say which happens; it is the cheapest observation that would tell the theories apart.\n")
+    lines.append("| theory · variant | knots | under the hand | as it lifts | later | holds | median time under the hand |")
+    lines.append("|---|---:|---:|---:|---:|---:|---:|")
+    for t, v in cols:
+        h = v["hand"]
+        when = "–" if h["under_s"] is None else f"{h['under_s']:.0f} s"
+        lines.append(f"| {t['id']} {v['name']} | {h['knots']} | {_share(h['under'])} | {_share(h['lift'])} | {_share(h['later'])} |"
+                     f" {_share(h['held'])} | {when} |")
+    lines.append("\nThe exam's first version was scored with the hand still pressing (the harness's reading of O2, stricter than its"
+                 " words), and no theory passed it (findings 004 at commit c4cd6f9); version 2 takes a hand that holds or one that"
+                 " eases off halfway through the out-breath.")
+
     lines.append("\n## Each theory\n")
     for t in th:
         b = {p["id"]: best(t, p["id"]) for p in parts}
@@ -436,6 +456,21 @@ true.
         for pid, note in t["notes"].items():
             lines.append(f"- {pid}: {note}")
         lines.append("")
+
+    lines.append("## Corrections since the first run (26 Sep 2026)\n")
+    lines.append("- *O8 for the perforators never ran.* Its sibling test put the knot to be released on the thinnest wall, which"
+                 " cannot hold one, so its zeros said nothing. Found on the author's question about migration (27 Sep 2026); the"
+                 " knot is now the thickest-walled sibling, as in the parent test, and every trial with a precondition reports"
+                 " in how many settings it ran (a test fails if one never does).")
+    lines.append("- *Perception's cluster trials (O8, O13) never ran either.* Its worked knot was pressed until it let go, and a"
+                 " press makes a knot felt more, so it never did. Every theory's knot is now worked for a minute (press,"
+                 " attention, slow breaths) and then the hand lifts; the check that each trial ran caught it.")
+    lines.append("- *O2.2 read the hand as still pressing*, stricter than the words; the author could not say which, and exam v2"
+                 " takes either.\n")
+    tested = [(t, v, pid, share) for t in th for v in t["variants"] for pid, share in v.get("tested", {}).items()]
+    if tested:
+        lines.append("Trials that ran, per theory and variant: " + "; ".join(
+            f"{t['id']} {v['name']} {pid} in {round((share or 0) * n)} of {n}" for t, v, pid, share in tested) + ".\n")
 
     lines.append("## How the trials were made fair\n")
     lines.append("Found by running the first three theories; each applies to every theory, the ones not yet built included, and"

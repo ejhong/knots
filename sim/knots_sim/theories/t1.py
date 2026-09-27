@@ -43,7 +43,7 @@ NOTES = {"O3": "Nothing in the vessel switch turns on hydration.",
          "O15": "Small vessels rise to the skin one every 4-5 mm, on the order of 100,000 (taylor1987, saintcyr2009).",
          "O1.3": "Through drive alone the breath is not local, so focusing it changes nothing; through movement, focus concentrates the movement at the place.",
          "O2.2": "Pressed, the vessel is squeezed and cannot open: it lets go within a second of the hand lifting, not under it.",
-         "O8": "Siblings on one feed protect each other: each closure raises the pressure holding the others open, so a release does not shut a neighbour (findings 002).",
+         "O8": "A release lowers the pressure its siblings share, by several mmHg, but not enough to shut one; a neighbour shuts only if something else pushes on it by 10 mmHg or more (exploratory/2026-09-27-migration-pressure.py), where tissue pressure under the skin rises only a few mmHg as it fills (christ1997).",
          "O10.1": "Without adaptation nothing remembers how long a knot was held; with it, a knot held for hours can set and hold at rest (findings 003)."}
 SHUT = 1.5
 VARY = ("Tmax", "r100", "P", "xopt", "beta", "width", "wall", "xc")
@@ -150,7 +150,7 @@ def single(ps: list[dict], variant: str, depths: tuple, protocol: Single) -> Sin
             return hold, zeros, zeros
         du, mv = _breath(t - T0, drive, move, fall, in_share, strain * focus, calm_by, calm_tau)
         pe = zeros
-        if protocol.press and t - T0 < PRESS_FOR:
+        if protocol.press and t - T0 < protocol.press_for:
             pe, mv = palp, np.maximum(mv, press_strain)
         return np.clip(hold + du, 0, 1), pe, np.clip(mv + zeros, 0, 1)
 
@@ -170,7 +170,7 @@ def single(ps: list[dict], variant: str, depths: tuple, protocol: Single) -> Sin
     shape = (K, D)
     out = SingleOut(formed=formed.reshape(shape), rel_t=rel.reshape(shape),
                     during_out=np.where(np.isnan(rel), False, out_breath(np.nan_to_num(rel))).reshape(shape),
-                    pressed=(protocol.press & (np.nan_to_num(rel, nan=np.inf) < PRESS_FOR)).reshape(shape),
+                    pressed=(protocol.press & (np.nan_to_num(rel, nan=np.inf) < protocol.press_for)).reshape(shape),
                     spark_here=here.reshape(shape), spark_far=np.zeros(shape))
     _CACHE[key] = out
     return out
@@ -356,31 +356,38 @@ def cluster(ps: list[dict], variant: str) -> ClusterOut:
     t = r["t"]
     before = s[np.searchsorted(t, press[0]) - 1]
     with_ = np.zeros(K, int)
+    tested_with = np.zeros(K, bool)
     for k in range(K):
         if not before[k, 0]:
             continue
         opened = np.flatnonzero((t >= press[0]) & ~s[:, k, 0])
         if not len(opened):
             continue
+        tested_with[k] = True
         t_open = t[opened[0]]
         win = s[(t >= t_open) & (t <= t_open + 10.0), k, 1:]
         with_[k] = int((before[k, 1:] & ~win[-1]).sum())
-    # Siblings on a feed: release one; does a neighbour shut within 10 minutes?
+    # Siblings on a feed: release one; does a neighbour shut within 10 minutes? The knot is the thickest-walled sibling
+    # (0.30, as for the parent), the one most able to hold; the rest are its neighbours.
     sib = _trees(ps, np.array([0.30] + list(np.linspace(*wall_range, 6))), rigid=True)
-    r2 = run_tree(sib, 1, press[1] + 600.0)
+    knot = sib["V"] - 1
+    near = list(range(1, knot))
+    r2 = run_tree(sib, knot, press[1] + 600.0)
     s2 = r2["x"] < SHUT * sib["xc"][None]
     t2 = r2["t"]
     before2 = s2[np.searchsorted(t2, press[0]) - 1]
     new = np.zeros(K, bool)
+    tested_new = np.zeros(K, bool)
     for k in range(K):
-        if not before2[k, 1]:
+        if not before2[k, knot]:
             continue
-        opened = np.flatnonzero((t2 >= press[0]) & ~s2[:, k, 1])
+        opened = np.flatnonzero((t2 >= press[0]) & ~s2[:, k, knot])
         if not len(opened):
             continue
-        later = s2[t2 >= t2[opened[0]], k, 2:]
-        new[k] = bool((~before2[k, 2:] & later.any(axis=0)).any())
-    out = ClusterOut(with_=with_, new_nearby=new)
+        tested_new[k] = True
+        later = s2[t2 >= t2[opened[0]], k][:, near]
+        new[k] = bool((~before2[k, near] & later.any(axis=0)).any())
+    out = ClusterOut(with_=with_, new_nearby=new, tested_with=tested_with, tested_new=tested_new)
     _CACHE[key] = out
     return out
 

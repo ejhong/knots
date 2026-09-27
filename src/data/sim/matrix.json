@@ -1,13 +1,13 @@
 {
  "run": {
-  "inputs": "cdf68f018123",
-  "commit": "e0ec2ea",
+  "inputs": "8099f705a0e9",
+  "commit": "aacd736",
   "dirty": true
  },
  "exam": {
-  "version": 1,
-  "sealed": "2026-09-26",
-  "sha256": "5f81bbfc69cebdcf061e1689c4a1e1a37f41c0189323942c1a418cca9344701a"
+  "version": 2,
+  "sealed": "2026-09-27",
+  "sha256": "d692ade4e198388ba5f478d15e6a18527cd810ab49d1ed0f73b233030e8fc3ff"
  },
  "trials": {
   "surge_s": 180.0,
@@ -18,6 +18,7 @@
   ],
   "breaths": 30,
   "press_s": 60.0,
+  "ease_s": 7.0,
   "hold_s": 1800.0,
   "mood_s": 3600.0,
   "depths": [
@@ -73,8 +74,8 @@
   {
    "id": "O2.2",
    "obs": "O2",
-   "says": "Pressed, breathing slowly, at least half of knots let go during the first out-breath, still pressed",
-   "short": "let a pressed knot go within the first out-breath, still pressed"
+   "says": "Pressed, with a slow out-breath, at least half of knots let go within seconds: under the hand or as it eases off",
+   "short": "let a pressed knot go within seconds of breathing out"
   },
   {
    "id": "O3",
@@ -171,7 +172,7 @@
       "O1.4": 0.0,
       "O1.5": 0.094,
       "O2.1": 0.25,
-      "O2.2": 0.0,
+      "O2.2": 0.406,
       "O3": "silent",
       "O4.1": 0.5,
       "O4.2": 0.469,
@@ -394,37 +395,37 @@
       ],
       "O2.2": [
        0,
+       1,
+       1,
        0,
        0,
        0,
        0,
+       1,
+       1,
        0,
        0,
        0,
        0,
+       1,
+       1,
+       0,
+       1,
+       1,
+       0,
+       1,
        0,
        0,
        0,
+       1,
+       0,
+       1,
        0,
        0,
+       1,
        0,
        0,
-       0,
-       0,
-       0,
-       0,
-       0,
-       0,
-       0,
-       0,
-       0,
-       0,
-       0,
-       0,
-       0,
-       0,
-       0,
-       0
+       1
       ],
       "O4.1": [
        0,
@@ -743,6 +744,18 @@
       "share": 0.016,
       "none": 0.469,
       "median_any": 18750
+     },
+     "hand": {
+      "knots": 119,
+      "under": 0.0,
+      "lift": 0.975,
+      "later": 0.008,
+      "held": 0.017,
+      "under_s": null
+     },
+     "tested": {
+      "O8": 0.312,
+      "O13": 0.375
      }
     },
     {
@@ -755,7 +768,7 @@
       "O1.4": 0.031,
       "O1.5": 0.188,
       "O2.1": 0.188,
-      "O2.2": 0.0,
+      "O2.2": 0.375,
       "O3": "silent",
       "O4.1": 0.5,
       "O4.2": 0.469,
@@ -978,34 +991,34 @@
       ],
       "O2.2": [
        0,
+       1,
+       1,
        0,
        0,
        0,
        0,
+       1,
+       1,
        0,
        0,
        0,
        0,
+       1,
+       1,
+       0,
+       1,
+       1,
+       0,
+       1,
        0,
        0,
        0,
+       1,
+       0,
+       1,
        0,
        0,
-       0,
-       0,
-       0,
-       0,
-       0,
-       0,
-       0,
-       0,
-       0,
-       0,
-       0,
-       0,
-       0,
-       0,
-       0,
+       1,
        0,
        0,
        0
@@ -1327,6 +1340,18 @@
       "share": 0.016,
       "none": 0.469,
       "median_any": 18750
+     },
+     "hand": {
+      "knots": 119,
+      "under": 0.0,
+      "lift": 0.975,
+      "later": 0.0,
+      "held": 0.025,
+      "under_s": null
+     },
+     "tested": {
+      "O8": 0.344,
+      "O13": 0.406
      }
     },
     {
@@ -1339,7 +1364,7 @@
       "O1.4": 0.031,
       "O1.5": 0.25,
       "O2.1": 0.156,
-      "O2.2": 0.0,
+      "O2.2": 0.406,
       "O3": "silent",
       "O4.1": 0.5,
       "O4.2": 0.469,
@@ -1562,37 +1587,37 @@
       ],
       "O2.2": [
        0,
+       1,
+       1,
        0,
        0,
        0,
        0,
+       1,
+       1,
        0,
        0,
        0,
        0,
+       1,
+       1,
+       0,
+       1,
+       1,
+       0,
+       1,
        0,
        0,
        0,
+       1,
+       0,
+       1,
        0,
        0,
+       1,
        0,
        0,
-       0,
-       0,
-       0,
-       0,
-       0,
-       0,
-       0,
-       0,
-       0,
-       0,
-       0,
-       0,
-       0,
-       0,
-       0,
-       0
+       1
       ],
       "O4.1": [
        0,
@@ -1911,6 +1936,18 @@
       "share": 0.016,
       "none": 0.469,
       "median_any": 18750
+     },
+     "hand": {
+      "knots": 119,
+      "under": 0.0,
+      "lift": 0.983,
+      "later": 0.0,
+      "held": 0.017,
+      "under_s": null
+     },
+     "tested": {
+      "O8": 0.344,
+      "O13": 0.438
      }
     },
     {
@@ -1923,7 +1960,7 @@
       "O1.4": 0.031,
       "O1.5": 0.25,
       "O2.1": 0.156,
-      "O2.2": 0.0,
+      "O2.2": 0.406,
       "O3": "silent",
       "O4.1": 0.5,
       "O4.2": 0.469,
@@ -2146,37 +2183,37 @@
       ],
       "O2.2": [
        0,
+       1,
+       1,
        0,
        0,
        0,
        0,
+       1,
+       1,
        0,
        0,
        0,
        0,
+       1,
+       1,
+       0,
+       1,
+       1,
+       0,
+       1,
        0,
        0,
        0,
+       1,
+       0,
+       1,
        0,
        0,
+       1,
        0,
        0,
-       0,
-       0,
-       0,
-       0,
-       0,
-       0,
-       0,
-       0,
-       0,
-       0,
-       0,
-       0,
-       0,
-       0,
-       0,
-       0
+       1
       ],
       "O4.1": [
        0,
@@ -2495,6 +2532,18 @@
       "share": 0.016,
       "none": 0.469,
       "median_any": 18750
+     },
+     "hand": {
+      "knots": 119,
+      "under": 0.0,
+      "lift": 0.983,
+      "later": 0.0,
+      "held": 0.017,
+      "under_s": null
+     },
+     "tested": {
+      "O8": 0.344,
+      "O13": 0.438
      }
     }
    ],
@@ -2503,7 +2552,7 @@
     "O15": "Small vessels rise to the skin one every 4-5 mm, on the order of 100,000 (taylor1987, saintcyr2009).",
     "O1.3": "Through drive alone the breath is not local, so focusing it changes nothing; through movement, focus concentrates the movement at the place.",
     "O2.2": "Pressed, the vessel is squeezed and cannot open: it lets go within a second of the hand lifting, not under it.",
-    "O8": "Siblings on one feed protect each other: each closure raises the pressure holding the others open, so a release does not shut a neighbour (findings 002).",
+    "O8": "A release lowers the pressure its siblings share, by several mmHg, but not enough to shut one; a neighbour shuts only if something else pushes on it by 10 mmHg or more (exploratory/2026-09-27-migration-pressure.py), where tissue pressure under the skin rises only a few mmHg as it fills (christ1997).",
     "O10.1": "Without adaptation nothing remembers how long a knot was held; with it, a knot held for hours can set and hold at rest (findings 003)."
    }
   },
@@ -3060,6 +3109,18 @@
       "share": 0.516,
       "none": 0.312,
       "median_any": 171
+     },
+     "hand": {
+      "knots": 154,
+      "under": 0.656,
+      "lift": 0.065,
+      "later": 0.123,
+      "held": 0.156,
+      "under_s": 36.6
+     },
+     "tested": {
+      "O8": 0.688,
+      "O13": 0.688
      }
     },
     {
@@ -3610,6 +3671,18 @@
       "share": 0.516,
       "none": 0.312,
       "median_any": 171
+     },
+     "hand": {
+      "knots": 154,
+      "under": 0.916,
+      "lift": 0.019,
+      "later": 0.013,
+      "held": 0.052,
+      "under_s": 16.6
+     },
+     "tested": {
+      "O8": 0.688,
+      "O13": 0.688
      }
     }
    ],
@@ -3645,8 +3718,8 @@
       "O16.2": 0.094,
       "O5": "not run",
       "O6": 0.0,
-      "O8": 0.0,
-      "O13": 0.0,
+      "O8": 0.156,
+      "O13": 0.344,
       "O15": "silent",
       "O9": "not run",
       "O10.1": 0.219,
@@ -4066,6 +4139,16 @@
        0,
        0,
        0,
+       1,
+       0,
+       0,
+       0,
+       1,
+       0,
+       0,
+       0,
+       1,
+       1,
        0,
        0,
        0,
@@ -4075,17 +4158,7 @@
        0,
        0,
        0,
-       0,
-       0,
-       0,
-       0,
-       0,
-       0,
-       0,
-       0,
-       0,
-       0,
-       0,
+       1,
        0,
        0,
        0,
@@ -4100,6 +4173,20 @@
        0,
        0,
        0,
+       1,
+       0,
+       1,
+       1,
+       1,
+       0,
+       0,
+       0,
+       1,
+       1,
+       0,
+       0,
+       1,
+       1,
        0,
        0,
        0,
@@ -4107,28 +4194,14 @@
        0,
        0,
        0,
+       1,
+       0,
+       0,
+       1,
        0,
        0,
        0,
-       0,
-       0,
-       0,
-       0,
-       0,
-       0,
-       0,
-       0,
-       0,
-       0,
-       0,
-       0,
-       0,
-       0,
-       0,
-       0,
-       0,
-       0,
-       0
+       1
       ],
       "O10.1": [
        0,
@@ -4165,7 +4238,19 @@
        0
       ]
      },
-     "count": null
+     "count": null,
+     "hand": {
+      "knots": 224,
+      "under": 0.0,
+      "lift": 0.46,
+      "later": 0.0,
+      "held": 0.54,
+      "under_s": null
+     },
+     "tested": {
+      "O8": 0.375,
+      "O13": 0.375
+     }
     }
    ],
    "notes": {
@@ -4173,7 +4258,7 @@
     "O15": "The account has no unit to count: knots are places made tender, as many as the body map resolves.",
     "O6": "Its tingling comes from overbreathing, in the hands, face and trunk at once (macefield1991), not at a release.",
     "O1.1": "Its easy knots fade on the in-breath, when pain is felt less (arsenault2013), not on the out-breath.",
-    "O2.2": "A press adds input and draws attention, so a pressed knot is felt more: it fades when the hand lifts, not under it."
+    "O2.2": "A press adds input and draws attention, so a pressed knot is felt more: it fades, if at all, when the hand lifts, not under it."
    }
   }
  ]
