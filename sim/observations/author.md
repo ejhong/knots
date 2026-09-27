@@ -19,3 +19,10 @@ discussion's table is in `sim/BRIEF.md`.
 - 27 Sep 2026, asked whether a released knot comes back: "That’s what it seems like. Although it feels kind of like a knot
   from somewhere else moved there. But it could be the same perforator for example. It’s a feeling of migrating into the
   same or similar spot."
+- 27 Sep 2026, on the breath: "My belief is there’s some precise breath related skill that can target like a sympathetic
+  signal at a particular location that can release knots. This is like doing a body scan type meditation for example as
+  related. How this exactly works is unknown to science."
+- 27 Sep 2026: "Another question is are the sims exploring how the knots form over various timescales."
+- 27 Sep 2026: "Btw the knots can def be felt imo. What would explain a bump feel or knot feel in dift theories. What makes
+  the knot in each one." Then: "May be the most basic point. And my felt experience is the knots can quickly grow if
+  aggravated or feeling stress. Maybe. Just my impression."

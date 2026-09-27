@@ -135,6 +135,20 @@
   "note": "Fluid-filled spaces supported by collagen bundles in submucosae, dermis, fasciae and perivascular tissue — a body-wide interstitium."
  },
  {
+  "id": "bicket2016",
+  "authors": "Bicket MC, Simmons C, Zheng Y",
+  "year": 2016,
+  "title": "The Best-Laid Plans of \"Back Mice\" and Men: A Case Report and Literature Review of Episacroiliac Lipoma",
+  "venue": "Pain Physician 19:181-8",
+  "pmid": "27008292",
+  "kind": "paper",
+  "tags": [
+   "fascia",
+   "anatomy"
+  ],
+  "note": "\"Back mice\": firm, rubbery, mobile nodules in the low back that may be fat herniated through the fascial layers; tender ones mimic myofascial pain."
+ },
+ {
   "id": "bohlen1979",
   "authors": "Bohlen HG",
   "year": 1979,
@@ -858,6 +872,21 @@
   "note": "Arterioles constricted for 5 minutes relax fully when the drive is removed; after 4 hours they do not, and their muscle cells have repositioned to hold the smaller diameter."
  },
  {
+  "id": "martineznunez2021",
+  "authors": "Martínez Núñez P, Ruiz Alonso ME, Pérez González M",
+  "year": 2021,
+  "title": "[Copeman nodules, a frequent but little known cause of low back pain; case report]",
+  "venue": "Rehabilitacion (Madr) 55:157-160",
+  "url": "https://doi.org/10.1016/j.rh.2020.05.011",
+  "pmid": "33066978",
+  "kind": "paper",
+  "tags": [
+   "fascia",
+   "anatomy"
+  ],
+  "note": "Copeman nodules (episacral lipomas) are common: fat herniated beneath the fascia through weakened areas of the thoracodorsal fascia, usually on both sides."
+ },
+ {
   "id": "maurer2019",
   "authors": "Maurer N, Nissel H, Egerbacher M et al.",
   "year": 2019,
@@ -947,6 +976,21 @@
    "models"
   ],
   "note": "Critical closing pressure read as a binary threshold: arterioles snap shut when smooth-muscle tension exceeds intraluminal pressure, and reopen only when tone falls, external pressure is relieved or inflow pressure rises."
+ },
+ {
+  "id": "minerbi2018",
+  "authors": "Minerbi A, Vulfsons S",
+  "year": 2018,
+  "title": "Challenging the Cinderella Hypothesis: A New Model for the Role of the Motor Unit Recruitment Pattern in the Pathogenesis of Myofascial Pain Syndrome in Postural Muscles",
+  "venue": "Rambam Maimonides Med J 9",
+  "url": "https://doi.org/10.5041/RMMJ.10336",
+  "pmid": "29944114",
+  "kind": "paper",
+  "tags": [
+   "trigger-points",
+   "models"
+  ],
+  "note": "A model of a postural muscle whose motor units take turns: more load or less strength shortens each unit's rest, a route into the energy crisis that replaces the Cinderella hypothesis."
  },
  {
   "id": "miron1989",
@@ -1228,6 +1272,21 @@
    "trigger-points"
   ],
   "note": "A sceptical review of the trigger-point construct and its circularity."
+ },
+ {
+  "id": "rathbone2017",
+  "authors": "Rathbone ATL, Grosman-Rimon L, Kumbhare DA",
+  "year": 2017,
+  "title": "Interrater Agreement of Manual Palpation for Identification of Myofascial Trigger Points: A Systematic Review and Meta-Analysis",
+  "venue": "Clin J Pain 33:715-729",
+  "url": "https://doi.org/10.1097/AJP.0000000000000459",
+  "pmid": "28098584",
+  "kind": "paper",
+  "tags": [
+   "trigger-points",
+   "critique"
+  ],
+  "note": "Examiners agree only moderately on where trigger points are by touch (kappa 0.45); tenderness and the patient recognising the pain agree best."
  },
  {
   "id": "rembold1991",

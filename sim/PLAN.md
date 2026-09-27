@@ -259,7 +259,22 @@ in a public table:
 | Fascial contractility: fascia contracting like smooth muscle (schleip2005) | variant of T4; slow |
 | Structural adhesion or fibrosis | a control that should fail: it cannot release in seconds. It shows the exam has teeth |
 | Hybrids: local switches plus a global loop (held units raise drive everywhere) | H |
+| Fat herniated through a fascial opening: firm, rubbery, mobile nodules, common in the low back (bicket2016, martineznunez2021), at the openings where neurovascular bundles pierce the fascia | a candidate for the bump itself (static: it cannot let go in a breath); with T1 or T5, a structure whose tone or tenderness changes |
+| Motor units taking turns in a postural muscle: more load or less strength shortens each unit's rest (minerbi2018, replacing the Cinderella hypothesis) | the drive into T3's energy crisis; micro knots as single motor units |
+| Local swelling (interstitial fluid, lymph) | to assess: a soft bump, slow to come and go; sources needed |
+| Ordinary structures made tender (a vessel, a fat lobule, a band of muscle, a node), felt as knots | T6's strongest form; examiners agree only moderately on trigger points by touch, tenderness best (rathbone2017) |
 
+- **What the hand feels: the most basic observation, and the least modelled** (the author, 27 Sep 2026: "the knots can
+  def be felt"; "May be the most basic point"). Only trigger points build a bump in: a contracture in a taut band, stiffer
+  than its surroundings (sikdar2009). In the vessel view the model says what holds and releases, not what is felt: the
+  candidates are the contracted wall of a larger perforator (a firm bead where it pierces the fascia), a cluster of shut
+  vessels under one spot, the fat and bundle at the fascial opening (bicket2016), or the nerve's tenderness. Densification
+  is a thickening, not a bump; nerves, a tender spot; perception, ordinary structures made tender. The question that
+  splits them, which the author could answer by noticing: when a knot lets go, does the bump itself soften or go, or does
+  only its tenderness? And the author's impression (tentative) that knots "can quickly grow if aggravated or feeling
+  stress": a vessel cluster can grow in seconds as drive recruits its neighbours, perception as fast as arousal, a trigger
+  point's energy crisis only over tens of minutes (so a fast growth would be the motor activity around it), a herniation not
+  at all.
 - T6 is the site's **Perception** theory, broader than central sensitisation: attention, sleep and overbreathing (which makes
   tingling anywhere) are part of it. Model that version. It is the physician's first answer and the account every other view
   has to beat, so it runs early.
@@ -583,6 +598,10 @@ M5. The top-bar link comes when the author says (D2); the natural moment is matr
      `models/triggerpoint.py` (it changes the exam's inputs, so with the next matrix run), T6 as input at the place.
   3. Robustness marked on the matrix itself: which cells hold in every setting, which turn on guessed parameters (and
      which ones), as the drawers (Phase B) show.
+  5. *The felt bump, and exam v4.* Palpability as an observation, in the author's words (above, §3), with its reading
+     (a bump under the fingers; whether it softens or goes as the knot lets go), and growth under aggravation or stress
+     (tentative), beside formation speed (item 4); then the mechanics stage (O5) moves up, since the bump is the most
+     basic observation and only T3 has one. Waiting on the author's answers to the questions in §3 and item 1.
   4. *How fast a knot forms* (the author, 27 Sep: "are the sims exploring how the knots form over various timescales").
      Today every trial forms knots one way, a 3-minute surge; holding is tested at 30 minutes and 3 hours (setting), and an
      hour of mood. Nothing covers a startle (seconds) or days of posture and stillness. The theories part here: a vessel's

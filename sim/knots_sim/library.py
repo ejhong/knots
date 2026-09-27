@@ -155,6 +155,15 @@ NEW = [
      "Laser speckle and laser Doppler reproducibly track the skin's reflex vasoconstriction to cooling; the shallowest sampling sees a smaller response than the deepest."),
     ("7990721", "wardell1994", ["vascular", "imaging"],
      "Normal skin has high- and low-perfusion spots a few millimetres apart; each spot's perfusion varies over time, but the relative levels between neighbouring spots persist."),
+    # What the hand feels: candidates for the bump itself.
+    ("27008292", "bicket2016", ["fascia", "anatomy"],
+     "\"Back mice\": firm, rubbery, mobile nodules in the low back that may be fat herniated through the fascial layers; tender ones mimic myofascial pain."),
+    ("33066978", "martineznunez2021", ["fascia", "anatomy"],
+     "Copeman nodules (episacral lipomas) are common: fat herniated beneath the fascia through weakened areas of the thoracodorsal fascia, usually on both sides."),
+    ("29944114", "minerbi2018", ["trigger-points", "models"],
+     "A model of a postural muscle whose motor units take turns: more load or less strength shortens each unit's rest, a route into the energy crisis that replaces the Cinderella hypothesis."),
+    ("28098584", "rathbone2017", ["trigger-points", "critique"],
+     "Examiners agree only moderately on where trigger points are by touch (kappa 0.45); tenderness and the patient recognising the pain agree best."),
 ]
 
 # Existing entries that the simulation also leans on gain the models tag.
