@@ -12,7 +12,7 @@ settings: knots formed by the surge and kept by the holding stress, then 30 broa
 hard ones), then 30 breaths aimed at one knot still held (the one nearest the patch's middle). At distance r from it the
 breath lowers drive g(r) = 1 + (G - 1) exp(-r^2 / 2 sigma^2) times as far as a broad breath, with G the setting's
 focus_gain (guessed, 1.5-6). The width sigma is swept in grid spacings (for perforators, a spacing is a vessel's
-neighbour distance, 4-5 mm: taylor1987, saintcyr2009); 0 is 30 more broad breaths, and "all" is the whole patch at G.
+neighbour distance: 4-5 mm, estimated from the skin's area); 0 is 30 more broad breaths, and "all" is the whole patch at G.
 
 Per width, against the same breaths unaimed (width 0): does the aimed knot let go; how many other knots does the aim let
 go besides (within 1.5 spacings; beyond); does the aimed knot let go with none besides; was it the first to go (a broad

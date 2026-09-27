@@ -1141,6 +1141,21 @@
   "note": "Healthy synovial fluid, far richer in hyaluronan than fascia, has a zero-shear viscosity of 1–175 Pa·s: an upper bound for any hyaluronan collar."
  },
  {
+  "id": "odoherty2009",
+  "authors": "O'Doherty J, McNamara P, Clancy NT et al.",
+  "year": 2009,
+  "title": "Comparison of instruments for investigation of microcirculatory blood flow and red blood cell concentration",
+  "venue": "J Biomed Opt 14:034025",
+  "url": "https://doi.org/10.1117/1.3149863",
+  "pmid": "19566318",
+  "kind": "paper",
+  "tags": [
+   "vascular",
+   "imaging"
+  ],
+  "note": "Laser speckle perfusion imaging is sensitive to the skin's superficial, nutritional supply; a laser Doppler line scanner to deeper vessels."
+ },
+ {
   "id": "oneda2010",
   "authors": "Oneda B, Ortega KC, Gusmão JL et al.",
   "year": 2010,
@@ -1244,6 +1259,21 @@
   "note": "Review of trigger-point neurophysiology, including the rabbit work in which the alpha-blocker phentolamine reduces spontaneous activity."
  },
  {
+  "id": "roustit2010",
+  "authors": "Roustit M, Millet C, Blaise S et al.",
+  "year": 2010,
+  "title": "Excellent reproducibility of laser speckle contrast imaging to assess skin microvascular reactivity",
+  "venue": "Microvasc Res 80:505-11",
+  "url": "https://doi.org/10.1016/j.mvr.2010.05.012",
+  "pmid": "20542492",
+  "kind": "paper",
+  "tags": [
+   "vascular",
+   "imaging"
+  ],
+  "note": "Laser speckle contrast imaging of forearm skin is reproducible from week to week: 8% for the peak of reactive hyperaemia, 15% for the plateau of local heating."
+ },
+ {
   "id": "saintcyr2009",
   "authors": "Saint-Cyr M, Wong C, Schaverien M et al.",
   "year": 2009,
@@ -1285,6 +1315,21 @@
    "fascia"
   ],
   "note": "Fascia can contract on its own, via myofibroblasts."
+ },
+ {
+  "id": "schwartz2022",
+  "authors": "Schwartz KS, Theis EN, Bunting K et al.",
+  "year": 2022,
+  "title": "Laser speckle contrast imaging and laser Doppler flowmetry reproducibly assess reflex cutaneous vasoconstriction",
+  "venue": "Microvasc Res 142:104363",
+  "url": "https://doi.org/10.1016/j.mvr.2022.104363",
+  "pmid": "35358501",
+  "kind": "paper",
+  "tags": [
+   "vascular",
+   "imaging"
+  ],
+  "note": "Laser speckle and laser Doppler reproducibly track the skin's reflex vasoconstriction to cooling; the shallowest sampling sees a smaller response than the deepest."
  },
  {
   "id": "segal1986",
@@ -1536,6 +1581,21 @@
    "nerve"
   ],
   "note": "In humans, sympathetic outflow to skin and to muscle can be activated in a highly dissociated pattern: central command drives the skin's, feedback from working muscle the muscle's."
+ },
+ {
+  "id": "wardell1994",
+  "authors": "Wårdell K, Braverman IM, Silverman DG et al.",
+  "year": 1994,
+  "title": "Spatial heterogeneity in normal skin perfusion recorded with laser Doppler imaging and flowmetry",
+  "venue": "Microvasc Res 48:26-38",
+  "url": "https://doi.org/10.1006/mvre.1994.1036",
+  "pmid": "7990721",
+  "kind": "paper",
+  "tags": [
+   "vascular",
+   "imaging"
+  ],
+  "note": "Normal skin has high- and low-perfusion spots a few millimetres apart; each spot's perfusion varies over time, but the relative levels between neighbouring spots persist."
  },
  {
   "id": "whetzel1992",

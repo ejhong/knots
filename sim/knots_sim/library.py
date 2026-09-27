@@ -146,6 +146,15 @@ NEW = [
      "Learned finger warming with temperature feedback was blocked by propranolol infused in that arm only, and not by blocking the finger's nerves."),
     ("1854864", "freedman1991", ["vascular", "mind"],
      "A review: learned finger warming works through a non-neural, beta-adrenergic mechanism rather than through less sympathetic activity; learned cooling works through the sympathetic nerves."),
+    # The instrument stage: what a recording at a release would show, and how noisy it is.
+    ("20542492", "roustit2010", ["vascular", "imaging"],
+     "Laser speckle contrast imaging of forearm skin is reproducible from week to week: 8% for the peak of reactive hyperaemia, 15% for the plateau of local heating."),
+    ("19566318", "odoherty2009", ["vascular", "imaging"],
+     "Laser speckle perfusion imaging is sensitive to the skin's superficial, nutritional supply; a laser Doppler line scanner to deeper vessels."),
+    ("35358501", "schwartz2022", ["vascular", "imaging"],
+     "Laser speckle and laser Doppler reproducibly track the skin's reflex vasoconstriction to cooling; the shallowest sampling sees a smaller response than the deepest."),
+    ("7990721", "wardell1994", ["vascular", "imaging"],
+     "Normal skin has high- and low-perfusion spots a few millimetres apart; each spot's perfusion varies over time, but the relative levels between neighbouring spots persist."),
 ]
 
 # Existing entries that the simulation also leans on gain the models tag.

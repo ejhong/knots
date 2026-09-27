@@ -556,6 +556,108 @@ export interface Matrix {
   theories: MatrixTheory[];
 }
 
+/** What an instrument would record through a press and its lift (src/data/sim/instrument.json, `knots_sim.instrument`):
+ *  per modelled theory, the reading at the knot, at a pressed site that held no knot, and at a far site. */
+export interface InstrumentTrace {
+  t: number[];
+  release_s: number;
+  press_s: number;
+  knot: number[];
+  pressed: number[];
+  far: number[];
+}
+export interface InstrumentStudy {
+  run: { inputs: string; commit: string };
+  samples: number;
+  own_share: number[];
+  roi_mm: number[];
+  traces: Record<string, InstrumentTrace>;
+  reads: Record<string, Record<string, Record<string, Record<string, unknown>>>>;
+  design: {
+    cv: number[];
+    patch_mm: number;
+    dark: { roi_mm: number; own_share: number; effect: number; needed: (number | null)[] }[];
+    gone: { roi_mm: number; own_share: number; effect: number; needed: (number | null)[] }[];
+  };
+}
+
+const SERIES = [
+  { key: 'knot', label: 'the knot', color: PAPER.knot },
+  { key: 'pressed', label: 'pressed, no knot', color: '#6f7b85' },
+  { key: 'far', label: 'far, not pressed', color: PAPER.faint },
+] as const;
+
+const PANELS: Record<string, { name: string; reads: string; unit: string; line?: { y: number; label: string } }> = {
+  T1: { name: 'Perforators', reads: 'skin perfusion over the patch', unit: '× relaxed flow' },
+  T3: { name: 'Trigger points', reads: 'the nodule (contracture)', unit: '0–1', line: { y: 0.5, label: 'held above' } },
+  T6: { name: 'Perception', reads: 'what is felt', unit: '1: a knot forms', line: { y: 1, label: 'a knot forms above' } },
+};
+
+export function recordings(inst: InstrumentStudy): string {
+  const ids = ['T1', 'T3', 'T6'].filter((id) => inst.traces[id]);
+  const pw = 212;
+  const gap = 34;
+  const L = 36;
+  const top = 58;
+  const ph = 132;
+  const W = L + ids.length * pw + (ids.length - 1) * gap + 12;
+  const H = top + ph + 44;
+  const out: string[] = [];
+  // The legend, once, above the panels.
+  let lx = L;
+  for (const sr of SERIES) {
+    out.push(`<line x1="${lx}" x2="${lx + 16}" y1="12" y2="12" stroke="${sr.color}" stroke-width="2" stroke-linecap="round"/>`);
+    out.push(`<text x="${lx + 21}" y="15" fill="${PAPER.text}" font-size="9" ${MONO}>${esc(sr.label)}</text>`);
+    lx += 21 + sr.label.length * 5.6 + 18;
+  }
+  ids.forEach((id, i) => {
+    const tr = inst.traces[id];
+    const meta = PANELS[id];
+    const x0 = L + i * (pw + gap);
+    const vals = [...tr.knot, ...tr.pressed, ...tr.far, ...(meta.line ? [meta.line.y] : [])];
+    const hi0 = Math.max(...vals);
+    const step = hi0 > 2 ? 1 : hi0 > 1 ? 0.5 : 0.25;
+    const hi = Math.max(step, Math.ceil((hi0 * 1.05) / step) * step);
+    const tMin = tr.t[0];
+    const tMax = tr.t[tr.t.length - 1];
+    const X = (t: number) => x0 + ((t - tMin) / (tMax - tMin)) * pw;
+    const Y = (v: number) => top + ph - (Math.max(0, Math.min(v, hi)) / hi) * ph;
+    out.push(`<text x="${x0}" y="${top - 26}" fill="${PAPER.text}" font-size="10.5" ${SERIF}>${esc(meta.name)}</text>`);
+    out.push(`<text x="${x0}" y="${top - 13}" fill="${PAPER.muted}" font-size="8.5" ${MONO}>${esc(meta.reads)}</text>`);
+    // The hand: on from 0 to press_s.
+    out.push(`<rect x="${f1(X(0))}" y="${top}" width="${f1(X(tr.press_s) - X(0))}" height="${ph}" fill="${PAPER.line}" opacity="0.55"/>`);
+    out.push(`<text x="${f1(X(tr.press_s / 2))}" y="${top + 10}" text-anchor="middle" fill="${PAPER.muted}" font-size="8" ${MONO}>hand on</text>`);
+    // Axes: hairlines and a few clean ticks.
+    for (let v = 0; v <= hi + 1e-9; v += step) {
+      out.push(`<line x1="${x0}" x2="${x0 + pw}" y1="${f1(Y(v))}" y2="${f1(Y(v))}" stroke="${PAPER.line}" stroke-width="0.7"/>`);
+      out.push(`<text x="${x0 - 5}" y="${f1(Y(v) + 3)}" text-anchor="end" fill="${PAPER.faint}" font-size="8" ${MONO}>${+v.toFixed(2)}</text>`);
+    }
+    for (const t of [0, 30, 60, 90].filter((t) => t >= tMin && t <= tMax)) {
+      out.push(`<text x="${f1(X(t))}" y="${top + ph + 12}" text-anchor="middle" fill="${PAPER.faint}" font-size="8" ${MONO}>${t}</text>`);
+    }
+    out.push(`<text x="${x0 + pw}" y="${top + ph + 24}" text-anchor="end" fill="${PAPER.faint}" font-size="8" ${MONO}>s from the press</text>`);
+    out.push(`<text x="${x0}" y="${top + ph + 24}" fill="${PAPER.faint}" font-size="8" ${MONO}>${esc(meta.unit)}</text>`);
+    if (meta.line) {
+      out.push(`<line x1="${x0}" x2="${x0 + pw}" y1="${f1(Y(meta.line.y))}" y2="${f1(Y(meta.line.y))}" stroke="${PAPER.muted}" stroke-width="0.8"/>`);
+      out.push(`<text x="${x0 + 3}" y="${f1(Y(meta.line.y) - 3)}" fill="${PAPER.muted}" font-size="8" ${MONO}>${esc(meta.line.label)}</text>`);
+    }
+    // The moment it lets go.
+    const xr = X(tr.release_s);
+    out.push(`<line x1="${f1(xr)}" x2="${f1(xr)}" y1="${top}" y2="${top + ph}" stroke="${PAPER.release}" stroke-width="1"/>`);
+    out.push(`<text x="${f1(xr - 3)}" y="${top + 24}" text-anchor="end" fill="${PAPER.release}" font-size="8" ${MONO} paint-order="stroke" stroke="${PAPER.line}" stroke-width="3">lets go, ${Math.round(tr.release_s)} s</text>`);
+    // Context first, the knot last (on top).
+    for (const sr of [...SERIES].reverse()) {
+      const ys = tr[sr.key];
+      const d = ys.map((v, k) => `${k ? 'L' : 'M'}${f1(X(tr.t[k]))} ${f1(Y(v))}`).join(' ');
+      const at = (t: number) => ys[Math.max(0, tr.t.findIndex((x) => x >= t))];
+      const title = `${meta.name}, ${sr.label}: ${+at(-5).toFixed(2)} before the press, ${+at(tr.press_s / 2).toFixed(2)} under the hand, ${+at(tr.release_s + 10).toFixed(2)} ten seconds after it lets go`;
+      out.push(`<g><title>${esc(title)}</title><path d="${d}" fill="none" stroke="transparent" stroke-width="10"/><path d="${d}" fill="none" stroke="${sr.color}" stroke-width="2" stroke-linejoin="round" stroke-linecap="round"/></g>`);
+    }
+  });
+  const label = ids.map((id) => `${PANELS[id].name}: ${PANELS[id].reads} at the knot, at a pressed site with no knot and at a far site, through a press held ${inst.traces[id].press_s} s and lifted`).join('; ');
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(`What an instrument would record: ${label}`)}">${out.join('')}</svg>`;
+}
+
 /** A cell's mark: a disc whose area is the share of plausible parameter sets that pass; a faint cross where none of
  *  them does; a dash where the theory is silent; nothing where the part is not run yet. */
 export function cellMark(c: Cell, r = 7): string {

@@ -77,20 +77,23 @@ class State:
 def simulate(P: dict[str, np.ndarray], a0: np.ndarray, inputs, duration: float, dt: float = 0.05, every: int = 4,
              state: State | None = None) -> dict:
     """Integrate every unit at once (Euler). P: parameters per unit. inputs(t, state) returns (stress per unit,
-    strain per unit, pressure per unit in mmHg, coupling factor per unit)."""
+    strain per unit, pressure per unit in mmHg, coupling factor per unit), and optionally a pressure around the unit
+    (mmHg) that squeezes its capillaries but, unlike a press on it, does not lengthen it. Records the contracture, how
+    fast it falls, and the capillary flow."""
     n = len(a0)
     k_press = P["press_rate"] if "press_rate" in P else 1.0
     st = state or State(c=np.zeros(n), e=np.ones(n), m=np.zeros(n))
     if st.l is None:
         st.l = np.zeros(n)
     last_strain = None
-    ts, cs, rates = [], [], []
+    ts, cs, rates, qs = [], [], [], []
     for i in range(int(round(duration / dt))):
         t = i * dt
-        s, strain, press, coupling = inputs(t, st)
+        s, strain, press, coupling, *around = inputs(t, st)
+        squeezed = press + (around[0] if around else 0.0)
         rate_strain = np.zeros(n) if last_strain is None else np.abs(strain - last_strain) / dt
         last_strain = strain
-        q = (1 - P["squeeze"] * st.c) * np.maximum(1 - press / P["occlude"], 0.0)
+        q = (1 - P["squeeze"] * st.c) * np.maximum(1 - squeezed / P["occlude"], 0.0)
         drive = a0 * np.maximum(1 + P["stress_gain"] * s, 0.0) * (1 + P["milieu_gain"] * st.m) * coupling  # no less than none
         dc = (drive * (1 - st.c) - P["relax"] * st.e ** P["coop"] * st.c - P["stretch_gain"] * rate_strain * st.c
               - k_press * st.l * st.c)
@@ -102,7 +105,8 @@ def simulate(P: dict[str, np.ndarray], a0: np.ndarray, inputs, duration: float, 
             ts.append(t)
             cs.append(st.c.astype(np.float32))
             rates.append((-dc).astype(np.float32))
-    return {"t": np.array(ts), "c": np.array(cs), "fall": np.array(rates), "state": st}
+            qs.append(np.broadcast_to(q, (n,)).astype(np.float32))
+    return {"t": np.array(ts), "c": np.array(cs), "fall": np.array(rates), "q": np.array(qs), "state": st}
 
 
 def _press_times(ps: list[dict], rates: np.ndarray, depth: float) -> np.ndarray:

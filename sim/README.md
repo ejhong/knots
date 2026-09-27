@@ -37,6 +37,7 @@ knots_sim/
   models/triggerpoint.py T3: an endplate's contracture held by its own ischaemia
   exam.py                the harness: the shared trials and pass criteria, every theory through them, matrix.json
   aimed.py               a breath aimed at one place (route B6, the author's hypothesis): how narrow it must be; aimed.json
+  instrument.py          what an instrument would record: the exam's trials read as laser speckle, elastography; instrument.json
   theories/t1.py t3.py t6.py   each theory's mapping onto the trials, written out for its proponents to check
   scenarios.py           the trials as input scores: a knot forms, holds, lets go
   breath.py              the breath's routes over knot depth: release maps, the least movement per breath

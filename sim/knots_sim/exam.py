@@ -24,6 +24,7 @@ from __future__ import annotations
 import hashlib
 import importlib
 import json
+import re
 from dataclasses import dataclass
 from pathlib import Path
 
@@ -461,11 +462,14 @@ def _job(args) -> dict:
 
 
 def inputs_hash() -> str:
-    """A hash of everything the exam depends on: the harness, the theories and their models, the parameter tables and
-    the exam itself. matrix.json carries it; a test fails when it is stale."""
+    """A hash of everything the exam depends on: the harness, the theories and their models, the parameter tables that
+    code loads (found in it, so a table only other studies read does not stale the matrix) and the exam itself.
+    matrix.json carries it; a test fails when it is stale."""
     pkg = SIM / "knots_sim"
-    files = [pkg / "exam.py", pkg / "adapt.py", pkg / "params.py", *(pkg / "theories").glob("*.py"),
-             *(pkg / "models").glob("*.py"), *(SIM / "params").glob("*.yaml"), SPEC]
+    code = [pkg / "exam.py", pkg / "adapt.py", pkg / "params.py", *(pkg / "theories").glob("*.py"),
+            *(pkg / "models").glob("*.py")]
+    tables = {t for f in code for t in re.findall(r'(?:load|values)\("([a-z_]+)"\)', f.read_text())}
+    files = [*code, *(SIM / "params" / f"{t}.yaml" for t in tables), SPEC]
     h = hashlib.sha256()
     for f in sorted(files):
         h.update(f.relative_to(SIM).as_posix().encode())

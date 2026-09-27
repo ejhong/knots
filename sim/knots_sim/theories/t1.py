@@ -43,7 +43,7 @@ VARIANTS = {
 }
 SILENT = {"O3"}
 NOTES = {"O3": "Nothing in the vessel switch turns on hydration.",
-         "O15": "Small vessels rise to the skin one every 4-5 mm, on the order of 100,000 (taylor1987, saintcyr2009).",
+         "O15": "Small vessels rise to the skin on the order of 100,000, one every 4-5 mm (estimated from the skin's area); the major ones, 374 on average (taylor1987).",
          "O1.3": "Through drive alone the breath is not local, so focusing it changes nothing; through movement, focus concentrates the movement at the place; aimed, it lowers the drive there.",
          "O2.2": "Pressed, the vessel is squeezed and cannot open: it lets go within a second of the hand lifting, not under it.",
          "O8.1": "A release lowers the pressure its siblings share, by several mmHg, but not enough to shut one; a neighbour shuts only if something else pushes on it by 10 mmHg or more (exploratory/2026-09-27-migration-pressure.py), where tissue pressure under the skin rises only a few mmHg as it fills (christ1997).",

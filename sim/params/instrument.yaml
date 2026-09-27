@@ -1,0 +1,45 @@
+# Numbers for the instrument stage (knots_sim/instrument.py): what a recording at a release would show, and how noisy the
+# recording is. Same format as vessel.yaml.
+
+model: instrument
+title: Instruments
+parameters:
+  lsci_cv_low:
+    symbol: CV_LSCI,low
+    label: "laser speckle: variability, at its best"
+    value: 0.08
+    unit: "1"
+    confidence: measured
+    source: roustit2010
+    locator: abstract
+    quote: "The reproducibility of the PORH peak CVC was better when assessed with LSCI compared to LDF (CV=8%; ICC=0.76"
+    note: "Week to week, of a response (the peak of reactive hyperaemia) on the forearm. Within one session the variability is likely lower, so as the noise of one release it over-states it."
+
+  lsci_cv_high:
+    symbol: CV_LSCI,high
+    label: "laser speckle: variability, at its worst"
+    value: 0.15
+    unit: "1"
+    confidence: measured
+    source: roustit2010
+    locator: abstract
+    quote: "Inter-day reproducibility of the LTH plateau was better when assessed with LSCI or LDI than LDF (CV=15%"
+    note: "Week to week, of the plateau of local heating. The same study: \"more data are needed to evaluate the linearity between the LSCI signal and skin blood flow\"."
+
+  own_share:
+    symbol: s_own
+    label: "the share of a patch's flow its own vessel supplies"
+    value: 0.6
+    unit: "1"
+    range: [0.3, 1.0]
+    confidence: guessed
+    note: "Each perforator's territory is linked to its neighbours' by direct and indirect linking vessels (saintcyr2009), so when a vessel is shut its neighbours keep some flow in its patch. How much is not known: at 1 the patch empties; at 0.3 it keeps most of its flow."
+
+  patch_mm:
+    symbol: d_patch
+    label: "a small vessel's patch, across"
+    value: 4.5
+    unit: mm
+    range: [4.0, 5.0]
+    confidence: guessed
+    note: "About a hundred thousand small perforators over the skin's area (the site's estimate, see About): one every 4-5 mm."

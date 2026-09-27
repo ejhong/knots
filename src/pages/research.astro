@@ -5,9 +5,10 @@ import exam from '../data/sim/exam.json';
 import adaptData from '../data/sim/adapt.json';
 import matrixData from '../data/sim/matrix.json';
 import aimedData from '../data/sim/aimed.json';
+import instrumentData from '../data/sim/instrument.json';
 import { refById } from '../data/references';
 import { switchDiagram } from '../sim/draw';
-import { cellMark, countsStrip, decisionTree, fieldPanels, knotSets, leastMovement, releaseMap, treeStory, type AdaptStudy, type BreathMaps, type Cell, type FieldStudy, type Matrix, type TreeFigure } from '../sim/figures';
+import { cellMark, countsStrip, decisionTree, fieldPanels, knotSets, leastMovement, recordings, releaseMap, treeStory, type AdaptStudy, type BreathMaps, type Cell, type FieldStudy, type InstrumentStudy, type Matrix, type TreeFigure } from '../sim/figures';
 import { calibrate, type Params } from '../sim/vessel';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
@@ -170,6 +171,29 @@ const aT1 = (w: string) => aim.T1[w];
 const aT3best = Object.values(aim.T3).reduce((m, row) => (row.target > m.target ? row : m), aim.T3['0']);
 const ofN = (share: number, n: number) => `${Math.round(share * n)} of ${n}`;
 const mm = (w: number) => `${+(w * aim.spacing_mm[0]).toFixed(1)}–${+(w * aim.spacing_mm[1]).toFixed(1)} mm`;
+// What an instrument would record (src/data/sim/instrument.json, from `knots_sim.instrument`).
+const inst = instrumentData as unknown as InstrumentStudy;
+type Spread = { median: number; lo: number; hi: number; n: number } | null;
+const rd = (tid: string, variant: string, kind: string, key: string) => (inst.reads[tid]?.[variant]?.[kind]?.[key] ?? null) as Spread;
+const x2 = (x: number | undefined | null) => (x === undefined || x === null ? '–' : (+x.toFixed(2)).toString());
+const liftSham = rd('T1', 'drive', 'press', 'lift_sham');
+const darkBefore = rd('T1', 'drive', 'press', 'dark_before_0.6');
+const darkAfter = rd('T1', 'drive', 'press', 'dark_after_0.6');
+const t1Rel = rd('T1', 'drive', 'press', 'release_s');
+const t3Stiff = rd('T3', 'drive', 'press', 'stiffness_before');
+const t3Fall = rd('T3', 'drive', 'press', 'stiffness');
+const t3Rel = rd('T3', 'drive', 'press', 'release_s');
+const t6Rel = rd('T6', 'arousal', 'press', 'release_s');
+const cvs = inst.design.cv.map((c) => `${Math.round(100 * c)}%`).join('–');
+const regionLabel = (roi: number) => (roi === 0 ? `the patch (${inst.design.patch_mm} mm)` : `${roi / 10} cm across`);
+const needed = (xs: (number | null)[]) => {
+  const ys = xs.filter((x): x is number => x !== null);
+  if (!ys.length) return 'none shows it';
+  const [lo, hi] = [Math.min(...ys), Math.max(...ys)];
+  return lo === hi ? `${lo}` : `${lo}–${hi}`;
+};
+const designRows = (rows: InstrumentStudy['design']['dark']) =>
+  inst.roi_mm.map((roi) => ({ roi, cells: inst.own_share.map((s) => rows.find((r) => r.roi_mm === roi && r.own_share === s)!) }));
 const b1 = backs('T1');
 const b3 = backs('T3');
 const b6 = backs('T6');
@@ -227,12 +251,19 @@ const WHERE: { glyph: string; name: string; where: string; count: string; scalp:
 
 const SIGNALS = ['blood flow in the skin over the spot', 'flow or tension in the muscle beneath', 'stiffness and glide', 'muscle activity (EMG)', 'skin temperature', 'where it tingles'];
 const SIGS: { name: string; glyph: string; modelled?: boolean; cells: [string, string][] }[] = [
-  { name: 'Perforators', glyph: '結', modelled: true, cells: [['up', 'returns within seconds, from near nothing; above rest if the knot was old'], ['none', 'little'], ['none', 'little'], ['none', 'no change'], ['up', `an old knot’s flush warms it, over ≥\u00a0${Math.round(cool.tau_s_at_max_flow)}\u00a0s`], ['here', 'the vessel’s own patch']] },
+  { name: 'Perforators', glyph: '結', modelled: true, cells: [['up', 'darker than its neighbours before, not after; a press flushes every pressed site'], ['none', 'little'], ['none', 'little'], ['none', 'no change'], ['up', `an old knot’s flush warms it, over ≥\u00a0${Math.round(cool.tau_s_at_max_flow)}\u00a0s`], ['here', 'the vessel’s own patch']] },
   { name: 'Vascular latch', glyph: '閂', cells: [['up', 'rises, if skin vessels latch'], ['up', 'vascular tension falls'], ['none', 'little'], ['none', 'no change'], ['up', 'rises with flow'], ['silent', 'not stated']] },
   { name: 'Trigger points', glyph: '点', cells: [['none', 'little'], ['up', 'the taut band lets go; flow returns'], ['down', 'the nodule softens'], ['down', 'spontaneous activity falls; a twitch'], ['none', 'little at the skin'], ['here', 'a referred pattern']] },
   { name: 'Densification', glyph: '膠', cells: [['none', 'not required'], ['none', 'not required'], ['down', 'glide between layers returns'], ['none', 'no change'], ['silent', 'warmth may come first'], ['silent', 'not stated']] },
   { name: 'Nerves', glyph: '神経', cells: [['none', 'not required'], ['none', 'not required'], ['none', 'no change'], ['none', 'no change'], ['none', 'no change'], ['here', 'along the nerve’s territory']] },
   { name: 'Perception', glyph: '覚', cells: [['none', 'none locally; any change equal at a sham site'], ['none', 'none locally'], ['none', 'no change'], ['silent', 'may relax everywhere'], ['none', 'none locally'], ['any', 'anywhere; follows CO₂']] },
+];
+const OUTCOMES: { shows: string; fits: string; not: string }[] = [
+  { shows: 'the knot’s patch darker than its neighbours before, and not after (beyond the flush of every pressed place)', fits: 'perforators; the vascular latch, if skin vessels latch', not: 'perception; trigger points (in their model the skin does not change)' },
+  { shows: 'a dark spot at the knot that stays dark through its release', fits: 'the ordinary unevenness of skin', not: 'the vessel view, for that knot' },
+  { shows: 'nothing in the skin, and the nodule softening under the probe', fits: 'trigger points', not: 'perception; perforators' },
+  { shows: 'nothing in the tissue, at the knot or anywhere', fits: 'perception; or a signal not recorded (glide between layers, a nerve)', not: 'perforators; trigger points' },
+  { shows: 'the same change at the knot and far from it', fits: 'the breath’s drive, everywhere: it says nothing of the knot', not: '–' },
 ];
 const MARK: Record<string, string> = { up: '▲', down: '▼', none: '—', silent: '·', here: '◉', any: '○' };
 
@@ -247,8 +278,8 @@ const index = [
   { id: 'time', label: 'time: how a knot sets' },
   { id: 'breath', label: 'breath' },
   { id: 'trees', label: 'trees' },
-  { id: 'signatures', label: 'what each predicts' },
-  { id: 'experiment', label: 'the experiment' },
+  { id: 'signatures', label: 'what an instrument would record' },
+  { id: 'experiment', label: 'the measurement' },
   { id: 'asks', label: 'what we need' },
   { id: 'method', label: 'method' },
 ];
@@ -363,9 +394,11 @@ const index = [
       <li><span class="kind">can: rests on guessed resistances</span> <strong>Trees make clusters and queues.</strong> A knot in a parent vessel shuts its children; releasing it frees most of them at once, and the hardest
         stays: when the parent held, a cluster formed beneath it in {pct(tr.share_cluster)} of {tr.samples} plausible trees, and the higher the stress, the
         longer the queue. Siblings on one feed protect each other, so knots do not simply hop sideways.</li>
-      <li><span class="kind">an instrument would tell</span> <strong>Pressure, then release, is the fastest way out</strong> ({pressed.toFixed(1)} s after the pressure lifts, against {Math.round(eased)} s when stress
-        eases), and at every release blood returns to the spot within seconds, from near nothing: the clearest thing a laser speckle camera could look for.
-        It rises above resting flow only as tone falls.</li>
+      <li><span class="kind">an instrument would tell</span> <strong>Pressure, then release, is the fastest way out, but flow returning is not the sign
+        of a knot.</strong> A pressed knot lets go {pressed.toFixed(1)} s after the pressure lifts, against {Math.round(eased)} s when stress eases, and
+        blood returns to it within seconds. But a press releases the tone of every vessel under the hand: at a pressed place with no knot, flow rises by{' '}
+        {x2(liftSham?.median)} of a relaxed vessel's flow as the hand lifts. The sign of a knot, in the vessel view, is its patch against its neighbours':
+        darker before, not after (<a href="#signatures">what an instrument would record</a>).</li>
     </ol>
     <h3 class="h3">What this says about each theory, so far</h3>
     <div class="table-wrap">
@@ -957,11 +990,44 @@ const index = [
   </section>
 
   <section id="signatures" class="sec full" data-glyph="徴">
-    <h2>What each theory predicts a recording would show</h2>
+    <h2>What an instrument would record</h2>
     <p class="sub">
-      At the moment a knot lets go, at the spot, against a sham site. The perforator row comes from the model; the others from each theory's own
-      statements until their models run. Where two theories predict the same, no measurement of that signal separates them.
+      Each modelled theory's own trial, read the way an instrument would read it: knots formed and held, thirty slow breaths, then a
+      knot at the spot pressed for a minute with slow breaths and lifted, beside a pressed place that held no knot and a place far from
+      the hand. Nothing here is a new trial: the exam's patch trials are recorded as they run, in all {inst.samples} settings of each theory,
+      and each trace is the setting whose release is the median.
     </p>
+    <figure class="paper-fig scroll-x" set:html={recordings(inst)} />
+    <p class="caption">
+      Perforators: skin perfusion over each place's patch, as laser speckle would read it (it sees the skin's superficial supply,{' '}
+      <Fragment set:html={cite('odoherty2009')} />), with the knot's patch fed {Math.round(100 * inst.own_share[1])}% by its own vessel and the rest by its
+      neighbours (a guess: each vessel's territory is linked to its neighbours', <Fragment set:html={cite('saintcyr2009')} />). Trigger points: the
+      nodule's contracture, which elastography would read as stiffness. Perception: what is felt; nothing in its tissue changes. Hover a line for
+      its values.
+    </p>
+    <div class="two">
+      <p class="find"><span class="kind">an instrument would tell</span> <strong>A press flushes every place it presses.</strong> Held stress narrows
+        every vessel in the zone; the hand releases their tone, so as it lifts, flow rises at a pressed place that held no knot by{' '}
+        {x2(liftSham?.median)} of a relaxed vessel's flow ({x2(liftSham?.lo)}–{x2(liftSham?.hi)} across settings), as it does at the knot. Flow returning
+        at a release says nothing by itself; the comparison has to be a pressed place with no knot.</p>
+      <p class="find"><span class="kind">an instrument would tell</span> <strong>The sign of a knot, in the vessel view: a patch darker than its
+        neighbours, until it lets go.</strong> Before the press the knot's patch is {darkBefore ? pct(darkBefore.median) : '–'} darker than its
+        neighbours' under the same hand (the share its own vessel feeds); ten seconds after it lets go it is{' '}
+        {darkAfter ? (Math.abs(darkAfter.median) < 0.1 ? 'about as bright as theirs' : darkAfter.median < 0 ? `${pct(-darkAfter.median)} brighter` : `${pct(darkAfter.median)} darker`) : '–'}. Normal skin has lasting
+        darker and brighter spots a few millimetres apart, and their levels against each other persist <Fragment set:html={`(${cite('wardell1994')})`} />:
+        a dark spot alone is not a knot, but a dark spot that brightens against its neighbours as a knot lets go would be.</p>
+    </div>
+    <div class="two">
+      <p class="find"><span class="kind">an instrument would tell</span> <strong>Trigger points: nothing in the skin; the nodule softens under the
+        hand.</strong> The contracture, {x2(t3Stiff?.median)} before the press, falls by {x2(t3Fall ? -t3Fall.median : null)} as the knot lets go,{' '}
+        {t3Rel ? `${Math.round(t3Rel.median)} s` : '–'} after the press began{t3Rel && t3Rel.median < mx.trials.press_s ? ', under the hand' : ''}. An
+        ultrasound probe that is also the pressing hand would see it; the skin above would not.</p>
+      <p class="find"><span class="kind">an instrument would tell</span> <strong>Perception: nothing in the tissue.</strong> The felt knot fades{' '}
+        {t6Rel ? `${Math.round(t6Rel.median)} s` : '–'} after the press began, as the hand lifts, and nothing measurable changes at the knot or at
+        either other place. The perforators let theirs go at {t1Rel ? `${Math.round(t1Rel.median)} s` : '–'}, also as the hand lifts: the moment is
+        the same, and only the skin tells them apart.</p>
+    </div>
+    <h3 class="h3">Every theory, from its model or its own statements</h3>
     <div class="table-wrap">
       <table class="sig">
         <thead>
@@ -985,30 +1051,80 @@ const index = [
   </section>
 
   <section id="experiment" class="sec full" data-glyph="験">
-    <h2>The experiment that would settle it</h2>
+    <h2>The measurement that would settle it</h2>
     <p class="sub">
-      A location test first, then four questions, in order; each measurement splits the theories left standing. It describes a measurement; it prescribes nothing to anyone
-      practising.
+      Designed from the models, cheapest first. It describes a measurement; it prescribes nothing to anyone practising, and any practice
+      around it belongs under the site's <a href={`${base}/#moderation`}>moderation guidance</a>.
     </p>
-    <figure class="ink-fig wide-fig scroll-x" set:html={decisionTree()} />
-    <div class="two">
-      <div>
-        <p class="find"><strong>The keystone recording.</strong> Over a palpable knot, under a probe that holds a constant, measured pressure: blood flow at two
-          depths (laser speckle for the skin; ultrasound Doppler or near-infrared spectroscopy for the muscle), shear-wave elastography for stiffness and
-          glide, surface EMG, a breath belt, and a button pressed at each felt release. The same at a sham site. Controls: pressure with a held breath, breath
-          without pressure, and the failed attempts, which hold everything constant except the release itself.</p>
-        <p class="find"><strong>Why one skilled person is enough to start.</strong> A practitioner who can release knots on cue gives dozens of time-locked
-          events in weeks: an event-related design, as meditation neuroscience began, with the predictions sealed before the first session.</p>
-      </div>
-      <div>
-        <p class="find"><strong>What the perforator model predicts it would see.</strong> Skin flow over the spot returning within seconds of the felt
-          release, from near nothing to about {afterPress.toFixed(2)} of resting flow after a press (to {afterEase.toFixed(2)} if stress eases), and nothing at
-          the sham site; skin temperature following over a minute or more; release after pressure sooner than after calm alone; before a slow release,
-          flow flickering more slowly (a switch slowing near its edge); and a flush that grows with how long the knot has been held.</p>
-        <p class="find"><strong>A cheap first look.</strong> A thermal camera and a photoplethysmography sensor over a knot and a sham site, a breath belt and an
-          event button: enough to ask the first question. Under the site's <a href={`${base}/#moderation`}>moderation guidance</a>.</p>
-      </div>
+    <ol class="steps">
+      <li><strong>Before any instrument: what a practitioner could notice.</strong> Four questions the theories answer differently:
+        <ul>
+          <li><em>When a pressed knot lets go:</em> under the hand, or as it lifts (<a href="#open">Q1</a>). Perforators, as it lifts; perception, as it
+            lifts or not at all; trigger points, under the hand{h3?.under_s ? `, after about ${Math.round(h3.under_s)} s` : ''}.</li>
+          <li><em>Whether a chosen hard knot can go while easier ones beside it stay.</em> A broad breath takes the easiest first; a breath aimed narrowly
+            at one place could take a chosen one first, in the perforators (<a href="#aimed">aimed</a>).</li>
+          <li><em>When a knot comes back to the same place:</em> at once (perforators: a vessel beneath, there all along), within seconds to half a
+            minute (trigger points), or after about half a minute (perception) (<a href="#back">the table</a>).</li>
+          <li><em>How fast knots form:</em> within seconds of a stressful moment, or only after long tension or stillness. The next to run.</li>
+        </ul>
+      </li>
+      <li><strong>A map, with no release.</strong> Laser speckle over skin where knots have been marked by someone who cannot see the image, and
+        around them. In the vessel view each knot is a patch 4–5 mm across, darker than its neighbours by the share of its patch its own vessel
+        feeds; in trigger points and perception, nothing.</li>
+      <li><strong>At a release.</strong> The same camera, a button pressed at each felt release, a breath belt, and three places: the knot, a place
+        under the same hand with no knot, and a place far from it. In the vessel view the knot's patch brightens against its neighbours' as it lets
+        go, beyond the flush every pressed place shows.</li>
+      <li><strong>If the skin shows nothing.</strong> Under the knot, with the probe as the pressing hand: shear-wave elastography for the nodule's
+        stiffness (<Fragment set:html={cite('sikdar2009')} /> imaged trigger points this way) and needle EMG at the nidus.</li>
+    </ol>
+    <h3 class="h3">How many knots, and how many releases</h3>
+    <p class="find">
+      In the vessel view, by how wide a region is read (a wider one dilutes the patch) and how much of its patch a knot's vessel feeds (not known).
+      The noise is laser speckle's week-to-week variability, {cvs} <Fragment set:html={`(${cite('roustit2010')})`} />, which over-states the
+      noise within one session; a paired comparison at 5% and 80% power, and never fewer than three.
+    </p>
+    <div class="table-wrap hand-wrap">
+      <table class="hand design">
+        <caption class="sr-only">How many knots, or releases, would show the vessel view's signs, by region width and the share of its patch a knot's vessel feeds</caption>
+        <thead>
+          <tr><th scope="col" rowspan="2">region read</th><th scope="colgroup" colspan={inst.own_share.length}>a dark patch: knots</th><th scope="colgroup" colspan={inst.own_share.length}>it brightens as it lets go: releases</th></tr>
+          <tr>{[0, 1].flatMap(() => inst.own_share.map((s) => <th scope="col">{pct(s)} fed</th>))}</tr>
+        </thead>
+        <tbody>
+          {
+            designRows(inst.design.dark).map(({ roi, cells }, i) => (
+              <tr>
+                <th scope="row">{regionLabel(roi)}</th>
+                {cells.map((c) => <td class="mono" title={`effect ${x2(c.effect)} of the patch's flow`}>{needed(c.needed)}</td>)}
+                {designRows(inst.design.gone)[i].cells.map((c) => <td class="mono" title={`effect ${x2(c.effect)} of the patch's flow`}>{needed(c.needed)}</td>)}
+              </tr>
+            ))
+          }
+        </tbody>
+      </table>
     </div>
+    <p class="fine-print">
+      Each cell: at laser speckle's lower and higher variability. Read a region the size of one patch and a handful suffice; read two centimetres
+      and the patch is lost among its neighbours. Generated by <span class="mono">uv run python -m knots_sim.instrument</span> (run{' '}
+      <span class="mono">{inst.run.inputs}</span>).
+    </p>
+    <h3 class="h3">What each outcome would rule out</h3>
+    <div class="table-wrap">
+      <table class="verdicts outcomes">
+        <thead><tr><th scope="col">at a felt release, the recording shows</th><th scope="col">it fits</th><th scope="col">it does not fit</th></tr></thead>
+        <tbody>
+          {
+            OUTCOMES.map((o) => (
+              <tr><th scope="row">{o.shows}</th><td>{o.fits}</td><td>{o.not}</td></tr>
+            ))
+          }
+        </tbody>
+      </table>
+    </div>
+    <figure class="ink-fig wide-fig scroll-x" set:html={decisionTree()} />
+    <p class="caption">
+      The order of questions the theories not yet modelled also answer: first where knots sit, then whether anything local changes, then in what.
+    </p>
   </section>
 
   <section id="asks" class="sec full" data-glyph="願">
@@ -1514,7 +1630,30 @@ const index = [
     font-size: 13px;
     line-height: 1.6;
   }
-  .findings .kind {
+  .steps {
+    max-width: 780px;
+    padding-left: 20px;
+    display: grid;
+    gap: 10px;
+    margin: 4px 0 18px;
+  }
+  .steps > li {
+    font-family: var(--font-serif);
+    font-size: 13px;
+    line-height: 1.6;
+  }
+  .steps > li::marker {
+    font-family: var(--font-mono);
+    font-size: 11px;
+    color: var(--accent-dark);
+  }
+  .steps ul {
+    margin: 4px 0 0;
+    padding-left: 18px;
+    display: grid;
+    gap: 3px;
+  }
+  .kind {
     display: inline-block;
     margin-right: 6px;
     padding: 0 5px;

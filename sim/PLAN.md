@@ -174,6 +174,28 @@ proponents of each theory, and a lab.
    an easy knot, or one released once the stress has gone, stays open. The measurement: tissue pressure around a knot as it
    lets go, and whether the knots that return are the deep ones. The trigger point's version needs an occlusion-only input.
 
+16. **What an instrument would record, and the measurement it designs** (`knots_sim/instrument.py`, `instrument.json`: the
+   exam's own patch trials, recorded as they run, read as laser speckle and elastography would read them). Of the useful kinds:
+   - *Pressure alone flushes every pressed place* (the vessel model's squeeze-widening, fitted to clifford2006, and its
+     reactive hyperaemia): as the hand lifts, flow at a pressed place that held no knot rises by 1.62 of a relaxed
+     vessel's flow (0.57–1.90 across settings). Flow returning at a release is no sign of a knot; the control is a
+     pressed place with no knot, not a place the hand never touched.
+   - *In the vessel view a knot is a patch darker than its neighbours*, by the share of its patch its own vessel feeds
+     (own_share, guessed 30–100%: each perforasome is linked to its neighbours', saintcyr2009), and about as bright as its
+     neighbours under the same hand once it lets go (0.60 darker before, 0.03 brighter after, at a
+     share of 0.6). Normal skin has lasting darker and brighter spots whose levels against each other persist (wardell1994): the
+     dark spot alone is weak evidence; its brightening against its neighbours at a release is the specific sign.
+   - *Read a region the size of one vessel's patch* (4–5 mm): then 3–8 knots (a map, no release) or releases would show
+     either sign at laser speckle's variability (roustit2010: 8–15% week to week, which over-states it within a session); at
+     1 cm, 3–178; at 2 cm, 40–2,842. The share its vessel feeds matters less than the region's width.
+   - Trigger points change nothing in the skin: the nodule's contracture falls from 0.85 by 0.36 as it lets go,
+     59 s into the press (under the hand), which elastography through the pressing probe would see. Perception changes
+     nothing in the tissue; its knot lets go at 60 s, as the hand lifts, the same moment as the perforators'
+     (61 s): only the skin tells them apart.
+   - Before any instrument, four questions the author could answer by noticing: when a pressed knot lets go (Q1); whether a
+     chosen hard knot can go while easier ones beside it stay; whether a knot back in the same place is there at once or
+     after a while; how fast knots form.
+
 **A hypothesis these suggest** (to be run through the same exam as everything else, not assumed). Knots form where drive is
 raised and the tissue is still. A shut vessel loses the pulse that stretches its wall with every heartbeat, and so may hold
 harder than an open one (a second loop that widens the band). The longer it is held, the more its muscle adapts to being
@@ -396,7 +418,8 @@ special, and perception wherever attention and threat gather.
 ## 6. The decisive experiment
 
 **Instrument models.** Each measurement modelled with its depth, resolution in space and time, and noise, so that each
-theory's prediction is what the instrument would actually record:
+theory's prediction is what the instrument would actually record. Built for laser speckle over each place's patch and for
+the nodule (`knots_sim/instrument.py`, finding 16), reading the exam's own trials; to come, the rest:
 
 - laser speckle contrast imaging and laser Doppler (superficial skin flow, sub-second)
 - thermal imaging (skin temperature; slow, per the cooling check)
@@ -407,7 +430,8 @@ theory's prediction is what the instrument would actually record:
 
 **The keystone design** is the author's Tier 1 experiment (docs/source, the vasocomputation essay): stiffness and flow under a
 load-cell probe over a knot, with the breath, EMG and a button pressed at each felt release; controls of pressure with a held
-breath, breath without pressure, sham sites, and failed attempts. For each surviving theory and variant: the predicted traces
+breath, breath without pressure, sham sites (among them a pressed place with no knot: a press flushes every place it
+presses, finding 16), and failed attempts. For each surviving theory and variant: the predicted traces
 around a release, drawn side by side.
 
 **Discrimination.** For each pair of theories: which signal differs most, by how much against the instrument's noise, and how
@@ -546,7 +570,10 @@ M5. The top-bar link comes when the author says (D2); the natural moment is matr
   given all the unknowns and not something that looks useful but is useless." Every result is now one of three kinds (a
   can or cannot in every plausible setting; something the author could notice; what an instrument would show), and the
   next work is the one that ends in data:
-  1. *The measurement, designed from the models.* One page, generated: what to record at a release (laser speckle or a
+  1. *The measurement, designed from the models* (done, first version, 27 Sep: finding 16; the Research page's "What an
+     instrument would record" and "The measurement that would settle it"). Still to add: thermal imaging's lag and blur,
+     Doppler at depth, the breath's own effect on skin flow at the sham, and the noise of a patch against its neighbours
+     within one session (wardell1994 reports it persists; the size needs a source). As first planned: one page, generated: what to record at a release (laser speckle or a
      thermal camera over the spot and a sham site; the breath; the moment the release is felt), what each surviving
      theory and breath route predicts it would show, how big and how soon, how many releases it needs, and what each
      outcome would rule out. Includes the aimed-breath fingerprint (flow in the open vessels around the attended place while the breath is aimed)

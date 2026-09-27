@@ -115,3 +115,19 @@ def test_the_findings_note_names_the_matrix_run():
 
     m = json.loads(exam.SITE.read_text())
     assert f"inputs {m['run']['inputs']}" in EXAM_OUT.read_text(), "findings 004 is stale: run `uv run python -m knots_sim.exam`"
+
+
+def test_the_instrument_study_is_current_and_reads_the_trials():
+    from knots_sim import instrument
+
+    a = json.loads(instrument.SITE.read_text())
+    assert a["run"]["inputs"] == instrument.inputs_hash(), "instrument.json is stale: run `uv run python -m knots_sim.instrument`"
+    assert set(a["traces"]) == {"T1", "T3", "T6"}
+    for tr in a["traces"].values():
+        assert len(tr["t"]) == len(tr["knot"]) == len(tr["pressed"]) == len(tr["far"])
+    t1 = a["reads"]["T1"]["drive"]["press"]
+    assert t1["sites"] > 0, "no knot at the spot let go under the press: the recording never ran"
+    assert t1["dark_before_0.6"]["median"] > 0  # a shut vessel's patch is darker than its neighbours'
+    assert t1["lift_sham"]["median"] > 0  # and a press flushes a pressed place with no knot
+    for row in a["design"]["dark"] + a["design"]["gone"]:
+        assert all(n is None or n >= 3 for n in row["needed"])
