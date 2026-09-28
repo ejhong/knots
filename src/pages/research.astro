@@ -6,6 +6,8 @@ import { refById } from '../data/references';
 import { switchDiagram } from '../sim/draw';
 import { knotSets, treeStory, type AdaptStudy, type TreeFigure } from '../sim/figures';
 import { calibrate, type Params } from '../sim/vessel';
+import guide from '../data/sim/guide.json';
+import type { GuideIndex, TheoryIndex } from '../sim/guide/data';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const repo = 'https://github.com/ejhong/knots/blob/main';
@@ -44,12 +46,46 @@ const cite = (id: string) => {
   return `<a class="cite" href="${base}/library/#${id}">${who} ${ref.year}</a>`;
 };
 
+// The field guide: every theory run from its own physiology through the same scenes (sim/knots_sim/guide).
+const g = guide as unknown as GuideIndex;
+const trait = (th: TheoryIndex, key: string) => th.traits.find((x) => x.id === key);
+const MARK: Record<string, string> = { all: '●', some: '◐', none: '○', silent: '—', not: '·' };
+// Where the theories part: questions a hand or an instrument can ask, each answered by every model (its portrait's cell),
+// the theories grouped by answer. Generated from the runs; nothing here is written per theory.
+const TELLS: { key: string; q: string; ask: string }[] = [
+  { key: 'record', q: 'What would a recording show at the moment one lets go?', ask: 'step 4' },
+  { key: 'bump', q: 'What does a finger find?', ask: 'a hand, then step 2' },
+  { key: 'where', q: 'Where do they sit?', ask: 'step 3' },
+  { key: 'hand', q: 'Under a resting hand, when does it let go?', ask: 'step 1' },
+  { key: 'attention', q: 'Does attention alone, without touch, let it go?', ask: 'step 1' },
+  { key: 'spark', q: 'Is there a spark, and when?', ask: 'step 1' },
+  { key: 'needs', q: 'What would a breath have to do (the least calming that frees the typical knot)?', ask: 'the field guide' },
+  { key: 'time', q: 'Once the stress has gone, can an old knot stay?', ask: 'following knots over weeks' },
+];
+const answers = (key: string) => {
+  const m = new Map<string, { th: TheoryIndex; mark: string }[]>();
+  for (const th of g.theories) {
+    const t = trait(th, key);
+    if (!t) continue;
+    if (!m.has(t.cell)) m.set(t.cell, []);
+    m.get(t.cell)!.push({ th, mark: t.mark });
+  }
+  return [...m.entries()];
+};
+const names = (key: string, cell: string) =>
+  g.theories.filter((th) => trait(th, key)?.cell === cell).map((th) => th.name.toLowerCase());
+const cap = (w: string) => (w ? w[0].toUpperCase() + w.slice(1) : w);
+const list = (xs: string[]) => (xs.length < 2 ? xs.join('') : `${xs.slice(0, -1).join(', ')} and ${xs.at(-1)}`);
+const records = g.theories.map((th) => `${th.name.toLowerCase()}: ${trait(th, 'record')?.cell ?? '—'}`);
+const handGroups = answers('hand').map(([cell, ths]) => `${cell}: ${list(ths.map((x) => x.th.name.toLowerCase()))}`);
+const attGroups = answers('attention').map(([cell, ths]) => `${cell}: ${list(ths.map((x) => x.th.name.toLowerCase()))}`);
+
 const index = [
   { id: 'summary', label: 'summary' },
-  { id: 'physics', label: 'what physics allows' },
-  { id: 'time', label: 'time: how a knot sets' },
-  { id: 'trees', label: 'trees' },
+  { id: 'part', label: 'where the theories part' },
   { id: 'measurement', label: 'the measurement' },
+  { id: 'physics', label: 'what physics allows' },
+  { id: 'perforators', label: 'the perforators, up close' },
   { id: 'asks', label: 'what we need' },
   { id: 'method', label: 'method' },
 ];
@@ -58,8 +94,8 @@ const index = [
   title="Knots: an open problem, and the measurement that would settle it"
   kicker="For researchers"
   current="research"
-  lede="People who work with the body find places that hold for years and let go in a breath. Seven mechanisms could explain them. Each is being run as a model from its own physiology, to show how its knots would behave, and what one recording at the moment of release would show under each."
-  description="An open problem in physiology: what holds a knot, and what lets it go. The theories as models with measured numbers, what physics allows, and the measurements that would tell them apart."
+  lede="People who work with the body find places that hold for years and let go in a breath. Seven mechanisms could explain them. Each is run as a model from its own physiology, to show how its knots would behave; and at the moment one lets go, each would leave a different trace."
+  description="An open problem in physiology: what holds a knot, and what lets it go. Seven theories as models with measured numbers, where they part, what physics allows, and the measurements that would tell them apart."
   glyph="究"
   index={index}
   wide
@@ -75,33 +111,153 @@ const index = [
         myofascial trigger point, densified hyaluronan, a sensitised nerve, motor units that latch on, and perception.
       </p>
       <p>
-        <strong>How it is being approached.</strong> Each theory is written as a model in its strongest form, every
-        parameter traced to a quoted line of a paper or marked as a guess, and run from its own physiology through the same
-        scenes: a stressful moment, slow breathing, attention, a resting hand, rolling, an hour of moods. What its knots
-        would do is read off the runs, not fitted to anyone's reports: how they would feel under a hand, respond, let go
-        and move, and what an instrument would record. That is the <a href={`${base}/hypotheses/#watch`}>field guide</a>, on the
-        Hypotheses page.
+        <strong>How it is approached.</strong> Each theory is written as a model in its strongest form, every parameter
+        traced to a quoted line of a paper or marked as a guess, and run from its own physiology through the same scenes: a
+        stressful moment, slow breathing, attention, a resting hand, rolling, an hour of moods, in {g.run.settings} settings
+        of its uncertain numbers. What its knots would do is read off the runs, not fitted to anyone's reports. That is the{' '}
+        <a href={`${base}/hypotheses/#watch`}>field guide</a>, on the Hypotheses page.
       </p>
       <p>
-        <strong>What physics already says.</strong> A small artery with tone in its wall can hold itself shut, but with the
-        walls of healthy human small arteries only while tone stays well above rest, until, held an hour or two, its muscle
-        adapts and the knot sets. Hyaluronan cannot hold a vessel shut; warming cannot release one within a breath; the
-        smooth-muscle latch saves energy but by itself does not remember; a vessel pressed shut cannot reopen until the hand lifts.
-        Parents in a vessel tree shut their children, and releasing a parent frees most of them at once.
+        <strong>What the models show.</strong> They part most at the moment of release. Each would leave a different trace:
+        {' '}{records.join('; ')}. They part too in what a hand finds, where knots sit, whether one lets go under a resting
+        hand or only as it lifts, and whether attention alone frees it (<a href="#part">below</a>).
       </p>
       <p>
-        <strong>What would settle it.</strong> A few measurements, cheapest first: where knots sit (on perforators, on the
-        zone where a muscle's nerve enters, or anywhere), in which layer the bump is, whether a motor unit falls silent at
-        the moment one lets go, and whether the skin over it floods. <a href="#measurement">The ladder below.</a>
+        <strong>What physics already says.</strong> A small artery with tone in its wall can hold itself shut, and, held an
+        hour or two, its muscle adapts and the knot sets; a vessel pressed shut cannot reopen until the hand lifts, and
+        releasing a parent vessel frees most of its children. Hyaluronan cannot hold a vessel shut, hardly changes with
+        acidity, and thins only about 2% a degree with warmth; warming cannot release a knot within a breath; the latch
+        saves energy but by itself does not remember; the sympathetic drive reaches a sensitised nerve only after about
+        fourteen seconds.
+      </p>
+      <p>
+        <strong>What would settle it.</strong> One recording at the moment a knot lets go, with the few instruments that
+        tell those traces apart, after cheaper questions a hand can ask. <a href="#measurement">The ladder below.</a>
       </p>
     </div>
   </section>
 
-  <section id="physics" class="sec full" data-glyph="理">
-    <h2>What physics allows: can a vessel hold a knot?</h2>
+  <section id="part" class="sec full" data-glyph="別">
+    <h2>Where the theories part</h2>
     <p class="sub">
-      The first model, a perforator's small artery, with {sourced} parameters taken from or fitted to measurements and{' '}
-      {guessed} guesses, each marked. It can be played with on <a href={`${base}/simulation/vessel/`}>its own bench</a>.
+      The same questions put to every model, and its answer, from the runs (● in every setting, ◐ in some, ○ in none, — the
+      account says nothing). Where the answers differ in something a hand or an instrument can tell, that is a test. The
+      first question separates all seven.
+    </p>
+    <div class="tells">
+      {TELLS.map(({ key, q, ask }) => (
+        <div class="tell">
+          <p class="tq">{q} <span class="task mono">{ask}</span></p>
+          <ul class="ta">
+            {answers(key).map(([cell, ths]) => (
+              <li>
+                <span class="tcell">{cell}</span>
+                <span class="tths">
+                  {ths.map(({ th, mark }) => (
+                    <a href={`${base}/hypotheses/#${th.key}`} title={`${th.name}: ${mark === 'all' ? 'in every setting' : mark === 'some' ? 'in some settings' : mark === 'none' ? 'in no setting' : 'the account says nothing'}`}>
+                      <span class="mk">{MARK[mark]}</span> <span class="glyph">{th.glyph}</span> {th.name}
+                    </a>
+                  ))}
+                </span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      ))}
+    </div>
+    <p class="caption">
+      Every answer is a model's, from its own physiology and its sampled numbers; a model shows what a mechanism would do, not
+      that it is what happens. The full portraits, and the films, are in the <a href={`${base}/hypotheses/#watch`}>field guide</a>.
+    </p>
+  </section>
+
+  <section id="measurement" class="sec full" data-glyph="験">
+    <h2>The measurement that would settle it</h2>
+    <p class="sub">
+      Cheapest first. Each observes what already happens, at the usual pace; each step names the theories it would tell
+      apart.
+    </p>
+    <ol class="steps">
+      <li><strong>Noticing, with no instrument.</strong> When does a knot let go under a resting hand? {cap(handGroups.join('; '))}. Does attention alone, without touch, free it? {cap(attGroups.join('; '))}. Is there a tingle
+        over the spot as it goes (perforators), a twitch (trigger points), or a tingle along a nerve's branches when it is
+        pressed (nerves)? Does the skin slide over it (densification: not)? Does it come back to the same point
+        each time the stress returns (nerves, whose knots can sit only where a nerve pierces the fascia)?</li>
+      <li><strong>Ultrasound over a few knots,</strong> with colour Doppler and a measure of the layers' sliding: in which
+        layer a bump is (a trigger point's nodule, or a motor switch's band, in muscle); whether a perforator runs beneath
+        (perforators, and nerves, which travel beside one); whether the layers glide over the spot (densification says they
+        do not). The latch and perception predict nothing to see.</li>
+      <li><strong>A Doppler map against blinded marks:</strong> do knots sit on perforators more than chance (perforators,
+        nerves), on the zone where a muscle's nerve enters (trigger points), or wherever stress is held (the latch,
+        densification, the motor switch, perception)?</li>
+      <li><strong>The recording at release,</strong> with a button pressed at each felt release and a pressed sham beside
+        it, since a press changes every place it presses. Laser speckle over the skin (the perforators' flood; the latch's
+        slow rise); surface EMG that picks out single motor units (the motor switch's unit falling silent); elastography
+        (a trigger point's stiffness falling in the muscle); ultrasound of the layers' sliding (densification's layers
+        sliding again). A nerve's knot is silenced by a local anaesthetic at the point, as entrapped nerves of the abdominal
+        wall are <Fragment set:html={`(${cite('boelens2013')})`} />. Perception predicts that nothing in the tissue changes.</li>
+    </ol>
+    <p class="caption">
+      Any measurement with people belongs under the site's moderation guidance (see <a href={`${base}/about/#moderation`}>About</a>).
+      None of this is a practice or a protocol.
+    </p>
+  </section>
+
+  <section id="physics" class="sec full" data-glyph="理">
+    <h2>What physics allows</h2>
+    <p class="sub">
+      Questions that numbers settle before any model runs: what a mechanism cannot do, whatever its settings.
+    </p>
+    <div class="checks">
+      <article class="check">
+        <p class="q">Can hyaluronan hold a vessel shut?</p>
+        <p class="a">No.</p>
+        <p set:html={`A liquid resists motion, not position. At its most viscous (healthy synovial fluid; ${cite('nicholls2018')}), in a collar 20 µm thin, its drag is ${Math.round(col.pressure_over_drag)} times weaker than the pressure holding the vessel open, and fascia holds tens to hundreds of times less hyaluronan (${cite('fede2018')}).`} />
+      </article>
+      <article class="check">
+        <p class="q">Can acidity thicken hyaluronan?</p>
+        <p class="a">Not in the body's range.</p>
+        <p set:html={`Its flow hardly changes with pH, except near pH 2.5, where it turns gel-like, and above 12 (${cite('gatej2005')}); alone it does not gel (${cite('krause2001')}). A layer that jams is more than hyaluronan: crowded with immobility, or bound to proteins in inflammation (${cite('cowman2015')}).`} />
+      </article>
+      <article class="check">
+        <p class="q">Can warmth free a densified layer?</p>
+        <p class="a">Barely.</p>
+        <p set:html={`Hyaluronan thins gradually with warmth, two- to threefold from 25 to 65 °C (${cite('cowman2015')}): about 2% a degree. A resting hand warms the layer beneath the fat by a fraction of that range; it would have to slide the layer instead.`} />
+      </article>
+      <article class="check">
+        <p class="q">Can warming release a vessel within a breath?</p>
+        <p class="a">No.</p>
+        <p>A patch of skin warms with a time constant of at least {Math.round(cool.tau_s_at_max_flow)} s even at maximal skin blood flow. Release within a breath needs something faster than heat.</p>
+      </article>
+      <article class="check">
+        <p class="q">Does the latch remember?</p>
+        <p class="a">It economises.</p>
+        <p set:html={`Relaxation follows the fall of calcium, not latch-bridge detachment (${cite('rembold1991')}): a latch holds cheaply while the drive lasts. In Johnson's account the memory lies elsewhere, in the held prediction that the clamp keeps from updating: the field guide runs that loop as <a href="${base}/hypotheses/#latch">the vascular latch</a>.`} />
+      </article>
+      <article class="check">
+        <p class="q">Can a pressed vessel let go under the hand?</p>
+        <p class="a">Not until it lifts.</p>
+        <p>Pressure outside a shut vessel only helps keep it shut. After 40 s of pressure the vessel reopens {pressed.toFixed(1)} s after the pressure lifts, and flow returns from near nothing to {afterPress.toFixed(2)} of resting flow while drive stays raised ({afterEase.toFixed(2)} when stress eases instead).</p>
+      </article>
+      <article class="check">
+        <p class="q">Can calm quiet a sensitised nerve within a breath?</p>
+        <p class="a">Not through the sympathetic drive.</p>
+        <p set:html={`In injured nerves, sympathetic activity changes ectopic firing only after about 14 s, and over tens of seconds (${cite('devor1994')}). A single out-breath is over before it arrives.`} />
+      </article>
+      <article class="check">
+        <p class="q">Can pressing free a nerve's knot?</p>
+        <p class="a">No: it excites it.</p>
+        <p set:html={`An inflamed nerve's fibres fire when the site is pressed (${cite('dilley2005')}), and a hand's 20–80 mmHg is more than slows the blood leaving a nerve, 20–30 mmHg (${cite('rydevik1981')}).`} />
+      </article>
+    </div>
+  </section>
+
+  <section id="perforators" class="sec full" data-glyph="結">
+    <h2>The perforators, up close</h2>
+    <p class="sub">
+      The first model and the most detailed: a perforator's small artery, with {sourced} parameters taken from or fitted to
+      measurements and {guessed} guesses, each marked; it can be played with on <a href={`${base}/simulation/vessel/`}>its own bench</a>.
+      Two things it shows that the field guide's scenes are too short for: how a knot sets over hours, and how a tree of
+      vessels holds and lets go together.
     </p>
     <div class="physics">
       <figure class="ink-fig" set:html={switchDiagram(p, s)} />
@@ -111,32 +267,7 @@ const index = [
         <p class="fact"><span class="big">{v.gasp.at_s.toFixed(1)} s</span><span class="fl">when flow is lowest after a deep gasp, the one timing not fitted: measured 4.6–5.2 s <Fragment set:html={`(${cite('mayrovitz2026')})`} />. The fitted ones reproduce the gasp's size and recovery and the timing of reactive hyperaemia.</span></p>
       </div>
     </div>
-    <div class="checks">
-      <article class="check">
-        <p class="q">Can hyaluronan hold a vessel shut?</p>
-        <p class="a">No.</p>
-        <p set:html={`A liquid resists motion, not position. At its most viscous (healthy synovial fluid; ${cite('nicholls2018')}), in a collar 20 µm thin, its drag is ${Math.round(col.pressure_over_drag)} times weaker than the pressure holding the vessel open, and fascia holds tens to hundreds of times less hyaluronan (${cite('fede2018')}).`} />
-      </article>
-      <article class="check">
-        <p class="q">Can warming release one within a breath?</p>
-        <p class="a">No.</p>
-        <p>A patch of skin warms with a time constant of at least {Math.round(cool.tau_s_at_max_flow)} s even at maximal skin blood flow. Release within a breath needs something faster than heat.</p>
-      </article>
-      <article class="check">
-        <p class="q">Does the latch remember?</p>
-        <p class="a">It economises.</p>
-        <p set:html={`Relaxation follows the fall of calcium, not latch-bridge detachment (${cite('rembold1991')}): a latch holds cheaply while the drive lasts. It may still harden a held vessel against movement, as it does airway muscle against a deep breath (${cite('fredberg1996')}). In Johnson's account the memory lies elsewhere, in the held prediction that the clamp keeps from updating: the field guide runs that loop as <a href="${base}/hypotheses/#latch">the vascular latch</a>.`} />
-      </article>
-      <article class="check">
-        <p class="q">Can a pressed vessel let go under the hand?</p>
-        <p class="a">Not until it lifts.</p>
-        <p>Pressure outside a shut vessel only helps keep it shut. After 40 s of pressure the vessel reopens {pressed.toFixed(1)} s after the pressure lifts, and flow returns from near nothing to {afterPress.toFixed(2)} of resting flow while drive stays raised ({afterEase.toFixed(2)} when stress eases instead): the pressure ran up a debt, and returning blood repays it.</p>
-      </article>
-    </div>
-  </section>
-
-  <section id="time" class="sec full" data-glyph="時">
-    <h2>Time: how a knot sets</h2>
+    <h3 id="time" class="h3">Time: how a knot sets</h3>
     <p class="sub">
       The switch alone holds a knot only while tone stays {healthyRatio.toFixed(1)} times rest. But smooth muscle held at a new length adapts to it: it regains
       the force it lost there, as its optimal length moves toward the length it is held at{' '}
@@ -177,10 +308,8 @@ const index = [
       back <Fragment set:html={`(${cite('vanbavel2014')})`} />. A shut vessel has no flow, and the results above do not lean on what is missing. The blind
       test is the four-hour closure test, <a href="#asks">below</a>.
     </p>
-  </section>
 
-  <section id="trees" class="sec full" data-glyph="樹">
-    <h2>Trees: a parent and its children</h2>
+    <h3 id="trees" class="h3">Trees: a parent and its children</h3>
     <p class="sub">
       Perforators branch: a parent vessel feeds children, and they share its pressure. Each vessel here is the same switch, with its own wall;
       pressures are solved at every step. The worked tree has walls as in hypertension (media 7.5–10% of the lumen) and drive raised to{' '}
@@ -205,31 +334,7 @@ const index = [
         <p class="tile-note">{tr.samples} trees: source and bed pressures, the parent's resistance, the children's walls and the drive, each sampled across its range.</p>
       </div>
     </div>
-  </section>
 
-  <section id="measurement" class="sec full" data-glyph="験">
-    <h2>The measurement that would settle it</h2>
-    <p class="sub">
-      Where the theories' knots behave differently, an observation can tell them apart. The cheapest first; each observes what already happens, at
-      the usual pace. A first draft: the field guide's comparison on the Hypotheses page sets out every place the theories part, and what each would record.
-    </p>
-    <ol class="steps">
-      <li><strong>Noticing.</strong> Does a knot let go while a hand still rests on it, or as the hand lifts? A vessel pressed shut can only reopen as
-        it lifts; a trigger point's contracture lets go under a sustained press, over tens of seconds; a latched motor unit, whenever it is inhibited. Is
-        the knot there before anything touches it, or does pressing bring it out? Can attention alone, without touch, let one go?</li>
-      <li><strong>Ultrasound over a few knots,</strong> with colour Doppler: in which layer the bump is (fat, fascia or muscle); whether a perforator
-        runs beneath it; whether the bump changes as it lets go. A theory with nothing to feel in the tissue predicts no bump at all.</li>
-      <li><strong>Surface EMG that picks out single motor units,</strong> with a button pressed at each felt release: does a unit fall silent at the
-        moment it goes (motor switch), or does nothing in the muscle change (perforators, perception)?</li>
-      <li><strong>A Doppler map against blinded marks:</strong> do knots sit on perforators more than chance (perforators, nerves), on the zone where
-        the muscle's nerve enters (trigger points), or anywhere (perception, motor switch)?</li>
-      <li><strong>Laser speckle at a release,</strong> beside a pressed sham, since a press flushes every place it presses: does the skin over a knot
-        flood as it goes (perforators), or not (trigger points, perception, the motor switch alone)?</li>
-    </ol>
-    <p class="caption">
-      Any measurement with people belongs under the site's moderation guidance (see <a href={`${base}/about/#moderation`}>About</a>). None of this is a practice
-      or a protocol.
-    </p>
   </section>
 
   <section id="asks" class="sec full" data-glyph="願">
@@ -251,6 +356,24 @@ const index = [
         <p class="ask-h">How fast skin arterioles relax when sympathetic drive falls</p>
         <p>The time course of dilation after a brief sympathetic burst ends, over hairy skin (the back and neck, where knots are reported). It decides
           whether a vessel can let go in one breath or needs many. The gasp reflex itself is measured mostly on the fingers.</p>
+      </li>
+      <li>
+        <p class="ask-h">The loose layer's give</p>
+        <p>Whether the gliding layer between the fasciae of the upper back behaves as a material with a critical stress: rheometry of human loose
+          connective tissue at the slow shears of ordinary movement, and how long it takes to rebuild at rest. With ultrasound of the layers' sliding
+          (as measured in the back, <Fragment set:html={cite('langevin2011')} />) before and after a knot lets go, it would decide densification.</p>
+      </li>
+      <li>
+        <p class="ask-h">A sensitised nerve and the sympathetic drive</p>
+        <p>Whether a nerve of the skin that is sensitised where it pierces the fascia, but not injured, answers the sympathetic drive as injured nerves do,
+          and how late <Fragment set:html={`(${cite('devor1994')})`} />; and whether knots sit at such piercings, as the tender points of the abdominal
+          wall do <Fragment set:html={`(${cite('weum2016')})`} />.</p>
+      </li>
+      <li>
+        <p class="ask-h">The latch's own constants, and a latched unit's squeeze</p>
+        <p>How slowly a latched small artery relaxes once its command falls (the constants of <Fragment set:html={cite('hai1988')} />, measured in
+          arteries); and how hard a few latched motor units squeeze a vessel that runs through the muscle beside them, the one number on which the motor
+          switch with its vessel rests.</p>
       </li>
       <li>
         <p class="ask-h">The recording at release</p>
@@ -288,10 +411,12 @@ const index = [
           every setting is structural; one that holds in some says which number decides it, and so what to measure.</p>
       </div>
     </div>
-    <p class="stamp mono">vessel model run {data.run.date} · inputs {data.run.inputs}</p>
+    <p class="stamp mono">field guide run {g.run.inputs}{g.run.commit ? ` · commit ${g.run.commit}` : ''} · {g.run.settings} settings per theory · vessel model run {data.run.date} · inputs {data.run.inputs}</p>
     <p class="links mono">
       <a href={`${base}/hypotheses/#watch`}>the field guide</a>
       <a href={`${repo}/sim/PLAN.md`}>the plan</a>
+      <a href={`${repo}/sim/knots_sim/models/`}>the seven models</a>
+      <a href={`${repo}/sim/findings/guide.md`}>every portrait, as a note</a>
       <a href={`${repo}/sim/knots_sim/models/vessel.py`}>the vessel model</a>
       <a href={`${repo}/sim/knots_sim/models/tree.py`}>the tree</a>
       <a href={`${repo}/sim/knots_sim/adapt.py`}>how a knot sets</a>
@@ -341,6 +466,78 @@ const index = [
     margin-bottom: 8px;
   }
 
+  .h3 {
+    font-family: var(--font-sans);
+    font-size: 14px;
+    font-weight: 700;
+    margin: 26px 0 4px;
+    scroll-margin-top: calc(var(--topbar-h) + 12px);
+  }
+  .tells {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 12px 26px;
+    max-width: 1000px;
+    margin: 6px 0 8px;
+  }
+  .tell {
+    border-top: 1px solid var(--border);
+    padding-top: 8px;
+  }
+  .tq {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 12.5px;
+    line-height: 1.45;
+    margin: 0 0 6px;
+  }
+  .task {
+    font-weight: 400;
+    font-size: 9.5px;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  .ta {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 4px;
+  }
+  .ta li {
+    display: grid;
+    grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.1fr);
+    gap: 10px;
+    font-size: 12px;
+    line-height: 1.45;
+  }
+  .tcell {
+    font-family: var(--font-serif);
+    font-style: italic;
+  }
+  .tths {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 2px 10px;
+    font-family: var(--font-sans);
+    font-size: 11.5px;
+  }
+  .tths a {
+    color: var(--text);
+    text-decoration: none;
+    white-space: nowrap;
+  }
+  .tths a:hover {
+    text-decoration: underline;
+  }
+  .mk {
+    color: var(--accent-dark);
+    font-size: 9px;
+  }
+  .glyph {
+    font-family: var(--font-cjk);
+    color: var(--jade);
+  }
   .steps {
     max-width: 780px;
     padding-left: 20px;
@@ -528,10 +725,19 @@ const index = [
       grid-template-columns: minmax(0, 1fr);
     }
   }
+  @media (max-width: 860px) {
+    .tells {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
   @media (max-width: 700px) {
     .checks,
     .two {
       grid-template-columns: minmax(0, 1fr);
+    }
+    .ta li {
+      grid-template-columns: minmax(0, 1fr);
+      gap: 0;
     }
     .fact,
     .tile {

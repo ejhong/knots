@@ -5,7 +5,7 @@ G3's main part is done: the engine (`knots_sim/guide/`) runs all seven theories 
 in their trees, the vascular latch, trigger points, densification, nerves, the motor switch and perception) through
 eight scenes in 32 settings each, and the Hypotheses page shows each theory's account beside what its model shows, with
 the instrument at the top (`/simulation/` redirects there); each theory's portrait is generated from the runs
-(`findings/guide.md`). Next: G2 (Research rebuilt from the guide), then the rest of G3. The first version of this phase,
+(`findings/guide.md`); G2 is done: the Research page leads with where the seven part, generated from the guide. Next: the rest of G3, then G4. The first version of this phase,
 an exam that scored the theories against the author's reports, is in [archive/](archive/2026-09-28-exam-plan.md); what
 it built is kept (§9). The planning brief it started from is [BRIEF.md](BRIEF.md).*
 
@@ -231,7 +231,7 @@ adapters' scaling rules (`theories/`), `instrument.py`'s readings, `checks.py` (
 |---|---|---|
 | G0 | This plan; the exam, the matrix and the author's words off the site; Research made lean | done, 28 Sep |
 | G1 | The engine for T1, T3, T6, T7; the field guide v1: side by side, up close, the character | first version live, 28 Sep; then patterned and micro-breaths, the vessel tree's conducted dilation |
-| G2 | Research rebuilt around the tells and the measurement ladder, generated from the guide | pushed |
+| G2 | Research rebuilt around the tells and the measurement ladder, generated from the guide | done, 28 Sep |
 | G3 | T4 and T5 (built, 28 Sep: all seven in the guide); the motor switch with its vessel; the latch's own rate constants; variants in the player | the hybrid and the constants |
 | G4 | The atlas driven by the models: where knots gather under stress and with age, theory by theory | the atlas's knots come from the models |
 | G5 | The fascia, the second system: peeling and filling as models of their own (a separate phase, with its own safety review) | |
