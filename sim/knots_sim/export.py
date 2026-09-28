@@ -49,7 +49,9 @@ def _git() -> dict:
 def _inputs_hash() -> str:
     """A hash of everything a run depends on: the model code and the parameter tables."""
     h = hashlib.sha256()
-    for f in sorted([*(SIM / "knots_sim").rglob("*.py"), *(SIM / "params").glob("*.yaml"),
+    guide = SIM / "knots_sim" / "guide"  # the field guide has its own run and hash (knots_sim.guide.export)
+    for f in sorted([*(p for p in (SIM / "knots_sim").rglob("*.py") if guide not in p.parents),
+                     *(p for p in (SIM / "params").glob("*.yaml") if p.name != "senses.yaml"),
                      *(SIM / "observations").glob("*.yaml")]):
         h.update(f.relative_to(SIM).as_posix().encode())
         h.update(f.read_bytes())

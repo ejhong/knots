@@ -1,10 +1,10 @@
 {
  "run": {
   "date": "2026-09-28",
-  "inputs": "999428318c3d",
-  "commit": "7a1a90a",
+  "inputs": "b2cf3f939bfa",
+  "commit": "e89e74b",
   "dirty": true,
-  "python": "3.11.15",
+  "python": "3.11.3",
   "packages": {
    "numpy": "2.4.6",
    "scipy": "1.17.1",

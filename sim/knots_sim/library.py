@@ -173,6 +173,10 @@ NEW = [
      "Blocking serotonin 5-HT2 receptors shortened human motor units' self-sustained firing: units recruited by extra drive could not switch off when it was removed, and less so under the blocker."),
     ("26491094", "turo2015", ["trigger-points", "imaging"],
      "Ultrasound elastography measured the stiffer share of the trapezius around trigger points falling as they responded to dry needling."),
+    ("36106775", "maitland2022", ["anatomy", "imaging"],
+     "A single motor unit's territory measured with ultrasound-guided scanning EMG in tibialis anterior: 1.5 to 14.7 mm across, 7.2 mm on average."),
+    ("17369051", "cescon2008", ["anatomy", "imaging"],
+     "Over the upper trapezius the fat beneath the skin measured 3 to 18 mm by ultrasound, and the muscle's innervation zone lay mid-way between C7 and the acromion."),
 ]
 
 # Existing entries that the simulation also leans on gain the models tag.

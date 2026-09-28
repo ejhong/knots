@@ -11,7 +11,8 @@ reach the site is [../docs/SIMULATION.md](../docs/SIMULATION.md). The rules ever
 cd sim
 uv sync            # Python ≥ 3.11; installs the locked environment into .venv
 uv run pytest      # tests
-uv run python -m knots_sim.export   # regenerate what the site shows (minutes)
+uv run python -m knots_sim.guide    # the field guide: every theory through every scene (about 4 minutes)
+uv run python -m knots_sim.export   # the vessel bench's data and the TypeScript models (minutes)
 uv run python -m knots_sim.exam     # every theory through the exam: src/data/sim/matrix.json (about half an hour)
 ```
 
@@ -30,6 +31,9 @@ params/triggerpoint.yaml T3, trigger points: the energy crisis at an endplate, p
 params/motorswitch.yaml  T7, the motor switch: the latch (persistent inward currents) and the metabolic loop, mostly guessed
 observations/spec.yaml   the exam: what people report, as tests (versioned; seal.yaml keeps v1-v3's seals)
 knots_sim/
+  guide/                 the field guide's engine: patch.py (the shared patch, each theory's layout), scenes.py,
+                         senses.py (what a finger feels), t1/t3/t6/t7.py (one runner per theory), traits.py (the
+                         character, generated), export.py (src/data/sim/guide.json, public/sim/guide/*.json, findings/guide.md)
   pubmed.py              PubMed E-utilities and Europe PMC full texts, paced and cached (.cache/, ignored)
   library.py             papers the simulation stands on, merged into src/data/papers.json from PubMed records
   params.py              loads the tables; --verify checks every quote against its source

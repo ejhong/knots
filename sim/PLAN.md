@@ -1,7 +1,9 @@
 # The field guide: how knots would behave, theory by theory
 
-*Status (28 Sep 2026): the plan, written when the simulation turned round. Stage G0 (this plan, the site cleaned of the exam)
-is under way; G1 (the engine and the field guide's first version) follows. The first version of this phase, an exam that
+*Status (28 Sep 2026): G0 done (this plan; the exam, the matrix and the author's words off the site). G1's first version is
+live: the engine (`knots_sim/guide/`) runs perforators, trigger points, the motor switch and perception through seven scenes
+in 32 settings each, and `/simulation/` shows them side by side, up close, with each theory's character generated from the
+runs (`findings/guide.md`). Next: patterned and micro-breaths as scenes; conducted dilation in the vessel tree; G2, G3. The first version of this phase, an exam that
 scored the theories against the author's reports, is in [archive/](archive/2026-09-28-exam-plan.md); what it built is kept
 (§9). The planning brief it started from is [BRIEF.md](BRIEF.md).*
 
@@ -207,8 +209,8 @@ adapters' scaling rules (`theories/`), `instrument.py`'s readings, `checks.py` (
 
 | | Stage | Done when |
 |---|---|---|
-| G0 | This plan; the exam, the matrix and the author's words off the site; Research made lean | pushed |
-| G1 | The engine for T1, T3, T6, T7; the field guide v1: side by side, up close, the character | pushed; the author can watch every scene under every modelled theory |
+| G0 | This plan; the exam, the matrix and the author's words off the site; Research made lean | done, 28 Sep |
+| G1 | The engine for T1, T3, T6, T7; the field guide v1: side by side, up close, the character | first version live, 28 Sep; then patterned and micro-breaths, the vessel tree's conducted dilation |
 | G2 | Research rebuilt around the tells and the measurement ladder, generated from the guide | pushed |
 | G3 | T4, T5, the motor switch with its vessel; T2 once its constants are sourced; variants in the player | seven theories in the guide |
 | G4 | The atlas driven by the models: where knots gather under stress and with age, theory by theory | the atlas's knots come from the models |

@@ -1,9 +1,9 @@
 ---
-import Doc from '../layouts/Doc.astro';
-import data from '../data/sim/vessel.json';
-import { refById } from '../data/references';
-import { bandScale, logBars, sectionDrawing, shareBars, switchDiagram, tracesFrame } from '../sim/draw';
-import { calibrate, type Params } from '../sim/vessel';
+import Doc from '../../layouts/Doc.astro';
+import data from '../../data/sim/vessel.json';
+import { refById } from '../../data/references';
+import { bandScale, logBars, sectionDrawing, shareBars, switchDiagram, tracesFrame } from '../../sim/draw';
+import { calibrate, type Params } from '../../sim/vessel';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const p = data.params.values as unknown as Params;
@@ -77,7 +77,7 @@ const repo = 'https://github.com/ejhong/knots/blob/main';
 ---
 <Doc
   title="Can a knot hold?"
-  kicker="Simulation · first findings"
+  kicker="Simulation · up close: one perforator"
   current="simulation"
   lede="If a knot is a perforator held shut, something has to hold it, and it has to let go within seconds. A first model, built only from published measurements, finds that the vessel can hold itself."
   description="A small artery with tone in its wall is a switch: open or shut over a band of tone. A live model of one perforator, built from published measurements, and four checks of what could hold a knot."
@@ -330,7 +330,7 @@ const repo = 'https://github.com/ejhong/knots/blob/main';
 </Doc>
 
 <script>
-  import { mountBench } from '../sim/bench';
+  import { mountBench } from '../../sim/bench';
   const root = document.querySelector<HTMLElement>('[data-bench]');
   if (root) mountBench(root);
 </script>

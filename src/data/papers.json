@@ -239,6 +239,21 @@
   "note": "Under hypnosis, suggesting only the forearm was in warm water dilated that forearm (resistance -18%, flow +43%); suggesting the whole body dilated vessels everywhere."
  },
  {
+  "id": "cescon2008",
+  "authors": "Cescon C, Rebecchi P, Merletti R",
+  "year": 2008,
+  "title": "Effect of electrode array position and subcutaneous tissue thickness on conduction velocity estimation in upper trapezius muscle",
+  "venue": "J Electromyogr Kinesiol 18:628-36",
+  "url": "https://doi.org/10.1016/j.jelekin.2007.01.005",
+  "pmid": "17369051",
+  "kind": "paper",
+  "tags": [
+   "anatomy",
+   "imaging"
+  ],
+  "note": "Over the upper trapezius the fat beneath the skin measured 3 to 18 mm by ultrasound, and the muscle's innervation zone lay mid-way between C7 and the acromion."
+ },
+ {
   "id": "charkoudian2003",
   "authors": "Charkoudian N",
   "year": 2003,
@@ -899,6 +914,21 @@
    "trigger-points"
   ],
   "note": "Horses have trigger points too: the same spontaneous electrical activity found in humans and rabbits."
+ },
+ {
+  "id": "maitland2022",
+  "authors": "Maitland S, Hall J, McNeill A et al.",
+  "year": 2022,
+  "title": "Ultrasound-guided motor unit scanning electromyography",
+  "venue": "Muscle Nerve 66:730-735",
+  "url": "https://doi.org/10.1002/mus.27720",
+  "pmid": "36106775",
+  "kind": "paper",
+  "tags": [
+   "anatomy",
+   "imaging"
+  ],
+  "note": "A single motor unit's territory measured with ultrasound-guided scanning EMG in tibialis anterior: 1.5 to 14.7 mm across, 7.2 mm on average."
  },
  {
   "id": "martinezlemus2004",

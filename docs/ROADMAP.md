@@ -71,7 +71,8 @@ kept in `sim/archive/`; what it built (the models, the parameters and their sour
   warming cannot release within a breath; the latch economises), the tree, how a knot sets, trigger points, perception and the
   motor switch as models; the PubMed library tooling; the vessel bench
 - [x] G0: the plan; the exam, the matrix and the author's words off the site; the Research page made lean
-- [ ] G1: the engine (patch, scenes, senses, a runner per theory, traits) for T1, T3, T6, T7; the field guide v1 on `/simulation/`
+- [x] G1 (first version, 28 Sep): the engine (patch, scenes, senses, a runner per theory, traits) for T1, T3, T6, T7; the field guide on `/simulation/`; the vessel bench moved to `/simulation/vessel/`
+- [ ] Patterned and micro-breaths as scenes; conducted dilation in the vessel tree (does a child's release reach its parent?)
 - [ ] G2: Research rebuilt around the tells and the measurement ladder, generated from the guide
 - [ ] G3: densification (T4), nerves (T5), the motor switch with the vessel it squeezes; the latch (T2) once its rate constants are sourced
 - [ ] G4: the atlas driven by the models, theory by theory

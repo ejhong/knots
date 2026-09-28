@@ -1,7 +1,7 @@
 import type { APIRoute } from 'astro';
 
 // The pages search engines should know about (og and lab are working pages, left out).
-const PAGES = ['', 'atlas/', 'hypotheses/', 'research/', 'simulation/', 'traditions/', 'library/', 'about/'];
+const PAGES = ['', 'atlas/', 'hypotheses/', 'research/', 'simulation/', 'simulation/vessel/', 'traditions/', 'library/', 'about/'];
 
 export const GET: APIRoute = ({ site }) => {
   const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');

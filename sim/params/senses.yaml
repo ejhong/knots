@@ -1,0 +1,135 @@
+# The senses (knots_sim/guide/senses.py): from a theory's state to what a hand would feel and what an instrument would read,
+# the same rules for every theory (sim/PLAN.md §5). Added 28 Sep 2026. Sampled across their ranges in every setting, as each
+# theory's own numbers are. Same format as vessel.yaml.
+
+model: senses
+title: What is felt
+parameters:
+  skin:
+    symbol: d_skin
+    label: "the skin's thickness over the upper back"
+    value: 2.0
+    unit: mm
+    range: [1.5, 3.0]
+    confidence: guessed
+
+  fat:
+    symbol: d_fat
+    label: "the fat beneath the skin, over the upper trapezius"
+    value: 6.0
+    unit: mm
+    range: [3.0, 18.0]
+    confidence: measured
+    source: cescon2008
+    locator: abstract
+    quote: "The thickness of subcutaneous fat was measured by ultrasonic echography (range was 3-18mm)."
+    note: "Twenty healthy people; the value is a lean figure within the range, and the range is sampled."
+
+  into_muscle:
+    symbol: d_m
+    label: "how far into the muscle a contraction knot or a unit's fibres lie"
+    value: 4.0
+    unit: mm
+    range: [2.0, 8.0]
+    confidence: guessed
+
+  nodule_area:
+    symbol: A_n
+    label: "a trigger point's size, seen in cross-section"
+    value: 0.16
+    unit: cm²
+    range: [0.05, 0.27]
+    confidence: measured
+    source: sikdar2009
+    locator: abstract
+    quote: "MTrPs were elliptical, with a size of .16+/-.11 cm(2)."
+    note: "Drawn as an ellipse half again as long along the fibres as across them (guessed)."
+
+  territory:
+    symbol: D_mu
+    label: "a motor unit's territory, across the fibres"
+    value: 7.15
+    unit: mm
+    range: [5.0, 10.0]
+    confidence: measured
+    source: maitland2022
+    locator: abstract
+    quote: "yielding motor unit territory sizes between 1.53 and 14.65 mm (mean, 7.15 mm)."
+    note: "Tibialis anterior; the range sampled is the middle of the measured one."
+
+  unit_length:
+    symbol: L_mu
+    label: "how far along the fibres a latched unit's contraction is felt"
+    value: 30.0
+    unit: mm
+    range: [20.0, 40.0]
+    confidence: guessed
+    note: "A unit's fibres run along the muscle's fascicles; the upper trapezius's are long, so its contraction is a band along the fibres. How much of it a hand meets in one place is guessed."
+
+  k_nodule:
+    symbol: k_n
+    label: "how much stiffer a trigger point's nodule is than the muscle around it, when fully contracted"
+    value: 1.0
+    unit: "1"
+    range: [0.5, 3.0]
+    confidence: guessed
+    note: "Imaged as a localised stiff nodule (sikdar2009); by how much is not measured in these terms."
+
+  k_unit:
+    symbol: k_u
+    label: "how much stiffer one latched motor unit makes its territory"
+    value: 0.2
+    unit: "1"
+    range: [0.05, 1.0]
+    confidence: guessed
+    note: "The share of the territory's fibres the unit drives times how much stiffer a contracted fibre is than a resting one. Overlapping units add."
+
+  touch:
+    symbol: θ_touch
+    label: "the least buried stiffness a hand can find"
+    value: 0.01
+    unit: "1"
+    range: [0.003, 0.03]
+    confidence: guessed
+    note: "In the units of senses.py: stiffness contrast times the fall with depth (a/√(a²+d²) along each axis). With 0.01, a stiff lump 5 mm across, twice as stiff as its surroundings, is just found at about 10 mm depth."
+
+  tender_debt:
+    symbol: m_T1
+    label: "the oxygen debt at which a small artery's territory is tender (perforators)"
+    value: 0.2
+    unit: "1"
+    range: [0.1, 0.4]
+    confidence: guessed
+
+  tender_milieu:
+    symbol: m_T3
+    label: "the acid milieu at which a trigger point is tender"
+    value: 0.4
+    unit: "1"
+    range: [0.2, 0.6]
+    confidence: guessed
+
+  tender_metab:
+    symbol: m_T7
+    label: "the metabolites at which a latched unit's territory is tender (motor switch)"
+    value: 0.4
+    unit: "1"
+    range: [0.2, 0.6]
+    confidence: guessed
+
+  spark:
+    symbol: n_spark
+    label: "the burst of a small artery's nerve felt as a tingle as blood returns (perforators)"
+    value: 0.05
+    unit: "1"
+    range: [0.02, 0.1]
+    confidence: guessed
+
+  k_vessel:
+    symbol: k_v
+    label: "how much stiffer a small artery shut by its own wall is than the fat around it"
+    value: 10.0
+    unit: "1"
+    range: [3.0, 30.0]
+    confidence: guessed
+    note: "A contracted arterial wall is far stiffer than fat. The vessel is felt at the depth of the deep fascia, with the outer radius of its wall; an open vessel, full of blood under pressure, is firm too, so this is an upper figure for how much a shut one stands out."
