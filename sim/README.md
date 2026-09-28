@@ -29,10 +29,14 @@ params/interface.yaml    what every theory shares in the trials: stress held, th
 params/perception.yaml   T6, perception: gain, arousal, attention, the in-breath, overbreathing
 params/triggerpoint.yaml T3, trigger points: the energy crisis at an endplate, pressure release, the twitch
 params/motorswitch.yaml  T7, the motor switch: the latch (persistent inward currents) and the metabolic loop, mostly guessed
+params/latch.yaml        T2, the vascular latch: Johnson's loop of a held prediction and the clamp that keeps it, guessed
+params/densification.yaml T4, densification: the gliding layer's thixotropy; its warmth coefficient measured, the rest guessed
+params/nerve.yaml        T5, nerves: a sensitised segment; the sympathetic timings measured, the rest guessed
+params/senses.yaml       what a finger feels: skin, fat, the edge of touch; params/conduction.yaml, the trees' conducted dilation
 observations/spec.yaml   the exam: what people report, as tests (versioned; seal.yaml keeps v1-v3's seals)
 knots_sim/
   guide/                 the field guide's engine: patch.py (the shared patch, each theory's layout), scenes.py,
-                         senses.py (what a finger feels), t1/t3/t6/t7.py (one runner per theory), traits.py (the
+                         senses.py (what a finger feels), t1.py to t7.py (one runner per theory), traits.py (the
                          character, generated), export.py (src/data/sim/guide.json, public/sim/guide/*.json, findings/guide.md)
   pubmed.py              PubMed E-utilities and Europe PMC full texts, paced and cached (.cache/, ignored)
   library.py             papers the simulation stands on, merged into src/data/papers.json from PubMed records
@@ -42,6 +46,9 @@ knots_sim/
   models/perception.py   T6: places on a body map felt as knots through gain, arousal and attention
   models/triggerpoint.py T3: an endplate's contracture held by its own ischaemia
   models/motorswitch.py  T7: motor units that latch on and are kept on by their own metabolites
+  models/latch.py        T2: a held prediction kept by the clamp that cuts its region off from awareness
+  models/densification.py T4: the gliding layer, which rebuilds at rest and breaks under shear (a viscosity bifurcation)
+  models/nerve.py        T5: a sensitised nerve fired by its load and, fourteen seconds late, the sympathetic drive
   exam.py                the harness: the shared trials and pass criteria, every theory through them, matrix.json
   aimed.py               a breath aimed at one place (route B6, the author's hypothesis): how narrow it must be; aimed.json
   instrument.py          what an instrument would record: the exam's trials read as laser speckle, elastography; instrument.json
@@ -63,6 +70,5 @@ results/<run>/           run manifests (committed); raw/ is not
 private/                 papers for reading (ignored by git: never commit PDFs)
 ```
 
-Still to come (PLAN.md §9–11): the latch (T2), densification (T4) and the nerve view (T5) behind the same harness; the other
-breath routes (local nerve, chemistry); the measurement designed from the models (PLAN.md §11); the open vessel's missing loop for adaptation; the mechanics and body stages (O5, O9, O10.2); the instrument
-models.
+Still to come (PLAN.md §10): the Research page rebuilt from the guide's tells (G2); the motor switch with the vessel it
+squeezes; the latch's own rate constants; the atlas driven by the models (G4).

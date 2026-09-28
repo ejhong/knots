@@ -13,15 +13,15 @@ const MONO = 'font-family="SF Mono, Menlo, Monaco, monospace"';
 const INK = '#3a3632';
 const MUTED = '#8a7d6d';
 const FAINT = '#b3a899';
-const DASH: Record<string, string> = { T1: '', T3: '1 3', T7: '7 4', T6: '2 3 8 3' };
+const DASH: Record<string, string> = { T1: '', T2: '5 2', T3: '1 3', T4: '8 2 1 2', T5: '3 2', T6: '2 3 8 3', T7: '7 4' };
 
 export function envelopeChart(theories: TheoryIndex[]): string {
   const W = 720;
-  const H = 318;
+  const H = 348;
   const L = 58;
   const R = 150;
   const T = 22;
-  const B = 80;
+  const B = 110;
   const x = (d: number) => L + (Math.log2(d) / 6) * (W - L - R);
   const y = (share: number) => T + (1 - Math.min(share, 1.05) / 1.05) * (H - T - B);
   const envs = theories.map((t) => ({ t, e: (t as unknown as { envelope?: Env }).envelope })).filter((z) => z.e);
@@ -73,7 +73,7 @@ export function envelopeChart(theories: TheoryIndex[]): string {
     const last = [...rows].reverse().find((r) => r.median !== null);
     if (last) out += `<text x="${x(last.d) + 6}" y="${y(last.median!) + 3}" font-family="'Hiragino Mincho ProN', 'Yu Mincho', serif" font-size="11" fill="${INK}">${t.glyph}</text>`;
     const slot = envs.findIndex((z) => z.t === t);
-    const ly = H - 26 + Math.floor(slot / 2) * 15;
+    const ly = H - B + 50 + Math.floor(slot / 2) * 14;
     const lx2 = L + (slot % 2) * 300;
     const note = med ? '' : q ? ': the typical knot not by calming alone' : ': not by calming alone';
     out += `<line x1="${lx2}" x2="${lx2 + 22}" y1="${ly - 3}" y2="${ly - 3}" stroke="${INK}" stroke-width="1.8" ${dash}/>`;

@@ -149,6 +149,20 @@
   "note": "\"Back mice\": firm, rubbery, mobile nodules in the low back that may be fat herniated through the fascial layers; tender ones mimic myofascial pain."
  },
  {
+  "id": "boelens2013",
+  "authors": "Boelens OB, Scheltinga MR, Houterman S et al.",
+  "year": 2013,
+  "title": "Randomized clinical trial of trigger point infiltration with lidocaine to diagnose anterior cutaneous nerve entrapment syndrome",
+  "venue": "Br J Surg 100:217-21",
+  "url": "https://doi.org/10.1002/bjs.8958",
+  "pmid": "23180371",
+  "kind": "paper",
+  "tags": [
+   "nerve"
+  ],
+  "note": "In abdominal wall pain from entrapped cutaneous nerves, lidocaine injected at the point of maximal pain relieved it in 13 of 24 patients, saline in 4 of 24."
+ },
+ {
   "id": "bohlen1979",
   "authors": "Bohlen HG",
   "year": 1979,
@@ -327,6 +341,35 @@
   "note": "Muscle feed arteries squeezed shut widen within seconds of release: by 16% after one 1 s compression, 14% after one of 5 s, and 27% after five of 1 s. Repeated compressions add up; a longer one does not."
  },
  {
+  "id": "coussot2002",
+  "authors": "Coussot P, Nguyen QD, Huynh HT et al.",
+  "year": 2002,
+  "title": "Avalanche behavior in yield stress fluids",
+  "venue": "Phys Rev Lett 88:175501",
+  "url": "https://doi.org/10.1103/PhysRevLett.88.175501",
+  "pmid": "12005766",
+  "kind": "paper",
+  "tags": [
+   "fascia",
+   "models"
+  ],
+  "note": "Gels and other yield-stress materials show a viscosity bifurcation: below a critical stress their viscosity rises until they stop flowing; just above it, it falls and the flow accelerates, abruptly, like an avalanche."
+ },
+ {
+  "id": "cowman2015",
+  "authors": "Cowman MK, Schmidt TA, Raghavan P et al.",
+  "year": 2015,
+  "title": "Viscoelastic Properties of Hyaluronan in Physiological Conditions",
+  "venue": "F1000Res 4:622",
+  "url": "https://doi.org/10.12688/f1000research.6885.1",
+  "pmid": "26594344",
+  "kind": "paper",
+  "tags": [
+   "fascia"
+  ],
+  "note": "Hyaluronan's viscosity in the body: crowding and immobility raise it, warmth lowers it gradually (two- to threefold from 25 to 65 °C), and in inflammation it can bind proteins into aggregates."
+ },
+ {
   "id": "crettaz2013",
   "authors": "Crettaz B, Marziniak M, Willeke P et al.",
   "year": 2013,
@@ -368,6 +411,51 @@
    "models"
   ],
   "note": "How fast skin loses heat: about 4.5 W/m²·K by radiation and 3.4 W/m²·K by convection in still air."
+ },
+ {
+  "id": "devor1994",
+  "authors": "Devor M, Jänig W, Michaelis M",
+  "year": 1994,
+  "title": "Modulation of activity in dorsal root ganglion neurons by sympathetic activation in nerve-injured rats",
+  "venue": "J Neurophysiol 71:38-47",
+  "url": "https://doi.org/10.1152/jn.1994.71.1.38",
+  "pmid": "8158237",
+  "kind": "paper",
+  "tags": [
+   "nerve",
+   "animals"
+  ],
+  "note": "In injured nerves, sympathetic activity changes ectopic firing after a delay of about 14 s; the change peaks 10–20 s later and fades over 20–30 s more."
+ },
+ {
+  "id": "dilley2005",
+  "authors": "Dilley A, Lynn B, Pang SJ",
+  "year": 2005,
+  "title": "Pressure and stretch mechanosensitivity of peripheral nerve fibres following local inflammation of the nerve trunk",
+  "venue": "Pain 117:462-472",
+  "url": "https://doi.org/10.1016/j.pain.2005.08.018",
+  "pmid": "16154692",
+  "kind": "paper",
+  "tags": [
+   "nerve",
+   "animals"
+  ],
+  "note": "After a local inflammation of a nerve, some of its fibres fire when the site is pressed or the nerve stretched by 3%, within the range of ordinary movement; none do in healthy nerves."
+ },
+ {
+  "id": "dilley2008",
+  "authors": "Dilley A, Bove GM",
+  "year": 2008,
+  "title": "Resolution of inflammation-induced axonal mechanical sensitivity and conduction slowing in C-fiber nociceptors",
+  "venue": "J Pain 9:185-92",
+  "url": "https://doi.org/10.1016/j.jpain.2007.10.012",
+  "pmid": "18309534",
+  "kind": "paper",
+  "tags": [
+   "nerve",
+   "animals"
+  ],
+  "note": "The mechanical sensitivity an inflamed nerve's fibres develop is there at one week and at four, and has virtually gone by eight."
  },
  {
   "id": "dorsher2009",
@@ -516,6 +604,20 @@
    "animals"
   ],
   "note": "Microvascular pressures measured directly: in arterioles of 70 µm and wider, pressure tracks systemic arterial pressure."
+ },
+ {
+  "id": "gatej2005",
+  "authors": "Gatej I, Popa M, Rinaudo M",
+  "year": 2005,
+  "title": "Role of the pH on hyaluronan behavior in aqueous solution",
+  "venue": "Biomacromolecules 6:61-7",
+  "url": "https://doi.org/10.1021/bm040050m",
+  "pmid": "15638505",
+  "kind": "paper",
+  "tags": [
+   "fascia"
+  ],
+  "note": "Hyaluronan's flow hardly changes with pH, except near pH 2.5, where it turns gel-like, and above 12: the body's range of acidity leaves it as it is."
  },
  {
   "id": "gerwin2004",
@@ -884,6 +986,20 @@
    "nerve"
   ],
   "note": "The skin's reactive hyperaemia is carried largely by sensory nerves and BKCa channels, not prostanoids."
+ },
+ {
+  "id": "lundberg1994",
+  "authors": "Lundberg U, Kadefors R, Melin B et al.",
+  "year": 1994,
+  "title": "Psychophysiological stress and EMG activity of the trapezius muscle",
+  "venue": "Int J Behav Med 1:354-70",
+  "url": "https://doi.org/10.1207/s15327558ijbm0104_5",
+  "pmid": "16250795",
+  "kind": "paper",
+  "tags": [
+   "mind"
+  ],
+  "note": "Mental stress raises the trapezius muscle's electrical activity, with or without a physical load."
  },
  {
   "id": "macefield1991",
@@ -1407,6 +1523,21 @@
   "note": "Laser speckle contrast imaging of forearm skin is reproducible from week to week: 8% for the peak of reactive hyperaemia, 15% for the plateau of local heating."
  },
  {
+  "id": "rydevik1981",
+  "authors": "Rydevik B, Lundborg G, Bagge U",
+  "year": 1981,
+  "title": "Effects of graded compression on intraneural blood blow. An in vivo study on rabbit tibial nerve",
+  "venue": "J Hand Surg Am 6:3-12",
+  "url": "https://doi.org/10.1016/s0363-5023(81)80003-2",
+  "pmid": "7204915",
+  "kind": "paper",
+  "tags": [
+   "nerve",
+   "animals"
+  ],
+  "note": "Pressure on a nerve slows the blood leaving it at 20–30 mmHg, the blood entering it at 40–50, and stops all flow within it at 60–80."
+ },
+ {
   "id": "saintcyr2009",
   "authors": "Saint-Cyr M, Wong C, Schaverien M et al.",
   "year": 2009,
@@ -1507,6 +1638,20 @@
    "animals"
   ],
   "note": "A dilation started at the end of a terminal arteriole with no flow was conducted more than 1 mm upstream into its parent, and blood flowed into the capillaries it fed."
+ },
+ {
+  "id": "sejersted1984",
+  "authors": "Sejersted OM, Hargens AR, Kardel KR et al.",
+  "year": 1984,
+  "title": "Intramuscular fluid pressure during isometric contraction of human skeletal muscle",
+  "venue": "J Appl Physiol Respir Environ Exerc Physiol 56:287-95",
+  "url": "https://doi.org/10.1152/jappl.1984.56.2.287",
+  "pmid": "6706739",
+  "kind": "paper",
+  "tags": [
+   "anatomy"
+  ],
+  "note": "Pressure inside a contracting muscle rises linearly with its force, and with the distance from its fascia: it is least at the fascia."
  },
  {
   "id": "shah2005",
@@ -1774,6 +1919,21 @@
    "imaging"
   ],
   "note": "Normal skin has high- and low-perfusion spots a few millimetres apart; each spot's perfusion varies over time, but the relative levels between neighbouring spots persist."
+ },
+ {
+  "id": "weum2016",
+  "authors": "Weum S, de Weerd L",
+  "year": 2016,
+  "title": "Perforator-Guided Drug Injection in the Treatment of Abdominal Wall Pain",
+  "venue": "Pain Med 17:1229-32",
+  "url": "https://doi.org/10.1093/pm/pnv011",
+  "pmid": "26814247",
+  "kind": "paper",
+  "tags": [
+   "nerve",
+   "perforators"
+  ],
+  "note": "In cutaneous nerve entrapment of the abdominal wall, the point of maximal pain lies where perforating vessels exit through the rectus fascia."
  },
  {
   "id": "whetzel1992",

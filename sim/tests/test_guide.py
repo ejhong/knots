@@ -2,6 +2,7 @@
 engine keeps the physics it claims."""
 
 import json
+import re
 
 import numpy as np
 
@@ -26,7 +27,7 @@ def test_every_theory_answers_the_same_questions():
     for th in idx["theories"]:
         for t in th["traits"]:
             assert t["mark"] in ("all", "some", "none", "silent", "not")
-            assert t["text"] and "nan" not in t["text"]
+            assert t["text"] and not re.search(r"\bnan\b", t["text"])  # a missing number, not hyaluronan
 
 
 def test_what_is_felt_fades_with_depth_and_grows_with_size():
@@ -72,3 +73,28 @@ def test_a_latched_region_is_a_switch_at_the_holding_stress():
     for _ in range(9000):  # a quarter of an hour more at the same stress
         lm.step(r.P, st, s_eff, 0.0, 0.0, 0.1, t2.REST)
     assert (lm.held(st) == h0).all()
+
+
+def test_a_jammed_layer_is_a_switch_at_the_holding_stress():
+    """T4: at the typical place the holding stress's movement lies inside the band, where a jammed patch stays jammed and
+    a fluid one stays fluid (coussot2002's bifurcation); the surge's is below it, the rest's above the band's floor."""
+    from knots_sim.guide import t4
+    from knots_sim.models import densification as dm
+
+    r = t4.Runner(k=8)
+    for k, p in enumerate(r.ps):
+        roots = dm.steady(p["steep"], p["x_max"], float(r.u_mid[k]))
+        assert len(roots) == 3 and roots[0] < r.xj[k] < roots[-1]
+        assert r.U[k] * np.exp(-p["guard"]) < r.u_mid[k] < r.U[k]
+
+
+def test_pressing_a_sensitised_nerve_never_quiets_it():
+    """T5: a hand's pressure only adds to what a sensitised nerve fires; it cannot free the knot at the spot."""
+    from knots_sim.guide import t5
+
+    r = t5.Runner(k=8)
+    run = r.run(scenes.BY_ID["hand"])
+    k = np.arange(8)
+    on = (run.t > 1.0) & (run.t < scenes.BY_ID["hand"].hand_until)
+    assert (run.focal["pressed"][on] >= 0).all()
+    assert (run.tender[on][:, k, run.target] >= run.focal["firing"][on] - 1e-9).all()

@@ -1,0 +1,97 @@
+# T5, peripheral nerve sensitivity (knots_sim/models/nerve.py), formalised from Quintner and Cohen's account
+# (quintner1994, quintner2015) as the Hypotheses card states it: tender points are sites of nerve sensitivity, the nerve
+# and its sheath, especially where nerves of the skin pierce the fascia (as in entrapments of the abdominal wall, where
+# the tender point lies at a perforator's exit: weum2016, boelens2013). A sensitised segment (after a neuritis, weeks to
+# resolve: dilley2005, dilley2008) fires when pressed, and when the sympathetic drive rises (devor1994). The sympathetic
+# timings are measured in injured nerves; every number for knots is guessed and sampled. Added 28 Sep 2026.
+# Same format as vessel.yaml.
+
+model: nerve
+title: Peripheral nerve sensitivity
+parameters:
+  symp_delay:
+    symbol: t_d
+    label: "how long the sympathetic drive takes to change a sensitised nerve's firing"
+    value: 14.3
+    unit: s
+    range: [10.0, 20.0]
+    confidence: measured
+    source: devor1994
+    locator: abstract
+    quote: "Responses to sympathetic stimulation began after a substantial delay (mean 14.3 s), peaked after 10-20 s, and then returned toward baseline over an additional 20-30 s."
+    note: "Measured in injured nerves (their ectopic firing, through alpha-adrenoceptors); the range around the mean is guessed."
+
+  symp_rise:
+    symbol: τ_up
+    label: "how fast the firing rises once the sympathetic drive reaches it"
+    value: 6.0
+    unit: s
+    range: [4.0, 9.0]
+    confidence: fitted
+    fit: "a first-order rise that is 90% complete 10–20 s after it begins: 10/2.3 to 20/2.3 s"
+    source: devor1994
+    locator: abstract
+    quote: "Responses to sympathetic stimulation began after a substantial delay (mean 14.3 s), peaked after 10-20 s"
+
+  symp_fall:
+    symbol: τ_down
+    label: "how fast the firing falls once the sympathetic drive eases"
+    value: 11.0
+    unit: s
+    range: [8.5, 13.0]
+    confidence: fitted
+    fit: "a first-order fall that is 90% complete 20–30 s after the peak: 20/2.3 to 30/2.3 s"
+    source: devor1994
+    locator: abstract
+    quote: "and then returned toward baseline over an additional 20-30 s"
+
+  symp_share:
+    symbol: φ
+    label: "the share of a site's stress-driven firing that comes through the sympathetic drive (the rest through the load of the muscle around it, at once)"
+    value: 0.75
+    unit: "1"
+    range: [0.5, 0.95]
+    confidence: guessed
+    note: "Pressure inside a muscle is least at its fascia (sejersted1984), where the nerve pierces it, so the muscle's own load is taken as the smaller route."
+
+  on_at:
+    symbol: s_on
+    label: "the share of the holding stress at which the typical sensitised site starts to be felt"
+    value: 0.7
+    unit: "1"
+    range: [0.5, 0.9]
+    confidence: guessed
+    note: "Sets the scale, as every theory's shared rule does: the typical site where stress is held most is felt at the holding stress."
+
+  ongoing:
+    symbol: f₀
+    label: "a sensitised site's firing at rest, as a share of what is felt as a knot"
+    value: 0.3
+    unit: "1"
+    range: [0.1, 0.6]
+    confidence: guessed
+
+  spread:
+    symbol: σ
+    label: "how unevenly the sites are sensitised"
+    value: 0.4
+    unit: log
+    range: [0.2, 0.6]
+    confidence: guessed
+
+  press_gain:
+    symbol: a_p
+    label: "how strongly a hand's pressure excites a sensitised site, per 40 mmHg, as a share of what is felt as a knot"
+    value: 1.5
+    unit: "1"
+    range: [0.5, 3.0]
+    confidence: guessed
+    note: "An inflamed nerve's fibres fire when the site is pressed (dilley2005); how strongly is not known."
+
+  tingle:
+    symbol: F_t
+    label: "the firing, pressed, past which a sensitised site tingles along its branches (1: felt as a knot)"
+    value: 2.0
+    unit: "1"
+    range: [1.5, 4.0]
+    confidence: guessed

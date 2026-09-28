@@ -1,12 +1,13 @@
 # The field guide: how knots would behave, theory by theory
 
-*Status (28 Sep 2026): G0 done (this plan; the exam, the matrix and the author's words off the site). G1 is live: the
-engine (`knots_sim/guide/`) runs perforators (with conducted dilation in their trees), the vascular latch, trigger points,
-the motor switch and perception through eight scenes in 32 settings each, and the Hypotheses page shows each theory's
-account beside what its model shows, with the instrument at the top (`/simulation/` now redirects there); each theory's
-portrait is generated from the runs (`findings/guide.md`). Next: G2, G3. The first version of this phase, an exam that
-scored the theories against the author's reports, is in [archive/](archive/2026-09-28-exam-plan.md); what it built is kept
-(§9). The planning brief it started from is [BRIEF.md](BRIEF.md).*
+*Status (28 Sep 2026): G0 done (this plan; the exam, the matrix and the author's words off the site). G1 is live and
+G3's main part is done: the engine (`knots_sim/guide/`) runs all seven theories (perforators with conducted dilation
+in their trees, the vascular latch, trigger points, densification, nerves, the motor switch and perception) through
+eight scenes in 32 settings each, and the Hypotheses page shows each theory's account beside what its model shows, with
+the instrument at the top (`/simulation/` redirects there); each theory's portrait is generated from the runs
+(`findings/guide.md`). Next: G2 (Research rebuilt from the guide), then the rest of G3. The first version of this phase,
+an exam that scored the theories against the author's reports, is in [archive/](archive/2026-09-28-exam-plan.md); what
+it built is kept (§9). The planning brief it started from is [BRIEF.md](BRIEF.md).*
 
 ## 1. The aim
 
@@ -69,8 +70,8 @@ theory by theory, in place of today's illustration.
 | T1 結 | Perforators | a small artery where it pierces the fascia; trees of a parent and its children, every 4–5 mm | the wall's own mechanics: open or shut over a band of tone (burton1951) | built |
 | T2 閂 | Vascular latch | small arteries in skin and muscle, every 5 mm (smooth muscle anywhere) | a held prediction kept by the clamp that cuts its region off from awareness (Johnson's loop; the latch-bridge economises it, hai1988) | built |
 | T3 点 | Trigger points | a contraction knot in a taut band, a few per muscle along the zone where its nerve enters | the energy crisis at an endplate (gerwin2004) | built |
-| T4 膠 | Densification | the loose layer between fasciae | hyaluronan that stiffens at rest and thins with shear and warmth | to build (G3) |
-| T5 神経 | Nerves | a cutaneous nerve where it pierces the fascia | a sensitised segment | to build (G3) |
+| T4 膠 | Densification | the gliding layer between the fasciae, in 5 mm patches | a thixotropic layer with a critical stress: it rebuilds at rest and breaks under shear, so between two drives both a jammed and a fluid state hold (coussot2002) | built |
+| T5 神経 | Nerves | a nerve of the skin where it pierces the fascia, beside its perforator (weum2016), a few in 4 cm | none: a sensitised segment (weeks: dilley2008) fires with its drive, the sympathetic route 14 s late (devor1994) | built |
 | T6 覚 | Perception | a place on the body map, at its resolution | central gain, arousal and attention | built |
 | T7 握 | Motor switch | a motor unit's territory in muscle, 5–10 mm, overlapping others | persistent inward currents that latch a unit on (gorassini1998, heckman2008), with its metabolic loop (johansson1991) | built |
 
@@ -116,10 +117,23 @@ vessel beside them. With that, the seven accounts cover the serious contenders; 
   does not latch a region) and where it sits between them is sampled; whether attention or a hand frees it is left to the
   model. Every number for knots is guessed; the latch's own rate constants (Hai and Murphy) would set how slowly a freed
   region warms. One formalisation among possible ones, for its proponents to check.
-- *T4.* To build as a loose layer that stiffens at rest and thins under shear (thixotropy) and warmth: its knots would be
-  broad, slow, and freed by movement over minutes.
-- *T5.* To build as a sensitised nerve at its piercing: tender, no bump, tingling along its branches when pressed; freed
-  only when what presses on it lets go.
+- *T4.* Built 28 Sep as the gliding layer's thixotropy (`models/densification.py`): Coussot's model of yield-stress
+  materials with a cap on structure, so a still layer builds until it jams, movement breaks it, and between two drives
+  both hold (the viscosity bifurcation, coussot2002). Checks against the account's own mechanism: hyaluronan alone does
+  not gel (krause2001), hardly changes with pH in the body's range (gatej2005), and thins only about 2% a degree with
+  warmth (cowman2015); so a structure that jams is more than hyaluronan (crowding with immobility, proteins bound in
+  inflammation: cowman2015). Its knots are there before a scene (a still night, then a working day at the holding
+  stress, frees the layer where it moves enough); they are broad regions, nothing firm, found by sliding the skin; a
+  resting hand does not free them, a hand working the skin in small circles does in some settings, over tens of
+  seconds, and ultrasound would see the layers slide again. The band's width is guessed; much wider bands would leave
+  the whole layer stuck, which the account does not describe. The fascial chains along which it travels are not
+  modelled.
+- *T5.* Built 28 Sep (`models/nerve.py`): a few nerves of the skin where they pierce the fascia, each sensitised to its
+  own degree (a neuritis takes weeks to come and go: dilley2005, dilley2008). Stress reaches a site through the muscle's
+  load around it, at once, and through the sympathetic drive, about fourteen seconds late (devor1994, measured in
+  injured nerves). No switch: a knot is felt while its drive lasts and returns, in the same place, when it comes back.
+  Pressing excites it and, past a level, tingles along its branches: a tingle of pressing, not of release. Attention
+  has no route. Its tell: a fixed point at a perforator's exit, silenced by a local anaesthetic (boelens2013).
 
 ## 5. The senses: from a model's state to what is felt
 
@@ -197,7 +211,7 @@ sim/knots_sim/guide/       the field guide's engine
   patch.py                 the shared patch: size, stress field, spot, sham, roller path; each theory's unit layout
   scenes.py                the scenes as input timelines
   senses.py                from state to what is felt and what an instrument reads
-  t1.py t2.py t3.py t6.py t7.py  one runner per theory: a scene in K settings -> a trace
+  t1.py … t7.py            one runner per theory: a scene in K settings -> a trace
   traits.py                the character, generated
   export.py                python -m knots_sim.guide: writes the site's data and findings/guide.md
 sim/params/senses.yaml     the senses' numbers, sourced or guessed
@@ -218,7 +232,7 @@ adapters' scaling rules (`theories/`), `instrument.py`'s readings, `checks.py` (
 | G0 | This plan; the exam, the matrix and the author's words off the site; Research made lean | done, 28 Sep |
 | G1 | The engine for T1, T3, T6, T7; the field guide v1: side by side, up close, the character | first version live, 28 Sep; then patterned and micro-breaths, the vessel tree's conducted dilation |
 | G2 | Research rebuilt around the tells and the measurement ladder, generated from the guide | pushed |
-| G3 | T4, T5, the motor switch with its vessel; the latch's own rate constants (T2 built, 28 Sep); variants in the player | seven theories in the guide |
+| G3 | T4 and T5 (built, 28 Sep: all seven in the guide); the motor switch with its vessel; the latch's own rate constants; variants in the player | the hybrid and the constants |
 | G4 | The atlas driven by the models: where knots gather under stress and with age, theory by theory | the atlas's knots come from the models |
 | G5 | The fascia, the second system: peeling and filling as models of their own (a separate phase, with its own safety review) | |
 | G6 | The measurement: a lab-ready protocol from the tells; a preprint; collaborators | |

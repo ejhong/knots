@@ -166,6 +166,27 @@ def _felt_at_knots(run, lay, wa, wx) -> np.ndarray:
     return out
 
 
+def _regions(held: np.ndarray, lay, reach: float = 7.5) -> list[int]:
+    """The sizes (in units) of the connected groups of held units: neighbours within `reach` mm."""
+    idx = np.flatnonzero(held)
+    seen, sizes = set(), []
+    for i in idx:
+        if i in seen:
+            continue
+        stack, n = [i], 0
+        seen.add(i)
+        while stack:
+            a = stack.pop()
+            n += 1
+            d = np.hypot(*(lay.pos[idx] - lay.pos[a]).T)
+            for b in idx[d <= reach]:
+                if b not in seen:
+                    seen.add(b)
+                    stack.append(b)
+        sizes.append(n)
+    return sorted(sizes, reverse=True)
+
+
 def _release_of(run, k: int, j: int) -> float:
     for kk, jj, t in releases(run.t, run.held):
         if kk == k and jj == j:
@@ -265,14 +286,33 @@ def character(m, runner, runs: dict, extra: dict) -> dict:
     T.append(trait("where", "where", "Where", f"{words['where']} {say}", ok, anyk, nums, cell=words["where_cell"]))
     med = _median(counts[anyk]) if anyk.any() else 0.0
     none_n = int((~anyk).sum())
-    many = (f"{words['units']}: {lay.n / AREA_CM2:.1f} to the square centimetre. After a stressful moment about {med:.0f} hold "
-            f"in this 4 cm patch ({med / AREA_CM2:.1f} to the square centimetre)"
-            + (f"; in {none_n} of {K} settings none can hold at all." if none_n else "."))
+    if words.get("regions"):  # a knot is a connected stuck region of the layer's patches
+        regs = [_regions(held0[k], lay) for k in range(K)]
+        nreg = np.array([len(r) for r in regs])
+        big = np.array([max(r) * 0.25 if r else 0.0 for r in regs])  # a 5 mm patch is 0.25 cm²
+        many = (f"{words['units']}. After a stressful moment about {med:.0f} of them are stuck in this 4 cm patch, in about "
+                f"{_median(nreg[anyk]):.0f} connected region{'s' if _median(nreg[anyk]) >= 1.5 else ''} (the largest about "
+                f"{_median(big[anyk]):.0f} cm²)" + (f"; in {none_n} of {K} settings none is stuck." if none_n else "."))
+    else:
+        many = (f"{words['units']}: {lay.n / AREA_CM2:.1f} to the square centimetre. After a stressful moment about {med:.0f} hold "
+                f"in this 4 cm patch ({med / AREA_CM2:.1f} to the square centimetre)"
+                + (f"; in {none_n} of {K} settings none can hold at all." if none_n else "."))
     if words.get("body"):
         many += f" {words['body']}"
-    T.append(trait("many", "many", "How many", many, anyk, all_, nums, cell=f"about {med:.0f}"))
+    T.append(trait("many", "many", "How many", many, anyk, all_, nums,
+                   cell=f"about {_median(nreg[anyk]):.0f} broad region{'s' if _median(nreg[anyk]) >= 1.5 else ''}" if words.get("regions")
+                   else f"about {med:.0f}"))
 
     # --- how and when they form ---
+    if words.get("chronic"):  # its knots are there before the scene: does a stressful moment add any?
+        new, when = np.zeros(K, bool), np.full(K, np.inf)
+        for k, j, tf in formations(forms.t, forms.held):
+            if tf > 5.0:
+                new[k], when[k] = True, min(when[k], tf - 5.0)
+        say = (f"{words['chronic']} {words['forms']} A stressful moment adds new ones {how_often(new, anyk)}"
+               + (f", the first after about {_mmss(_median(when[new]))}" if new.any() else "") + ".")
+        T.append(trait("forms", "form", "How they form", say, new, anyk, nums,
+                       cell="over stillness; a stressful moment adds " + ("some" if new.any() else "none")))
     first = np.full(K, np.inf)
     for k, j, tf in formations(forms.t, forms.held):
         first[k] = min(first[k], tf - 5.0)  # the stressful moment starts at 5 s
@@ -284,14 +324,16 @@ def character(m, runner, runs: dict, extra: dict) -> dict:
     which, ok = _majority([("fast", fast | at_rest), ("slow", slow), ("eases", eases)], anyk)
     sel = ok & anyk & ~at_rest
     fmed = _median(first[sel]) if sel.any() else 0.0
-    say = {"fast": f"They appear within seconds of a stressful moment (the first after about {max(fmed, 0):.0f} s)",
+    say = {"fast": "They appear within seconds of a stressful moment (the first "
+                   + ("at once)" if fmed < 1 else f"after about {fmed:.0f} s)"),
            "slow": f"They build during a stressful moment, over a minute or two (the first after about {fmed:.0f} s)",
            "eases": "They appear as a stressful moment passes: what stays held once the stress eases"}[which]
     say += f", {how_often(ok, anyk)}."
     if at_rest.any():
         say += f" Some places are felt as knots even at rest, before any stress, {how_often(at_rest, anyk)}."
-    T.append(trait("forms", "form", "How they form", f"{words['forms']} {say}", ok, anyk, nums,
-                   cell={"fast": "within seconds", "slow": "over a minute or two", "eases": "as the stress eases"}[which]))
+    if not words.get("chronic"):
+        T.append(trait("forms", "form", "How they form", f"{words['forms']} {say}", ok, anyk, nums,
+                       cell={"fast": "within seconds", "slow": "over a minute or two", "eases": "as the stress eases"}[which]))
     lin = runs["lingers"]
     c0, c1 = lin.held[0].sum(axis=1), lin.held[-1].sum(axis=1)
     grow, fade = anyk & (c1 > 1.2 * c0 + 0.5), anyk & (c1 < 0.8 * c0 - 0.5)
@@ -309,7 +351,9 @@ def character(m, runner, runs: dict, extra: dict) -> dict:
         say, ok = f"Rolling a quiet place brings knots out, {how_often(out_, all_)}; they stay after it stops {how_often(stays, out_)}.", out_
     else:
         say, ok = (f"Rolling a quiet place brings none out, {how_often(~out_, all_)}: {words['rolling']}"
-                   + (f" In the rest it brings one out, which stays after it stops {how_often(stays, out_)}." if out_.any() else "")), ~out_
+                   + ((" In one setting it brings one out, which " + ("stays after it stops." if stays.any() else "goes when it stops."))
+                      if out_.sum() == 1 else
+                      (f" In the rest it brings one out, which stays after it stops {how_often(stays, out_)}." if out_.any() else ""))), ~out_
     T.append(trait("rolling", "form", "Pressed or rolled", say, ok, all_, nums,
                    cell="brings them out" if out_.sum() * 2 >= K else ("seldom brings one out" if out_.any() else "brings none out")))
     mo = runs["moods"]
@@ -391,6 +435,11 @@ def character(m, runner, runs: dict, extra: dict) -> dict:
         lead = f"Never while the hand still presses, {how_often(~under, tgt)}. " + lead
         ok = ~under
     say = f"{lead}{'; ' + ', '.join(rest) if rest else ''}. {words['hand']}"
+    hv = extra.get("hand_variant")
+    if hv is not None:
+        t_v = np.array([_release_of(hv, k, target[k]) for k in range(K)])
+        v_ok = tgt & (t_v < 60.0)
+        say += (f" {words['hand_variant']} {how_often(v_ok, tgt)}" + (f", after about {_mmss(_median(t_v[v_ok]))}" if v_ok.any() else "") + ".")
     exc = extra.get("hand_excite")
     if exc is not None:
         t_e = np.array([_release_of(exc, k, target[k]) for k in range(K)])
@@ -502,7 +551,9 @@ def character(m, runner, runs: dict, extra: dict) -> dict:
         T.append(trait("time", "time", "Held for hours", say, ok, all_, nums, cell=cell))
 
     # --- what an instrument would record ---
-    T.append(trait("record", "record", "What an instrument would record", _record(m, runs, target, tgt), cell=words["record_cell"]))
+    T.append(trait("record", "record", "What an instrument would record",
+                   _record(m, runs | ({"hand_variant": extra["hand_variant"]} if "hand_variant" in extra else {}), target, tgt),
+                   cell=words["record_cell"]))
     return {"traits": T, "counts": counts.tolist(), "any": anyk.tolist()}
 
 
@@ -539,8 +590,10 @@ def _record(m, runs, target, tgt) -> str:
     """At the knot at the spot's release under the hand (or with the breath): what the theory's instruments read."""
     K = len(target)
     ch = {}
-    for sid in ("hand", "breathing"):
-        run = runs[sid]
+    for sid in ("hand", "breathing", "hand_variant"):
+        run = runs.get(sid)
+        if run is None:
+            continue
         for k in range(K):
             if k in ch or not tgt[k]:
                 continue

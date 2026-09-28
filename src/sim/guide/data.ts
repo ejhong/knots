@@ -31,6 +31,7 @@ export type Layout = {
   zone_x?: number;
   nodule?: [number, number];
   spacing?: number;
+  branch?: number[];
 };
 
 export type TheoryIndex = {

@@ -40,7 +40,7 @@ export function switchChart(sw: Switch | undefined): string {
   const y = (v: number) => T + (1 - v) * (H - T - B);
   let s = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="What holds a knot: its switch">`;
   const [b0, b1] = sw.band;
-  if (b0 < sw.x_max) {
+  if (b1 > b0 && b0 < sw.x_max) {
     s += `<rect x="${x(b0)}" y="${T}" width="${Math.max(x(Math.min(b1, sw.x_max)) - x(b0), 1)}" height="${H - T - B}" fill="${rgba(INKC.ivory, 0.07)}"/>`;
     s += `<text x="${(x(b0) + x(Math.min(b1, sw.x_max))) / 2}" y="${T - 5}" text-anchor="middle" ${MONO} font-size="7.5" fill="${INKC.stone}">both stable</text>`;
   }

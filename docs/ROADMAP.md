@@ -78,7 +78,8 @@ kept in `sim/archive/`; what it built (the models, the parameters and their sour
   instrument at the top; `/simulation/` redirects
 - [x] The vascular latch (T2) as a model: Johnson's loop, a held prediction kept by the clamp that cuts it off from awareness
 - [ ] G2: Research rebuilt around the tells and the measurement ladder, generated from the guide
-- [ ] G3: densification (T4), nerves (T5), the motor switch with the vessel it squeezes; the latch's own rate constants (Hai and Murphy)
+- [x] Densification (T4) and nerves (T5) as models (28 Sep): all seven theories in the guide
+- [ ] G3, the rest: the motor switch with the vessel it squeezes; the latch's own rate constants (Hai and Murphy)
 - [ ] G4: the atlas driven by the models, theory by theory
 - [ ] G5: the fascia as a second system (its own phase and safety review)
 - [ ] G6: the measurement: a lab-ready protocol, a preprint, collaborators

@@ -174,7 +174,6 @@ const t6: Plate = {
   },
 };
 
-/** The vascular latch: a small artery in the muscle, clamped; above, the held prediction and the awareness that reaches it. */
 /** Vascular latch: a region's small arteries, in the skin and in the muscle, in cross-section: their lumens narrow as the
  * region clamps; held, they are the knot. The clamped region is shadowed (cut off from awareness); awareness reaches it
  * from above; the held prediction is a gauge. */
@@ -215,4 +214,81 @@ const t2: Plate = {
   },
 };
 
-export const PLATES: Record<string, Plate> = { T1: t1, T2: t2, T3: t3, T6: t6, T7: t7 };
+/** Densification: the gliding layer between the superficial and deep fascia, its structure drawn as short strokes that
+ * thicken and clump as it builds; above it, the layers sliding, or not. */
+const CHAINS = Array.from({ length: 34 }, (_, i) => {
+  const x = 8 + i * 10.4 + ((i * 7) % 5);
+  const y = Y.sup + 3 + ((i * 5) % 9);
+  const dx = 4 + ((i * 3) % 4);
+  return `<path id="p-c${i}" d="M ${x.toFixed(1)} ${y} q ${(dx / 2).toFixed(1)} ${i % 2 ? -3 : 3} ${dx} 0" fill="none" stroke="${rgba(INKC.ivory, 0.2)}" stroke-width="0.8"/>`;
+}).join('');
+const t4: Plate = {
+  svg: svgWrap(
+    `<rect id="p-jam" x="40" y="${Y.sup}" width="280" height="${Y.loose - Y.sup}" fill="${INKC.knot}" opacity="0"/>
+     ${CHAINS}
+     <line id="p-slide" x1="110" x2="250" y1="${Y.sup - 7}" y2="${Y.sup - 7}" stroke="${INKC.ivory}" stroke-width="1.2" stroke-dasharray="6 6" opacity="0.6"/>
+     <path d="M 250 ${Y.sup - 10} L 256 ${Y.sup - 7} L 250 ${Y.sup - 4}" fill="none" stroke="${rgba(INKC.ivory, 0.5)}" stroke-width="1" id="p-arrow"/>
+     <text x="112" y="${Y.sup - 12}" ${MONO} font-size="7" fill="${rgba(INKC.stone, 0.9)}">the layers sliding</text>
+     <text x="8" y="${H - 4}" ${MONO} font-size="7.5" fill="${rgba(INKC.stone, 0.9)}" id="p-read"></text>`,
+    'Densification',
+  ),
+  update(root, s) {
+    const x = Math.min(Math.max(s.structure ?? 0, 0), 1);
+    const slide = Math.min(Math.max(s.sliding ?? 1, 0), 1.2);
+    const stuck = x * (1 - Math.min(slide, 1)) > 0.4;
+    for (let i = 0; i < 34; i++)
+      set(q(root, `#p-c${i}`), {
+        'stroke-width': (0.6 + 2.2 * x).toFixed(2),
+        stroke: stuck ? rgba(INKC.knot, 0.35 + 0.5 * x) : rgba(INKC.ivory, 0.12 + 0.5 * x),
+      });
+    set(q(root, '#p-jam'), { opacity: stuck ? (0.12 + 0.2 * x).toFixed(2) : 0 });
+    const el = q(root, '#p-slide');
+    if (el) {
+      const off = (parseFloat(el.getAttribute('data-off') ?? '0') - 1.4 * Math.min(slide, 1.2)) % 12;
+      set(el, { 'stroke-dashoffset': off.toFixed(2), 'data-off': off.toFixed(2), opacity: (0.15 + 0.6 * Math.min(slide, 1)).toFixed(2) });
+    }
+    set(q(root, '#p-arrow'), { opacity: (0.15 + 0.6 * Math.min(slide, 1)).toFixed(2) });
+    const r = q(root, '#p-read');
+    if (r) r.textContent = `structure ${x.toFixed(2)} · sliding ${slide.toFixed(2)} of a free layer's · warmth +${(s.warmth ?? 0).toFixed(1)} °C`;
+  },
+};
+
+/** Nerves: a nerve of the skin rising through its ring in the deep fascia beside the perforator it travels with, its
+ * firing as impulses along it, its branches through the skin above. */
+const BRANCH = [
+  'M 204 18 C 180 14 150 16 118 12',
+  'M 204 18 C 226 12 256 16 290 10',
+  'M 204 18 C 214 26 236 30 262 32',
+];
+const t5: Plate = {
+  svg: svgWrap(
+    `<path d="M 188 ${Y.bottom} C 186 160 190 120 188 ${Y.deep} S 184 50 192 ${Y.skin + 6}" fill="none" stroke="${rgba(INKC.vessel, 0.3)}" stroke-width="3.5"/>
+     <path d="M 200 ${Y.bottom} C 198 160 202 120 200 ${Y.deep} S 196 60 204 18" fill="none" stroke="${rgba(INKC.ivory, 0.12)}" stroke-width="4"/>
+     <path id="p-nerve" d="M 200 ${Y.bottom} C 198 160 202 120 200 ${Y.deep} S 196 60 204 18" fill="none" stroke="${rgba(INKC.ivory, 0.45)}" stroke-width="1.3"/>
+     <path id="p-imp" d="M 200 ${Y.bottom} C 198 160 202 120 200 ${Y.deep} S 196 60 204 18" fill="none" stroke="${INKC.ivory}" stroke-width="2.2" stroke-dasharray="2 12" opacity="0"/>
+     ${BRANCH.map((d, i) => `<path id="p-br${i}" d="${d}" fill="none" stroke="${rgba(INKC.ivory, 0.25)}" stroke-width="0.9"/>`).join('')}
+     <ellipse cx="196" cy="${(Y.loose + Y.deep) / 2}" rx="15" ry="5" fill="none" stroke="${rgba(INKC.ivory, 0.35)}" stroke-width="1.2"/>
+     <ellipse id="p-knot" cx="198" cy="${(Y.loose + Y.deep) / 2}" rx="20" ry="8" fill="${INKC.knot}" opacity="0"/>
+     <text x="8" y="${H - 4}" ${MONO} font-size="7.5" fill="${rgba(INKC.stone, 0.9)}" id="p-read"></text>`,
+    'Nerves',
+  ),
+  update(root, s) {
+    const own = s.firing ?? 0;
+    const pressed = s.pressed ?? 0;
+    const total = own + pressed;
+    const el = q(root, '#p-imp');
+    if (el) {
+      const off = (parseFloat(el.getAttribute('data-off') ?? '0') + 2.4 * Math.min(total, 3)) % 14;
+      set(el, { 'stroke-dashoffset': off.toFixed(2), 'data-off': off.toFixed(2), opacity: Math.min(0.15 + 0.5 * total, 0.9).toFixed(2) });
+    }
+    set(q(root, '#p-knot'), { opacity: own > 1 ? 0.55 : 0 });
+    for (let i = 0; i < BRANCH.length; i++)
+      set(q(root, `#p-br${i}`), pressed > 0.05 && total >= 2
+        ? { stroke: rgba(INKC.spark, 0.85), 'stroke-dasharray': '2 4' }
+        : { stroke: rgba(INKC.ivory, 0.25), 'stroke-dasharray': 'none' });
+    const r = q(root, '#p-read');
+    if (r) r.textContent = `firing ${own.toFixed(2)} (1: felt) · pressed +${pressed.toFixed(2)} · sympathetic ${(s.sympathetic ?? 0).toFixed(2)}`;
+  },
+};
+
+export const PLATES: Record<string, Plate> = { T1: t1, T2: t2, T3: t3, T4: t4, T5: t5, T6: t6, T7: t7 };

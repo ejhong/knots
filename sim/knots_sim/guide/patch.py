@@ -140,3 +140,28 @@ def arterioles(depth: float, seed: int = 8) -> Layout:
     n = len(pos)
     return Layout(pos=pos, kind=["arteriole"] * n, a_along=np.zeros(n), a_across=np.zeros(n), depth=np.full(n, depth),
                   parent=np.full(n, -1), note="small arteries in the skin and muscle, 5 mm apart, each able to latch")
+
+
+def layer(depth: float, seed: int = 9) -> Layout:
+    """T4: patches of the gliding layer between the superficial and deep fascia, 5 mm across (64 representative). A
+    jammed patch is one where the layers have stopped gliding; nothing there is firmer to press."""
+    rng = np.random.default_rng(seed)
+    g = (np.stack(np.meshgrid(np.arange(8), np.arange(8)), -1).reshape(-1, 2) + 0.5) * 5.0
+    pos = _clip(g + rng.normal(0, 0.5, g.shape))
+    n = len(pos)
+    return Layout(pos=pos, kind=["patch"] * n, a_along=np.zeros(n), a_across=np.zeros(n), depth=np.full(n, depth),
+                  parent=np.full(n, -1), note="patches of the gliding layer between the fasciae, 5 mm across")
+
+
+def piercings(depth: float, seed: int = 12) -> Layout:
+    """T5: where nerves of the skin pierce the fascia, with the perforators they travel with (weum2016): a few in a 4 cm
+    patch, 20 mm apart (representative: the account counts thousands in a body, about as many as the medium and major
+    perforators). Each nerve's branches spread through the skin beyond it, mostly down and out: `extra["branch"]`
+    holds each site's direction (radians) for drawing."""
+    rng = np.random.default_rng(seed)
+    g = np.array([[10.0, 10.0], [30.0, 10.0], [10.0, 30.0], [30.0, 30.0]])
+    pos = _clip(g + rng.normal(0, 2.0, g.shape))
+    n = len(pos)
+    return Layout(pos=pos, kind=["piercing"] * n, a_along=np.zeros(n), a_across=np.zeros(n), depth=np.full(n, depth),
+                  parent=np.full(n, -1), note="nerves of the skin where they pierce the fascia, about 20 mm apart",
+                  extra={"branch": (-np.pi / 2 + rng.normal(0, 0.5, n)).round(3).tolist()})

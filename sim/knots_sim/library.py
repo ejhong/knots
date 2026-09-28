@@ -181,6 +181,30 @@ NEW = [
      "Dilations and constrictions started on an arteriole propagate along its wall both ways, decaying with a length constant of about 1.9 mm; those started on daughter vessels enter the parent and sum there."),
     ("1858919", "segal1991", ["vascular", "animals"],
      "A dilation started at the end of a terminal arteriole with no flow was conducted more than 1 mm upstream into its parent, and blood flowed into the capillaries it fed."),
+    # densification (T4)
+    ("12005766", "coussot2002", ["fascia", "models"],
+     "Gels and other yield-stress materials show a viscosity bifurcation: below a critical stress their viscosity rises until they stop flowing; just above it, it falls and the flow accelerates, abruptly, like an avalanche."),
+    ("15638505", "gatej2005", ["fascia"],
+     "Hyaluronan's flow hardly changes with pH, except near pH 2.5, where it turns gel-like, and above 12: the body's range of acidity leaves it as it is."),
+    ("26594344", "cowman2015", ["fascia"],
+     "Hyaluronan's viscosity in the body: crowding and immobility raise it, warmth lowers it gradually (two- to threefold from 25 to 65 °C), and in inflammation it can bind proteins into aggregates."),
+    # nerves (T5)
+    ("7204915", "rydevik1981", ["nerve", "animals"],
+     "Pressure on a nerve slows the blood leaving it at 20–30 mmHg, the blood entering it at 40–50, and stops all flow within it at 60–80."),
+    ("16154692", "dilley2005", ["nerve", "animals"],
+     "After a local inflammation of a nerve, some of its fibres fire when the site is pressed or the nerve stretched by 3%, within the range of ordinary movement; none do in healthy nerves."),
+    ("18309534", "dilley2008", ["nerve", "animals"],
+     "The mechanical sensitivity an inflamed nerve's fibres develop is there at one week and at four, and has virtually gone by eight."),
+    ("8158237", "devor1994", ["nerve", "animals"],
+     "In injured nerves, sympathetic activity changes ectopic firing after a delay of about 14 s; the change peaks 10–20 s later and fades over 20–30 s more."),
+    ("23180371", "boelens2013", ["nerve"],
+     "In abdominal wall pain from entrapped cutaneous nerves, lidocaine injected at the point of maximal pain relieved it in 13 of 24 patients, saline in 4 of 24."),
+    ("26814247", "weum2016", ["nerve", "perforators"],
+     "In cutaneous nerve entrapment of the abdominal wall, the point of maximal pain lies where perforating vessels exit through the rectus fascia."),
+    ("6706739", "sejersted1984", ["anatomy"],
+     "Pressure inside a contracting muscle rises linearly with its force, and with the distance from its fascia: it is least at the fascia."),
+    ("16250795", "lundberg1994", ["mind"],
+     "Mental stress raises the trapezius muscle's electrical activity, with or without a physical load."),
 ]
 
 # Existing entries that the simulation also leans on gain the models tag.

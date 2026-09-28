@@ -20,7 +20,7 @@ import numpy as np
 
 from ..exam import out_breath
 from ..theories import t1 as a1, t3 as a3, t6 as a6, t7 as a7
-from . import envelope as ev, patch, senses, t1, t2, t3, t6, t7, traits
+from . import envelope as ev, patch, senses, t1, t2, t3, t4, t5, t6, t7, traits
 from .base import K, SEED, releases, formations, typical, wave
 from .scenes import SCENES, SURGE
 
@@ -28,15 +28,8 @@ ROOT = Path(__file__).resolve().parents[3]
 INDEX = ROOT / "src" / "data" / "sim" / "guide.json"
 FILMS = ROOT / "public" / "sim" / "guide"
 NOTE = ROOT / "sim" / "findings" / "guide.md"
-MODULES = (t1, t2, t3, t7, t6)  # the site's own order: perforators, the latch, trigger points, the motor switch, perception
-NOT_YET = (
-    {"id": "T4", "key": "densification", "name": "Densification", "glyph": "膠",
-     "why": "To model as a loose layer that stiffens at rest and thins with movement and warmth: its knots would be broad and "
-            "slow, freed by movement over minutes."},
-    {"id": "T5", "key": "nerve", "name": "Nerves", "glyph": "神経",
-     "why": "To model as a sensitised nerve where it pierces the fascia: tender, with nothing firm to feel, tingling along its "
-            "branches when pressed, and freed only when what presses on it lets go."},
-)
+MODULES = (t1, t2, t3, t4, t5, t7, t6)  # the site's own order (src/data/hypotheses.ts)
+NOT_YET: tuple = ()  # every theory is modelled
 
 
 def inputs_hash() -> str:
@@ -72,9 +65,11 @@ def run_theory(m, k: int) -> dict:
         extra["ageing"] = (age.brief_released, age.long_persists)
         age = a1.ageing(runner.ps, "both+adaptation")
         extra["ageing_adapt"] = (age.brief_released, age.long_persists)
-    elif m is t2:
+    elif m in (t2, t4, t5):
         a, b = runner.ageing()
         extra["ageing"] = (~a, b)  # (a young knot lets go when its stress ends, an old one stays)
+        if m is t4:
+            extra["hand_variant"] = runner.run(_scene("hand"), variant="friction")
     elif m is t3:
         extra["attention_aimed"] = runner.run(_scene("attention"), variant="aimed")
         extra["breathing_aimed"] = runner.run(_scene("breathing"), variant="aimed")
@@ -122,6 +117,8 @@ def _layout(m, runner, k: int) -> dict:
         out["nodule"] = [round(float(runner.a_along[k]), 2), round(float(runner.a_across[k]), 2)]
     if m is t6:
         out["spacing"] = lay.extra["spacing"]
+    if m is t5:
+        out["branch"] = lay.extra["branch"]
     return out
 
 
@@ -224,6 +221,40 @@ def _switch(m, runner, k: int) -> dict:
                 "band": [round(min(both), 4), round(max(both), 4)] if both else [0.0, 0.0],
                 "marks": [{"x": round(a0, 4), "label": "unattended"}, {"x": round(a0 + att, 4), "label": "attended"}],
                 "note": "Clamped, the region is cut off from awareness and its prediction cannot update; bring enough awareness to it and the prediction lets go, and the latch after it."}
+    if m is t4:
+        from ..models import densification as dmm
+
+        p = runner.ps[k]
+        n, xm, g = p["steep"], p["x_max"], p["guard"]
+        U, uc, uj, mid = float(runner.U[k]), float(runner.uc[k]), float(runner.uj[k]), float(runner.u_mid[k])
+        surge = U * np.exp(-g * patch.Z_REF)
+        lo, hi = min(surge, uc) / 1.5, max(U, uj) * 1.5
+        fluid, middle, jam = [], [], []
+        for u in np.geomspace(lo, hi, 200):
+            roots = dmm.steady(n, xm, float(u))
+            if len(roots) >= 3:
+                fluid.append((u, roots[0] / xm))
+                middle.append((u, roots[1] / xm))
+                jam.append((u, roots[-1] / xm))
+            elif roots:
+                (jam if roots[0] > runner.xj[k] else fluid).append((u, roots[0] / xm))
+        return {"x_label": "the shear on the layer from movement (log)", "y_label": "jammed", "x_max": round(hi, 4),
+                "x_min": round(lo, 4), "x_log": True,
+                "branches": [{"pts": r3(fluid), "stable": True}, {"pts": r3(middle), "stable": False},
+                             {"pts": r3(jam), "stable": True, "held": True}],
+                "band": [round(uc, 4), round(uj, 4)],
+                "marks": [{"x": round(surge, 4), "label": "surge"}, {"x": round(mid, 4), "label": "held stress"},
+                          {"x": round(U, 4), "label": "rest"}],
+                "note": "Left still, the layer builds until it jams; movement breaks it down. Across the band both hold: a jammed patch stays jammed under movement that keeps a fluid one fluid, and gives way only past the band, slowly and then all at once."}
+    if m is t5:
+        p = runner.ps[k]
+        on = float(p["on_at"] * p["hold"])
+        return {"x_label": "stress at the nerve (the shared unit)", "y_label": "felt", "x_max": 1.2,
+                "branches": [{"pts": r3([(0, 0), (on, 0)]), "stable": True}, {"pts": r3([(on, 1), (1.2, 1)]), "stable": True, "held": True},
+                             {"pts": r3([(on, 0), (on, 1)]), "stable": False}],
+                "band": [round(on, 4), round(on, 4)],
+                "marks": [{"x": 0.0, "label": "rest"}, {"x": round(float(p["hold"]), 4), "label": "held stress"}],
+                "note": "No switch: a sensitised nerve is felt while its drive is above threshold, and not below it. The drive follows the stress at once through the muscle around it, and about fourteen seconds late through the sympathetic drive; the nerve's sensitivity lasts weeks."}
     if m is t6:
         p = runner.ps[k]
         h = p["hysteresis"]
@@ -261,7 +292,7 @@ def _captions(m, run, k: int, scene, lay) -> list:
     out = []
     n0 = int(held[0].sum())
     if scene.surge:
-        out.append([0.0, "At rest."])
+        out.append([0.0, f"At rest; {n0} knot{'s are' if n0 != 1 else ' is'} held already." if n0 else "At rest."])
         out.append([SURGE[0], "A stressful moment begins."])
         forms = [(tf, j) for kk, j, tf in formations(t, run.held) if kk == k]
         if forms:
@@ -290,6 +321,9 @@ def _captions(m, run, k: int, scene, lay) -> list:
             out.append([tr, f"The knot at the spot lets go{how}{tail}."])
         elif counted and gone in marks and scene.id != "forms":
             out.append([tr, f"{gone} of the {n0} held at the start have let go."])
+    tingle = next((e["t"] for e in run.events if e["k"] == k and e["unit"] == tgt and e["kind"] == "tingle"), None)
+    if tingle is not None:
+        out.append([tingle, "Pressed, the nerve tingles along its branches."])
     if not scene.surge:
         new = [(tf, j) for kk, j, tf in formations(t, run.held) if kk == k and tf > 0]
         for i, (tf, j) in enumerate(new[:3]):

@@ -225,6 +225,39 @@ export class PatchView {
         g.stroke();
       }
       g.setLineDash([]);
+    } else if (id === 'T4') {
+      // the gliding layer: loose tissue as the faintest strokes
+      g.lineWidth = 0.6;
+      for (let i = 0; i < 260; i++) {
+        const x = ((i * 97) % 400) / 10;
+        const y = ((i * 57 + 13) % 400) / 10;
+        const th = ((i * 37) % 180) * (Math.PI / 180);
+        g.strokeStyle = rgba(INKC.ivory, 0.05);
+        g.beginPath();
+        g.moveTo(this.X(x - Math.cos(th)), this.Y(y - Math.sin(th)));
+        g.lineTo(this.X(x + Math.cos(th)), this.Y(y + Math.sin(th)));
+        g.stroke();
+      }
+    } else if (id === 'T5') {
+      for (let j = 0; j < L.n; j++) {
+        const [x, y] = L.pos[j];
+        g.strokeStyle = rgba(INKC.ivory, 0.2);
+        g.lineWidth = 0.8;
+        for (const line of this.branches(j)) {
+          g.beginPath();
+          line.forEach(([bx, by], i) => (i ? g.lineTo(this.X(bx), this.Y(by)) : g.moveTo(this.X(bx), this.Y(by))));
+          g.stroke();
+        }
+        g.strokeStyle = rgba(INKC.stone, 0.6);
+        g.lineWidth = 1;
+        g.beginPath();
+        g.arc(this.X(x), this.Y(y), 0.9 * this.s, 0, Math.PI * 2);
+        g.stroke();
+        g.fillStyle = rgba(INKC.vessel, 0.5);
+        g.beginPath();
+        g.arc(this.X(x + 0.7), this.Y(y + 0.4), Math.max(1, 0.25 * this.s), 0, Math.PI * 2);
+        g.fill();
+      }
     } else if (id === 'T7') {
       g.lineWidth = 0.7;
       for (let j = 0; j < L.n; j++) {
@@ -280,6 +313,8 @@ export class PatchView {
     if (id === 'T1') this.drawT1();
     else if (id === 'T2') this.drawT2();
     else if (id === 'T3') this.drawT3();
+    else if (id === 'T4') this.drawT4(now);
+    else if (id === 'T5') this.drawT5();
     else if (id === 'T6') this.drawT6();
     else if (id === 'T7') this.drawT7(now);
     this.drawFlashes(now);
@@ -378,6 +413,58 @@ export class PatchView {
     }
   }
 
+  /** A nerve's branches through the skin beyond its piercing (mm): three, fanning out along its direction. */
+  private branches(j: number): [number, number][][] {
+    const [x, y] = this.lay.pos[j];
+    const th0 = this.lay.branch?.[j] ?? -Math.PI / 2;
+    return [-0.45, 0, 0.5].map((d, i) => {
+      const th = th0 + d;
+      const len = 11 + 3 * i;
+      return Array.from({ length: 7 }, (_, k) => {
+        const r = (k / 6) * len;
+        const bend = Math.sin((k / 6) * Math.PI) * (i - 1) * 1.2;
+        return [x + Math.cos(th) * r - Math.sin(th) * bend, y + Math.sin(th) * r + Math.cos(th) * bend] as [number, number];
+      });
+    });
+  }
+
+  private drawT4(now: number): void {
+    // a stuck patch is a broad terracotta wash, joined with its stuck neighbours; where the layer glides, faint strokes drift
+    const L = this.lay;
+    const ctx = this.ctx;
+    for (let j = 0; j < L.n; j++) {
+      const x = this.X(L.pos[j][0]);
+      const y = this.Y(L.pos[j][1]);
+      this.glow(x, y, 4.6 * this.s, INKC.knot, 0.3 * this.held[j]);
+      this.glow(x, y, 3.2 * this.s, INKC.knot, 0.22 * this.halo[j] * this.held[j]);
+      this.glow(x, y, 3.2 * this.s, INKC.ivory, 0.05 * this.act[j] * (1 - this.held[j]));
+      const free = 1 - Math.max(this.held[j], 0.6 * this.act[j]);
+      if (free > 0.05) {
+        const off = ((now * 0.0015 + j * 0.37) % 1) * 2.5 * this.s;
+        ctx.strokeStyle = rgba(INKC.ivory, 0.1 * free);
+        ctx.lineWidth = 0.7;
+        ctx.beginPath();
+        ctx.moveTo(x - 1.2 * this.s + off, y - 0.6 * this.s);
+        ctx.lineTo(x + 0.2 * this.s + off, y - 0.6 * this.s);
+        ctx.moveTo(x - 2.0 * this.s + off, y + 0.9 * this.s);
+        ctx.lineTo(x - 0.6 * this.s + off, y + 0.9 * this.s);
+        ctx.stroke();
+      }
+    }
+  }
+
+  private drawT5(): void {
+    // a sensitised nerve felt on its own is a terracotta point at its piercing, with its ache around it
+    const L = this.lay;
+    for (let j = 0; j < L.n; j++) {
+      const x = this.X(L.pos[j][0]);
+      const y = this.Y(L.pos[j][1]);
+      this.glow(x, y, 1.9 * this.s, INKC.knot, 0.95 * this.held[j]);
+      this.glow(x, y, 6 * this.s, INKC.knot, 0.2 * Math.min(this.halo[j], 1) * this.held[j]);
+      this.glow(x, y, 2.4 * this.s, INKC.ivory, 0.1 * this.act[j]);
+    }
+  }
+
   private drawT6(): void {
     const L = this.lay;
     const r = (L.spacing ?? 10) * 0.62 * this.s;
@@ -426,6 +513,20 @@ export class PatchView {
           ctx.lineTo(x + Math.cos(th) * r1, y + Math.sin(th) * r1);
         }
         ctx.stroke();
+      } else if (fl.kind === 'tingle') {
+        ctx.fillStyle = rgba(INKC.spark, 0.9 * a);
+        for (const line of this.branches(fl.unit)) {
+          for (let k = 0; k < 3; k++) {
+            const u = Math.min(age * 1.3 + k * 0.12, 0.999) * (line.length - 1);
+            const i0 = Math.floor(u);
+            const [ax, ay] = line[i0];
+            const [bx, by] = line[Math.min(i0 + 1, line.length - 1)];
+            const q = u - i0;
+            ctx.beginPath();
+            ctx.arc(this.X(ax + (bx - ax) * q), this.Y(ay + (by - ay) * q), 1.1, 0, Math.PI * 2);
+            ctx.fill();
+          }
+        }
       } else {
         const grad = ctx.createLinearGradient(x - 15 * this.s, 0, x + 15 * this.s, 0);
         grad.addColorStop(0, rgba(INKC.spark, 0));

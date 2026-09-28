@@ -51,7 +51,7 @@ theory's account and its model's behaviour belong together, and one page is simp
    - *What its model shows*: the switch (what holds a knot: the theory's own drive along the bottom, how held up the side,
      the band where both states are stable, where rest and the holding stress put the typical knot), then the key traits
      with their marks (● every setting, ◐ some, and what it depends on, ○ none, — silent), and the full portrait folded
-     beneath. A theory not yet modelled says what building it needs.
+     beneath. All seven are modelled.
 4. **How they differ** (`#differ`): the traits as a table across the modelled theories; then what a breath would have to do
    (the envelope chart).
 5. **How it is made**: the patch, the senses, the settings, the scaling rule, the sources; the moderation note.
@@ -68,6 +68,12 @@ muscle); stress held as a barely warmer wash toward the neck side. Each theory's
   fibres. A knot is a terracotta bead with its band drawn taut; a release softens it; a twitch runs along the band in jade.
 - **Perception**: no units in the tissue; soft places at the body map's resolution. A knot is a broad terracotta glow with
   no core, brighter as it is felt; attention is a thin jade ring.
+- **Densification**: the gliding layer as the faintest loose strokes; where it slides, short strokes drift; a stuck
+  region is a broad terracotta wash joined with its stuck neighbours, still; giving way, it fades as the strokes drift
+  again.
+- **Nerves**: a few fixed points, each a small ring (where the nerve pierces the fascia) with a vessel dot beside it and
+  the nerve's branches fanning through the skin. A felt knot is a terracotta point with its ache around it; pressed past
+  a level, jade dots run out along the branches (the tingle).
 - **Vascular latch**: small arteries 5 mm apart as faint points. A clamped region darkens (less blood), and a held one is a
   dim terracotta core: dull until attention or a hand reaches it, then tender. Letting go is slow: the region warms back
   over tens of seconds, a jade wash rather than a star.

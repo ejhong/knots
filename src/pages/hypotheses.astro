@@ -91,8 +91,10 @@ const index = [
   title="What is a knot?"
   kicker="Hypotheses"
   current="hypotheses"
-  lede={`Seven answers, each at its strongest. ${cap(WORD[nModelled])} are run as models from their own physiology in the same patch of body: watch how their knots would form, feel, let go and move, then read what each says and what its model shows.`}
-  description="What is a knot? Seven answers, each at its strongest, and five of them run as models: how their knots would form, feel, let go and move, and what a measurement would show."
+  lede={nModelled === HYPOTHESES.length
+    ? 'Seven answers, each at its strongest, and each run as a model from its own physiology in the same patch of body: watch how their knots would form, feel, let go and move, then read what each says and what its model shows.'
+    : `Seven answers, each at its strongest. ${cap(WORD[nModelled])} are run as models from their own physiology in the same patch of body: watch how their knots would form, feel, let go and move, then read what each says and what its model shows.`}
+  description="What is a knot? Seven answers, each at its strongest, each run as a model: how their knots would form, feel, let go and move, and what a measurement would show."
   glyph="説"
   index={index}
   wide
@@ -401,8 +403,8 @@ const index = [
   }
   .patches {
     display: grid;
-    grid-template-columns: repeat(5, minmax(0, 1fr));
-    gap: 10px;
+    grid-template-columns: repeat(7, minmax(0, 1fr));
+    gap: 8px;
   }
   .card {
     background: #1b2023;
@@ -857,7 +859,7 @@ const index = [
   }
   @media (max-width: 1150px) {
     .patches {
-      grid-template-columns: repeat(3, minmax(0, 1fr));
+      grid-template-columns: repeat(4, minmax(0, 1fr));
     }
   }
   @media (max-width: 900px) {

@@ -1,0 +1,120 @@
+# T4, fascial densification (knots_sim/models/densification.py), formalised from the Steccos' account (stecco2011,
+# stecco2014) as the Hypotheses card states it: hyaluronan in the loose layers between the fasciae turns viscous, so the
+# layers stop gliding and the strain falls on nerve endings in the fascia; deep friction, heat and movement release it.
+# One formalisation: the gliding layer as a thixotropic material with a critical stress (coussot2002), which rebuilds at
+# rest and breaks down under shear. Hyaluronan alone does not gel (krause2001) and hardly changes with pH in the body's
+# range (gatej2005), so a structure that jams is more than hyaluronan: crowding with immobility, or proteins bound in
+# inflammation (cowman2015). Every number for knots is guessed and sampled; the warmth coefficient is measured.
+# Added 28 Sep 2026. Same format as vessel.yaml.
+
+model: densification
+title: Fascial densification
+parameters:
+  theta:
+    symbol: θ
+    label: "how long a still patch of the gliding layer takes to rebuild its structure"
+    value: 120.0
+    unit: s
+    range: [10.0, 3600.0]
+    confidence: guessed
+    note: "Thixotropic materials rebuild at rest and break down under shear (coussot2002). For the loose layer it is not measured: the account has densification build with immobility, over days, and give way to friction and heat in minutes."
+
+  steep:
+    symbol: n
+    label: "how steeply the layer's viscosity rises with its structure"
+    value: 2.5
+    unit: "1"
+    range: [2.0, 3.0]
+    confidence: guessed
+    note: "Above 1 the material has a critical stress (coussot2002); the steeper, the wider the band in which both states hold."
+
+  x_max:
+    symbol: x_max
+    label: "the most structure a still layer builds (its viscosity doubles at 1)"
+    value: 8.0
+    unit: "1"
+    range: [6.0, 10.0]
+    confidence: guessed
+    note: "With the steepness, it sets the band's width: from about 1.04 to 8.6 times here. Much wider bands leave a layer stuck everywhere after a still night, beyond what a day's movement frees, which the account does not describe: its knots are patches, and movement frees them."
+
+  guard:
+    symbol: g
+    label: "how much stress stills the layer's movement (guarding)"
+    value: 2.0
+    unit: "1"
+    range: [1.0, 4.0]
+    confidence: guessed
+    note: "Mental stress raises the trapezius's electrical activity (lundberg1994); how much it stills the sliding of the layers over it is not known."
+
+  spread:
+    symbol: σ
+    label: "how unevenly the layer's patches move"
+    value: 0.25
+    unit: log
+    range: [0.1, 0.4]
+    confidence: guessed
+
+  breath_move:
+    symbol: b
+    label: "how much a slow breath's movement shears the layer, as a share of its ordinary movement at rest"
+    value: 0.15
+    unit: "1"
+    range: [0.03, 0.5]
+    confidence: guessed
+
+  roll_shear:
+    symbol: r
+    label: "how much a roller's pass shears the layer, as a multiple of its ordinary movement at rest"
+    value: 4.0
+    unit: "1"
+    range: [2.0, 10.0]
+    confidence: guessed
+
+  friction:
+    symbol: f
+    label: "how much a hand working the skin in small circles shears the layer beneath it, as a multiple of its ordinary movement at rest"
+    value: 4.0
+    unit: "1"
+    range: [2.0, 10.0]
+    confidence: guessed
+    note: "For the variant with a moving hand, the account's own way of releasing it (deep friction); the scenes' hand rests."
+
+  warm_coeff:
+    symbol: β
+    label: "how much warmth thins the layer, per degree"
+    value: 0.023
+    unit: 1/°C
+    range: [0.017, 0.027]
+    confidence: fitted
+    fit: "a two- to threefold fall in viscosity over the 40 °C from 25 to 65 °C: ln 2 / 40 to ln 3 / 40"
+    source: cowman2015
+    locator: "full text, Effect of temperature and pH on the viscosity of hyaluronan solutions"
+    quote: "gave an excellent prediction of the 2–3 fold experimental change in specific viscosity of semidilute HA solutions over that temperature range"
+    note: "Hyaluronan solutions thin gradually with warmth, about 2% a degree, with no melting of an ordered structure."
+
+  hand_warm:
+    symbol: ΔT_hand
+    label: "how much a resting hand warms the gliding layer beneath it"
+    value: 0.5
+    unit: °C
+    range: [0.1, 1.5]
+    confidence: guessed
+    note: "The layer lies beneath the skin and fat; a hand warms the skin by a degree or two."
+
+  tau_warm:
+    symbol: τ_T
+    label: "how slowly the layer warms under a hand"
+    value: 300.0
+    unit: s
+    range: [60.0, 900.0]
+    confidence: guessed
+    note: "Heat spreads through tissue slowly: through 5–10 mm of skin and fat, minutes."
+
+  tender_k:
+    symbol: k_t
+    label: "how strongly movement pulling on a stuck patch strains the fascia's nerve endings (1: tender at the holding stress's movement)"
+    value: 1.0
+    unit: "1"
+    range: [0.5, 2.0]
+    confidence: guessed
+    note: "The account: the layers stop gliding, and the strain falls on nerve endings in the fascia."

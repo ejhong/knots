@@ -1,5 +1,5 @@
 /**
- * The field guide's instrument: scenes, the four modelled theories' patches side by side, the timeline, and one theory
+ * The field guide's instrument: scenes, the modelled theories' patches side by side, the timeline, and one theory
  * up close (its plate beneath the spot and what instruments would record). Everything drawn comes from the films the
  * Python engine wrote; this only plays them.
  */
@@ -16,6 +16,8 @@ const INST: Record<string, [string, string, string][]> = {
   T1: [['flow_spot', 'skin flow at the spot (laser speckle)', INKC.vessel], ['flow_sham', 'at the sham', INKC.stone]],
   T2: [['flow_spot', 'blood flow at the spot', INKC.vessel], ['flow_sham', 'at the sham', INKC.stone]],
   T3: [['stiffness', 'contracture at the spot (elastography)', INKC.ivory], ['needle_emg', 'endplate activity (needle EMG)', INKC.ochre]],
+  T4: [['glide_spot', 'the layers sliding at the spot (ultrasound)', INKC.ivory], ['glide_sham', 'at the sham', INKC.stone]],
+  T5: [['nerve_firing', "the nerve's firing at the spot (1: felt)", INKC.ivory], ['sympathetic', 'the sympathetic drive reaching it', INKC.ochre]],
   T7: [['emg_units', 'motor units firing under the electrode (surface EMG)', INKC.ivory], ['stiffness', 'firmness at the spot', INKC.ochre]],
   T6: [['felt', 'what is felt at the spot (report)', INKC.ivory]],
 };
