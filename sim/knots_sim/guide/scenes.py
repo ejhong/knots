@@ -10,6 +10,10 @@ from __future__ import annotations
 
 from dataclasses import dataclass
 
+import numpy as np
+
+from ..exam import breath_wave, out_breath
+
 SURGE = (5.0, 185.0)  # three minutes of stress, as the exam's
 SETTLED = 385.0  # then the holding stress for 200 s: the knots a scene that starts "formed" begins with
 
@@ -30,6 +34,8 @@ class Scene:
     roll_until: float = 0.0  # a roller over the quiet corner, pressing 1 s in every 3
     mood: bool = False  # stress wanders as moods do
     surge: bool = False  # the scene itself runs the surge (from rest)
+    pattern: str = "slow"  # the breath's shape: "slow" (4 s in, 6 s out) or "micro" (small sips in, a long slow release)
+    breath_amp: float = 1.0  # its size, as a share of a slow breath's effect on drive, movement and calm
 
     def level(self, t: float) -> str:
         """'rest', 'surge' or 'hold' at time t."""
@@ -49,6 +55,36 @@ class Scene:
     def rolling(self, t: float) -> bool:
         return t < self.roll_until and (t % 3.0) < 1.0
 
+    def shape(self, t: float) -> float:
+        """The breath's wave at time t, from -1 (the end of an out-breath) to +1 (the top of an in-breath), before its size."""
+        if self.pattern == "micro":
+            return micro(t)
+        return float(breath_wave(np.array([t]))[0])
+
+    def exhaling(self, t: float) -> bool:
+        if self.pattern == "micro":
+            ph = (t + MICRO_START) % MICRO_PERIOD
+            return MICRO_SIPS[-1][1] <= ph < MICRO_SIPS[-1][1] + MICRO_OUT
+        return bool(out_breath(t))
+
+
+# Subtle breaths: three small sips in, a long slow release out, a pause; 12 s in all. The pattern is representative.
+MICRO_PERIOD, MICRO_OUT, MICRO_START = 12.0, 8.0, 1.05
+MICRO_SIPS = ((0.0, 0.5, -1.0, -1 / 3), (0.8, 1.3, -1 / 3, 1 / 3), (1.6, 2.1, 1 / 3, 1.0))  # (start, end, from, to)
+
+
+def micro(t: float) -> float:
+    ph = (t + MICRO_START) % MICRO_PERIOD
+    for a, b, lo, hi in MICRO_SIPS:
+        if ph < a:
+            return lo
+        if ph < b:
+            return lo + (hi - lo) * 0.5 * (1 - np.cos(np.pi * (ph - a) / (b - a)))
+    end = MICRO_SIPS[-1][1]
+    if ph < end + MICRO_OUT:
+        return float(np.cos(np.pi * (ph - end) / MICRO_OUT))
+    return -1.0
+
 
 SCENES = (
     Scene("forms", "A knot forms", "Rest; then three minutes of stress; then the stress eases to a level that is held.",
@@ -59,6 +95,9 @@ SCENES = (
           "formed", 310.0, 0.5, breath_until=300.0, attend_until=300.0),
     Scene("hand", "A resting hand", "A hand rests on the spot for a minute, with slow breaths; then it lifts.",
           "formed", 120.0, 0.5, breath_until=120.0, hand_until=60.0),
+    Scene("micro", "Subtle breaths, attending", "Small sips in and long, slow releases out, a third the size of a slow "
+          "breath, with attention resting on the spot.", "formed", 312.0, 0.5, breath_until=300.0, attend_until=300.0,
+          pattern="micro", breath_amp=1 / 3),
     Scene("rolling", "Rolling", "A roller presses a quiet corner once every three seconds for three minutes, then stops.",
           "formed", 300.0, 0.5, roll_until=180.0),
     Scene("after", "After one lets go", "A hand rests on the knot at the spot until it lets go (a minute at most); the slow "

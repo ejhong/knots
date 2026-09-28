@@ -155,27 +155,30 @@ def _captions(m, run, k: int, scene, lay) -> list:
         out.append([0.0, f"{n0} knot{'s' if n0 != 1 else ''} held." if n0 else "No knot is held in this patch."])
     rel = [(tr, j) for kk, j, tr in releases(t, run.held) if kk == k]
     sparks = {(e["unit"], round(e["t"], 1)): e["kind"] for e in run.events if e["k"] == k}
-    gone = 0
+    first_held = set(np.flatnonzero(held[0]).tolist())
+    seen: set = set()
     marks = {max(1, round(n0 * q)) for q in (0.25, 0.5, 0.75, 1.0)} if n0 else set()
     for tr, j in rel:
-        gone += 1
+        counted = j in first_held and j not in seen
+        seen.add(j)
+        gone = len(seen & first_held)
         if j == tgt:
             how = ""
             if scene.hand_until:
                 hand_on = bool(run.hand[np.searchsorted(t, tr) - 1, k]) if run.hand is not None else False
                 how = " under the hand" if hand_on else (" as the hand lifts" if tr < scene.hand_until + 5 else "")
             elif scene.breath_until and tr < scene.breath_until:
-                how = " on the out-breath" if out_breath(tr) else " on the in-breath"
+                how = " on the out-breath" if scene.exhaling(tr) else " on the in-breath"
             kind = next((v for (u, tt), v in sparks.items() if u == j and abs(tt - tr) < 1.0), None)
             tail = {"spark": "; its patch tingles", "twitch": "; it twitches"}.get(kind, "")
             out.append([tr, f"The knot at the spot lets go{how}{tail}."])
-        elif gone in marks and scene.id != "forms":
-            out.append([tr, f"{gone} of {n0} have let go."])
+        elif counted and gone in marks and scene.id != "forms":
+            out.append([tr, f"{gone} of the {n0} held at the start have let go."])
     if not scene.surge:
         new = [(tf, j) for kk, j, tf in formations(t, run.held) if kk == k and tf > 0]
-        for tf, j in new[:3]:
+        for i, (tf, j) in enumerate(new[:3]):
             where = "at the spot again" if j == tgt else ("nearby" if np.hypot(*(lay.pos[j] - lay.pos[tgt])) < 10 else "elsewhere")
-            out.append([tf, f"A knot holds {where}."])
+            out.append([tf, f"A new knot holds {where}." if i == 0 else f"Another holds {where}."])
     out.append([float(t[-1]), f"{int(held[-1].sum())} held at the end."])
     return sorted(out, key=lambda c: c[0])
 

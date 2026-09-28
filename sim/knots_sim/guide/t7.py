@@ -61,6 +61,7 @@ WORDS = {
     "rolling": "the roller excites the units it presses, but where the drive is far below their threshold none latches.",
     "breath": "The breath lowers the descending drive and the monoamines that deepen the latch.",
     "attention": "Attention at a place inhibits its units.",
+    "micro": "Attention inhibits the units at the spot whatever the breath's size; the breath itself adds little.",
     "hand": "A held hand excites the units under it for a moment and then inhibits them (which a hand does is not known; "
             "the other variant follows).",
     "letgo": "The unit falls silent and its fibres relax: an unclenching.",

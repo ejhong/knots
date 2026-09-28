@@ -20,7 +20,7 @@ from ..exam import breath_wave
 from ..models.perception import State
 from ..theories import t6 as adapter
 from . import patch, senses
-from .base import K, SEED, Frames, Run, calmed, moods, stress
+from .base import K, SEED, Frames, Run, calmed, moods, stress, wave
 from .scenes import Scene
 
 ID, KEY, NAME, GLYPH = "T6", "central", "Perception", "覚"
@@ -55,6 +55,7 @@ WORDS = {
     "rolling": "a press is felt while it lasts.",
     "breath": "A slow breath eases arousal and is felt as safety; the in-breath is felt a little less.",
     "attention": "Attention first turns up what is felt there, then, with the breath, quiets it.",
+    "micro": "Attention with safety quiets a place whatever the breath's size.",
     "hand": "A hand adds input and draws attention: the place is felt more under it.",
     "letgo": "What goes is what is felt.",
     "spark": "",
@@ -107,7 +108,7 @@ class Runner:
             if i == steps:
                 break
             breathing = scene.breathing(t)
-            w = float(breath_wave(np.array([t]))[0]) if breathing else 0.0
+            w = wave(scene, t)
             if breathing:
                 s = s - calmed(scene, t, P["breath_calm"], P["tau_calm"])
             att = np.where(scene.attending(t) & self.under_hand[None, :], 1.0, 0.0) + np.zeros_like(st.F)

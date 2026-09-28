@@ -24,7 +24,7 @@ from ..models import tree as tr
 from ..params import load, values
 from ..theories import t1 as adapter
 from . import patch, senses
-from .base import K, SEED, Frames, Run, calmed, moods, releases, stress, typical, wave
+from .base import K, SEED, Frames, Run, calmed, moods, moved, releases, stress, typical, wave
 from .scenes import Scene
 
 ID, KEY, NAME, GLYPH = "T1", "perforator", "Perforators", "結"
@@ -62,6 +62,8 @@ WORDS = {
     "rolling": "pressure outside a vessel keeps it shut only while it lasts.",
     "breath": "The out-breath eases tone and the in-breath raises it again, so a knot lets go when the easing outlasts the rise.",
     "attention": "Drive is not local: attention changes only how much the breath moves the tissue at the spot.",
+    "micro": "Small breaths move the tissue little and change drive little: what is left is attention concentrating their "
+             "movement at the spot.",
     "hand": "A vessel pressed shut cannot reopen until the pressure lifts.",
     "letgo": "As it opens, blood floods the starved patch.",
     "spark": "As blood returns the vessel's nerve bursts: a tingle over the patch it feeds.",
@@ -185,7 +187,7 @@ class Runner:
                 else np.ones((Kk, N))
             u = u + du[:, None] * aim
             if self.variant != "aimed":  # through movement too; attention concentrates it at the spot
-                mv = mv + (self.strain * (1 + w) / 2)[:, None]
+                mv = mv + (self.strain * moved(scene, t))[:, None]
                 if scene.attending(t):
                     mv = np.where(self.under_hand[None, :], mv * self.focus[:, None], mv)
         press = np.zeros((Kk, N), bool)

@@ -30,6 +30,7 @@ RELEVANT = {  # which sampled numbers can bear on each trait: "model" is the the
     "moods": ("model", "hold", "mood_sd", "mood_tau"),
     "breath": ("model", "hold", *BREATH),
     "attention": ("model", "hold", *BREATH, "focus_gain"),
+    "micro": ("model", "hold", *BREATH, "focus_gain"),
     "hand": ("model", "hold", "palpation", "press_strain", *BREATH),
     "spark": ("model", "hold", "spark", "palpation", *BREATH),
     "move": ("model", "hold", "palpation", "press_strain", *BREATH),
@@ -351,6 +352,19 @@ def character(m, runner, runs: dict, extra: dict) -> dict:
         say += f" If attention could aim the breath's calming at one place (a hypothesis), it would {how_often(aimed, tgt)}."
     T.append(trait("attention", "release", "To attention, without touch", say, helped, tgt, nums,
                    cell=("often" if helped[tgt].mean() >= 0.5 else ("sometimes" if helped.any() else "no")) if tgt.any() else "—"))
+    mi = runs.get("micro")
+    if mi is not None:
+        t_m = np.array([_release_of(mi, k, target[k]) for k in range(K)])
+        went_m = tgt & np.isfinite(t_m)
+        rel_m = [(k, j) for k, j, _ in releases(mi.t, mi.held) if held0[k, j]]
+        share_m = np.array([len({j for kk, j in rel_m if kk == k}) / max(counts[k], 1) for k in range(K)])
+        say = (f"With subtle breaths, a third the size of a slow breath, and attention resting on the spot, the knot there "
+               f"lets go {how_often(went_m, tgt)}"
+               + (f", after about {_median(t_m[went_m]):.0f} s" if went_m.any() else "")
+               + f"; across the patch about {100 * _median(share_m[anyk]):.0f}% let go (with thirty slow breaths, "
+               f"{100 * _median(share_rel[anyk]):.0f}%). {words['micro']}")
+        T.append(trait("micro", "release", "To subtle breaths, attending", say, went_m, tgt, nums,
+                       cell=(f"at the spot {how_often(went_m, tgt).replace('in ', '')}" if went_m.any() else "no") if tgt.any() else "—"))
     ha = runs["hand"]
     t_h = np.array([_release_of(ha, k, target[k]) for k in range(K)])
     under, lift = tgt & (t_h < 60.0), tgt & (t_h >= 60.0) & (t_h < 65.0)

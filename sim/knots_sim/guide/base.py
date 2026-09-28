@@ -71,15 +71,21 @@ def stress(scene: Scene, t: float, hold: np.ndarray, mv: np.ndarray | None) -> n
 
 
 def wave(scene: Scene, t: float) -> float:
-    """The breath's wave (+1 at the top of the in-breath, -1 at the end of the out-breath), or 0 when not breathing."""
-    return float(breath_wave(np.array([t]))[0]) if scene.breathing(t) else 0.0
+    """The breath's wave (+1 at the top of the in-breath, -1 at the end of the out-breath) times its size, or 0 when not
+    breathing: what it does to drive."""
+    return scene.breath_amp * scene.shape(t) if scene.breathing(t) else 0.0
+
+
+def moved(scene: Scene, t: float) -> float:
+    """How far the breath has moved the tissue (0 to 1 of a slow breath's full movement), or 0 when not breathing."""
+    return scene.breath_amp * (1 + scene.shape(t)) / 2 if scene.breathing(t) else 0.0
 
 
 def calmed(scene: Scene, t: float, size: np.ndarray, tau: np.ndarray) -> np.ndarray:
     """How far minutes of slow breathing have lowered stress, per setting (0 when not breathing)."""
     if not scene.breath_until:
         return np.zeros_like(size)
-    return calm(min(t, scene.breath_until), size, tau)
+    return scene.breath_amp * calm(min(t, scene.breath_until), size, tau)
 
 
 def typical(X: np.ndarray, ok: np.ndarray) -> int:

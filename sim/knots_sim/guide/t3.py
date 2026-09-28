@@ -21,7 +21,7 @@ import numpy as np
 from ..models import triggerpoint as tp
 from ..theories import t3 as adapter
 from . import patch, senses
-from .base import K, SEED, Frames, Run, calmed, moods, releases, stress, wave
+from .base import K, SEED, Frames, Run, calmed, moods, moved, releases, stress, wave
 from .scenes import Scene
 
 ID, KEY, NAME, GLYPH = "T3", "trigger-point", "Trigger points", "点"
@@ -60,6 +60,7 @@ WORDS = {
     "rolling": "a brief press adds a little ischaemia, not enough to start a crisis where none is near.",
     "breath": "Relaxation lowers endplate activity, and the breath's movement stretches the band.",
     "attention": "Attention concentrates the breath's stretch at the spot.",
+    "micro": "Small breaths stretch the band little; the calm they bring lowers endplate activity a little.",
     "hand": "Sustained pressure lengthens the contracture slowly, over the tens of seconds of pressure release.",
     "letgo": "The contracture relaxes as energy returns.",
     "spark": "A release fast enough twitches: the local twitch response.",
@@ -132,7 +133,7 @@ class Runner:
                     s = s + np.where(scene.attending(t) & self.under_hand[None, :], ds * P["focus_gain"], ds)
                 else:  # relaxation, and the breath's movement stretching the band
                     s = s + ds
-                    strain = P["breath_strain"] * (1 + w) / 2
+                    strain = P["breath_strain"] * moved(scene, t)
                     if scene.attending(t):
                         strain = np.where(self.under_hand[None, :], strain * P["focus_gain"], strain)
             press_now = np.where((pressing[:, None] & self.under_hand[None, :]) |
