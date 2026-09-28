@@ -240,6 +240,33 @@ proponents of each theory, and a lab.
    surface EMG that picks out single motor units over a knot as it lets go (does one fall silent at the felt unclench?),
    with ultrasound placing the bump in muscle. Next: T7 into the exam beside the others, with exam v4.
 
+20. **The motor switch through the exam (T7, exam v4): a bump that goes at once, and comes back as the hand lifts**
+   (findings 004, run 82c1c473d76c; 32 settings of guessed numbers, so the shares are the map, not the result). What holds
+   in every setting, by its own account: a bump beneath the skin that goes like an unclenching, which only it and trigger
+   points make (O17, rough). What turns on the settings: an out-breath lets its easiest knots go in 97% (31 of 32; the
+   next best, the perforators through movement, 53%); knots come and go with breath and mood in 84%, within one breath in
+   72%; they gather where stress is held in 84%. Pressed, it needs held pressure to inhibit its units: then 93% go under
+   the hand, a median 11 s in; a hand that only excites lets 1% go under it. After the worked knot lets go under the hand,
+   the same unit fires again in every setting in which it let go, a median 2.3 s later: as the hand lifts, its loop still
+   on. A new knot nearby, 3%; others going with it, 12%. It cannot keep an old knot while a brief one goes (O10.1, none of
+   32): nothing in it remembers. Beside finding 19: there the hand pressed the whole region, and its neighbours latched
+   (97%); in the exam one knot is pressed and they do not, so that migration came from the hand, not the release. What it
+   leaves to notice: does a knot that lets go under the hand come back as the hand lifts, and stay gone if the hand stays on
+   a while longer (for the loop's metabolites to wash out, 30-300 s guessed)? The author's "let go and disappear" (rough)
+   leans against the bounce. Its test stands: single-unit EMG over a knot as it lets go.
+
+21. **The hand, or the attention it draws (Q4)** (`knots_sim/apart.py`, apart.json; the author, 27 Sep: "breath plus
+   attention alone may be enough but the pressure may help focus attention to area"). Each theory's patch, after thirty
+   broad breaths, worked a minute at the spot four ways (a hand with attention, attention alone, a hand while attention is
+   elsewhere, neither), the slow breaths going on; the share of the knots there that let go within 90 s, over 32 settings
+   of guessed numbers. Attention alone: perception 75%; the perforators 55% if the breath can be aimed, none through drive
+   alone; trigger points 58% where attention brings a stretch, 1-11% otherwise; the motor switch 18%. A hand while attention
+   is elsewhere: the perforators 84-91% (pressure, then the lift), trigger points 22-48%, the motor switch 49% if held
+   pressure inhibits (2% if it only excites). Only in perception does working one place let knots elsewhere go too (55%,
+   against about what the breaths alone let go in the tissue views). What it leaves to notice: which works better,
+   attention with no touch or a touch while the mind is elsewhere; and whether other knots fade when one place is worked.
+   These are the experiment's arms as well (§6): pressure without attention, attention without pressure.
+
 **A hypothesis these suggest** (to be run through the same exam as everything else, not assumed). Knots form where drive is
 raised and the tissue is still. A shut vessel loses the pulse that stretches its wall with every heartbeat, and so may hold
 harder than an open one (a second loop that widens the band). The longer it is held, the more its muscle adapts to being
@@ -666,8 +693,8 @@ M5. The top-bar link comes when the author says (D2); the natural moment is matr
      flat face, the kneecap, the back of the hand, the top of the skull)? In the skin and the layer under it (pinched up
      with the skin), or deeper, in the muscle? A small twitch at a release? The first two split the views that need
      muscle (T3, T7) from those that do not (T1, T4, T5); the third, T3's twitch.
-  0b. *The motor switch (T7), exploratory:* done: shallow alone (finding 18); with johansson1991's metabolic loop, deep,
-     lasting, fast to release, and migrating (finding 19). Next: T7 as the seventh theory in the exam (an adapter, its
+  0b. *The motor switch (T7):* exploratory, shallow alone (finding 18); with johansson1991's metabolic loop, deep,
+     lasting, fast to release, and migrating (finding 19). Done (27-28 Sep): T7 in the exam with v4 (finding 20). As planned: T7 as the seventh theory in the exam (an adapter, its
      parameters sourced or marked guessed, hypotheses.ts), with exam v4 (the bump, its depth, its release like unclenching,
      grain to penny, rolling), one run for all. First version as planned: a pool of units with persistent inward currents (bistable), their
      facilitation set by stress, inhibition from the breath or a hand; can it make a bump that comes in seconds, lasts, and

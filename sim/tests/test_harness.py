@@ -95,7 +95,9 @@ def test_the_matrix_is_current_and_well_formed():
             b = v["back"]  # O8.2's routes: over the settings its trial ran in; a setting can come back by more than one
             assert b["settings"] == round((v["tested"]["O8.2"] or 0) * t["samples"])
             assert all(0 <= b[r] <= 1 - b["none"] + 1e-3 for r in exam.ROUTES)
-            assert b["none"] == pytest.approx(1 - v["cells"]["O8.2"] * t["samples"] / max(b["settings"], 1), abs=2e-3)
+            # cells are stored to 3 decimals: that rounding, scaled by samples / settings, is the tolerance
+            tol = 5e-4 * t["samples"] / max(b["settings"], 1) + 1e-3
+            assert b["none"] == pytest.approx(1 - v["cells"]["O8.2"] * t["samples"] / max(b["settings"], 1), abs=tol)
 
 
 def test_the_aimed_breath_study_is_current():
@@ -124,7 +126,8 @@ def test_the_instrument_study_is_current_and_reads_the_trials():
     assert a["run"]["inputs"] == instrument.inputs_hash(), "instrument.json is stale: run `uv run python -m knots_sim.instrument`"
     assert set(a["traces"]) == {"T1", "T3", "T6", "T7"}
     for tr in a["traces"].values():
-        assert len(tr["t"]) == len(tr["knot"]) == len(tr["pressed"]) == len(tr["far"])
+        assert len(tr["t"]) == len(tr["knot"]) == len(tr["far"])
+        assert tr["pressed"] is None or len(tr["pressed"]) == len(tr["t"])  # none where every pressed place held a knot
     t1 = a["reads"]["T1"]["drive"]["press"]
     assert t1["sites"] > 0, "no knot at the spot let go under the press: the recording never ran"
     assert t1["dark_before_0.6"]["median"] > 0  # a shut vessel's patch is darker than its neighbours'

@@ -563,7 +563,8 @@ export interface InstrumentTrace {
   release_s: number;
   press_s: number;
   knot: number[];
-  pressed: number[];
+  /** null where every place under the hand held a knot: there is no pressed sham to show. */
+  pressed: number[] | null;
   far: number[];
 }
 export interface InstrumentStudy {
@@ -591,7 +592,7 @@ const PANELS: Record<string, { name: string; reads: string; unit: string; line?:
   T1: { name: 'Perforators', reads: 'skin perfusion over the patch', unit: '× relaxed flow' },
   T3: { name: 'Trigger points', reads: 'the nodule (contracture)', unit: '0–1', line: { y: 0.5, label: 'held above' } },
   T6: { name: 'Perception', reads: 'what is felt', unit: '1: a knot forms', line: { y: 1, label: 'a knot forms above' } },
-  T7: { name: 'Motor switch', reads: 'single motor units (EMG)', unit: 'share of units firing' },
+  T7: { name: 'Motor switch', reads: 'single motor units (EMG)', unit: '1: firing' },
 };
 
 export function recordings(inst: InstrumentStudy): string {
@@ -615,7 +616,7 @@ export function recordings(inst: InstrumentStudy): string {
     const tr = inst.traces[id];
     const meta = PANELS[id];
     const x0 = L + i * (pw + gap);
-    const vals = [...tr.knot, ...tr.pressed, ...tr.far, ...(meta.line ? [meta.line.y] : [])];
+    const vals = [...tr.knot, ...(tr.pressed ?? []), ...tr.far, ...(meta.line ? [meta.line.y] : [])];
     const hi0 = Math.max(...vals);
     const step = hi0 > 2 ? 1 : hi0 > 1 ? 0.5 : 0.25;
     const hi = Math.max(step, Math.ceil((hi0 * 1.05) / step) * step);
@@ -645,10 +646,15 @@ export function recordings(inst: InstrumentStudy): string {
     // The moment it lets go.
     const xr = X(tr.release_s);
     out.push(`<line x1="${f1(xr)}" x2="${f1(xr)}" y1="${top}" y2="${top + ph}" stroke="${PAPER.release}" stroke-width="1"/>`);
-    out.push(`<text x="${f1(xr - 3)}" y="${top + 24}" text-anchor="end" fill="${PAPER.release}" font-size="8" ${MONO} paint-order="stroke" stroke="${PAPER.line}" stroke-width="3">lets go, ${Math.round(tr.release_s)} s</text>`);
+    const early = xr - x0 < 64; // too near the axis for a label to its left: put it on the right
+    out.push(`<text x="${f1(early ? xr + 3 : xr - 3)}" y="${top + 24}" text-anchor="${early ? 'start' : 'end'}" fill="${PAPER.release}" font-size="8" ${MONO} paint-order="stroke" stroke="${PAPER.line}" stroke-width="3">lets go, ${Math.round(tr.release_s)} s</text>`);
     // Context first, the knot last (on top).
     for (const sr of [...SERIES].reverse()) {
       const ys = tr[sr.key];
+      if (!ys) {
+        out.push(`<text x="${x0 + pw}" y="${top + ph - 5}" text-anchor="end" fill="${PAPER.faint}" font-size="7.5" ${MONO}>no pressed place without a knot</text>`);
+        continue;
+      }
       const d = ys.map((v, k) => `${k ? 'L' : 'M'}${f1(X(tr.t[k]))} ${f1(Y(v))}`).join(' ');
       const at = (t: number) => ys[Math.max(0, tr.t.findIndex((x) => x >= t))];
       const title = `${meta.name}, ${sr.label}: ${+at(-5).toFixed(2)} before the press, ${+at(tr.press_s / 2).toFixed(2)} under the hand, ${+at(tr.release_s + 10).toFixed(2)} ten seconds after it lets go`;

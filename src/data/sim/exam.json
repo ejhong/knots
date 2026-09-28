@@ -1,9 +1,24 @@
 {
- "version": 3,
+ "version": 4,
  "status": "versioned",
  "sealed": "2026-09-27",
  "updated": "2026-09-27",
  "changes": [
+  {
+   "version": 4,
+   "date": "2026-09-27",
+   "items": [
+    "The author's answers are rough feelings, to be considered and not taken as definitive: 'Take all my answers as just rough feelings. Not definitive but to be considered.' Parts that rest on them are marked rough: scored and shown, and left out of the joint pass (every part at once). O8.2, a knot back in the same place, becomes rough.",
+    "O17 (new, rough): a knot can be felt as a bump, from a grain to perhaps a penny across, beneath the skin rather than in it, and it goes as it lets go, like an unclenching. Two parts: a bump beneath the skin, and the bump going with the release as a contraction letting go. Each is read from the theory's own account of what a knot is, the same in every setting. 'Maybe less over bone' is noted with it, not scored.",
+    "O18 (new, rough, not run): pressing or rolling can bring a knot out, over minutes. It needs a rolling trial in every theory.",
+    "Q2 (open, not scored): how fast do knots form? The author: 'not sure'.",
+    "Q4 (open, not scored): the hand or the attention it draws? The author thinks breath and attention alone may be enough, the hand helping to aim attention. The harness gains trials that take them apart (attention without a hand, a hand without attention), for every theory.",
+    "Q3 (open, not scored): are knots ever felt where no muscle lies between skin and bone? It follows from 'maybe less over bone', and splits the views in muscle from the rest.",
+    "A correction to the trials, found while building the seventh theory: slow breathing began at the bottom of an out-breath, a step from the breathing before it that let some knots go at once, before any out-breath. It now begins halfway up an in-breath, so the first out-breath starts 2 s in, and the hand that eases off does so halfway through it. Every theory's trials are rerun with it.",
+    "A second correction to the trials, found the same way: in the cluster trials the hand lifted the moment the worked knot let go, and a knot back within 2 s (a flicker, not a release, by the exam's own rule) had been counted as let go. The hand now stays until the knot has been let go for 2 s under it, a minute at most, for every theory.",
+    "A seventh theory sits the exam from this version: the motor switch (T7), motor units that latch on and are kept on by their own metabolites. Made after the exploratory studies of 27 Sep (sim/PLAN.md findings 17-19): O17's readings are the author's words, not any model's."
+   ]
+  },
   {
    "version": 3,
    "date": "2026-09-27",
@@ -37,6 +52,10 @@
  ],
  "groups": [
   {
+   "id": "felt",
+   "label": "What the hand feels"
+  },
+  {
    "id": "breath",
    "label": "The breath and the hand"
   },
@@ -66,6 +85,56 @@
   }
  ],
  "observations": [
+  {
+   "id": "O17",
+   "group": "felt",
+   "title": "A bump that goes",
+   "text": "A knot can be felt under the fingers as a bump, from a grain to perhaps a penny across, beneath the skin rather than in it, perhaps less often over bone. When it lets go, the bump goes with it, felt as an unclenching or relaxing rather than a twitch.",
+   "evidence": "S",
+   "rough": true,
+   "words": [
+    {
+     "quote": "Btw the knots can def be felt imo.",
+     "from": "the author, 27 Sep 2026"
+    },
+    {
+     "quote": "The knot seems to let go and disappear but like I said earlier it feels like other ones can migrate there.",
+     "from": "the author, 27 Sep 2026"
+    },
+    {
+     "quote": "Can vary in size from grain to maybe penny?",
+     "from": "the author, 27 Sep 2026"
+    },
+    {
+     "quote": "Maybe less over bone. Doesn’t seem to pinch with the skin.",
+     "from": "the author, 27 Sep 2026"
+    },
+    {
+     "quote": "Not sure about a twitch more like a release feel like unclenching might be right or relaxing.",
+     "from": "the author, 27 Sep 2026"
+    },
+    {
+     "quote": "Take all my answers as just rough feelings. Not definitive but to be considered.",
+     "from": "the author, 27 Sep 2026"
+    }
+   ],
+   "note": "The author's rough impressions, to be considered, not definitive (v4). Each part is read from the theory's own account of what a knot is. 'Less over bone' is noted, not scored."
+  },
+  {
+   "id": "O18",
+   "group": "felt",
+   "title": "Brought out by rolling",
+   "text": "Pressing or rolling a place can bring a knot out, over minutes.",
+   "evidence": "S",
+   "rough": true,
+   "words": [
+    {
+     "quote": "it seems foam rolling or palpating can bring it out at least over minutes.",
+     "from": "the author, 27 Sep 2026"
+    }
+   ],
+   "note": "A rough impression (v4). Not run until every theory has a rolling trial."
+  },
   {
    "id": "O1",
    "group": "breath",
@@ -205,7 +274,8 @@
      "from": "the author, 27 Sep 2026"
     }
    ],
-   "note": "Whether the knot back in the spot is the same one re-forming or another moving in is not known; the trials count either. Written down after the tree model's queue was on the site: its match, if any, is found after the fact."
+   "rough": true,
+   "note": "Whether the knot back in the spot is the same one re-forming or another moving in is not known; the trials count either. Written down after the tree model's queue was on the site: its match, if any, is found after the fact. The author's words here are rough impressions (v4): O8.2 is scored and shown, and left out of the joint pass."
   },
   {
    "id": "O13",
@@ -316,12 +386,27 @@
    "id": "Q1",
    "question": "Pressed, with a slow out-breath, does a knot let go under the hand, or as the hand eases off?",
    "why": "The author was not watching for it (O2). The theories split: the harness reports when each lets a pressed knot go."
+  },
+  {
+   "id": "Q2",
+   "question": "How fast do knots form: within seconds of a stressful moment, only after long tension or stillness, or days later?",
+   "why": "The theories part on it: a vessel's switch or a motor unit's latch within seconds, a trigger point's energy crisis over tens of minutes. The author, asked how fast knots grow under stress: 'I’m not sure on two.'"
+  },
+  {
+   "id": "Q3",
+   "question": "Are knots ever felt where no muscle lies between the skin and the bone: the flat of the shin, the crown of the head, the back of the hand, the kneecap?",
+   "why": "The author: 'Maybe less over bone.' The views part on it: a knot in muscle (trigger points, the motor switch) cannot be there; a vessel at a fascial piercing, densified fascia, a nerve or a percept can. Anyone who feels for knots could notice."
+  },
+  {
+   "id": "Q4",
+   "question": "Does the hand release a knot, or the breath and attention it draws? Does a knot let go to breath and attention alone, with no hand; and under a hand while attention is elsewhere?",
+   "why": "The author: 'we don’t know if the palpitation pressure vs complex meditative breath for release. I think breath plus attention alone may be enough but the pressure may help focus attention to area.' O2 has the two together. The views part on it: a press acts on the tissue itself in some (a vessel squeezed, a band lengthened), and only through attention in others."
   }
  ],
  "readings": [
   {
    "words": "a breath",
-   "reads": "one slow breath: 4 s in, 6 s out"
+   "reads": "one slow breath: 4 s in, 6 s out; slow breathing starts halfway up an in-breath (from v4), with no jump from the breathing before it"
   },
   {
    "words": "a single relaxing breath",
@@ -342,6 +427,18 @@
   {
    "words": "sometimes",
    "reads": "where it happens in the trial: not required every time (v3)"
+  },
+  {
+   "words": "the knots can def be felt; doesn't seem to pinch with the skin",
+   "reads": "the theory's knot is a physical change the hand could feel beneath the skin, a contraction or stiffening in muscle or fascia; not a change in what is felt alone, nor in blood flow alone (v4)"
+  },
+  {
+   "words": "let go and disappear; a release feel like unclenching",
+   "reads": "at a release the knot's contraction lets go (a unit falls silent, a contracture relaxes), and the bump goes with it (v4)"
+  },
+  {
+   "words": "rough feelings",
+   "reads": "a part resting on the author's answers is scored and shown, and left out of the joint pass (v4)"
   },
   {
    "words": "within a breath or two",
@@ -392,7 +489,8 @@
   "Each part of an observation is scored on its own: pass, fail, or silent.",
   "A theory with no account of a part is silent on it. Silence is shown as silence, never counted as a pass or a fail.",
   "A pass is reported as the share of plausible parameter sets in which the part holds, never as one tuned setting.",
-  "Observations in the group 'noted' are shown and not scored; the set-aside reports are shown and not scored."
+  "Observations in the group 'noted' are shown and not scored; the set-aside reports are shown and not scored.",
+  "Parts marked rough rest on the author's rough impressions (v4): scored and shown, never part of the joint pass."
  ],
  "history": [
   {

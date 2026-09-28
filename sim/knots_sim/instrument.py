@@ -230,28 +230,33 @@ def trace(rec: dict, tid: str, s: float = 0.6, step: float = 0.5) -> dict | None
     sites = _sites(rec)
     if not sites:
         return None
-    st = sorted(sites, key=lambda x: x["t"])[len(sites) // 2]
+    with_sham = [x for x in sites if len(x["pressed"])]  # a pressed place with no knot, if any setting has one
+    pool = with_sham or sites
+    st = sorted(pool, key=lambda x: x["t"])[len(pool) // 2]
     k, j, N, tau = st["k"], st["j"], rec["N"], rec["tau"]
     grid = np.arange(rec["start"] + TRACE[0], min(rec["start"] + TRACE[1], tau[-1]), step)
     at = lambda y: np.interp(grid, tau, y).round(4).tolist()
     if tid == "T1":
         skin = rec["reading"]["skin"]
         knot = _patch(skin, k, N, j, st["ring"], s)
-        pressed = skin[:, k * N + st["pressed"]].mean(axis=1) if len(st["pressed"]) else np.ones(len(tau))
+        pressed = skin[:, k * N + st["pressed"]].mean(axis=1) if len(st["pressed"]) else None
         far = skin[:, k * N + st["far"]].mean(axis=1)
-        series = {"knot": at(knot), "pressed": at(pressed), "far": at(far)}
+        series = {"knot": at(knot), "pressed": at(pressed) if pressed is not None else None, "far": at(far)}
     elif tid == "T3":
         c = rec["reading"]["stiffness"]
-        pressed = c[:, k * N + st["pressed"]].mean(axis=1) if len(st["pressed"]) else np.zeros(len(tau))
-        series = {"knot": at(c[:, k * N + j]), "pressed": at(pressed), "far": at(c[:, k * N + st["far"]].mean(axis=1))}
+        pressed = c[:, k * N + st["pressed"]].mean(axis=1) if len(st["pressed"]) else None
+        series = {"knot": at(c[:, k * N + j]), "pressed": at(pressed) if pressed is not None else None,
+                  "far": at(c[:, k * N + st["far"]].mean(axis=1))}
     elif tid == "T7":
         f = rec["reading"]["firing"]
-        pressed = f[:, k * N + st["pressed"]].mean(axis=1) if len(st["pressed"]) else np.zeros(len(tau))
-        series = {"knot": at(f[:, k * N + j]), "pressed": at(pressed), "far": at(f[:, k * N + st["far"]].mean(axis=1))}
+        pressed = f[:, k * N + st["pressed"]].mean(axis=1) if len(st["pressed"]) else None
+        series = {"knot": at(f[:, k * N + j]), "pressed": at(pressed) if pressed is not None else None,
+                  "far": at(f[:, k * N + st["far"]].mean(axis=1))}
     else:
         F = rec["reading"]["felt"]
-        pressed = F[:, k * N + st["pressed"]].mean(axis=1) if len(st["pressed"]) else np.zeros(len(tau))
-        series = {"knot": at(F[:, k * N + j]), "pressed": at(pressed), "far": at(F[:, k * N + st["far"]].mean(axis=1))}
+        pressed = F[:, k * N + st["pressed"]].mean(axis=1) if len(st["pressed"]) else None
+        series = {"knot": at(F[:, k * N + j]), "pressed": at(pressed) if pressed is not None else None,
+                  "far": at(F[:, k * N + st["far"]].mean(axis=1))}
     return {"t": (grid - rec["start"]).round(2).tolist(), "release_s": round(st["t"] - rec["start"], 1),
             "press_s": PRESS_FOR, **series}
 

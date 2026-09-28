@@ -1,0 +1,61 @@
+{
+ "run": {
+  "date": "2026-09-28",
+  "inputs": "999428318c3d",
+  "commit": "7a1a90a",
+  "dirty": true,
+  "python": "3.11.15",
+  "packages": {
+   "numpy": "2.4.6",
+   "scipy": "1.17.1",
+   "sympy": "1.14.0",
+   "SALib": "1.6.0"
+  }
+ },
+ "switch": {
+  "xp": 0.9143,
+  "xrest": 0.7025,
+  "urest": 0.185,
+  "xfold": 0.1891,
+  "Afold": 0.9318,
+  "Aopen": 0.6209,
+  "gasp": 0.142
+ },
+ "fitted": [
+  {
+   "key": "gasp_gain",
+   "value": 0.266,
+   "target": "the fall in fingertip flow after a deep gasp (gasp_drop)"
+  },
+  {
+   "key": "tau_down",
+   "value": 12.3,
+   "target": "the recovery of flow about 34 s after a gasp"
+  },
+  {
+   "key": "tau_nerve",
+   "value": 4.773,
+   "target": "the timing of reactive hyperaemia (porh_peak_time)"
+  },
+  {
+   "key": "k_mv",
+   "value": 1.954,
+   "target": "the widening of squeezed arteries after one squeeze, one long squeeze and five (clifford2006)"
+  },
+  {
+   "key": "tau_w",
+   "value": 9.716,
+   "target": "the same widenings and when each peaks"
+  },
+  {
+   "key": "tau_z",
+   "value": 2.067,
+   "target": "the same widenings and when each peaks"
+  }
+ ],
+ "robustness": {
+  "samples": 49152,
+  "share_bistable": 0.5161539713541666,
+  "share_holds_at_rest": 0.060404459635416664
+ }
+}

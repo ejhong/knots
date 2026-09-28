@@ -144,6 +144,7 @@ const h1 = handOf('T1');
 const h3 = handOf('T3', 'drive');
 const h6 = handOf('T6');
 const h7 = handOf('T7', 'inhibit');
+const h7x = handOf('T7', 'excite');
 // Q4, the hand or the attention it draws: each theory's press taken apart (src/data/sim/apart.json, from `knots_sim.apart`).
 type ApartCell = { settings: number; knots: number; spot: number | null; elsewhere: number | null; median_s: number | null };
 const apart = apartData as unknown as { run: { inputs: string; commit: string }; samples: number; press_s: number; window_s: number; kinds: string[]; rows: Record<string, Record<string, Record<string, ApartCell>>> };
@@ -160,7 +161,7 @@ const openQs = ((exam as unknown as { open?: { id: string; question: string; why
 const strengths = (id: string) =>
   mx.parts
     .map((part) => ({ part, b: bestOf(id, part.id), others: Math.max(...mx.theories.filter((t) => t.id !== id).map((t) => bestShare(t, part.id) ?? 0)) }))
-    .filter(({ part, b, others }) => b > others && part.id !== 'O15')
+    .filter(({ part, b, others }) => b > others && part.id !== 'O15' && !part.rough)
     .sort((a, b) => b.b - a.b)
     .slice(0, 2)
     .map(({ part, b }) => `to ${part.short} (${pct(b)})`)
@@ -200,6 +201,8 @@ const t3Stiff = rd('T3', 'drive', 'press', 'stiffness_before');
 const t3Fall = rd('T3', 'drive', 'press', 'stiffness');
 const t3Rel = rd('T3', 'drive', 'press', 'release_s');
 const t6Rel = rd('T6', 'arousal', 'press', 'release_s');
+const t7Rel = rd('T7', 'inhibit', 'press', 'release_s');
+const t7After = rd('T7', 'inhibit', 'press', 'firing_after');
 const cvs = inst.design.cv.map((c) => `${Math.round(100 * c)}%`).join('–');
 const regionLabel = (roi: number) => (roi === 0 ? `the patch (${inst.design.patch_mm} mm)` : `${roi / 10} cm across`);
 const needed = (xs: (number | null)[]) => {
@@ -371,22 +374,54 @@ const index = [
         of any produces every report at once{noneCan.length > 0 && <>, and none can {phrases(noneCan)}</>}. Each leads somewhere
         different: perforators are the likeliest {strengths('T1')}; trigger points, {strengths('T3')}; the motor switch,{' '}
         {strengths('T7') || 'nowhere alone'}; perception, {strengths('T6')}.</li>
+      <li><span class="kind">in every setting · you could notice this</span> <strong>A bump that goes like an unclenching: only a contraction in
+        muscle makes one.</strong> Knots are felt as bumps, a grain to perhaps a penny across, beneath the skin rather than in it, perhaps
+        less over bone, and they go as they let go, like an unclenching (the author's rough impressions, <span class="mono oid">O17</span>).
+        By each theory's own account, a perforator held shut and a percept have no bump; a trigger point's contracture and the motor
+        switch's latched units do, and both go as a contraction letting go. They part on speed: pressed, a trigger point lets go after
+        about {h3?.under_s ? Math.round(h3.under_s) : '–'} s under the hand; the motor switch's units within seconds, and an out-breath
+        lets its easiest knots go in {pct(bestOf('T7', 'O1.1'))} of its settings. A vessel could still be part of the picture, beneath a
+        bump it does not make. Whether knots are ever felt where no muscle lies between skin and bone (the shin's flat face, the crown
+        of the head) would tell the views in muscle from the rest (<a href="#open">Q3</a>).</li>
       <li><span class="kind">you could notice this</span> <strong>When a pressed knot lets go splits the theories.</strong> Pressed, with a slow out-breath, a knot often lets go within
         seconds (O2); asked, the author could not say whether under the hand or as it eases off, so the exam takes either (v2) and
         the question stays <a href="#open">open</a>. The theories part on exactly that. Held a minute and lifted, the perforator
         switch lets {h1 ? pct(h1.lift) : '–'} of its pressed knots go within 5 s of the lift and {h1 ? pct(h1.under) : '–'} under the
         hand: pressed, the vessel cannot open. Perception, {h6 ? pct(h6.lift) : '–'} as the hand lifts: a press is felt more, not
         less. A trigger point, {h3 ? pct(h3.under) : '–'} under the hand{h3?.under_s ? <>, after {Math.round(h3.under_s)} s at the median</> : null}, its
-        pressure release taking tens of seconds, as its own literature has it. It is the cheapest observation that would tell them
+        pressure release taking tens of seconds, as its own literature has it. The motor switch, {h7 ? pct(h7.under) : '–'} under the
+        hand{h7?.under_s ? <>, after {Math.round(h7.under_s)} s at the median</> : null}, if held pressure inhibits its units; if a hand only
+        excites them, {h7x ? pct(h7x.under) : '–'} under it and {h7x ? pct(h7x.held) : '–'} hold. It is the cheapest observation that would tell them
         apart.</li>
+      <li><span class="kind">you could notice this · rests on guessed numbers</span> <strong>The hand, or the attention it draws.</strong> The
+        author suspects breath and attention alone may be enough, the hand helping to aim attention (<a href="#apart">Q4</a>). Taken apart, a
+        minute at the spot after thirty broad breaths: attention alone, no hand, lets the knots there go in perception
+        ({pct(apartAt('T6', 'arousal', 'attend') ?? 0)}), in the perforators only if the breath can be aimed
+        ({pct(apartAt('T1', 'aimed', 'attend') ?? 0)}; through drive alone, {pct(apartAt('T1', 'drive', 'attend') ?? 0)}), in trigger points
+        where attention brings a stretch ({pct(apartAt('T3', 'drive+stretch', 'attend') ?? 0)}), and in the motor switch in{' '}
+        {pct(apartAt('T7', 'inhibit', 'attend') ?? 0)}. A hand while attention is elsewhere lets them go in the perforators
+        ({pct(apartAt('T1', 'drive', 'hand') ?? 0)}), trigger points ({pct(apartAt('T3', 'drive', 'hand') ?? 0)}–{pct(apartAt('T3', 'drive+stretch', 'hand') ?? 0)}),
+        and the motor switch if held pressure inhibits ({pct(apartAt('T7', 'inhibit', 'hand') ?? 0)}): there the hand acts on the tissue. Attention
+        alone does more than a hand alone in perception ({pct(apartAt('T6', 'arousal', 'attend') ?? 0)} against{' '}
+        {pct(apartAt('T6', 'arousal', 'hand') ?? 0)}) and in trigger points when attention brings a stretch
+        ({pct(apartAt('T3', 'drive+stretch', 'attend') ?? 0)} against {pct(apartAt('T3', 'drive+stretch', 'hand') ?? 0)}); a hand does more in the
+        perforators and the motor switch. Only in perception does working one place let knots elsewhere go too
+        ({pct(apart.rows.T6?.arousal?.press?.elsewhere ?? 0)}, where the tissue views let go about as many as the breaths alone). Which
+        works better, attention with no touch or a touch while the mind is elsewhere, is something a practitioner could notice.</li>
       <li><span class="kind">an instrument would tell</span> <strong>A knot back in the same place: each theory has a way, and each leaves something different to find.</strong> After a
         knot lets go, a knot is held at its place again within 10 minutes (<a href="#back">the table</a>). In the perforators, in{' '}
         {span(b1.map((b) => 1 - b.none))} of settings, and it is {Math.max(0, ...b1.map((b) => b.same)) === 0 ? 'never the same vessel shutting again but' : 'mostly'} a
         child vessel beneath it that the parent's release leaves shut: there all along, felt once the parent no longer masks it. In
         trigger points, the same endplate contracts again in {span(b3.map((b) => b.same))}, a median {secs(b3.map((b) => b.median_s))} after
-        the release, if the drive that made it goes on. In perception, the place or one beside it is felt again in{' '}
-        {span(b6.map((b) => 1 - b.none))}, after {secs(b6.map((b) => b.median_s))}, as attention moves. Telling which it is
-        would take an instrument: a deeper vessel on a Doppler probe, the same endplate on a needle EMG, or nothing in the tissue.</li>
+        the release, if the drive that made it goes on. In the motor switch, the same unit fires again in{' '}
+        {b7.every((b) => b.same === 1) ? 'every setting in which its knot let go' : `${span(b7.map((b) => b.same))} of settings`},{' '}
+        {secs(b7.map((b) => b.median_s))} after it: as the hand lifts, the loop that held it still on. In
+        perception, the place or one beside it is felt again in{' '}
+        {span(b6.map((b) => 1 - b.none))}, after {secs(b6.map((b) => b.median_s))}, as attention moves. So the timing is something
+        to notice: back as the hand lifts (a contraction in muscle, its cause still there), ten seconds on and a little deeper (a
+        vessel's child), or half a minute on and beside it (attention). Telling which it is would take an instrument: a deeper
+        vessel on a Doppler probe, the same endplate on a needle EMG, the same motor unit on single-unit EMG, or nothing in the
+        tissue.</li>
       <li><span class="kind">you could notice this</span> <strong>A breath aimed at one place would have to be narrow; for the perforators it could
         be.</strong> The author's hypothesis is that a trained breath lowers the sympathetic signal at one chosen place (<a href="#aimed">aimed</a>). In the
         perforators, a hard knot that {mx.trials.breaths} broad breaths left lets go in {ofN(aT1('0.25').target, aT1('0').settings)} settings when the
@@ -588,7 +623,7 @@ const index = [
       Each theory, as a model in its strongest form, sits the same trials: a single knot at a range of depths, a patch of{' '}
       {mx.trials.patch} places where stress is held, a cluster, and an hour of breath and mood. Every part of the exam is
       scored in {nSets} settings sampled across the theory's own plausible ranges, and a cell shows the share in which the part
-      holds, never one tuned setting. Where turning words into equations is a choice, each choice is a row. {Cap(nRun)} of {nAll}
+      holds, never one tuned setting. Where turning words into equations is a choice, each choice is a row. {Cap(nRun)} of {nAll}{' '}
       theories have run. It says what each can do, never which is true.
     </p>
     <p class="legend-row" aria-hidden="true">
@@ -667,7 +702,7 @@ const index = [
     {
       noneCan.length > 0 && (
         <p class="find">
-          <strong>What none of the three can do, in any of their settings:</strong>{' '}
+          <strong>What none of the {nRun} can do, in any of their settings:</strong>{' '}
           {noneCan.map((part, i) => <>{i > 0 ? (i === noneCan.length - 1 ? '; or ' : '; ') : ''}{part.short} <span class="mono oid">{part.id}</span></>)}.
         </p>
       )
@@ -1082,6 +1117,11 @@ const index = [
         {t6Rel ? `${Math.round(t6Rel.median)} s` : '–'} after the press began, as the hand lifts, and nothing measurable changes at the knot or at
         either other place. The perforators let theirs go at {t1Rel ? `${Math.round(t1Rel.median)} s` : '–'}, also as the hand lifts: the moment is
         the same, and only the skin tells them apart.</p>
+      <p class="find"><span class="kind">an instrument would tell</span> <strong>Motor switch: one unit falls silent under the hand, and fires again
+        as it lifts.</strong> If held pressure inhibits its units, the knot's unit stops {t7Rel ? `${Math.round(t7Rel.median)} s` : '–'} into the
+        press (the median over settings){t7After && t7After.median === 0 ? ' and stays silent while the hand is on' : ''}; in the trace it fires again as
+        the hand lifts, the loop that held it still on (<a href="#back">where one comes back</a>). Nothing changes far from the hand. Surface EMG that
+        picks out single units would see it, with ultrasound for the bump; the skin would not.</p>
     </div>
     <h3 class="h3">Every theory, from its model or its own statements</h3>
     <div class="table-wrap">
@@ -1113,14 +1153,19 @@ const index = [
       around it belongs under the site's <a href={`${base}/#moderation`}>moderation guidance</a>.
     </p>
     <ol class="steps">
-      <li><strong>Before any instrument: what a practitioner could notice.</strong> Four questions the theories answer differently:
+      <li><strong>Before any instrument: what a practitioner could notice.</strong> Questions the theories answer differently:
         <ul>
           <li><em>When a pressed knot lets go:</em> under the hand, or as it lifts (<a href="#open">Q1</a>). Perforators, as it lifts; perception, as it
-            lifts or not at all; trigger points, under the hand{h3?.under_s ? `, after about ${Math.round(h3.under_s)} s` : ''}.</li>
+            lifts or not at all; trigger points, under the hand{h3?.under_s ? `, after about ${Math.round(h3.under_s)} s` : ''}; the motor switch, under
+            the hand within seconds, if held pressure inhibits its units.</li>
+          <li><em>Whether knots are ever felt where no muscle lies between skin and bone</em> (<a href="#open">Q3</a>): the shin's flat face, the crown of
+            the head. Not in trigger points or the motor switch; possible in the rest.</li>
+          <li><em>Attention with no touch, or a touch while the mind is elsewhere</em> (<a href="#apart">Q4</a>): in perception attention alone does more,
+            and other knots fade as one place is worked; in the perforators and the motor switch the hand does more.</li>
           <li><em>Whether a chosen hard knot can go while easier ones beside it stay.</em> A broad breath takes the easiest first; a breath aimed narrowly
             at one place could take a chosen one first, in the perforators (<a href="#aimed">aimed</a>).</li>
-          <li><em>When a knot comes back to the same place:</em> at once (perforators: a vessel beneath, there all along), within seconds to half a
-            minute (trigger points), or after about half a minute (perception) (<a href="#back">the table</a>).</li>
+          <li><em>When a knot comes back to the same place:</em> as the hand lifts (the motor switch, and trigger points within seconds: the same
+            contraction), about ten seconds on (perforators: a vessel beneath, there all along), or after about half a minute (perception) (<a href="#back">the table</a>).</li>
           <li><em>How fast knots form:</em> within seconds of a stressful moment, or only after long tension or stillness. The next to run.</li>
         </ul>
       </li>
@@ -1131,7 +1176,8 @@ const index = [
         under the same hand with no knot, and a place far from it. In the vessel view the knot's patch brightens against its neighbours' as it lets
         go, beyond the flush every pressed place shows.</li>
       <li><strong>If the skin shows nothing.</strong> Under the knot, with the probe as the pressing hand: shear-wave elastography for the nodule's
-        stiffness (<Fragment set:html={cite('sikdar2009')} /> imaged trigger points this way) and needle EMG at the nidus.</li>
+        stiffness (<Fragment set:html={cite('sikdar2009')} /> imaged trigger points this way), needle EMG at the nidus, and surface EMG that picks
+        out single motor units: in the motor switch one falls silent at the felt release, within a second, and the bump softens with it.</li>
     </ol>
     <h3 class="h3">How many knots, and how many releases</h3>
     <p class="find">

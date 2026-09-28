@@ -1,0 +1,297 @@
+{
+ "run": {
+  "inputs": "4a6a6a5c1f6d",
+  "commit": "7a1a90a",
+  "dirty": true
+ },
+ "exam": 4,
+ "samples": 32,
+ "press_s": 60.0,
+ "window_s": 90.0,
+ "kinds": [
+  "rest",
+  "attend",
+  "hand",
+  "press"
+ ],
+ "rows": {
+  "T1": {
+   "drive": {
+    "rest": {
+     "settings": 8,
+     "knots": 33,
+     "spot": 0.0,
+     "elsewhere": 0.017699115044247787,
+     "median_s": null
+    },
+    "attend": {
+     "settings": 8,
+     "knots": 33,
+     "spot": 0.0,
+     "elsewhere": 0.017699115044247787,
+     "median_s": null
+    },
+    "hand": {
+     "settings": 8,
+     "knots": 33,
+     "spot": 0.9090909090909091,
+     "elsewhere": 0.017699115044247787,
+     "median_s": 60.60000000000002
+    },
+    "press": {
+     "settings": 8,
+     "knots": 33,
+     "spot": 0.9090909090909091,
+     "elsewhere": 0.017699115044247787,
+     "median_s": 60.60000000000002
+    }
+   },
+   "movement": {
+    "rest": {
+     "settings": 6,
+     "knots": 25,
+     "spot": 0.0,
+     "elsewhere": 0.0,
+     "median_s": null
+    },
+    "attend": {
+     "settings": 6,
+     "knots": 25,
+     "spot": 0.28,
+     "elsewhere": 0.0,
+     "median_s": 8.0
+    },
+    "hand": {
+     "settings": 6,
+     "knots": 25,
+     "spot": 0.84,
+     "elsewhere": 0.0,
+     "median_s": 60.80000000000007
+    },
+    "press": {
+     "settings": 6,
+     "knots": 25,
+     "spot": 0.84,
+     "elsewhere": 0.0,
+     "median_s": 60.80000000000007
+    }
+   },
+   "aimed": {
+    "rest": {
+     "settings": 8,
+     "knots": 33,
+     "spot": 0.0,
+     "elsewhere": 0.017699115044247787,
+     "median_s": null
+    },
+    "attend": {
+     "settings": 8,
+     "knots": 33,
+     "spot": 0.5454545454545454,
+     "elsewhere": 0.017699115044247787,
+     "median_s": 10.100000000000023
+    },
+    "hand": {
+     "settings": 8,
+     "knots": 33,
+     "spot": 0.9090909090909091,
+     "elsewhere": 0.017699115044247787,
+     "median_s": 60.60000000000002
+    },
+    "press": {
+     "settings": 8,
+     "knots": 33,
+     "spot": 1.0,
+     "elsewhere": 0.017699115044247787,
+     "median_s": 60.60000000000002
+    }
+   }
+  },
+  "T3": {
+   "drive": {
+    "rest": {
+     "settings": 22,
+     "knots": 107,
+     "spot": 0.009345794392523364,
+     "elsewhere": 0.0,
+     "median_s": 8.600000000000023
+    },
+    "attend": {
+     "settings": 22,
+     "knots": 107,
+     "spot": 0.009345794392523364,
+     "elsewhere": 0.0,
+     "median_s": 8.600000000000023
+    },
+    "hand": {
+     "settings": 22,
+     "knots": 107,
+     "spot": 0.22429906542056074,
+     "elsewhere": 0.0,
+     "median_s": 66.70000000000005
+    },
+    "press": {
+     "settings": 22,
+     "knots": 107,
+     "spot": 0.22429906542056074,
+     "elsewhere": 0.0,
+     "median_s": 66.70000000000005
+    }
+   },
+   "drive+stretch": {
+    "rest": {
+     "settings": 16,
+     "knots": 66,
+     "spot": 0.15151515151515152,
+     "elsewhere": 0.09198113207547169,
+     "median_s": 90.0
+    },
+    "attend": {
+     "settings": 16,
+     "knots": 66,
+     "spot": 0.5757575757575758,
+     "elsewhere": 0.09198113207547169,
+     "median_s": 0.0
+    },
+    "hand": {
+     "settings": 16,
+     "knots": 66,
+     "spot": 0.48484848484848486,
+     "elsewhere": 0.09198113207547169,
+     "median_s": 64.70000000000005
+    },
+    "press": {
+     "settings": 16,
+     "knots": 66,
+     "spot": 0.7727272727272727,
+     "elsewhere": 0.09198113207547169,
+     "median_s": 10.200000000000045
+    }
+   },
+   "aimed": {
+    "rest": {
+     "settings": 22,
+     "knots": 107,
+     "spot": 0.009345794392523364,
+     "elsewhere": 0.0,
+     "median_s": 8.600000000000023
+    },
+    "attend": {
+     "settings": 22,
+     "knots": 107,
+     "spot": 0.11214953271028037,
+     "elsewhere": 0.0,
+     "median_s": 29.0
+    },
+    "hand": {
+     "settings": 22,
+     "knots": 107,
+     "spot": 0.22429906542056074,
+     "elsewhere": 0.0,
+     "median_s": 66.70000000000005
+    },
+    "press": {
+     "settings": 22,
+     "knots": 107,
+     "spot": 0.42990654205607476,
+     "elsewhere": 0.0,
+     "median_s": 39.10000000000002
+    }
+   }
+  },
+  "T7": {
+   "inhibit": {
+    "rest": {
+     "settings": 30,
+     "knots": 174,
+     "spot": 0.017241379310344827,
+     "elsewhere": 0.013489208633093525,
+     "median_s": 58.200000000000045
+    },
+    "attend": {
+     "settings": 30,
+     "knots": 174,
+     "spot": 0.1839080459770115,
+     "elsewhere": 0.013489208633093525,
+     "median_s": 0.0
+    },
+    "hand": {
+     "settings": 30,
+     "knots": 174,
+     "spot": 0.4942528735632184,
+     "elsewhere": 0.013489208633093525,
+     "median_s": 9.900000000000006
+    },
+    "press": {
+     "settings": 30,
+     "knots": 174,
+     "spot": 0.7471264367816092,
+     "elsewhere": 0.013489208633093525,
+     "median_s": 10.300000000000011
+    }
+   },
+   "excite": {
+    "rest": {
+     "settings": 30,
+     "knots": 174,
+     "spot": 0.017241379310344827,
+     "elsewhere": 0.013489208633093525,
+     "median_s": 58.200000000000045
+    },
+    "attend": {
+     "settings": 30,
+     "knots": 174,
+     "spot": 0.1839080459770115,
+     "elsewhere": 0.013489208633093525,
+     "median_s": 0.0
+    },
+    "hand": {
+     "settings": 30,
+     "knots": 174,
+     "spot": 0.017241379310344827,
+     "elsewhere": 0.013489208633093525,
+     "median_s": 68.40000000000003
+    },
+    "press": {
+     "settings": 30,
+     "knots": 174,
+     "spot": 0.017241379310344827,
+     "elsewhere": 0.013489208633093525,
+     "median_s": 68.40000000000003
+    }
+   }
+  },
+  "T6": {
+   "arousal": {
+    "rest": {
+     "settings": 24,
+     "knots": 59,
+     "spot": 0.0,
+     "elsewhere": 0.01256281407035176,
+     "median_s": null
+    },
+    "attend": {
+     "settings": 24,
+     "knots": 59,
+     "spot": 0.7457627118644068,
+     "elsewhere": 0.35175879396984927,
+     "median_s": 60.0
+    },
+    "hand": {
+     "settings": 24,
+     "knots": 59,
+     "spot": 0.5254237288135594,
+     "elsewhere": 0.5125628140703518,
+     "median_s": 60.0
+    },
+    "press": {
+     "settings": 24,
+     "knots": 59,
+     "spot": 0.8813559322033898,
+     "elsewhere": 0.5477386934673367,
+     "median_s": 60.0
+    }
+   }
+  }
+ }
+}

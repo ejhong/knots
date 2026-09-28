@@ -350,6 +350,17 @@ FAIRNESS = """- *One rule for the stress unit.* 1 is a surge that forms knots, a
   the joint pass (exam v4)."""
 
 
+def _distinct_hands(t: dict) -> list[dict]:
+    """A theory's variants whose hands differ (the first of each), so that a variant that changes the hand is reported."""
+    out, seen = [], set()
+    for v in t["variants"]:
+        key = tuple(round(v["hand"][k], 2) for k in ("under", "lift", "later", "held"))
+        if key not in seen:
+            seen.add(key)
+            out.append(v)
+    return out
+
+
 def _share(c) -> str:
     return c if isinstance(c, str) else f"{100 * c:.0f}%"
 
@@ -398,7 +409,7 @@ and shown, and left out of the joint pass (exam v4).
     counts = [(t, t["variants"][0]["count"]) for t in th]
     def many(t, c):
         if not c:
-            return f"{t['name']}: no unit to count"
+            return f"{t['name']}: " + ("no unit to count" if t["id"] == "T6" else "not counted yet (its units in a body are not sourced)")
         none = f", and none at all in {_share(c['none'])} of settings" if c["none"] > 0 else ""
         mid = f"{c['median_any']:,}" if c["median_any"] is not None else "none"
         return f"{t['name']}: {mid} knots in a body where it holds any, of {c['units']:,.0f} units{none}"
@@ -408,8 +419,9 @@ and shown, and left out of the joint pass (exam v4).
 
     lines.append("- **The hand (open, Q1).** Pressed, with a slow out-breath, a knot often lets go within seconds; the author could"
                  " not say whether under the hand or as it eases off, so the exam takes either (v2). The theories split on it: "
-                 + "; ".join(f"{t['name']} lets {_share(t['variants'][0]['hand']['under'])} go under the hand and"
-                             f" {_share(t['variants'][0]['hand']['lift'])} as it lifts" for t in th) + ".")
+                 + "; ".join(f"{t['name']}{'' if len(vs) == 1 else ' (' + v['name'] + ')'} lets {_share(v['hand']['under'])} go under"
+                             f" the hand and {_share(v['hand']['lift'])} as it lifts"
+                             for t in th for vs in [_distinct_hands(t)] for v in vs) + ".")
 
     felt = [t for t in th if all(v["cells"].get("O17.1") == 1 for v in t["variants"])]
     unclench = [t for t in th if all(v["cells"].get("O17.2") == 1 for v in t["variants"])]
@@ -470,10 +482,12 @@ and shown, and left out of the joint pass (exam v4).
     lines.append("\nThe routes differ by theory, and so does what an instrument would find. In the perforators a knot back \"beneath\""
                  " is a child vessel the parent's release leaves shut: it was there all along, felt once the parent no longer"
                  " masks it, so it is counted 10 s after the release (the soonest the trial looks). A trigger point's own"
-                 " contracture can return once the press's lengthening fades, if the drive that made it goes on. In perception,"
+                 " contracture can return once the press's lengthening fades, if the drive that made it goes on. A motor"
+                 " switch's unit, silenced by a hand that inhibits it, fires again as the hand lifts if the loop that held it"
+                 " (its metabolites, washing out over tens of seconds to minutes) is still on. In perception,"
                  " the place, or one beside it, is felt again as attention moves. Whether the knot back is the same unit is what"
                  " the reports cannot say; a Doppler probe (a deeper vessel), a needle EMG (the same endplate) or nothing in the"
-                 " tissue at all would.")
+                 " tissue at all would; for the motor switch, single-unit EMG.")
 
     lines.append("\nThe exam's first version was scored with the hand still pressing (the harness's reading of O2, stricter than its"
                  " words), and no theory passed it (findings 004 at commit c4cd6f9); version 2 takes a hand that holds or one that"
