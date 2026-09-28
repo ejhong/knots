@@ -73,6 +73,7 @@ def test_a_press_lets_a_middle_knot_go_in_its_quoted_time():
     assert let_go == pytest.approx(P["tau_press"], rel=0.1)
 
 
+@pytest.mark.skip(reason="the exam is retired (sim/PLAN.md §2); its outputs are archived in sim/archive/data/")
 def test_the_matrix_is_current_and_well_formed():
     m = json.loads(exam.SITE.read_text())
     assert m["run"]["inputs"] == exam.inputs_hash(), "the matrix is stale: run `uv run python -m knots_sim.exam`"
@@ -100,6 +101,7 @@ def test_the_matrix_is_current_and_well_formed():
             assert b["none"] == pytest.approx(1 - v["cells"]["O8.2"] * t["samples"] / max(b["settings"], 1), abs=tol)
 
 
+@pytest.mark.skip(reason="the exam is retired (sim/PLAN.md §2); its outputs are archived in sim/archive/data/")
 def test_the_aimed_breath_study_is_current():
     from knots_sim import aimed
 
@@ -112,6 +114,7 @@ def test_the_aimed_breath_study_is_current():
         assert a[th]["0"]["near"] == a[th]["0"]["far"] == 0  # not aimed, nothing is let go besides
 
 
+@pytest.mark.skip(reason="the exam is retired (sim/PLAN.md §2); its outputs are archived in sim/archive/data/")
 def test_the_findings_note_names_the_matrix_run():
     from knots_sim.findings import EXAM_OUT
 
@@ -119,6 +122,7 @@ def test_the_findings_note_names_the_matrix_run():
     assert f"inputs {m['run']['inputs']}" in EXAM_OUT.read_text(), "findings 004 is stale: run `uv run python -m knots_sim.exam`"
 
 
+@pytest.mark.skip(reason="the exam is retired (sim/PLAN.md §2); its outputs are archived in sim/archive/data/")
 def test_the_instrument_study_is_current_and_reads_the_trials():
     from knots_sim import instrument
 
@@ -136,6 +140,7 @@ def test_the_instrument_study_is_current_and_reads_the_trials():
         assert all(n is None or n >= 3 for n in row["needed"])
 
 
+@pytest.mark.skip(reason="the exam is retired (sim/PLAN.md §2); its outputs are archived in sim/archive/data/")
 def test_the_hand_and_attention_study_is_current():
     from knots_sim import apart
 

@@ -7,12 +7,14 @@ import indexData from '../../data/sim/guide.json';
 import { Cells, loadFilm, type Film, type GuideIndex } from './data';
 import { INKC, PatchView } from './patch';
 import { PLATES } from './plate';
+import { switchChart, type Switch } from './switch';
 
 const index = indexData as unknown as GuideIndex;
 const VIEW_SECONDS = 36; // how long a scene takes to watch
 
 const INST: Record<string, [string, string, string][]> = {
   T1: [['flow_spot', 'skin flow at the spot (laser speckle)', INKC.vessel], ['flow_sham', 'at the sham', INKC.stone]],
+  T2: [['flow_spot', 'blood flow at the spot', INKC.vessel], ['flow_sham', 'at the sham', INKC.stone]],
   T3: [['stiffness', 'contracture at the spot (elastography)', INKC.ivory], ['needle_emg', 'endplate activity (needle EMG)', INKC.ochre]],
   T7: [['emg_units', 'motor units firing under the electrode (surface EMG)', INKC.ivory], ['stiffness', 'firmness at the spot', INKC.ochre]],
   T6: [['felt', 'what is felt at the spot (report)', INKC.ivory]],
@@ -36,6 +38,8 @@ export function mountGuide(root: HTMLElement, base: string): void {
   let closeView: PatchView | null = null;
   const plateBox = $<HTMLElement>('[data-plate]');
   const instBox = $<HTMLElement>('[data-inst]');
+  const switchBox = $<HTMLElement>('[data-switch]');
+  const switchNote = $<HTMLElement>('[data-switch-note]');
   const clock = $<HTMLElement>('[data-clock]');
   const scrub = $<HTMLInputElement>('[data-scrub]');
   const play = $<HTMLButtonElement>('[data-play]');
@@ -100,6 +104,10 @@ export function mountGuide(root: HTMLElement, base: string): void {
       closeView.settle(frameAt(t));
     }
     if (plateBox) plateBox.innerHTML = PLATES[id]?.svg ?? '';
+    const sw = (th as unknown as { switch?: Switch }).switch;
+    if (switchBox) switchBox.innerHTML = switchChart(sw);
+    if (switchNote) switchNote.textContent = sw?.note ?? '';
+    $$<HTMLButtonElement>('[data-pick]').forEach((b) => b.setAttribute('aria-pressed', String(b.dataset.pick === id)));
     drawInst();
     drawTimeline();
     if (scroll) $<HTMLElement>('#close')?.scrollIntoView({ behavior: reduce ? 'auto' : 'smooth', block: 'start' });
@@ -255,6 +263,17 @@ export function mountGuide(root: HTMLElement, base: string): void {
       }
     });
   });
+  $$<HTMLButtonElement>('[data-pick]').forEach((b) => b.addEventListener('click', () => select(b.dataset.pick!, false)));
+  $$<HTMLButtonElement>('[data-watch]').forEach((b) =>
+    b.addEventListener('click', () => {
+      select(b.dataset.watch!, true);
+      if (!playing && film) {
+        if (t >= scene.duration - 1e-6) seek(0);
+        playing = !reduce;
+        syncPlay();
+      }
+    }),
+  );
   play?.addEventListener('click', () => {
     if (t >= scene.duration - 1e-6) seek(0);
     playing = !playing;

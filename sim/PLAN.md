@@ -1,9 +1,10 @@
 # The field guide: how knots would behave, theory by theory
 
-*Status (28 Sep 2026): G0 done (this plan; the exam, the matrix and the author's words off the site). G1's first version is
-live: the engine (`knots_sim/guide/`) runs perforators, trigger points, the motor switch and perception through seven scenes
-in 32 settings each, and `/simulation/` shows them side by side, up close, with each theory's character generated from the
-runs (`findings/guide.md`). Next: patterned and micro-breaths as scenes; conducted dilation in the vessel tree; G2, G3. The first version of this phase, an exam that
+*Status (28 Sep 2026): G0 done (this plan; the exam, the matrix and the author's words off the site). G1 is live: the
+engine (`knots_sim/guide/`) runs perforators (with conducted dilation in their trees), the vascular latch, trigger points,
+the motor switch and perception through eight scenes in 32 settings each, and the Hypotheses page shows each theory's
+account beside what its model shows, with the instrument at the top (`/simulation/` now redirects there); each theory's
+portrait is generated from the runs (`findings/guide.md`). Next: G2, G3. The first version of this phase, an exam that
 scored the theories against the author's reports, is in [archive/](archive/2026-09-28-exam-plan.md); what it built is kept
 (§9). The planning brief it started from is [BRIEF.md](BRIEF.md).*
 
@@ -66,7 +67,7 @@ theory by theory, in place of today's illustration.
 | | Theory | Where its unit is | Its switch | Model |
 |---|---|---|---|---|
 | T1 結 | Perforators | a small artery where it pierces the fascia; trees of a parent and its children, every 4–5 mm | the wall's own mechanics: open or shut over a band of tone (burton1951) | built |
-| T2 閂 | Vascular latch | smooth muscle anywhere | the latch-bridge state (hai1988) | to build (G3) |
+| T2 閂 | Vascular latch | small arteries in skin and muscle, every 5 mm (smooth muscle anywhere) | a held prediction kept by the clamp that cuts its region off from awareness (Johnson's loop; the latch-bridge economises it, hai1988) | built |
 | T3 点 | Trigger points | a contraction knot in a taut band, a few per muscle along the zone where its nerve enters | the energy crisis at an endplate (gerwin2004) | built |
 | T4 膠 | Densification | the loose layer between fasciae | hyaluronan that stiffens at rest and thins with shear and warmth | to build (G3) |
 | T5 神経 | Nerves | a cutaneous nerve where it pierces the fascia | a sensitised segment | to build (G3) |
@@ -107,9 +108,14 @@ vessel beside them. With that, the seven accounts cover the serious contenders; 
   Weak: every number for knots is a guess. In the guide: territories along the fibres; a latched unit's fibres are
   scattered through its territory, so one unit is a diffuse firmness and a bump needs several together (the senses, §5);
   attention inhibits; a hand excites, or excites and then inhibits (variants).
-- *T2.* The latch economises; it does not remember: relaxation follows calcium (rembold1991), so as a knot it holds only
-  while its drive lasts, cheaply, and lets go over tens of seconds once drive falls. To build as a variant of the vessel
-  when Hai and Murphy's rate constants are sourced.
+- *T2.* The latch-bridge economises; by itself it does not remember: relaxation follows calcium (rembold1991). In
+  Johnson's account the memory is elsewhere, in the held prediction the clamp keeps out of awareness, so the guide builds
+  that loop (`models/latch.py`, 28 Sep): stress writes a prediction; the prediction commands its region's vessels; the
+  clamp keeps it written and cuts it off from awareness; attention or a hand lets it update, and the latch then relaxes
+  over tens of seconds. The loop is set from the account's two claims (durable while unattended; ordinary stress alone
+  does not latch a region) and where it sits between them is sampled; whether attention or a hand frees it is left to the
+  model. Every number for knots is guessed; the latch's own rate constants (Hai and Murphy) would set how slowly a freed
+  region warms. One formalisation among possible ones, for its proponents to check.
 - *T4.* To build as a loose layer that stiffens at rest and thins under shear (thixotropy) and warmth: its knots would be
   broad, slow, and freed by movement over minutes.
 - *T5.* To build as a sensitised nerve at its piercing: tender, no bump, tingling along its branches when pressed; freed
@@ -191,14 +197,14 @@ sim/knots_sim/guide/       the field guide's engine
   patch.py                 the shared patch: size, stress field, spot, sham, roller path; each theory's unit layout
   scenes.py                the scenes as input timelines
   senses.py                from state to what is felt and what an instrument reads
-  t1.py t3.py t6.py t7.py  one runner per theory: a scene in K settings -> a trace
+  t1.py t2.py t3.py t6.py t7.py  one runner per theory: a scene in K settings -> a trace
   traits.py                the character, generated
   export.py                python -m knots_sim.guide: writes the site's data and findings/guide.md
 sim/params/senses.yaml     the senses' numbers, sourced or guessed
 src/data/sim/guide.json    the index: theories, scenes, characters, tells (imported at build)
 public/sim/guide/*.json    one file per scene: every theory's typical trace (fetched as needed)
 src/sim/guide/             the page's modules: player, patch (canvas), beneath (SVG plates), instruments, character
-src/pages/simulation.astro the field guide; research.astro the case for researchers
+src/pages/hypotheses.astro each theory's account and its model, with the instrument; research.astro the case for researchers
 ```
 
 Kept from the exam phase and reused: `models/` (vessel, tree, triggerpoint, perception, motorswitch), `adapt.py`, the
@@ -212,7 +218,7 @@ adapters' scaling rules (`theories/`), `instrument.py`'s readings, `checks.py` (
 | G0 | This plan; the exam, the matrix and the author's words off the site; Research made lean | done, 28 Sep |
 | G1 | The engine for T1, T3, T6, T7; the field guide v1: side by side, up close, the character | first version live, 28 Sep; then patterned and micro-breaths, the vessel tree's conducted dilation |
 | G2 | Research rebuilt around the tells and the measurement ladder, generated from the guide | pushed |
-| G3 | T4, T5, the motor switch with its vessel; T2 once its constants are sourced; variants in the player | seven theories in the guide |
+| G3 | T4, T5, the motor switch with its vessel; the latch's own rate constants (T2 built, 28 Sep); variants in the player | seven theories in the guide |
 | G4 | The atlas driven by the models: where knots gather under stress and with age, theory by theory | the atlas's knots come from the models |
 | G5 | The fascia, the second system: peeling and filling as models of their own (a separate phase, with its own safety review) | |
 | G6 | The measurement: a lab-ready protocol from the tells; a preprint; collaborators | |

@@ -1,9 +1,10 @@
 # The simulation section — design
 
-*The site's side of the field guide. The research plan is `sim/PLAN.md`; the look is `docs/DESIGN.md`. Two pages, both in
-the top bar: `/simulation/` (Simulation) is the field guide, where each theory's knots are seen; `/research/` (Research) is
-the case for researchers: what physics allows, where the theories part, and the measurement that would decide. The
-exam-era design is in `sim/archive/`.*
+*The site's side of the field guide. The research plan is `sim/PLAN.md`; the look is `docs/DESIGN.md`. The field guide
+lives in the Hypotheses page (`/hypotheses/`): each theory's account and what its model shows, side by side, with the
+instrument at the top; `/simulation/` redirects there, and `/simulation/vessel/` is one perforator up close. Research
+(`/research/`) is the case for researchers: what physics allows, where the theories part, and the measurement that would
+decide. The exam-era design is in `sim/archive/`.*
 
 The atlas shows what each theory says a knot *is*. The field guide shows how its knots would *behave*: each theory, run
 from its own physiology, grows its knots in the same patch of body and meets the same scenes; it shows how they would feel
@@ -29,29 +30,31 @@ On top of `docs/DESIGN.md` and `CLAUDE.md`.
   fonts.
 - **Paced by the breath**, and still under `prefers-reduced-motion` (the scene opens paused, on its most telling frame).
 
-## The field guide, top to bottom
+## The Hypotheses page, top to bottom
 
-A reading page (the paper card with its quiet index), with one ink-stone instrument set into it.
+A reading page (the paper card with its quiet index), with one ink-stone instrument set into it. Merged 28 Sep 2026: a
+theory's account and its model's behaviour belong together, and one page is simpler to use than two.
 
-1. **Opening.** Title, one paragraph: each theory, run from its own physiology, shows how its knots would behave; nothing
-   here is fitted to anyone's reports; it measures nothing. One mono line with the run and its date.
-2. **The instrument** (ink stone, full width).
+1. **Opening.** "What is a knot?": seven answers, each at its strongest; five run as models; the index.
+2. **Watch them** (`#watch`, ink stone, full width).
    - *Scenes*: a row of chips, one per scene (`sim/PLAN.md` §6), each with its duration.
-   - *Side by side*: the modelled theories' patches in a row (two by two on a phone), each with its character and label and a
-     live one-line caption ("4 held · the one at the spot let go at 0:42, on the out-breath"). Choosing one opens it up close.
-   - *The timeline*: the breath as a wave, stress as a band, the hand and attention as marks; a scrubber; play and pause;
-     speed. The clock shows model time and how much it is compressed.
+   - *Side by side*: the modelled theories' patches in a row (two by two on a phone), each with its character, label, how
+     many are held, and a live caption narrated from the run. Tapping one opens it up close.
+   - *The timeline*: the breath as a wave, stress as a band, the hand and attention as marks; a scrubber; play and pause.
+     The clock shows model time and how much it is compressed.
    - *Up close*, the chosen theory: its patch large; **beneath**, the cross-section of the knot at the spot; **on the
-     instruments**, strip charts of what a recording would show at the spot and at the sham; the caption, narrated from the
-     run's events.
-3. **Its character** (paper), for the chosen theory: the traits (§7 of the plan) in groups (feel · form · hold · respond ·
-   let go · move · time · instruments · would rule it out), each with its mark: ● every setting, ◐ some (and what it
-   depends on), ○ none, — silent, · not modelled.
-4. **Side by side, in words**: the traits as a table across the theories, rows where they part first (the tells), each
-   linking to the Research page's measurement.
-5. **Not yet modelled**: the latch, densification and nerves, each with its account in brief and what building it needs.
-6. **Up close: one perforator's switch.** The live vessel bench (the first model), for those who want the physics.
-7. **How it is made**: the patch, the scenes, the senses, the settings, the sources; the moderation note.
+     instruments**, strip charts of what a recording would show at the spot and at the sham.
+3. **The seven theories**, in the site's order, each a section with a "watch it" button (chooses it in the instrument and
+   scrolls there) and its atlas link. Two columns (one on a phone):
+   - *What it says*: the cross-section, the account in its strongest form, where / made of / holds / releases / timescale /
+     breath / travel, its evidence and its sharpest test, its references.
+   - *What its model shows*: the switch (what holds a knot: the theory's own drive along the bottom, how held up the side,
+     the band where both states are stable, where rest and the holding stress put the typical knot), then the key traits
+     with their marks (● every setting, ◐ some, and what it depends on, ○ none, — silent), and the full portrait folded
+     beneath. A theory not yet modelled says what building it needs.
+4. **How they differ** (`#differ`): the traits as a table across the modelled theories; then what a breath would have to do
+   (the envelope chart).
+5. **How it is made**: the patch, the senses, the settings, the scaling rule, the sources; the moderation note.
 
 ## The patch, drawn
 
@@ -65,6 +68,9 @@ muscle); stress held as a barely warmer wash toward the neck side. Each theory's
   fibres. A knot is a terracotta bead with its band drawn taut; a release softens it; a twitch runs along the band in jade.
 - **Perception**: no units in the tissue; soft places at the body map's resolution. A knot is a broad terracotta glow with
   no core, brighter as it is felt; attention is a thin jade ring.
+- **Vascular latch**: small arteries 5 mm apart as faint points. A clamped region darkens (less blood), and a held one is a
+  dim terracotta core: dull until attention or a hand reaches it, then tender. Letting go is slow: the region warms back
+  over tens of seconds, a jade wash rather than a star.
 - **Motor switch**: faint ellipses along the fibres, one per motor unit's territory. A latched unit glows terracotta through
   its territory, flickering faintly at its firing rate; overlapping territories add into a firmer bump. Letting go is at
   once: the glow falls and a jade outline passes.

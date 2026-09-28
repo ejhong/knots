@@ -155,7 +155,14 @@ export class PatchView {
     }
     const L = this.lay;
     const id = this.th.id;
-    if (id === 'T1') {
+    if (id === 'T2') {
+      for (const [x, y] of L.pos) {
+        g.fillStyle = rgba(INKC.vessel, 0.45);
+        g.beginPath();
+        g.arc(this.X(x), this.Y(y), Math.max(1, 0.25 * this.s), 0, Math.PI * 2);
+        g.fill();
+      }
+    } else if (id === 'T1') {
       g.lineWidth = 0.8;
       for (let j = 0; j < L.n; j++) {
         const p = L.parent[j];
@@ -271,6 +278,7 @@ export class PatchView {
     ctx.globalCompositeOperation = 'lighter';
     const id = this.th.id;
     if (id === 'T1') this.drawT1();
+    else if (id === 'T2') this.drawT2();
     else if (id === 'T3') this.drawT3();
     else if (id === 'T6') this.drawT6();
     else if (id === 'T7') this.drawT7(now);
@@ -313,6 +321,33 @@ export class PatchView {
       // the shut vessel itself
       this.glow(x, y, (parent ? 2.2 : 1.5) * this.s, INKC.knot, 0.95 * this.held[j]);
       this.glow(x, y, (parent ? 1.2 : 0.8) * this.s, INKC.ivory, 0.18 * this.act[j]);
+    }
+  }
+
+  private drawT2(): void {
+    // a clamped region is shadowed (less blood); a held one is a knot, tender only as awareness reaches it
+    const L = this.lay;
+    const ctx = this.ctx;
+    ctx.globalCompositeOperation = 'source-over';
+    for (let j = 0; j < L.n; j++) {
+      if (this.held[j] < 0.02) continue;
+      const x = this.X(L.pos[j][0]);
+      const y = this.Y(L.pos[j][1]);
+      const g = ctx.createRadialGradient(x, y, 0, x, y, 4.5 * this.s);
+      g.addColorStop(0, `rgba(10,12,14,${(0.55 * this.held[j]).toFixed(3)})`);
+      g.addColorStop(1, 'rgba(10,12,14,0)');
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.arc(x, y, 4.5 * this.s, 0, Math.PI * 2);
+      ctx.fill();
+    }
+    ctx.globalCompositeOperation = 'lighter';
+    for (let j = 0; j < L.n; j++) {
+      const x = this.X(L.pos[j][0]);
+      const y = this.Y(L.pos[j][1]);
+      // a knot is terracotta in every theory; here its halo (tenderness) waits for awareness to reach it
+      this.glow(x, y, 1.6 * this.s, INKC.knot, 0.9 * this.held[j]);
+      this.glow(x, y, 4.2 * this.s, INKC.knot, 0.2 * this.halo[j]);
     }
   }
 

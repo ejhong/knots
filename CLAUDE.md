@@ -46,8 +46,9 @@ the author's reports, is retired: `sim/archive/`.)
   - `interaction/` picking and tools; `ui/` DOM bindings for the atlas and hero
   - `data/` roots, knot zones, perforator density (anatomical data used by the viewer)
 - `src/data/` — site-wide registries: hypotheses, references (+ `papers.json`), timeline, map index
-- `src/pages/` — introduction, atlas, hypotheses, simulation (the field guide), research (the case for researchers), traditions,
-  library, about (`lab` is a dev bench)
+- `src/pages/` — introduction, atlas, hypotheses (each theory's account beside its model, with the field guide's instrument),
+  research (the case for researchers), traditions, library, about (`lab` is a dev bench); `simulation/` redirects to
+  `hypotheses/#watch`, and `simulation/vessel/` is one perforator up close
 - `src/sim/` — the simulation in the browser: `guide/` (the field guide: player, patches, plates, instruments, character),
   `models/*.ts` (generated from Python; never edit), `vessel.ts` and `bench.ts` (the live vessel bench), `draw.ts` and
   `figures.ts` (figures as SVG strings); `src/data/sim/` and `public/sim/` (generated)

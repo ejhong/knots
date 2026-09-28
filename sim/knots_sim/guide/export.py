@@ -20,7 +20,7 @@ import numpy as np
 
 from ..exam import out_breath
 from ..theories import t1 as a1, t3 as a3, t6 as a6, t7 as a7
-from . import envelope as ev, patch, senses, t1, t3, t6, t7, traits
+from . import envelope as ev, patch, senses, t1, t2, t3, t6, t7, traits
 from .base import K, SEED, releases, formations, typical, wave
 from .scenes import SCENES, SURGE
 
@@ -28,12 +28,8 @@ ROOT = Path(__file__).resolve().parents[3]
 INDEX = ROOT / "src" / "data" / "sim" / "guide.json"
 FILMS = ROOT / "public" / "sim" / "guide"
 NOTE = ROOT / "sim" / "findings" / "guide.md"
-MODULES = (t1, t3, t7, t6)  # the order on the page: the site's own order (perforators, trigger points, motor switch, perception)
+MODULES = (t1, t2, t3, t7, t6)  # the site's own order: perforators, the latch, trigger points, the motor switch, perception
 NOT_YET = (
-    {"id": "T2", "key": "latch", "name": "Vascular latch", "glyph": "閂",
-     "why": "It shares the vessel and how a held vessel sets; the latch itself needs its rate constants (Hai & Murphy 1988). "
-            "The latch saves energy and does not remember: as a knot it would hold only while its drive lasts, and let go "
-            "over tens of seconds once drive falls."},
     {"id": "T4", "key": "densification", "name": "Densification", "glyph": "膠",
      "why": "To model as a loose layer that stiffens at rest and thins with movement and warmth: its knots would be broad and "
             "slow, freed by movement over minutes."},
@@ -76,6 +72,9 @@ def run_theory(m, k: int) -> dict:
         extra["ageing"] = (age.brief_released, age.long_persists)
         age = a1.ageing(runner.ps, "both+adaptation")
         extra["ageing_adapt"] = (age.brief_released, age.long_persists)
+    elif m is t2:
+        a, b = runner.ageing()
+        extra["ageing"] = (~a, b)  # (a young knot lets go when its stress ends, an old one stays)
     elif m is t3:
         extra["attention_aimed"] = runner.run(_scene("attention"), variant="aimed")
         extra["breathing_aimed"] = runner.run(_scene("breathing"), variant="aimed")
@@ -124,6 +123,120 @@ def _layout(m, runner, k: int) -> dict:
     if m is t6:
         out["spacing"] = lay.extra["spacing"]
     return out
+
+
+def _switch(m, runner, k: int) -> dict:
+    """What holds a knot in this theory, at its typical setting: the switch, in one form for every theory. Along the
+    bottom the theory's own drive, up the side how held; branches (stable or not), the band where both states are
+    stable, and where rest and the holding stress put the typical knot."""
+    r3 = lambda a: [[round(float(x), 4), round(float(y), 4)] for x, y in a]
+    if m is t1:
+        from ..models import vessel as vm
+
+        # the knot at the spot itself: its own wall, at its own pressure in its tree
+        Y0 = runner.formed()
+        N = runner.lay.n
+        held0 = (Y0[0].reshape(runner.K, N)[k] < t1.SHUT * runner.xc[k]) & runner.bist[k]
+        j = int(runner._target(held0[None].repeat(runner.K, 0))[k]) if held0.any() else runner.lay.focal
+        p = dict(runner.ps[k]) | {"wall": float(runner.walls[j]),
+                                  "P": float(runner.tree["pars"]["P"].reshape(runner.K, N)[k, j])}
+        c = vm.calibrate(p)
+        xs, a = vm.aeq_curve(p, n=400)
+        lo, top = p["xc"], c.xp
+        held = lambda x: 1 - (x - lo) / (top - lo)
+        up = (xs >= c.xfold) & (xs <= top) & (a >= 0)
+        mid = (xs <= c.xfold) & (xs >= lo) & (a >= 0) & (a <= 1.2)
+        return {"x_label": "the tone of its wall (share of maximal)", "y_label": "shut", "x_max": 1.0,
+                "branches": [{"pts": r3(zip(a[up], held(xs[up]))), "stable": True},
+                             {"pts": r3(zip(a[mid], held(xs[mid]))), "stable": False},
+                             {"pts": r3([(c.Aopen, 1.0), (1.0, 1.0)]), "stable": True, "held": True}],
+                "band": [round(c.Aopen, 4), round(c.Afold, 4)],
+                "marks": [{"x": round(c.urest, 4), "label": "rest"},
+                          {"x": round(float(c.urest + runner.U[k] * runner.hold[k] * runner.zone[j]), 4), "label": "held stress"}],
+                "note": "Above the band an open vessel snaps shut; once shut it stays shut until its tone falls below the band."}
+    if m is t3:
+        from ..models import triggerpoint as tpm
+
+        p = runner.ps[k]
+        a = tpm.curve(p, p["hold"])
+        C = tpm.C
+        b = tpm.band(p, p["hold"])
+        if b is None:
+            return {}
+        d = np.diff(a)
+        i = int(np.flatnonzero((d[:-1] > 0) & (d[1:] <= 0))[0] + 1)
+        j = i + int(np.argmin(a[i:]))
+        xmax = float(min(a.max(), 3 * b[1]))
+        clip = lambda sl: [(x, y) for x, y in zip(a[sl], C[sl]) if x <= xmax]
+        return {"x_label": "activity at the endplate (its own drive)", "y_label": "contracted", "x_max": round(xmax, 4),
+                "branches": [{"pts": r3(clip(slice(0, i + 1))), "stable": True},
+                             {"pts": r3(clip(slice(i, j + 1))), "stable": False},
+                             {"pts": r3(clip(slice(j, None))), "stable": True, "held": True}],
+                "band": [round(b[0], 4), round(b[1], 4)],
+                "marks": [{"x": round(float(runner.mid[k]), 4), "label": "the typical place"}],
+                "note": "Starved by its own contraction, a contracted band cannot relax until its drive falls below the band, or pressure or stretch loosens it."}
+    if m is t7:
+        from ..models import motorswitch as msm
+
+        p = runner.ps[k]
+        L = float(msm.latch(p, p["hold"], 1.0))
+        held_in = float(p["hold"] * runner.U[k] * patch.Z_REF + p["g_m"] * p["squeeze"])
+        top = max(1.5, held_in * 1.1)
+        return {"x_label": "input to the motor neuron (share of its threshold)", "y_label": "firing", "x_max": round(top, 4),
+                "branches": [{"pts": r3([(0, 0), (1, 0)]), "stable": True},
+                             {"pts": r3([(L, 1), (top, 1)]), "stable": True, "held": True},
+                             {"pts": r3([(1, 0), (1, 1)]), "stable": False}, {"pts": r3([(L, 1), (L, 0)]), "stable": False}],
+                "band": [round(L, 4), 1.0],
+                "marks": [{"x": round(float(p["hold"] * runner.U[k] * patch.Z_REF), 4), "label": "held stress"},
+                          {"x": round(held_in, 4), "label": "with its own loop"}],
+                "note": "Recruited at its threshold, a unit keeps firing down to a small share of it (its persistent currents), while serotonin and noradrenaline last."}
+    if m is t2:
+        from ..models import latch as lmm
+
+        # the knot at the spot itself: its own region's w_s, at its own share of the holding stress
+        st = runner.formed()
+        held0 = lmm.held(st)[k] & runner.under_hand
+        d = ((runner.lay.pos - patch.SPOT) ** 2).sum(axis=1)
+        j = int(np.argmin(np.where(held0, d, np.inf))) if held0.any() else runner.lay.focal
+        p = {q: np.array([v]) for q, v in runner.ps[k].items() if q != "seed"}
+        p["w_s"] = np.array([float(runner.P["w_s"][k, j])])
+        s0 = p["hold"][0] * float(runner.zone[j])
+        cs = np.linspace(0, 1, 801)
+        e_in = np.geomspace(0.01, 2.0, 241)  # on a log axis: attention raises awareness many times over
+        lower, upper, mid = [], [], []
+        for ei in e_in:
+            phi = np.clip(t2.REST + p["stress_tone"] * s0 + p["gain"] * cs, 0, 1)
+            e = ei * (1 - p["block"] * phi)
+            dc = (1 - cs) * (p["w_s"] * s0 + p["keep"] * lmm.keep(p, phi)) / p["tau_c"] - cs * (p["erode"] + p["update"] * e)
+            roots = cs[:-1][np.sign(dc[:-1]) != np.sign(dc[1:])]
+            if len(roots) == 1:
+                (lower if roots[0] < 0.5 else upper).append((ei, float(roots[0])))
+            elif len(roots) >= 3:
+                lower.append((ei, float(roots[0])))
+                mid.append((ei, float(roots[1])))
+                upper.append((ei, float(roots[-1])))
+        both = [x for x, _ in mid]
+        a0, att = float(p["aware0"][0]), float(p["attend"][0])
+        return {"x_label": "attention and touch brought to the region (log)", "y_label": "held", "x_max": 2.0, "x_min": 0.01,
+                "x_log": True,
+                "branches": [{"pts": r3(lower), "stable": True}, {"pts": r3(mid), "stable": False},
+                             {"pts": r3(upper), "stable": True, "held": True}],
+                "band": [round(min(both), 4), round(max(both), 4)] if both else [0.0, 0.0],
+                "marks": [{"x": round(a0, 4), "label": "unattended"}, {"x": round(a0 + att, 4), "label": "attended"}],
+                "note": "Clamped, the region is cut off from awareness and its prediction cannot update; bring enough awareness to it and the prediction lets go, and the latch after it."}
+    if m is t6:
+        p = runner.ps[k]
+        h = p["hysteresis"]
+        F_hold = float((1 + p["kappa"] * p["hold"]) * (1 + p["guard"] * p["hold"]) * p["u_scale"])
+        top = max(1.6, F_hold * 1.1)
+        return {"x_label": "how loudly the place is felt (1: felt as a knot)", "y_label": "felt as a knot", "x_max": round(top, 4),
+                "branches": [{"pts": r3([(0, 0), (1, 0)]), "stable": True},
+                             {"pts": r3([(1 - h, 1), (top, 1)]), "stable": True, "held": True},
+                             {"pts": r3([(1, 0), (1, 1)]), "stable": False}, {"pts": r3([(1 - h, 1), (1 - h, 0)]), "stable": False}],
+                "band": [round(1 - h, 4), 1.0],
+                "marks": [{"x": round(F_hold, 4), "label": "held stress"}],
+                "note": "Felt as a knot once it is loud enough, and still felt until it falls a little lower: a narrow band, in the nervous system alone."}
+    return {}
 
 
 def _pack(run, k: int) -> str:
@@ -228,7 +341,8 @@ def main(k: int = K) -> dict:
         R = results[m.ID]
         index["theories"].append({"id": m.ID, "key": m.KEY, "name": m.NAME, "glyph": m.GLYPH, "typical": R["typical"],
                                   "layout": _layout(m, R["runner"], R["typical"]), "traits": R["character"]["traits"],
-                                  "counts": R["character"]["counts"], "envelope": R["envelope"]})
+                                  "counts": R["character"]["counts"], "envelope": R["envelope"],
+                                  "switch": _switch(m, R["runner"], R["typical"])})
     INDEX.parent.mkdir(parents=True, exist_ok=True)
     INDEX.write_text(json.dumps(index, ensure_ascii=False, separators=(",", ":")) + "\n")
     FILMS.mkdir(parents=True, exist_ok=True)

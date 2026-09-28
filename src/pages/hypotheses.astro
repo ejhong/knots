@@ -3,7 +3,20 @@ import Doc from '../layouts/Doc.astro';
 import { HYPOTHESES } from '../data/hypotheses';
 import { refById } from '../data/references';
 import { crossSectionSVG } from '../lib/crossSection';
+import guide from '../data/sim/guide.json';
+import type { GuideIndex, Trait } from '../sim/guide/data';
+import { envelopeChart } from '../sim/guide/envelope';
+import { switchChart, type Switch } from '../sim/guide/switch';
+
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const repo = 'https://github.com/ejhong/knots/blob/main';
+const g = guide as unknown as GuideIndex;
+const byKey = Object.fromEntries(g.theories.map((t) => [t.key, t]));
+const notYet = Object.fromEntries(g.not_yet.map((n) => [n.key, n]));
+const films = g.scenes.filter((s) => s.film);
+const nModelled = g.theories.length;
+const WORD = ['no', 'one', 'two', 'three', 'four', 'five', 'six', 'seven'];
+
 const ROWS: [keyof (typeof HYPOTHESES)[number], string][] = [
   ['layer', 'Where'],
   ['substance', 'Made of'],
@@ -26,116 +39,554 @@ const GLYPH: Record<string, string> = {
   'motor-switch': '握',
   central: '覚',
 };
-// Where each theory stands in the field guide (the Simulation page): modelled from its own physiology, or not yet.
-const GUIDE: Record<string, string> = {
-  perforator: 'modelled: small arteries from measured numbers, in trees of a parent and its children; the breath by drive and by movement; how a knot sets when held',
-  latch: 'not yet modelled: it shares the vessel and how a held vessel sets; the latch itself needs its rate constants (Hai & Murphy)',
-  'trigger-point': 'modelled: the energy crisis at an endplate, released by pressure and stretch',
-  densification: 'not yet modelled: a loose layer that stiffens at rest and thins with movement and warmth',
-  nerve: 'not yet modelled: a sensitised nerve where it pierces the fascia',
-  'motor-switch': 'modelled: motor units that latch on under stress and are kept on by their own metabolites, released by inhibition',
-  central: 'modelled: gain, arousal and attention on a body map, the account every other view has to beat',
+// The predictions shown first, for every modelled theory; the rest are in its full portrait.
+const KEY_TRAITS = ['inside', 'bump', 'forms', 'breath', 'hand', 'needs', 'spark', 'move'];
+const GROUPS: [string, string][] = [
+  ['feel', 'What it feels like'],
+  ['where', 'Where they are'],
+  ['many', 'How many'],
+  ['form', 'How and when they form'],
+  ['release', 'How and when they let go'],
+  ['move', 'How they move'],
+  ['time', 'Over time'],
+  ['record', 'What an instrument would record'],
+];
+const MARK: Record<string, string> = { all: '●', some: '◐', none: '○', silent: '—', not: '·' };
+const MARK_WORD: Record<string, string> = {
+  all: 'in every setting',
+  some: 'in some settings',
+  none: 'in no setting',
+  silent: 'the account says nothing',
+  not: 'not modelled',
 };
-const MODELLED = new Set(['perforator', 'trigger-point', 'motor-switch', 'central']);
+const DIFFER: [string, string][] = [
+  ['inside', 'Felt from inside'],
+  ['bump', 'Found by a finger'],
+  ['where', 'Where'],
+  ['many', 'In a 4 cm patch'],
+  ['forms', 'How they form'],
+  ['breath', 'Slow breathing'],
+  ['attention', 'Attention, no touch'],
+  ['micro', 'Subtle breaths, attending'],
+  ['needs', 'What a breath must do'],
+  ['hand', 'A resting hand'],
+  ['letgo', 'How it lets go'],
+  ['spark', 'A spark'],
+  ['move', 'After one lets go'],
+  ['family', 'Parents and children'],
+  ['time', 'Held for hours'],
+  ['record', 'What a recording shows'],
+];
+const traitOf = (id: string, key: string): Trait | undefined => g.theories.find((t) => t.id === id)?.traits.find((x) => x.id === key);
+const mins = (s: number) => (s >= 120 ? `${Math.round(s / 60)} min` : `${Math.round(s)} s`);
+const cap = (w: string) => w[0].toUpperCase() + w.slice(1);
 const index = [
+  { id: 'watch', label: 'watch them' },
   ...HYPOTHESES.map((h, i) => ({ id: h.id, label: `${String(i + 1).padStart(2, '0')} ${h.label}` })),
-  { id: 'compare', label: 'side by side' },
+  { id: 'differ', label: 'how they differ' },
+  { id: 'made', label: 'how it is made' },
 ];
 ---
 <Doc
   title="What is a knot?"
   kicker="Hypotheses"
   current="hypotheses"
-  lede="Seven answers, each given at its strongest — its own best evidence and its own sharpest test. They are not all rivals, and where they part, they can be tested."
-  description="What is a knot? Seven answers — perforators held shut, the vascular latch, the trigger point, fascial densification, sensitised nerves, motor units that latch on, and perception — each at its strongest."
+  lede={`Seven answers, each at its strongest. ${cap(WORD[nModelled])} are run as models from their own physiology in the same patch of body: watch how their knots would form, feel, let go and move, then read what each says and what its model shows.`}
+  description="What is a knot? Seven answers, each at its strongest, and five of them run as models: how their knots would form, feel, let go and move, and what a measurement would show."
   glyph="説"
   index={index}
   wide
 >
-  {
-    HYPOTHESES.map((h, i) => (
-      <section class="sec hyp" id={h.id} data-glyph={GLYPH[h.id]}>
-        <div class="hyp-head">
-          <h2>
-            <span class="n mono">{String(i + 1).padStart(2, '0')}</span> {h.name}
-          </h2>
-          <span class="who mono">
-            {h.who}
-            {h.year ? ` · ${h.year}` : ''}
-          </span>
-          {h.ready ? (
-            <a class="btn" href={`${base}/atlas/?h=${h.id}`}>
-              view in atlas →
-            </a>
-          ) : (
-            <span class="soon mono">atlas view soon</span>
-          )}
-        </div>
-        <p class="short quote">{h.short}</p>
-        <figure class="section" set:html={crossSectionSVG({ dSup: 0.0042, dDeep: 0.01, hypothesis: h.id, region: 'upper back', tone: 'light', width: 330 })} />
-        <div class="prose">
-          {h.body.map((p) => (
-            <p set:html={p.replaceAll('href="SIM"', `href="${base}/simulation/"`)} />
+  <div data-guide-page>
+    <section id="watch" class="sec full" data-glyph="観">
+      <h2>Watch them</h2>
+      <p class="sub">Choose a scene. Each modelled theory grows its own knots in the same 4 cm of the upper back, where its own anatomy
+        puts them, and meets the same stress, breath and hand. Nothing here is fitted to anyone's reports; it shows what each mechanism
+        would do, and it measures nothing.</p>
+      <div class="instrument" data-guide>
+        <div class="scenes" role="group" aria-label="Scenes">
+          {films.map((s) => (
+            <button class="chip" type="button" data-scene={s.id} aria-pressed="false">
+              {s.name} <span class="dur">{mins(s.duration)}</span>
+            </button>
           ))}
         </div>
-        <dl class="kv">
-          {ROWS.map(([k, label]) => (
-            <>
-              <dt>{label}</dt>
-              <dd>{h[k] as string}</dd>
-            </>
+        <p class="what" data-what></p>
+        <p class="hint mono">tap a theory to see it up close</p>
+        <div class="patches">
+          {g.theories.map((th) => (
+            <div class="card" data-card={th.id} tabindex="0" role="button" aria-label={`${th.name}: see it up close`}>
+              <p class="card-head"><span class="glyph">{th.glyph}</span> {th.name} <span class="count" data-count={th.id}></span></p>
+              <canvas class="patch" data-patch={th.id} aria-hidden="true"></canvas>
+              <p class="caption" data-caption={th.id} aria-live="polite"></p>
+            </div>
           ))}
-        </dl>
-        <p class="tests">
-          <span class="mono k">in the field guide</span> {GUIDE[h.id]}.{' '}
-          <a href={`${base}/simulation/${MODELLED.has(h.id) ? `#${h.id}` : ''}`}>Simulation →</a>
+        </div>
+        <div class="transport">
+          <button class="play" type="button" data-play aria-label="Play">▶</button>
+          <div class="track">
+            <svg class="timeline" data-timeline preserveAspectRatio="none" aria-hidden="true"></svg>
+            <input class="scrub" type="range" min="0" max="100" step="0.5" value="0" data-scrub aria-label="Time in the scene" />
+          </div>
+        </div>
+        <p class="clock mono" data-clock></p>
+        <p class="key mono">
+          <span><i class="k-knot"></i>a knot</span>
+          <span><i class="k-spark"></i>letting go</span>
+          <span><i class="k-hand"></i>a hand, a roller</span>
+          <span><i class="k-att"></i>attention</span>
+          <span><i class="k-stress"></i>where stress is held</span>
+          <span>the breath's wave and the stress run along the timeline</span>
         </p>
-        <p class="refs mono">
-          {h.refs
-            .map((r) => refById(r))
-            .filter(Boolean)
-            .map((r) => (
-              <a href={`${base}/library/#${r!.id}`}>
-                {r!.authors.split(',')[0].split(' (')[0]} {r!.year > 0 ? r!.year : ''}
-              </a>
-            ))}
-        </p>
-      </section>
-    ))
-  }
 
-  <section id="compare" class="sec full compare">
-    <h2>Side by side</h2>
-    <div class="table-wrap" role="region" aria-label="Comparison of hypotheses" tabindex="0">
-      <table>
-        <thead>
-          <tr>
-            <th scope="col"></th>
-            {
-              HYPOTHESES.map((h) => (
-                <th scope="col">{h.label}</th>
-              ))
-            }
-          </tr>
-        </thead>
-        <tbody>
-          {
-            ROWS.map(([k, label]) => (
+        <div id="close" class="close">
+          <div class="picks" role="group" aria-label="Choose a theory to see up close">
+            <span class="picks-k mono">up close</span>
+            {g.theories.map((th) => (
+              <button class="pick" type="button" data-pick={th.id} aria-pressed="false"><span class="glyph">{th.glyph}</span> {th.name}</button>
+            ))}
+          </div>
+          <div class="close-grid">
+            <div>
+              <canvas class="patch big" data-patch-close aria-hidden="true"></canvas>
+              <p class="small mono">From above: 4 cm of the upper back, the neck toward the top, the muscle's fibres running across.</p>
+            </div>
+            <div>
+              <p class="small mono">Beneath the spot</p>
+              <div class="plate" data-plate></div>
+              <p class="small mono">What instruments would record there, through the scene</p>
+              <div class="inst" data-inst></div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    {
+      HYPOTHESES.map((h, i) => {
+        const th = byKey[h.id];
+        const ny = notYet[h.id];
+        const sw = th ? (th as unknown as { switch?: Switch }).switch : undefined;
+        return (
+          <section class="sec hyp" id={h.id} data-glyph={GLYPH[h.id]}>
+            <div class="hyp-head">
+              <h2>
+                <span class="n mono">{String(i + 1).padStart(2, '0')}</span> {h.name}
+              </h2>
+              <span class="who mono">
+                {h.who}
+                {h.year ? ` · ${h.year}` : ''}
+              </span>
+              <span class="acts">
+                {th && (
+                  <button class="btn watch" type="button" data-watch={th.id}>
+                    watch it →
+                  </button>
+                )}
+                {h.ready ? (
+                  <a class="btn" href={`${base}/atlas/?h=${h.id}`}>
+                    view in atlas →
+                  </a>
+                ) : (
+                  <span class="soon mono">atlas view soon</span>
+                )}
+              </span>
+            </div>
+            <p class="short">{h.short}</p>
+            <div class="hyp-grid">
+              <div class="says">
+                <p class="col-h mono">What it says</p>
+                <figure class="section" set:html={crossSectionSVG({ dSup: 0.0042, dDeep: 0.01, hypothesis: h.id, region: 'upper back', tone: 'light', width: 330 })} />
+                <div class="prose">
+                  {h.body.map((p) => (
+                    <p set:html={p.replaceAll('href="SIM"', `href="${base}/research/#physics"`)} />
+                  ))}
+                </div>
+                <dl class="kv">
+                  {ROWS.map(([k, label]) => (
+                    <>
+                      <dt>{label}</dt>
+                      <dd>{h[k] as string}</dd>
+                    </>
+                  ))}
+                </dl>
+                <p class="refs mono">
+                  {h.refs
+                    .map((r) => refById(r))
+                    .filter(Boolean)
+                    .map((r) => (
+                      <a href={`${base}/library/#${r!.id}`}>
+                        {r!.authors.split(',')[0].split(' (')[0]} {r!.year > 0 ? r!.year : ''}
+                      </a>
+                    ))}
+                </p>
+              </div>
+              <div class="shows">
+                <p class="col-h mono">What its model shows</p>
+                {th ? (
+                  <>
+                    {sw && sw.branches && (
+                      <>
+                        <figure class="sw-card" set:html={switchChart(sw)} />
+                        <p class="sw-note">What holds it. {sw.note}</p>
+                      </>
+                    )}
+                    <ul class="tl">
+                      {KEY_TRAITS.map((key) => {
+                        const t = th.traits.find((x) => x.id === key);
+                        return t ? (
+                          <li class={`t t-${t.mark}`}>
+                            <span class="mk" title={MARK_WORD[t.mark]} aria-label={MARK_WORD[t.mark]}>{MARK[t.mark]}</span>
+                            <span><strong>{t.label}.</strong> {t.text}</span>
+                          </li>
+                        ) : null;
+                      })}
+                    </ul>
+                    <details class="full">
+                      <summary class="mono">its full portrait: {th.traits.length} lines, from {g.run.settings} settings</summary>
+                      {GROUPS.map(([gid, glabel]) => {
+                        const ts = th.traits.filter((t) => t.group === gid && !KEY_TRAITS.includes(t.id));
+                        return ts.length ? (
+                          <div class="group">
+                            <p class="group-h mono">{glabel}</p>
+                            <ul class="tl">
+                              {ts.map((t) => (
+                                <li class={`t t-${t.mark}`}>
+                                  <span class="mk" title={MARK_WORD[t.mark]} aria-label={MARK_WORD[t.mark]}>{MARK[t.mark]}</span>
+                                  <span><strong>{t.label}.</strong> {t.text}{t.depends && <span class="dep"> ({t.depends})</span>}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        ) : null;
+                      })}
+                    </details>
+                    <p class="legend mono">● in every setting · ◐ in some · ○ in none · — the account says nothing</p>
+                  </>
+                ) : (
+                  <div class="notyet">
+                    <p class="ny-h">Not yet modelled</p>
+                    <p>{ny ? ny.why : 'To model.'}</p>
+                  </div>
+                )}
+              </div>
+            </div>
+          </section>
+        );
+      })
+    }
+
+    <section id="differ" class="sec full" data-glyph="別">
+      <h2>How they differ</h2>
+      <p class="sub">The same scenes, the modelled answers side by side. Where two columns part on something a hand or an instrument can
+        tell, that is a test (see{' '}<a href={`${base}/research/#measurement`}>the measurement</a>).</p>
+      <div class="table-wrap">
+        <table class="differ">
+          <thead>
+            <tr><th></th>{g.theories.map((th) => <th scope="col"><a href={`#${th.key}`}><span class="glyph">{th.glyph}</span> {th.name}</a></th>)}</tr>
+          </thead>
+          <tbody>
+            {DIFFER.map(([key, label]) => (
               <tr>
                 <th scope="row">{label}</th>
-                {HYPOTHESES.map((h) => (
-                  <td>{h[k] as string}</td>
-                ))}
+                {g.theories.map((th) => {
+                  const t = traitOf(th.id, key);
+                  return <td>{t ? <><span class="mk" aria-hidden="true">{MARK[t.mark]}</span> {t.cell}</> : '—'}</td>;
+                })}
               </tr>
-            ))
-          }
-        </tbody>
-      </table>
-    </div>
-  </section>
+            ))}
+          </tbody>
+        </table>
+      </div>
+      <h3 class="h3">What a breath would have to do</h3>
+      <p class="sub">However complex its pattern, a breath reaches a knot only through a few routes: the drive to its vessels or motor units,
+        the tissue's movement, attention. So the models need its effect, not its pattern. For each theory: the least calming of the knot's
+        own drive, aimed at it and held for a time, that frees the typical knot (thick line) and the easiest quarter (thin), in
+        {' '}{g.run.settings} settings; the grey bars are what a breath does. Perception has no drive of its own at a place, so its calming
+        is of arousal, everywhere.</p>
+      <figure class="env" set:html={envelopeChart(g.theories)} />
+    </section>
+
+    <section id="made" class="sec full" data-glyph="法">
+      <h2>How it is made</h2>
+      <div class="made prose">
+        <p>Each theory is a model in its strongest form, every number taken from a quoted line of a paper or marked as a guess with a
+          range. The same patch, the same scenes, the same hand and breath for every theory; each places its own units where its anatomy
+          puts them. What is felt comes from one rule for all: a finger feels stiffness through skin and fat, fainter the deeper it lies.
+          The films show one typical setting; the lines beside each theory speak for all {g.run.settings}. In every theory a stressful
+          moment forms knots and the held stress keeps them: that is how stress is scaled, not a finding.</p>
+        <p>A model shows what a mechanism would do; it measures nothing, and it cannot say which theory is true. The scenes are things
+          that happen to a model, not instructions. Deep somatic and meditative work carries real risks: see the site's{' '}
+          <a href={`${base}/about/#moderation`}>moderation guidance</a>.</p>
+        <p class="links mono">
+          <a href={`${base}/simulation/vessel/`}>one perforator up close</a>
+          <a href={`${base}/research/`}>research</a>
+          <a href={`${repo}/sim/PLAN.md`}>the plan</a>
+          <a href={`${repo}/sim/findings/guide.md`}>every line, as a note</a>
+          <a href={`${repo}/sim/knots_sim/guide/`}>the engine</a>
+          <a href={`${repo}/sim/params/`}>every number</a>
+        </p>
+        <p class="stamp mono">run {g.run.inputs}{g.run.commit ? ` · commit ${g.run.commit}` : ''} · {g.run.settings} settings per theory</p>
+      </div>
+    </section>
+  </div>
 </Doc>
 
+<script>
+  import { mountGuide } from '../sim/guide/player';
+  const root = document.querySelector<HTMLElement>('[data-guide-page]');
+  const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+  if (root) mountGuide(root, base);
+</script>
+
 <style>
+  .mono {
+    font-family: var(--font-mono);
+  }
+  .sub {
+    max-width: 760px;
+    margin: 4px 0 14px;
+    font-family: var(--font-serif);
+    font-size: 13.5px;
+    line-height: 1.65;
+  }
+  h2 {
+    font-size: 15px;
+    font-weight: 700;
+  }
+  /* ---------- the instrument ---------- */
+  .instrument {
+    background: var(--panel-bg);
+    border-radius: var(--radius);
+    padding: 16px 18px 14px;
+    color: var(--panel-text);
+    box-shadow: inset 0 2px 10px rgba(0, 0, 0, 0.35);
+  }
+  .scenes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .chip {
+    font-family: var(--font-mono);
+    font-size: 10.5px;
+    color: var(--panel-muted);
+    background: transparent;
+    border: 1px solid var(--panel-line);
+    border-radius: 999px;
+    padding: 4px 10px;
+    cursor: pointer;
+  }
+  .chip .dur {
+    color: var(--panel-faint);
+    margin-left: 4px;
+  }
+  .chip[aria-pressed='true'] {
+    color: var(--panel-text);
+    border-color: #c9a77c;
+    background: rgba(201, 167, 124, 0.12);
+  }
+  .what {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 12.5px;
+    color: var(--panel-muted);
+    margin: 10px 2px 4px;
+    min-height: 1.4em;
+  }
+  .hint {
+    font-size: 9.5px;
+    color: var(--panel-faint);
+    margin: 0 2px 10px;
+  }
+  .patches {
+    display: grid;
+    grid-template-columns: repeat(5, minmax(0, 1fr));
+    gap: 10px;
+  }
+  .card {
+    background: #1b2023;
+    border: 1px solid transparent;
+    border-radius: 10px;
+    padding: 8px 8px 6px;
+    cursor: pointer;
+    outline: none;
+  }
+  .card:hover,
+  .card:focus-visible {
+    border-color: var(--panel-line);
+  }
+  .card.on {
+    border-color: #6f7c79;
+  }
+  .card-head {
+    margin: 0 0 6px;
+    font-family: var(--font-sans);
+    font-size: 11.5px;
+    font-weight: 600;
+    display: flex;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 2px 6px;
+  }
+  .glyph {
+    font-family: var(--font-cjk);
+    color: var(--jade-light);
+    font-weight: 400;
+  }
+  .count {
+    margin-left: auto;
+    font-family: var(--font-mono);
+    font-size: 10px;
+    font-weight: 400;
+    color: #e27b61;
+  }
+  .patch {
+    display: block;
+    width: 100%;
+    aspect-ratio: 1;
+    border-radius: 6px;
+  }
+  .caption {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 11px;
+    line-height: 1.45;
+    color: var(--panel-muted);
+    margin: 6px 2px 0;
+    min-height: 3em;
+  }
+  .transport {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    margin-top: 12px;
+  }
+  .play {
+    width: 34px;
+    height: 34px;
+    border-radius: 50%;
+    border: 1px solid #c9a77c;
+    background: rgba(201, 167, 124, 0.12);
+    color: #e6dccd;
+    font-size: 12px;
+    cursor: pointer;
+    flex: none;
+  }
+  .track {
+    position: relative;
+    flex: 1;
+    height: 46px;
+  }
+  .timeline {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+  .scrub {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    margin: 0;
+    opacity: 0;
+    cursor: ew-resize;
+  }
+  .clock {
+    font-size: 10px;
+    color: var(--panel-faint);
+    margin: 6px 0 0 44px;
+  }
+  .key {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 14px;
+    font-size: 9.5px;
+    color: var(--panel-faint);
+    margin: 10px 0 0;
+  }
+  .key i {
+    display: inline-block;
+    width: 9px;
+    height: 9px;
+    border-radius: 50%;
+    margin-right: 5px;
+    vertical-align: -1px;
+  }
+  .k-knot {
+    background: #e27b61;
+    box-shadow: 0 0 6px #e27b61;
+  }
+  .k-spark {
+    background: #a8e6cd;
+  }
+  .k-hand {
+    background: rgba(201, 167, 124, 0.5);
+    border: 1px solid #c9a77c;
+  }
+  .k-att {
+    border: 1px dashed #a8e6cd;
+  }
+  .k-stress {
+    background: rgba(201, 164, 95, 0.35);
+  }
+  .close {
+    margin-top: 18px;
+    border-top: 1px solid var(--panel-line);
+    padding-top: 14px;
+  }
+  .picks {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 6px;
+    margin: 0 0 12px;
+  }
+  .picks-k {
+    font-size: 9.5px;
+    color: var(--panel-faint);
+    margin-right: 4px;
+  }
+  .pick {
+    font-family: var(--font-sans);
+    font-size: 11.5px;
+    color: var(--panel-muted);
+    background: transparent;
+    border: 1px solid var(--panel-line);
+    border-radius: 999px;
+    padding: 4px 11px;
+    cursor: pointer;
+  }
+  .pick[aria-pressed='true'] {
+    color: var(--panel-text);
+    border-color: #8fc4b0;
+    background: rgba(143, 196, 176, 0.1);
+  }
+  .close-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 340px) minmax(0, 1fr);
+    gap: 18px;
+    align-items: start;
+  }
+  .small {
+    font-size: 9.5px;
+    color: var(--panel-faint);
+    margin: 6px 0;
+  }
+  .plate,
+  .inst {
+    max-width: 520px;
+  }
+  .plate :global(svg),
+  .inst :global(svg) {
+    display: block;
+    width: 100%;
+    height: auto;
+    background: #1b2023;
+    border-radius: 6px;
+  }
+  /* ---------- the theories ---------- */
   .hyp {
     padding-bottom: 22px !important;
   }
@@ -145,11 +596,6 @@ const index = [
     flex-wrap: wrap;
     gap: 8px 12px;
     margin-bottom: 8px;
-  }
-  .hyp-head h2 {
-    font-size: 15px;
-    font-weight: 700;
-    letter-spacing: 0.2px;
   }
   .n {
     font-size: 11px;
@@ -161,18 +607,46 @@ const index = [
     font-size: 10px;
     color: var(--muted);
   }
-  .hyp-head .btn {
+  .acts {
     margin-left: auto;
+    display: flex;
+    gap: 8px;
+    align-items: center;
+  }
+  .btn {
     font-size: 11px;
     padding: 3px 9px;
   }
+  .watch {
+    cursor: pointer;
+    font-family: inherit;
+  }
   .soon {
-    margin-left: auto;
     font-size: 9px;
     color: var(--faint);
   }
+  .short {
+    font-family: var(--font-serif);
+    font-size: 13.5px;
+    line-height: 1.55;
+    margin: 0 0 14px;
+    max-width: 820px;
+  }
+  .hyp-grid {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 26px;
+    align-items: start;
+  }
+  .col-h {
+    font-size: 9.5px;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: var(--seal);
+    margin: 0 0 8px;
+  }
   .section {
-    margin: 4px 0 14px;
+    margin: 0 0 12px;
     padding: 12px 14px 8px;
     background: var(--frame-bg);
     border-radius: 8px;
@@ -183,24 +657,17 @@ const index = [
     width: 100%;
     height: auto;
   }
-  .short {
+  .prose p {
     font-size: 13px;
-    line-height: 1.55;
-    margin: 0 0 12px;
-    max-width: 760px;
-  }
-  .prose {
-    max-width: 760px;
   }
   .kv {
     display: grid;
-    grid-template-columns: 80px minmax(0, 1fr);
-    gap: 7px 14px;
-    margin: 14px 0 12px;
+    grid-template-columns: 76px minmax(0, 1fr);
+    gap: 7px 12px;
+    margin: 12px 0;
     padding: 12px 14px;
     background: var(--frame-bg);
     border-radius: 8px;
-    max-width: 820px;
   }
   .kv dt {
     font-family: var(--font-mono);
@@ -215,6 +682,7 @@ const index = [
     font-size: 12.5px;
     line-height: 1.5;
     color: var(--text);
+    margin: 0;
   }
   .refs {
     display: flex;
@@ -226,54 +694,186 @@ const index = [
   .refs a {
     color: var(--muted);
   }
-  .compare h2 {
-    font-size: 15px;
-    font-weight: 700;
-    margin-bottom: 12px;
+  .sw-card {
+    margin: 0;
+    padding: 8px;
+    background: var(--panel-bg);
+    border-radius: 8px;
+    max-width: 460px;
   }
+  .sw-card :global(svg) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .sw-note {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-size: 11.5px;
+    line-height: 1.5;
+    color: var(--muted);
+    margin: 6px 0 12px;
+    max-width: 460px;
+  }
+  .tl {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: grid;
+    gap: 6px;
+  }
+  .t {
+    display: grid;
+    grid-template-columns: 16px minmax(0, 1fr);
+    font-family: var(--font-serif);
+    font-size: 12.5px;
+    line-height: 1.55;
+  }
+  .t strong {
+    font-family: var(--font-sans);
+    font-size: 12px;
+  }
+  .mk {
+    color: var(--accent-dark);
+    font-size: 11.5px;
+  }
+  .dep {
+    color: var(--muted);
+    font-style: italic;
+  }
+  .full {
+    margin-top: 10px;
+  }
+  .full summary {
+    cursor: pointer;
+    font-size: 10px;
+    color: var(--accent-dark);
+    margin-bottom: 6px;
+  }
+  .group {
+    margin: 10px 0 0;
+  }
+  .group-h {
+    font-size: 9px;
+    letter-spacing: 0.6px;
+    text-transform: uppercase;
+    color: var(--muted);
+    margin: 0 0 4px;
+  }
+  .legend {
+    font-size: 9px;
+    color: var(--muted);
+    margin-top: 10px;
+  }
+  .notyet {
+    background: var(--frame-bg);
+    border-radius: 8px;
+    padding: 12px 14px;
+    font-family: var(--font-serif);
+    font-size: 12.5px;
+    line-height: 1.55;
+  }
+  .notyet p {
+    margin: 0 0 6px;
+  }
+  .ny-h {
+    font-family: var(--font-sans);
+    font-weight: 700;
+  }
+  /* ---------- how they differ ---------- */
   .table-wrap {
     overflow-x: auto;
-    border: 1px solid var(--border);
-    border-radius: 8px;
   }
-  table {
+  .differ {
     border-collapse: collapse;
-    min-width: 1200px;
-    font-size: 11.5px;
-    line-height: 1.45;
+    font-family: var(--font-serif);
+    font-size: 12px;
+    min-width: 760px;
   }
-  th,
-  td {
+  .differ th,
+  .differ td {
     text-align: left;
     vertical-align: top;
-    padding: 9px 10px;
+    padding: 6px 12px 6px 0;
     border-bottom: 1px solid var(--border);
   }
-  thead th {
+  .differ thead th {
+    font-family: var(--font-sans);
     font-size: 11.5px;
-    font-weight: 700;
-    background: var(--frame-bg);
-    width: 160px;
   }
-  thead th .sw {
-    display: block;
-    margin-bottom: 5px;
-  }
-  tbody th {
-    font-family: var(--font-mono);
-    font-weight: 400;
-    font-size: 9px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: var(--muted);
-    width: 70px;
-    background: var(--frame-bg);
-  }
-  td {
-    font-family: var(--font-serif);
+  .differ thead a {
     color: var(--text);
+    text-decoration: none;
   }
-  @media (max-width: 700px) {
+  .differ tbody th {
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    font-weight: 400;
+    color: var(--muted);
+    white-space: nowrap;
+  }
+  @media (max-width: 760px) {
+    /* the row names stay put while the theories scroll past */
+    .differ tbody th,
+    .differ thead th:first-child {
+      position: sticky;
+      left: 0;
+      z-index: 1;
+      background: var(--bg);
+      white-space: normal;
+      width: 84px;
+      min-width: 84px;
+    }
+  }
+  .h3 {
+    font-family: var(--font-sans);
+    font-size: 13.5px;
+    font-weight: 700;
+    margin: 22px 0 2px;
+  }
+  .env {
+    margin: 6px 0 12px;
+    max-width: 780px;
+    overflow-x: auto;
+  }
+  .env :global(svg) {
+    display: block;
+    width: 100%;
+    min-width: 560px;
+    height: auto;
+  }
+  .made p {
+    max-width: 760px;
+  }
+  .links {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 4px 16px;
+    font-size: 10px;
+  }
+  .stamp {
+    font-size: 9.5px;
+    color: var(--muted);
+  }
+  @media (max-width: 1150px) {
+    .patches {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 900px) {
+    .hyp-grid,
+    .close-grid {
+      grid-template-columns: minmax(0, 1fr);
+    }
+  }
+  @media (max-width: 560px) {
+    .patches {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 8px;
+    }
+    .instrument {
+      padding: 12px 10px;
+    }
     .kv {
       grid-template-columns: 1fr;
       gap: 2px;
@@ -281,21 +881,8 @@ const index = [
     .kv dd {
       margin-bottom: 8px;
     }
-  }
-  .tests {
-    font-family: var(--font-serif);
-    font-size: 12.5px;
-    line-height: 1.55;
-    margin: 10px 0 4px;
-    padding: 8px 12px;
-    background: var(--frame-bg);
-    border-radius: 6px;
-  }
-  .tests .k {
-    font-size: 9px;
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    color: var(--seal);
-    margin-right: 6px;
+    .acts {
+      margin-left: 0;
+    }
   }
 </style>

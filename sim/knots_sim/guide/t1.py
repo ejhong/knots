@@ -117,6 +117,8 @@ class Runner:
         self._dS = np.zeros(k)  # a calming aimed at the knot (the envelope), per setting
         self._aim = np.zeros((k, self.lay.n), bool)
         self._conduction(seed)
+        self.vessel_mm = float(np.median([2 * p["r100"] * 1e3 for p in self.ps]))  # what a finger would meet
+        self.vessel_depth = float(np.median([s["skin"] + s["fat"] for s in self.se]))
         self._formed = None
         self.variant = "both"  # the breath through drive and movement; "aimed": attention aims the drive at the spot
 

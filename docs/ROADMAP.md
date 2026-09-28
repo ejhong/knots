@@ -72,9 +72,13 @@ kept in `sim/archive/`; what it built (the models, the parameters and their sour
   motor switch as models; the PubMed library tooling; the vessel bench
 - [x] G0: the plan; the exam, the matrix and the author's words off the site; the Research page made lean
 - [x] G1 (first version, 28 Sep): the engine (patch, scenes, senses, a runner per theory, traits) for T1, T3, T6, T7; the field guide on `/simulation/`; the vessel bench moved to `/simulation/vessel/`
-- [ ] Patterned and micro-breaths as scenes; conducted dilation in the vessel tree (does a child's release reach its parent?)
+- [x] Subtle breaths with attention as a scene; conducted dilation in the vessel tree (a child's release does not free its parent; a
+  parent's frees most of its children); what a breath would have to do, per theory
+- [x] The Hypotheses and Simulation pages merged (28 Sep): each theory's account beside what its model shows, with its switch; the
+  instrument at the top; `/simulation/` redirects
+- [x] The vascular latch (T2) as a model: Johnson's loop, a held prediction kept by the clamp that cuts it off from awareness
 - [ ] G2: Research rebuilt around the tells and the measurement ladder, generated from the guide
-- [ ] G3: densification (T4), nerves (T5), the motor switch with the vessel it squeezes; the latch (T2) once its rate constants are sourced
+- [ ] G3: densification (T4), nerves (T5), the motor switch with the vessel it squeezes; the latch's own rate constants (Hai and Murphy)
 - [ ] G4: the atlas driven by the models, theory by theory
 - [ ] G5: the fascia as a second system (its own phase and safety review)
 - [ ] G6: the measurement: a lab-ready protocol, a preprint, collaborators

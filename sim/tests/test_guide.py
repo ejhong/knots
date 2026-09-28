@@ -55,3 +55,20 @@ def test_scenes_share_one_breath_and_one_stress():
     s = scenes.BY_ID["forms"]
     assert (stress(s, 0.0, hold, None) == 0).all() and (stress(s, 100.0, hold, None) == 1).all()
     assert np.allclose(stress(s, 300.0, hold, None), hold)
+
+
+def test_a_latched_region_is_a_switch_at_the_holding_stress():
+    """T2: the loop is set from the account's claims, so at the holding stress and unattended a held region stays held and
+    an unheld one stays unlatched: its knots are switch states, not slow transients that fade by themselves."""
+    from knots_sim.guide import t2
+    from knots_sim.models import latch as lm
+
+    r = t2.Runner(k=8)
+    assert r.loop_ok.all()
+    st = r.formed()
+    h0 = lm.held(st)
+    assert h0.any()
+    s_eff = r.hold[:, None] * r.zone[None, :]
+    for _ in range(9000):  # a quarter of an hour more at the same stress
+        lm.step(r.P, st, s_eff, 0.0, 0.0, 0.1, t2.REST)
+    assert (lm.held(st) == h0).all()

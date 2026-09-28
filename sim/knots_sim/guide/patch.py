@@ -129,3 +129,14 @@ def territories(depth: float, seed: int = 6) -> Layout:
     return Layout(pos=pos, kind=["unit"] * n, a_along=rng.uniform(10.0, 20.0, n), a_across=rng.uniform(2.5, 5.0, n),
                   depth=np.full(n, depth), parent=np.full(n, -1),
                   note="motor units' territories, 5-10 mm across, running along the fibres")
+
+
+def arterioles(depth: float, seed: int = 8) -> Layout:
+    """T2: small arteries in the skin and the muscle beneath, each able to latch: a jittered grid 5 mm apart (64
+    representative). Nothing that stiffens is larger than a small artery."""
+    rng = np.random.default_rng(seed)
+    g = (np.stack(np.meshgrid(np.arange(8), np.arange(8)), -1).reshape(-1, 2) + 0.5) * 5.0
+    pos = _clip(g + rng.normal(0, 1.1, g.shape))
+    n = len(pos)
+    return Layout(pos=pos, kind=["arteriole"] * n, a_along=np.zeros(n), a_across=np.zeros(n), depth=np.full(n, depth),
+                  parent=np.full(n, -1), note="small arteries in the skin and muscle, 5 mm apart, each able to latch")

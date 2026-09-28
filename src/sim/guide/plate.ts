@@ -174,4 +174,45 @@ const t6: Plate = {
   },
 };
 
-export const PLATES: Record<string, Plate> = { T1: t1, T3: t3, T6: t6, T7: t7 };
+/** The vascular latch: a small artery in the muscle, clamped; above, the held prediction and the awareness that reaches it. */
+/** Vascular latch: a region's small arteries, in the skin and in the muscle, in cross-section: their lumens narrow as the
+ * region clamps; held, they are the knot. The clamped region is shadowed (cut off from awareness); awareness reaches it
+ * from above; the held prediction is a gauge. */
+const vessel = (id: string, cx: number, cy: number, r: number) =>
+  `<circle id="p-w${id}" cx="${cx}" cy="${cy}" r="${r}" fill="${rgba(INKC.vessel, 0.16)}" stroke="${rgba(INKC.vessel, 0.5)}" stroke-width="2"/>
+   <circle id="p-l${id}" cx="${cx}" cy="${cy}" r="${(0.62 * r).toFixed(1)}" fill="${rgba(INKC.vessel, 0.55)}"/>`;
+const t2: Plate = {
+  svg: svgWrap(
+    `<ellipse id="p-numb" cx="185" cy="98" rx="120" ry="66" fill="#000" opacity="0"/>
+     <path id="p-beam" d="M 186 0 C 176 34 196 70 186 110 S 176 140 214 146" fill="none" stroke="${INKC.spark}" stroke-width="1.4" stroke-dasharray="3 3" opacity="0.15"/>
+     ${vessel('a', 150, 40, 8)}
+     ${vessel('b', 232, 150, 10)}
+     <g transform="translate(12 ${Y.deep + 16})">
+       <text x="0" y="0" ${MONO} font-size="7" fill="${rgba(INKC.stone, 0.9)}">the held prediction</text>
+       <rect x="0" y="5" width="64" height="4" rx="2" fill="${rgba(INKC.ivory, 0.08)}"/>
+       <rect id="p-pred" x="0" y="5" width="0" height="4" rx="2" fill="${INKC.knot}"/>
+     </g>
+     <text x="8" y="${H - 4}" ${MONO} font-size="7.5" fill="${rgba(INKC.stone, 0.9)}" id="p-read"></text>`,
+    'Vascular latch',
+  ),
+  update(root, s) {
+    const c = s.held_prediction ?? 0;
+    const f = s.clamp ?? 0.2;
+    const e = s.awareness ?? 0;
+    const held = c > 0.5 && f > 0.5;
+    const squeeze = 1 - 0.75 * Math.max(0, Math.min((f - 0.2) / 0.8, 1));
+    for (const [id, r] of [['a', 8], ['b', 10]] as const) {
+      set(q(root, `#p-l${id}`), { r: (0.62 * r * squeeze).toFixed(2) });
+      set(q(root, `#p-w${id}`), held
+        ? { fill: rgba(INKC.knot, 0.3 + 0.4 * f), stroke: rgba(INKC.knot, 0.9) }
+        : { fill: rgba(INKC.vessel, 0.16), stroke: rgba(INKC.vessel, 0.5) });
+    }
+    set(q(root, '#p-pred'), { width: (64 * c).toFixed(1), fill: c > 0.5 ? INKC.knot : rgba(INKC.stone, 0.8) });
+    set(q(root, '#p-beam'), { opacity: (0.12 + 0.85 * Math.min(e / 0.6, 1)).toFixed(2) });
+    set(q(root, '#p-numb'), { opacity: (0.4 * Math.max(0, f - 0.5) * 2 * (1 - Math.min(e / 0.5, 1))).toFixed(2) });
+    const r = q(root, '#p-read');
+    if (r) r.textContent = `prediction ${c > 0.5 ? 'held' : 'let go'} (${c.toFixed(2)}) · clamp ${f.toFixed(2)} · awareness ${e.toFixed(2)}`;
+  },
+};
+
+export const PLATES: Record<string, Plate> = { T1: t1, T2: t2, T3: t3, T6: t6, T7: t7 };

@@ -226,8 +226,12 @@ def character(m, runner, runs: dict, extra: dict) -> dict:
 
     # --- what it feels like: from inside, and to a finger ---
     tender_ok = np.array([(forms.tender[-1, k][held0[k]] >= 1.0).any() if anyk[k] else False for k in range(K)])
-    T.append(trait("inside", "feel", "Felt from inside", f"{words['inside']} A held, tender place, {how_often(tender_ok, anyk)}.",
-                   tender_ok, anyk, nums, cell=words["inside_cell"] if tender_ok[anyk].mean() >= 0.5 else "faintly"))
+    if words.get("inside_blind"):  # the account's claim: unattended, a held knot is hardly felt
+        T.append(trait("inside", "feel", "Felt from inside", f"{words['inside']} Hardly felt, unattended, {how_often(~tender_ok, anyk)}.",
+                       ~tender_ok, anyk, nums, cell=words["inside_cell"]))
+    else:
+        T.append(trait("inside", "feel", "Felt from inside", f"{words['inside']} A held, tender place, {how_often(tender_ok, anyk)}.",
+                       tender_ok, anyk, nums, cell=words["inside_cell"] if tender_ok[anyk].mean() >= 0.5 else "faintly"))
     if words["stiff"]:
         wa, wx = _widths(m, runner)
         felt = _felt_at_knots(forms, lay, wa, wx)
@@ -240,10 +244,9 @@ def character(m, runner, runs: dict, extra: dict) -> dict:
     elif forms.bump.max() > 0:  # computed, and too faint: the perforators' shut vessel
         felt = np.array([forms.bump[-1, k][held0[k]].max() if anyk[k] else 0.0 for k in range(K)])
         palp = felt >= 1.0
-        size = _median([2 * p["r100"] * 1e3 for p in runner.ps])
-        depth = _median([s["skin"] + s["fat"] for s in se])
+        size, depth = runner.vessel_mm, runner.vessel_depth
         T.append(trait("bump", "feel", "Found by a finger",
-                       f"{words['bump']} Its shut artery, about {size:.2f} mm across and {depth:.0f} mm down, is felt at about "
+                       f"{words['bump']} Its {words.get('vessel', 'shut artery')}, about {size:.2f} mm across and {depth:.0f} mm down, is felt at about "
                        f"{100 * _median(felt[anyk]):.0f}% of what a finger can find (at most {100 * felt[anyk].max():.0f}%, where the "
                        f"fat is thinnest): nothing firm, {how_often(~palp, anyk)}.", ~palp, anyk, nums, cell=words["bump_cell"]))
     else:
@@ -481,6 +484,15 @@ def character(m, runner, runs: dict, extra: dict) -> dict:
                    f"adapts to being shut, as smooth muscle held at a new length does, an old knot outlasts its stress "
                    f"{how_often(l2, all_)}, while one held half an hour lets go {how_often(b2, all_)}.")
             ok, cell = l2, ("an old one can stay" if l2.any() else "goes with the stress")
+        elif (brief == ~long_).all() and long_.any():  # (brief: a young knot lets go; long_: an old one stays)
+            gone = getattr(runner, "letgo_after", None)
+            when = ""
+            if gone is not None and np.isfinite(gone).sum() >= 2:
+                g = gone[np.isfinite(gone)]
+                when = f", over about {_mmss(_median(g))} (from {_mmss(g.min())} to {_mmss(g.max())})"
+            say = (f"When its stress ends, a knot stays held {how_often(long_, all_)}, and lets go with it in the rest{when}; how "
+                   f"long it was held makes no difference. {words['time']}").strip()
+            ok, cell = long_, ("it can outlast its stress" if long_.sum() * 2 < K else "it outlasts its stress")
         elif long_.sum() * 2 >= K:
             say, ok, cell = (f"When its stress ends, a knot held three hours stays held, {how_often(long_, all_)}, while one held "
                              f"half an hour lets go {how_often(brief, all_)}."), long_, "an old one stays"

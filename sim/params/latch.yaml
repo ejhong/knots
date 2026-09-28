@@ -1,0 +1,131 @@
+# T2, the vascular latch (knots_sim/models/latch.py), formalised from Johnson's Principles of Vasocomputation (johnson2023,
+# an essay) as the Hypotheses card states it: a vascular contraction clamps the local circuit; held long enough it engages
+# the latch, "freezing the circuit as a durable hyperprior, cut off from awareness and from updating". Added 28 Sep 2026.
+# The latch's own facts are measured (hai1988, rembold1991, murphy2005); every number for knots is guessed and sampled.
+# One formalisation among possible ones, for its proponents to check. Same format as vessel.yaml.
+
+model: latch
+title: The vascular latch
+parameters:
+  tau_on:
+    symbol: τ_on
+    label: "how fast a region's vessels contract when commanded"
+    value: 3.0
+    unit: s
+    range: [1.0, 8.0]
+    confidence: guessed
+
+  tau_latch:
+    symbol: τ_L
+    label: "how slowly a latched contraction relaxes once its command falls"
+    value: 40.0
+    unit: s
+    range: [15.0, 120.0]
+    confidence: guessed
+    note: "Latch bridges are dephosphorylated attached cross-bridges whose detachment is the rate-limiting step (hai1988); relaxation of arterial muscle follows the fall of calcium (rembold1991). How slowly a held region's vessels relax is guessed."
+
+  gain:
+    symbol: g_c
+    label: "how strongly a held prediction commands its region's vessels"
+    value: 0.5
+    unit: "1"
+    range: [0.3, 0.8]
+    confidence: guessed
+
+  keep_margin:
+    symbol: m_f
+    label: "how strongly a clamped region keeps its prediction, as a multiple of the least that keeps one held unattended"
+    value: 2.0
+    unit: "1"
+    range: [1.3, 4.0]
+    confidence: guessed
+    note: "The account's claims set its floor and its ceiling: a latched pattern is durable while unattended (above 1), and ordinary stress alone does not latch a region (kept below that point, and below the middle of the two in log). How far above the floor is not known; it is how far a region is cut off from updating."
+
+  loop_point:
+    symbol: θ
+    label: "the clamp at which the loop keeps a prediction halfway, as a share of how far a full prediction raises the clamp above what the holding stress commands"
+    value: 0.6
+    unit: "1"
+    range: [0.5, 0.75]
+    confidence: guessed
+
+  sharpness:
+    symbol: ν
+    label: "how sharply the clamp keeps the prediction, across the prediction's reach"
+    value: 18.0
+    unit: "1"
+    range: [12.0, 30.0]
+    confidence: guessed
+
+  erode:
+    symbol: u₀
+    label: "how fast an unattended held prediction erodes on its own"
+    value: 0.0005
+    unit: 1/s
+    range: [0.0001, 0.003]
+    confidence: guessed
+    note: "Slow: a hyperprior held for hours to years."
+
+  update:
+    symbol: u_e
+    label: "how fast awareness of a region updates its held prediction"
+    value: 0.15
+    unit: 1/s
+    range: [0.05, 0.5]
+    confidence: guessed
+
+  block:
+    symbol: b
+    label: "how much a clamped region is cut off from awareness"
+    value: 0.6
+    unit: "1"
+    range: [0.3, 0.9]
+    confidence: guessed
+
+  aware0:
+    symbol: e₀
+    label: "a region's ordinary awareness, unattended"
+    value: 0.1
+    unit: "1"
+    range: [0.03, 0.3]
+    confidence: guessed
+
+  attend:
+    symbol: a_att
+    label: "how much attention at a place raises its awareness"
+    value: 1.0
+    unit: "1"
+    range: [0.4, 2.0]
+    confidence: guessed
+
+  press_aware:
+    symbol: a_p
+    label: "how much a hand's pressure brings a region into awareness"
+    value: 0.8
+    unit: "1"
+    range: [0.3, 1.5]
+    confidence: guessed
+
+  tau_c:
+    symbol: τ_c
+    label: "how fast a prediction is taken up or let go"
+    value: 20.0
+    unit: s
+    range: [5.0, 60.0]
+    confidence: guessed
+
+  spread:
+    symbol: σ
+    label: "how uneven regions are in how readily stress commits them"
+    value: 0.4
+    unit: log
+    range: [0.2, 0.6]
+    confidence: guessed
+
+  stress_tone:
+    symbol: U_v
+    label: "how much stress tightens a region's vessels directly"
+    value: 0.25
+    unit: "1"
+    range: [0.1, 0.4]
+    confidence: guessed

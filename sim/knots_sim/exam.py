@@ -33,7 +33,7 @@ import yaml
 
 SIM = Path(__file__).resolve().parents[1]
 SPEC = SIM / "observations" / "spec.yaml"
-SITE = SIM.parent / "src" / "data" / "sim" / "matrix.json"
+SITE = SIM / "archive" / "data" / "matrix.json"  # retired with the exam (PLAN.md §2): not on the site
 THEORIES = ("t1", "t3", "t6", "t7")
 SILENT, NOT_RUN = "silent", "not run"
 K = 32  # parameter sets per theory (a power of two, as the Sobol sampler wants)

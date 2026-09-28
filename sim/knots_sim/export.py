@@ -47,13 +47,14 @@ def _git() -> dict:
 
 
 def _inputs_hash() -> str:
-    """A hash of everything a run depends on: the model code and the parameter tables."""
+    """A hash of everything this run depends on: the modules the bench's export uses and the tables they read (the field
+    guide and the retired exam have their own)."""
+    pkg = SIM / "knots_sim"
+    code = [pkg / f"{m}.py" for m in ("export", "findings", "adapt", "breath", "checks", "codegen", "field", "robustness",
+                                       "scenarios", "params")] + [pkg / "models" / "vessel.py", pkg / "models" / "tree.py"]
+    tables = [SIM / "params" / f"{t}.yaml" for t in ("vessel", "checks", "tree", "adapt")]
     h = hashlib.sha256()
-    guide = SIM / "knots_sim" / "guide"  # the field guide has its own run and hash (knots_sim.guide.export)
-    tooling = {"library.py", "pubmed.py"}  # the library's tooling changes no result
-    for f in sorted([*(p for p in (SIM / "knots_sim").rglob("*.py") if guide not in p.parents and p.name not in tooling),
-                     *(p for p in (SIM / "params").glob("*.yaml") if p.name not in ("senses.yaml", "conduction.yaml")),
-                     *(SIM / "observations").glob("*.yaml")]):
+    for f in sorted(code + tables):
         h.update(f.relative_to(SIM).as_posix().encode())
         h.update(f.read_bytes())
     return h.hexdigest()[:12]
@@ -169,17 +170,7 @@ def main() -> dict:
         }
     (SITE_DATA / "golden-vessel.json").write_text(json.dumps(golden) + "\n")
 
-    import yaml
-
-    exam = yaml.safe_load((SIM / "observations" / "spec.yaml").read_text())
-    for k in ("updated", "sealed"):
-        if k in exam:
-            exam[k] = str(exam[k])
-    # Versions 1-3 were sealed by hash; that record goes with the exam, as history.
-    seals = yaml.safe_load((SIM / "observations" / "seal.yaml").read_text())["seals"]
-    exam["history"] = [{"version": s["version"], "date": str(s["date"]), "sha256": s["sha256"], "commit": s.get("commit")}
-                       for s in seals]
-    (SITE_DATA / "exam.json").write_text(json.dumps(exam, ensure_ascii=False, indent=1, default=str) + "\n")
+    # (The exam's spec is retired with it: sim/archive/data/exam.json, no longer written for the site.)
 
     # Length adaptation: its own file, stamped with the same run.
     adapted = _round({"run": data["run"], "params": param_table("adapt", {"adapt_share": adapt.params(fitted=False)["adapt_share"]}),
