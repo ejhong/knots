@@ -1,4 +1,4 @@
-# Warmth over the patch, as in a hot shower (the scene "warmth"): what it does in each theory that has a route for it.
+# Heat over the patch, as in a hot shower or a sauna (the scene "warmth"): what it does in each theory that has a route for it.
 # Local heating dilates the skin's small vessels through a fast axon reflex and a slower nitric-oxide response, to most of
 # their maximal flow, whatever the nerves do (minson2001); a hot shower warms the skin less than the 42 °C of that test.
 # The latch's account lists heat among its releases; densification's layer thins with warmth (densification.yaml).
@@ -16,23 +16,14 @@ parameters:
     confidence: guessed
     note: "Under local heating, skin flow reaches a first peak within minutes (the axon reflex) and a plateau later (nitric oxide), minson2001."
 
-  warm_drop:
+  warm_vessel:
     symbol: ΔA_heat
-    label: "how much a hot shower's warmth lowers the tone of the skin's small arteries (perforators), as a share of maximal"
-    value: 0.15
+    label: "how much heat lowers the tone of a small artery beneath the skin and fat, as a share of maximal"
+    value: 0.08
     unit: "1"
-    range: [0.05, 0.4]
+    range: [0.02, 0.2]
     confidence: guessed
-    note: "Local heating to 42 °C brings skin flow to most of its maximum, and a nerve block does not change it (minson2001); a shower warms the skin less."
-
-  warm_clamp:
-    symbol: ΔA_latch
-    label: "how much warmth lowers the latch's clamp command"
-    value: 0.15
-    unit: "1"
-    range: [0.05, 0.3]
-    confidence: guessed
-    note: "The latch's account lists heat among its releases (cycles of heat and cold); its small arteries are the skin's and the muscle's."
+    note: "Local heating to 42 °C dilates the skin's own small vessels to most of their maximum, whatever the nerves do (minson2001); a small artery beneath the fat is warmed less, and heating the whole body also withdraws the sympathetic tone over minutes. One number for every theory whose knot is vascular smooth muscle: the perforators' walls and the latch's clamp alike."
 
   warm_layer:
     symbol: ΔT_shower

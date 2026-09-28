@@ -209,6 +209,13 @@ NEW = [
      "Local heating of the skin raises its blood flow to most of its maximum, through a fast axon reflex and a slower nitric-oxide response; a nerve block does not change it."),
     ("22196433", "schleip2012b", ["fascia"],
      "Stretch squeezes water out of dense fascia; at rest it returns, past where it was, and the tissue stiffens: fascia's stiffness follows its water."),
+    # the measurement: single motor units from the skin's surface
+    ("26924829", "negro2016", ["models"],
+     "High-density surface EMG decomposed into single motor units by blind source separation: the method that could see a unit fall silent at a release."),
+    ("32438235", "delvecchio2020", ["models"],
+     "A tutorial on reading motor unit discharges from high-density surface EMG."),
+    ("27226455", "dideriksen2016", ["trigger-points"],
+     "Motor units of the upper trapezius recorded from the skin with high-density EMG: pain reaches the units of its upper part first."),
     ("16250795", "lundberg1994", ["mind"],
      "Mental stress raises the trapezius muscle's electrical activity, with or without a physical load."),
 ]

@@ -46,6 +46,47 @@ const { title, kicker, lede, current, description, glyph, index = [], wide = fal
   </div>
 </Base>
 
+<style is:global>
+  /* Reading pages print as plain sheets: no site chrome, no card, A4. */
+  @media print {
+    @page {
+      size: A4;
+      margin: 16mm 15mm 16mm 15mm;
+    }
+    .top-bar,
+    .page-footer,
+    .ornament,
+    .sheet-head .index {
+      display: none !important;
+    }
+    html,
+    body {
+      background: #fff !important;
+    }
+    .doc {
+      padding: 0 !important;
+    }
+    .sheet {
+      border: none !important;
+      box-shadow: none !important;
+      padding: 0 !important;
+      max-width: none !important;
+      border-radius: 0 !important;
+      background: #fff !important;
+    }
+    .sheet-head {
+      padding-bottom: 8px !important;
+      margin-bottom: 6px !important;
+    }
+    .sheet-head h1 {
+      font-size: 20px !important;
+    }
+    a {
+      color: inherit !important;
+    }
+  }
+</style>
+
 <style>
   .doc {
     padding: 24px 16px 0;

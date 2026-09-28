@@ -177,7 +177,7 @@ them onto its own inputs in its runner, written out for its proponents to check.
 | After it lets go | the deepest knot at the spot worked until it goes; ten minutes more | whether others go with it; a new one nearby; one back in the same place |
 | An hour of moods | stress wanders as moods do, with slow breaths | whether knots come and go |
 | Rolling the knot | a roller over the knot at the spot, once every 3 s for three minutes | whether rolling frees it, as a foam roller is reported to |
-| Warmth | five minutes of warmth over the patch, as in a hot shower, with slow breaths | whether warmth frees knots |
+| Heat | five minutes of heat over the patch, as in a hot shower or a sauna, with slow breaths | whether heat frees knots; one number for every vascular theory |
 | Held for hours | stress held half an hour, or three hours, then gone | whether an old knot outlasts its stress |
 
 Every scene runs in K plausible settings (Sobol over each theory's own parameter ranges, K = 32 to start). The film shows a
@@ -198,7 +198,11 @@ which.
 
 **The reports and the models** (28 Sep, `guide/reports.py`): after the models have spoken, the Introduction's observations
 (in the site's words) set against them: for each report and theory, in how many settings its knots do it, or why the model
-cannot say. A recognition aid, not a score; nothing is fitted to it.
+cannot say. A recognition aid, not a score; nothing is fitted to it. A scene with slow breaths is scored by what it adds to the same breaths alone.
+
+**The research documents** (28 Sep, `src/pages/research/`): a preprint and a one-page pilot protocol, every number generated from
+the runs, printed to PDF by `scripts/pdf.ts`; and, on the Research page, the groups whose published work fits the
+measurement, verified from PubMed records (none approached).
 
 ## 8. Rules
 

@@ -77,6 +77,8 @@ the author's reports, is retired: `sim/archive/`.)
   the field guide's data; `uv run python -m knots_sim.export` regenerates the vessel bench's data and the TypeScript models;
   `uv run python -m knots_sim.params --verify` checks every quote against its source; `uv run python -m knots_sim.pubmed
   search "…"` finds papers, and `knots_sim.library` adds them to `papers.json` from PubMed's own records.
+- Research documents: `src/pages/research/preprint.astro` and `pilot.astro` read their numbers from `src/data/sim/`; after
+  the guide's data changes, reprint their PDFs with `npx tsx scripts/pdf.ts` (a running dev server) into `public/research/`.
 - Deploy: push to `main` (GitHub Actions → Pages at https://ejhong.github.io/knots/). Every push also runs `ci.yml`: the sim
   tests, plus the site checks on branches other than `main`.
 - Roadmap and open questions: `docs/ROADMAP.md`; the simulation's stages: `sim/PLAN.md` §10.

@@ -1,0 +1,167 @@
+---
+import Doc from '../../layouts/Doc.astro';
+import guide from '../../data/sim/guide.json';
+import type { GuideIndex, TheoryIndex } from '../../sim/guide/data';
+
+// A one-page pilot protocol: the recording at release, with the predictions fixed by the field guide's run.
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const g = guide as unknown as GuideIndex;
+const cell = (th: TheoryIndex, key: string) => th.traits.find((x) => x.id === key)?.cell ?? '—';
+---
+<Doc
+  title="Recording a knot as it lets go: a pilot protocol"
+  kicker="Pilot protocol · draft"
+  current="research"
+  description="A one-page pilot protocol: laser speckle, single-motor-unit EMG and ultrasound at the moment a knot lets go, with each theory's prediction fixed in advance."
+>
+  <div class="pilot">
+    <p class="meta mono">Draft 1 · 28 September 2026 · predictions fixed by the field guide run {g.run.inputs} ·{' '}
+      <a href={`${base}/research/preprint/`}>the preprint</a> · <a href={`${base}/research/pilot.pdf`}>PDF</a></p>
+
+    <h2>Aim</h2>
+    <p>To record, for the first time, what happens in the tissue at the moment a knot lets go, and so tell apart the seven
+      mechanisms proposed for knots. Each has been run as a model from its own physiology; at a release each would leave a
+      different trace. This pilot tests feasibility and the direction of those traces, not their size.</p>
+
+    <h2>What each theory predicts</h2>
+    <table class="pred">
+      <thead><tr><th>Theory</th><th>Recorded at release</th><th>Under a resting hand</th><th>Where knots sit</th></tr></thead>
+      <tbody>
+        {g.theories.map((th) => (
+          <tr>
+            <th scope="row"><span class="glyph">{th.glyph}</span> {th.name}</th>
+            <td>{cell(th, 'record')}</td>
+            <td>{cell(th, 'hand')}</td>
+            <td>{cell(th, 'where')}</td>
+          </tr>
+        ))}
+      </tbody>
+    </table>
+    <p class="note">From the models' runs in {g.run.settings} settings each; a perforator's sleeve adds that the layers slide again
+      only once moved, not at the release itself.</p>
+
+    <h2>Participants and setting</h2>
+    <p>Twelve adults who report knots in the upper back and notice their releases. Excluded: cardiovascular or peripheral vascular
+      disease, neuropathy, pregnancy, current psychiatric crisis, and any history of severe difficulty with meditation or bodywork.
+      Ethics approval and informed consent; a quiet laboratory at 24 °C after 20 minutes' acclimatisation, seated.</p>
+
+    <h2>Instruments</h2>
+    <p>Laser speckle contrast imaging of skin flow over a 10 × 10 cm field of the upper back; high-density surface EMG (a
+      64-electrode grid) over the upper trapezius, decomposed into single motor units; ultrasound (B-mode, colour Doppler and
+      shear-strain imaging of the layers' sliding); a pressure sensor under the practitioner's hand; and a button the participant
+      presses at each felt release.</p>
+
+    <h2>Procedure (about 90 minutes)</h2>
+    <ol>
+      <li><strong>Map.</strong> The participant marks 3–5 knots; a blinded examiner maps perforators by colour Doppler; ultrasound
+        notes the layer of any bump; two control points without knots are marked.</li>
+      <li><strong>Baseline.</strong> Five minutes at rest, all instruments recording.</li>
+      <li><strong>Release trials,</strong> each knot in random order, at the participant's usual pace: a practitioner's hand
+        resting at comfortable pressure for up to a minute, then lifted; attention without touch for up to three minutes; a roller
+        over the knot for up to three minutes. The same hand and roller on a control point (the pressed sham). Three minutes'
+        rest between trials.</li>
+      <li><strong>After each release:</strong> ultrasound of the layers' sliding at 0, 5 and 10 minutes, and after the
+        participant moves the shoulder.</li>
+    </ol>
+
+    <h2>Outcomes</h2>
+    <p>Locked to each button press (30 s either side): skin flow at the knot against the pressed sham; any motor unit falling
+      silent under the grid; the layers' shear strain at the knot; whether knots sit on perforators more often than control
+      points; and how long after a release the layers slide again. Twelve people with 3–5 knots give 40–60 release events,
+      enough to see the direction of each trace.</p>
+
+    <h2>Reading the result</h2>
+    <p>Skin flow flooding in at the knot and not at the sham: perforators. Flow rising slowly over tens of seconds: the vascular
+      latch. A motor unit falling silent at the felt release: the motor switch. Stiffness falling in the muscle under the press:
+      trigger points. The layers sliding again at the release: densification; only after the shoulder moves: a perforator's
+      sleeve. Nothing in the tissue: perception, or a nerve, which a local anaesthetic at the point would then test (in a
+      clinical setting). Different knots may give different traces: the pilot is designed to find that too.</p>
+
+    <h2>Safety</h2>
+    <p>Ordinary breathing throughout: no breath-holds or forceful breathing. Comfortable pressure only, measured, and nothing on the
+      front of the neck. Any trial stops at the first sign of distress. Deep somatic and contemplative work can cause lasting
+      difficulties; see the site's <a href={`${base}/about/#moderation`}>moderation guidance</a>. The predictions and analysis
+      are registered before any recording.</p>
+  </div>
+</Doc>
+
+<style>
+  .pilot {
+    max-width: 720px;
+    font-family: var(--font-serif);
+    font-size: 13px;
+    line-height: 1.58;
+  }
+  .meta {
+    font-size: 9.5px;
+    color: var(--muted);
+    margin: 0 0 6px;
+  }
+  .mono {
+    font-family: var(--font-mono);
+  }
+  h2 {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 700;
+    margin: 14px 0 3px;
+  }
+  p,
+  ol {
+    margin: 0 0 6px;
+  }
+  ol {
+    padding-left: 18px;
+  }
+  li {
+    margin-bottom: 3px;
+  }
+  .pred {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 11.5px;
+    margin: 4px 0 2px;
+  }
+  .pred th,
+  .pred td {
+    text-align: left;
+    vertical-align: top;
+    padding: 4px 8px 4px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .pred thead th {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: 400;
+    color: var(--muted);
+  }
+  .pred tbody th {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    white-space: nowrap;
+  }
+  .glyph {
+    font-family: var(--font-cjk);
+    color: var(--jade);
+    font-weight: 400;
+  }
+  .note {
+    font-size: 11px;
+    font-style: italic;
+    color: var(--muted);
+  }
+  @media print {
+    .pilot {
+      font-size: 10.5px;
+      line-height: 1.42;
+      max-width: none;
+    }
+    h2 {
+      font-size: 11px;
+      margin: 8px 0 2px;
+    }
+    .pred {
+      font-size: 9.5px;
+    }
+  }
+</style>

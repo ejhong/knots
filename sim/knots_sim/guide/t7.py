@@ -51,7 +51,7 @@ WORDS = {
     "stiffness": "A latched unit's fibres are contracted: they resist a stretch until it falls silent.",
     "stiff_cell": "a contracted band",
     "rolled": "Each pass excites the units under it.",
-    "no_warmth": "The model gives warmth no route to the motor neurons.",
+    "no_warmth": "The model gives heat no route to the motor neurons.",
     "inside": "Its contraction and its metabolites are sensed by the muscle's own sensors: a clench or an ache, felt from inside.",
     "inside_cell": "a clench, an ache",
     "layer": "in the muscle",

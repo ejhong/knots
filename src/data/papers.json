@@ -413,6 +413,20 @@
   "note": "How fast skin loses heat: about 4.5 W/m²·K by radiation and 3.4 W/m²·K by convection in still air."
  },
  {
+  "id": "delvecchio2020",
+  "authors": "Del Vecchio A, Holobar A, Falla D et al.",
+  "year": 2020,
+  "title": "Tutorial: Analysis of motor unit discharge characteristics from high-density surface EMG signals",
+  "venue": "J Electromyogr Kinesiol 53:102426",
+  "url": "https://doi.org/10.1016/j.jelekin.2020.102426",
+  "pmid": "32438235",
+  "kind": "paper",
+  "tags": [
+   "models"
+  ],
+  "note": "A tutorial on reading motor unit discharges from high-density surface EMG."
+ },
+ {
   "id": "devor1994",
   "authors": "Devor M, Jänig W, Michaelis M",
   "year": 1994,
@@ -426,6 +440,20 @@
    "animals"
   ],
   "note": "In injured nerves, sympathetic activity changes ectopic firing after a delay of about 14 s; the change peaks 10–20 s later and fades over 20–30 s more."
+ },
+ {
+  "id": "dideriksen2016",
+  "authors": "Dideriksen JL, Holobar A, Falla D",
+  "year": 2016,
+  "title": "Preferential distribution of nociceptive input to motoneurons with muscle units in the cranial portion of the upper trapezius muscle",
+  "venue": "J Neurophysiol 116:611-8",
+  "url": "https://doi.org/10.1152/jn.01117.2015",
+  "pmid": "27226455",
+  "kind": "paper",
+  "tags": [
+   "trigger-points"
+  ],
+  "note": "Motor units of the upper trapezius recorded from the skin with high-density EMG: pain reaches the units of its upper part first."
  },
  {
   "id": "dilley2005",
@@ -1357,6 +1385,20 @@
    "fascia"
   ],
   "note": "Normal knee joint fluid in healthy young adults holds 3.4 mg/ml of hyaluronan: tens to hundreds of times the fascia's."
+ },
+ {
+  "id": "negro2016",
+  "authors": "Negro F, Muceli S, Castronovo AM et al.",
+  "year": 2016,
+  "title": "Multi-channel intramuscular and surface EMG decomposition by convolutive blind source separation",
+  "venue": "J Neural Eng 13:026027",
+  "url": "https://doi.org/10.1088/1741-2560/13/2/026027",
+  "pmid": "26924829",
+  "kind": "paper",
+  "tags": [
+   "models"
+  ],
+  "note": "High-density surface EMG decomposed into single motor units by blind source separation: the method that could see a unit fall silent at a release."
  },
  {
   "id": "neutel2023",

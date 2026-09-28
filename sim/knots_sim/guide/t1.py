@@ -16,7 +16,8 @@ How the scenes map onto it (the exam's mapping, theories/t1.py, written out for 
 - Each vessel passes through the fascia in a sleeve of sliding tissue (models/sleeve.py). Its flow keeps the sleeve wet;
   shut, the sleeve dries over minutes and can jam, pinning the layers there: a stretch meets a block (stiffness). Ordinary
   movement shears the sleeves, the breath's movement a little more; a roller shears the sleeves it passes.
-- Warmth, as in a hot shower, lowers the tone of the skin's small arteries (warm_drop, over warm_tau: minson2001).
+- Heat, as in a hot shower or a sauna, lowers the tone of the small arteries (warm_vessel, over warm_tau: minson2001), by
+  the same number as it lowers the latch's clamp: both are vascular smooth muscle.
 """
 
 from __future__ import annotations
@@ -60,7 +61,8 @@ WORDS = {
     "stiff_cell": "a block, once its sleeve jams",
     "rolled": "Each pass presses the vessel shut and lifts: it can reopen only in the lifts, while the squeezing weakens its "
               "wall's muscle (ljung1975) and the roller shears its sleeve.",
-    "warmth": "Warmth lowers the tone of the skin's small arteries whatever the nerves do (minson2001).",
+    "warmth": "Heat lowers the tone of the vessels' walls (minson2001), by the same number as it lowers the latch's clamp; what "
+              "differs is the hold: once tone falls below its band, a shut vessel opens.",
     "bump_cell": "nothing firm",
     "inside": "The patch a shut vessel starves signals through its own nerve: a held, achy place, felt without touching, and "
               "a tingle as it lets go.",
@@ -133,7 +135,7 @@ class Runner:
         self._sleeve(seed)
         self.warm = warmth_sample(k, seed)
         wt = load("warmth")
-        self.more |= {q: (self.warm[q], wt[q].label) for q in ("warm_drop", "warm_tau")}
+        self.more |= {q: (self.warm[q], wt[q].label) for q in ("warm_vessel", "warm_tau")}
         self.vessel_mm = float(np.median([2 * p["r100"] * 1e3 for p in self.ps]))  # what a finger would meet
         self.vessel_depth = float(np.median([s["skin"] + s["fat"] for s in self.se]))
         self._formed = None
@@ -269,8 +271,8 @@ class Runner:
         Kk, N = self.K, self.lay.n
         s = stress(scene, t, self.hold, mv_mood)
         u = self.urest + (self.U * s)[:, None] * self.zone[None, :]
-        if W is not None:  # warmth lowers the skin's small arteries' tone, whatever the nerves do (minson2001)
-            u = u - (self.warm["warm_drop"] * W)[:, None]
+        if W is not None:  # heat lowers the small arteries' tone (minson2001): the same number as the latch's clamp
+            u = u - (self.warm["warm_vessel"] * W)[:, None]
         if A is not None:  # conducted: each vessel's command pulled toward its relatives' activation
             u = u + np.einsum("kij,kj->ki", self.W, A) - self.W.sum(axis=2) * A
         mv = np.zeros((Kk, N))

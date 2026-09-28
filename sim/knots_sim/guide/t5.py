@@ -50,7 +50,7 @@ WORDS = {
     "bump_cell": "nothing firm; a tender point",
     "stiff_none": "Nothing at the knot resists a stretch; stretching a sensitised nerve makes it fire (dilley2005), an ache, not a block.",
     "rolled": "Each pass presses the nerve, which tingles along its branches; nothing frees it.",
-    "no_warmth": "The model gives warmth no route to a sensitised nerve.",
+    "no_warmth": "The model gives heat no route to a sensitised nerve.",
     "inside": "A sensitised nerve firing on its own: an ache or a burn at a fixed point, sometimes spreading along its "
               "branches.",
     "inside_cell": "an ache at a fixed point",

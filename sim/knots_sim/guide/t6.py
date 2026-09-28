@@ -45,7 +45,7 @@ WORDS = {
     "bump_cell": "nothing firm",
     "stiff_none": "Nothing at the knot resists a stretch: nothing in the tissue changes.",
     "rolled": "Each pass is felt: the place is louder while it is rolled.",
-    "no_warmth": "The model gives warmth no route; that a warm shower calms arousal is not modelled.",
+    "no_warmth": "The model gives heat no route; that heat calms arousal is not modelled.",
     "inside": "Felt from inside is all it is: a place the nervous system turns up.",
     "inside_cell": "all it is",
     "tender": "What is felt there is turned up by arousal, guarding and attention: tenderness is all it is.",

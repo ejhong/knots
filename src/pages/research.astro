@@ -42,7 +42,9 @@ const creep15 = ad.healthy.creep_h[0];
 const cite = (id: string) => {
   const ref = refById(id);
   if (!ref) return id;
-  const who = ref.authors.split(',')[0].split(' et al')[0].replace(/\s+\S+$/, '');
+  const parts = ref.authors.split(',')[0].split(' et al')[0].trim().split(' ');
+  const last = parts[parts.length - 1];
+  const who = /^[A-Z]{1,3}$/.test(last) ? parts.slice(0, -1).join(' ') : last; // "Burton AC" or "Michael Edward Johnson"
   return `<a class="cite" href="${base}/library/#${id}">${who} ${ref.year}</a>`;
 };
 
@@ -61,7 +63,7 @@ const TELLS: { key: string; q: string; ask: string }[] = [
   { key: 'spark', q: 'Is there a spark, and when?', ask: 'step 1' },
   { key: 'stiff', q: 'Does a stretch meet a block at the knot?', ask: 'step 1, then step 2' },
   { key: 'rolled', q: 'Rolled over, does it let go?', ask: 'step 1' },
-  { key: 'warmth', q: 'Does warmth, as in a hot shower, free it?', ask: 'step 1' },
+  { key: 'warmth', q: 'Does heat, as in a hot shower or a sauna, free it?', ask: 'step 1' },
   { key: 'needs', q: 'What would a breath have to do (the least calming that frees the typical knot)?', ask: 'the field guide' },
   { key: 'time', q: 'Once the stress has gone, can an old knot stay?', ask: 'following knots over weeks' },
 ];
@@ -83,14 +85,65 @@ const records = g.theories.map((th) => `${th.name.toLowerCase()}: ${trait(th, 'r
 const handGroups = answers('hand').map(([cell, ths]) => `${cell}: ${list(ths.map((x) => x.th.name.toLowerCase()))}`);
 const attGroups = answers('attention').map(([cell, ths]) => `${cell}: ${list(ths.map((x) => x.th.name.toLowerCase()))}`);
 
+const repCell = (rid: string, id: string) => {
+  const c = g.reports?.find((r) => r.id === rid)?.theories[id];
+  return c && c.n ? `${c.k} of ${c.n}` : '—';
+};
+const KEY = new RegExp('\\(([a-z]+[0-9]{4}[a-z]?)\\)', 'g');
+const t1stiff = (g.theories.find((t) => t.id === 'T1')?.traits.find((x) => x.id === 'stiff')?.text ?? '').replace(
+  KEY,
+  (m: string, id: string) => (refById(id) ? `(${cite(id)})` : m),
+);
+// Who could help: named from their published work, affiliations as their latest PubMed records give them (checked
+// 28 Sep 2026). None has been approached; none is involved in, or has endorsed, this project.
+const PEOPLE: { group: string; people: { who: string; where: string; what: string; refs: string[] }[] }[] = [
+  {
+    group: 'To record a release',
+    people: [
+      { who: 'Deborah Falla', where: 'University of Birmingham, Centre of Precision Rehabilitation for Spinal Pain', what: 'high-density EMG of the neck and shoulder in pain, down to single motor units of the upper trapezius', refs: ['dideriksen2016'] },
+      { who: 'Dario Farina · Francesco Negro · Aleš Holobar', where: 'Imperial College London · University of Brescia · University of Maribor', what: 'decomposing surface EMG into single motor units: whether one falls silent at a release', refs: ['negro2016'] },
+      { who: 'Matthieu Roustit', where: 'Université Grenoble Alpes, Inserm HP2', what: 'laser speckle imaging of skin blood flow, and how reproducible it is', refs: ['roustit2010'] },
+      { who: 'Christopher Minson', where: 'University of Oregon', what: 'how skin blood flow is controlled, by heat and by nerves', refs: ['minson2001'] },
+      { who: 'Harvey Mayrovitz', where: 'Nova Southeastern University', what: 'skin blood flow and the breath: the inspiratory gasp reflex', refs: ['mayrovitz2026'] },
+      { who: 'Siddhartha Sikdar · Jay Shah', where: 'George Mason University · NIH Clinical Center', what: 'ultrasound, elastography and microdialysis of trigger points', refs: ['sikdar2009', 'shah2005'] },
+      { who: 'Helene Langevin', where: 'NCCIH, National Institutes of Health (on her 2021 paper)', what: 'ultrasound of the fascial layers sliding: the measure for densification and the sleeve', refs: ['langevin2011'] },
+      { who: 'Robert Schleip · Andreas Brandl', where: 'Technical University of Munich', what: "ultrasound and elastography of the back's fascia; fascia's water and stiffness", refs: ['schleip2012b'] },
+      { who: 'Carla Stecco · Antonio Stecco', where: 'University of Padova · NYU Grossman School of Medicine', what: "the fascia's anatomy, its hyaluronan and the loose layer's ultrasound", refs: ['stecco2014', 'fede2018'] },
+    ],
+  },
+  {
+    group: "To check the models: each theory's own experts",
+    people: [
+      { who: 'Steven Segal', where: 'University of Missouri', what: 'small-artery networks and the responses conducted along them (perforators)', refs: ['segal1989'] },
+      { who: 'Michel Saint-Cyr', where: 'Mayo Clinic Arizona', what: 'the territories of perforators (perforators)', refs: ['saintcyr2009'] },
+      { who: 'Michael Edward Johnson', where: 'author of vasocomputation', what: 'the vascular latch, in its own terms (latch)', refs: ['johnson2023'] },
+      { who: 'Robert Gerwin', where: 'Johns Hopkins School of Medicine', what: 'the trigger point and its energy crisis (trigger points)', refs: ['gerwin2004'] },
+      { who: 'Mary Cowman · Philippe Coussot', where: 'NYU Tandon School of Engineering · Laboratoire Navier, Paris', what: "hyaluronan's viscosity; materials that jam and give way (densification, the sleeve)", refs: ['cowman2015', 'coussot2002'] },
+      { who: 'Andrew Dilley', where: 'Brighton and Sussex Medical School', what: "inflamed nerves' sensitivity to pressure and stretch (nerves)", refs: ['dilley2005'] },
+      { who: 'John Quintner · Milton Cohen · Geoffrey Bove', where: 'independent, Australia · independent, Australia · Maine', what: 'the nerve view of tender points (nerves)', refs: ['quintner1994', 'quintner2015'] },
+      { who: 'Marc Scheltinga', where: 'Máxima Medical Centre, the Netherlands', what: 'cutaneous nerves entrapped at the fascia, and the local anaesthetic test (nerves)', refs: ['boelens2013'] },
+      { who: 'Monica Gorassini · CJ Heckman', where: 'University of Alberta · Northwestern University', what: 'persistent inward currents in human motor neurons (the motor switch)', refs: ['gorassini1998', 'heckman2008'] },
+      { who: 'Clifford Woolf', where: "Boston Children's Hospital and Harvard Medical School", what: 'central sensitisation (perception)', refs: ['woolf2011'] },
+    ],
+  },
+  {
+    group: 'For safety',
+    people: [
+      { who: 'Willoughby Britton · Jared Lindahl', where: 'Brown University', what: 'the Varieties of Contemplative Experience: the difficulties deep practice can bring', refs: ['lindahl2017'] },
+    ],
+  },
+];
+
 const index = [
   { id: 'summary', label: 'summary' },
   { id: 'part', label: 'where the theories part' },
+  { id: 'suggest', label: 'what the models suggest' },
   { id: 'measurement', label: 'the measurement' },
   { id: 'physics', label: 'what physics allows' },
   { id: 'perforators', label: 'the perforators, up close' },
   { id: 'asks', label: 'what we need' },
   { id: 'method', label: 'method' },
+  { id: 'further', label: 'the preprint, the pilot, who could help' },
 ];
 ---
 <Doc
@@ -122,8 +175,17 @@ const index = [
       </p>
       <p>
         <strong>What the models show.</strong> They part most at the moment of release. Each would leave a different trace:
-        {' '}{records.join('; ')}. They part too in what a hand finds, where knots sit, whether one lets go under a resting
-        hand or only as it lifts, and whether attention alone frees it (<a href="#part">below</a>).
+        {' '}{records.join('; ')}. They part too in what a hand finds, whether a stretch meets a block, where knots sit, whether
+        one lets go under a resting hand or only as it lifts, to a roller or to heat, and whether attention alone frees it
+        (<a href="#part">below</a>).
+      </p>
+      <p>
+        <strong>What they suggest.</strong> Set against practitioners' reports, the perforator model, with the sleeve of sliding
+        tissue around each vessel, reproduces the most: release with a roller ({repCell('roller', 'T1')} settings), sparks
+        ({repCell('spark', 'T1')}), stiffness ({repCell('stiff', 'T1')}), and larger knots freeing smaller ones but not the
+        reverse. Knots that let go to attention alone point instead to the vascular latch ({repCell('attention', 'T2')}) or the
+        motor switch. Perforators and latches are the same kind of muscle held in two ways, and knots may be more than one
+        thing (<a href="#suggest">below</a>).
       </p>
       <p>
         <strong>What physics already says.</strong> A small artery with tone in its wall can hold itself shut, and, held an
@@ -135,7 +197,8 @@ const index = [
       </p>
       <p>
         <strong>What would settle it.</strong> One recording at the moment a knot lets go, with the few instruments that
-        tell those traces apart, after cheaper questions a hand can ask. <a href="#measurement">The ladder below.</a>
+        tell those traces apart, after cheaper questions a hand can ask. <a href="#measurement">The ladder below</a>, and{' '}
+        <a href="#further">a preprint, a one-page pilot and who could help</a> at the end.
       </p>
     </div>
   </section>
@@ -172,6 +235,35 @@ const index = [
       Every answer is a model's, from its own physiology and its sampled numbers; a model shows what a mechanism would do, not
       that it is what happens. The full portraits, and the films, are in the <a href={`${base}/hypotheses/#watch`}>field guide</a>.
     </p>
+  </section>
+
+  <section id="suggest" class="sec full" data-glyph="意">
+    <h2>What the models suggest</h2>
+    <div class="two">
+      <div>
+        <p class="find"><strong>More than one kind of knot.</strong> No model reproduces every report
+          (<a href={`${base}/hypotheses/#reports`}>the reports against the models</a>). A perforator held shut, with its sleeve,
+          accounts for the spark, the release as a hand lifts or a roller passes, stiffness, and larger knots freeing smaller ones; it
+          lets go to attention alone in only {repCell('attention', 'T1')} settings, where the latch does in {repCell('attention', 'T2')}.
+          The simplest reading is that practitioners meet at least two kinds, and a recording should classify each release rather than
+          crown one theory.</p>
+        <p class="find"><strong>Perforators and latches: one muscle, two holds.</strong> Both knots are vascular smooth muscle held
+          contracted, and heat reaches both through the same number here. They differ in what holds them. A perforator is held by its
+          wall's mechanics: over a band of tone both open and shut are stable, and once tone falls below the band the vessel opens, with
+          a flood and a spark. The latch is held by information: a prediction that keeps its vessels clamped and the clamp that keeps
+          the region out of awareness, so it lets go when noticed. They need not compete. A held prediction could be the command that
+          keeps a perforator inside its band: such a knot would let go to attention and to a roller alike, and spark as it went. That
+          combination is the next model to build.</p>
+      </div>
+      <div>
+        <p class="find"><strong>Why knots stiffen.</strong> <Fragment set:html={t1stiff} /></p>
+        <p class="find"><strong>Peeling and filling.</strong> Some describe the fascia beneath the skin peeling apart along lines,
+          leaving places that feel hollow, and then a filling-in felt as re-stitching. The perforators suggest where to look: they and
+          their sleeves are the stitches that tether the superficial fascia to the deep. If many sleeves free at once and the returning
+          flood fills the gliding plane, the layers could part along the lines between tethers, and close again as the fluid is taken
+          up and the sleeves re-hold. This is not yet modelled: the fascia as a system of its own is on the plan.</p>
+      </div>
+    </div>
   </section>
 
   <section id="measurement" class="sec full" data-glyph="験">
@@ -271,6 +363,15 @@ const index = [
         <p class="fact"><span class="big">{v.gasp.at_s.toFixed(1)} s</span><span class="fl">when flow is lowest after a deep gasp, the one timing not fitted: measured 4.6–5.2 s <Fragment set:html={`(${cite('mayrovitz2026')})`} />. The fitted ones reproduce the gasp's size and recovery and the timing of reactive hyperaemia.</span></p>
       </div>
     </div>
+    <h3 id="sleeve" class="h3">The sleeve: how a knot stiffens</h3>
+    <p class="sub">
+      Each perforator crosses the gliding plane in a sleeve of sliding tissue <Fragment set:html={`(${cite('guimberteau2005')})`} />,
+      kept wet by the flow through it. Shut, the vessel lets its sleeve dry; hyaluronan's viscosity rises as the third or fourth
+      power of its concentration <Fragment set:html={`(${cite('cowman2015')})`} />, and a material like the gliding layer jams below a
+      critical stress <Fragment set:html={`(${cite('coussot2002')})`} />. <Fragment set:html={t1stiff} /> The drying and rebuilding
+      times are guesses; the prediction to test is the order: the spark as the vessel opens, the sliding only once the layer is moved.
+    </p>
+
     <h3 id="time" class="h3">Time: how a knot sets</h3>
     <p class="sub">
       The switch alone holds a knot only while tone stays {healthyRatio.toFixed(1)} times rest. But smooth muscle held at a new length adapts to it: it regains
@@ -368,6 +469,12 @@ const index = [
           (as measured in the back, <Fragment set:html={cite('langevin2011')} />) before and after a knot lets go, it would decide densification.</p>
       </li>
       <li>
+        <p class="ask-h">The sleeve: do the layers stick where a perforator's flow stops?</p>
+        <p>Ultrasound of the layers' sliding around a perforator's exit, with colour Doppler, while its flow is briefly reduced and
+          after it returns: whether the layers stop sliding there, and how long they take to slide again, with and without moving
+          the tissue. It would test how the perforator view makes knots stiff.</p>
+      </li>
+      <li>
         <p class="ask-h">A sensitised nerve and the sympathetic drive</p>
         <p>Whether a nerve of the skin that is sensitised where it pierces the fascia, but not injured, answers the sympathetic drive as injured nerves do,
           and how late <Fragment set:html={`(${cite('devor1994')})`} />; and whether knots sit at such piercings, as the tender points of the abdominal
@@ -428,6 +535,44 @@ const index = [
       <a href={`${repo}/sim/findings/`}>findings notes</a>
     </p>
   </section>
+
+  <section id="further" class="sec full" data-glyph="繋">
+    <h2>The preprint, the pilot, and who could help</h2>
+    <div class="docs">
+      <a class="doc-card" href={`${base}/research/preprint/`}>
+        <span class="dk mono">preprint · draft</span>
+        <span class="dt">Knots: seven mechanisms, what each would do, and a recording that would tell them apart</span>
+        <span class="dd">The models, their predictions, the reports set against them, and the proposed measurement, every number
+          generated from the runs.</span>
+      </a>
+      <a class="doc-card" href={`${base}/research/pilot/`}>
+        <span class="dk mono">pilot protocol · one page</span>
+        <span class="dt">Recording a knot as it lets go</span>
+        <span class="dd">Twelve participants, laser speckle, single-motor-unit EMG and ultrasound at each felt release, against a
+          pressed sham, with each theory's prediction fixed in advance.</span>
+      </a>
+    </div>
+    <p class="links mono"><a href={`${base}/research/preprint.pdf`}>preprint (PDF)</a><a href={`${base}/research/pilot.pdf`}>pilot (PDF)</a></p>
+    <h3 class="h3">Who could help</h3>
+    <p class="sub">Groups whose published methods or theories bear directly on this, named from their published work, with the
+      places their latest PubMed records give. None has been approached, and none is involved in or has endorsed this project; they
+      are where a lab, a co-author or a check would most naturally come from.</p>
+    {PEOPLE.map(({ group, people }) => (
+      <div class="people">
+        <p class="pg mono">{group}</p>
+        <ul>
+          {people.map((pp) => (
+            <li>
+              <span class="pw">{pp.who}</span> <span class="pl">{pp.where}</span>
+              <span class="pd">{pp.what} <Fragment set:html={pp.refs.map((r) => cite(r)).join(' · ')} /></span>
+            </li>
+          ))}
+        </ul>
+      </div>
+    ))}
+    <p class="contact">To take part, object, or point to someone missing: <a href="https://github.com/ejhong/knots/issues">issues</a>
+      on the project's repository.</p>
+  </section>
 </Doc>
 
 <style>
@@ -476,6 +621,81 @@ const index = [
     font-weight: 700;
     margin: 26px 0 4px;
     scroll-margin-top: calc(var(--topbar-h) + 12px);
+  }
+  .docs {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+    gap: 14px;
+    max-width: 900px;
+    margin: 6px 0 6px;
+  }
+  .doc-card {
+    display: grid;
+    gap: 4px;
+    padding: 14px 16px;
+    background: var(--frame-bg);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    text-decoration: none;
+    color: var(--text);
+  }
+  .doc-card:hover {
+    border-color: var(--frame-border);
+  }
+  .dk {
+    font-size: 9.5px;
+    color: var(--seal);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+  .dt {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 13.5px;
+    line-height: 1.35;
+  }
+  .dd {
+    font-family: var(--font-serif);
+    font-size: 12.5px;
+    line-height: 1.5;
+  }
+  .people {
+    max-width: 900px;
+    margin: 10px 0 4px;
+  }
+  .pg {
+    font-size: 9.5px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    margin: 0 0 4px;
+  }
+  .people ul {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: grid;
+    gap: 6px;
+  }
+  .people li {
+    font-family: var(--font-serif);
+    font-size: 12.5px;
+    line-height: 1.5;
+    padding-bottom: 6px;
+    border-bottom: 1px solid var(--border);
+  }
+  .pw {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 12.5px;
+  }
+  .pl {
+    font-family: var(--font-mono);
+    font-size: 9.5px;
+    color: var(--muted);
+  }
+  .pd {
+    display: block;
   }
   .tells {
     display: grid;
@@ -730,6 +950,9 @@ const index = [
     }
   }
   @media (max-width: 860px) {
+    .docs {
+      grid-template-columns: minmax(0, 1fr);
+    }
     .tells {
       grid-template-columns: minmax(0, 1fr);
     }

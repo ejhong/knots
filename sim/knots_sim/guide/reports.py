@@ -27,9 +27,9 @@ def _cell(ok: np.ndarray, valid: np.ndarray, note: str = "") -> dict:
 REPORTS = (
     ("breath", "They let go on a slow out-breath", "thirty slow breaths: some held knot lets go"),
     ("attention", "Deeper ones let go to focused attention", "attention without touch frees the knot at the spot, or sooner"),
-    ("hand", "A patient hand releases them, one at a time", "a resting hand: the knot at the spot lets go under it or as it lifts"),
+    ("hand", "A patient hand releases them, one at a time", "a resting hand frees the knot at the spot, under it or as it lifts, where the same breaths alone would not, or sooner"),
     ("roller", "A foam roller releases them", "rolled over: the knot at the spot lets go while rolled or within a minute"),
-    ("warmth", "A hot shower softens many at once", "five minutes of warmth: a quarter or more of the patch's knots let go"),
+    ("warmth", "A hot shower softens many at once", "five minutes of heat frees a quarter or more of the patch's knots beyond what the same breaths do"),
     ("stress", "They gather where stress is held", "set by the shared scale in every theory: not a finding"),
     ("stiff", "They limit movement: a stretch meets a dull block", "held half an hour: the knot at the spot blocks a stretch"),
     ("spark", "A pop, or a tingle across a patch of skin, as one goes", "a spark or a twitch at a release"),
@@ -68,8 +68,9 @@ def reports(results: dict, modules) -> list[dict]:
                 t_a = np.array([_release_of(runs["attention"], k, target[k]) for k in range(K)])
                 c = _cell(tgt & np.isfinite(t_a) & (~np.isfinite(t_b) | (t_a + 5.0 < t_b)), tgt)
             elif rid == "hand":
+                t_b = np.array([_release_of(runs["breathing"], k, target[k]) for k in range(K)])
                 t_h = np.array([_release_of(runs["hand"], k, target[k]) for k in range(K)])
-                c = _cell(tgt & (t_h < 65.0), tgt)
+                c = _cell(tgt & (t_h < 65.0) & (~np.isfinite(t_b) | (t_h + 5.0 < t_b)), tgt)
             elif rid == "roller":
                 rk = runs["rolled"]
                 there = rk.held[0, np.arange(K), rk.target]
@@ -79,11 +80,14 @@ def reports(results: dict, modules) -> list[dict]:
                 if m.WORDS.get("no_warmth"):
                     c = {"silent": True, "note": "no route in the model"}
                 else:
-                    wa = runs["warmth"]
-                    gone = np.zeros(K)
-                    for k, j, _ in releases(wa.t, wa.held):
-                        gone[k] += bool(held0[k, j])
-                    c = _cell(anyk & (gone >= 0.25 * np.maximum(held0.sum(axis=1), 1)), anyk)
+                    gone = {}
+                    for sid in ("warmth", "breathing"):
+                        n_ = np.zeros(K)
+                        for k, j in {(k, j) for k, j, _ in releases(runs[sid].t, runs[sid].held) if held0[k, j]}:
+                            n_[k] += 1
+                        gone[sid] = n_
+                    more = gone["warmth"] - gone["breathing"]
+                    c = _cell(anyk & (more >= 0.25 * np.maximum(held0.sum(axis=1), 1)), anyk)
             elif rid == "stress":
                 c = {"calibration": True, "note": "set by the shared scale"}
             elif rid == "stiff":

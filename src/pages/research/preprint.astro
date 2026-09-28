@@ -1,0 +1,479 @@
+---
+import Doc from '../../layouts/Doc.astro';
+import guide from '../../data/sim/guide.json';
+import data from '../../data/sim/vessel.json';
+import adaptData from '../../data/sim/adapt.json';
+import { refById } from '../../data/references';
+import type { GuideIndex, ReportCell, TheoryIndex } from '../../sim/guide/data';
+import { envelopeChart } from '../../sim/guide/envelope';
+import { switchChart, type Switch } from '../../sim/guide/switch';
+import { calibrate, type Params } from '../../sim/vessel';
+import type { AdaptStudy } from '../../sim/figures';
+
+// The preprint. Every number comes from the runs the site shows (src/data/sim/); nothing is typed in by hand.
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const repo = 'https://github.com/ejhong/knots';
+const g = guide as unknown as GuideIndex;
+const byId = (id: string) => g.theories.find((t) => t.id === id)!;
+const trait = (th: TheoryIndex, key: string) => th.traits.find((x) => x.id === key);
+const cell = (id: string, key: string) => trait(byId(id), key)?.cell ?? '—';
+const text = (id: string, key: string) => cited(trait(byId(id), key)?.text ?? '');
+const p = data.params.values as unknown as Params;
+const s = calibrate(p);
+const col = data.checks.collar;
+const cool = data.checks.cooling;
+const ad = adaptData as unknown as AdaptStudy;
+const setAt = (rows: { mult: number; hours: number | null }[], m: number) => rows.find((row) => Math.abs(row.mult - m) < 1e-9)?.hours ?? NaN;
+const setHealthy = setAt(ad.healthy.set_h, ad.stories.hold_mult);
+const f2 = (x: number) => x.toFixed(2);
+const K = g.run.settings;
+const rep = (rid: string, id: string) => {
+  const c = g.reports?.find((r) => r.id === rid)?.theories[id] as ReportCell | undefined;
+  return c && c.n ? `${c.k} of ${c.n}` : '—';
+};
+
+// How many numbers are measured, fitted or inferred from a quoted source, and how many are guesses: read from the tables.
+const tables = import.meta.glob('../../../sim/params/*.yaml', { query: '?raw', eager: true }) as Record<string, { default: string }>;
+const conf = { sourced: 0, guessed: 0 };
+for (const raw of Object.values(tables).map((mod) => mod.default)) {
+  for (const line of raw.split('\n')) {
+    const t = line.trim();
+    if (t.startsWith('confidence:')) t.endsWith('guessed') ? conf.guessed++ : conf.sourced++;
+  }
+}
+
+// Citations, numbered in order of first use; the list at the end is built from the same order.
+const order: string[] = [];
+const cite = (...ids: string[]) => {
+  const ns = ids.map((id) => {
+    if (!order.includes(id)) order.push(id);
+    return order.indexOf(id) + 1;
+  });
+  const links = ns.map((n, i) => '<a href="#ref-' + ids[i] + '">' + n + '</a>');
+  return '<span class="cite">[' + links.join(', ') + ']</span>';
+};
+const MARK: Record<string, string> = { all: '●', some: '◐', none: '○', silent: '—', not: '·' };
+// The models' own sentences cite by key, "(segal1989)": turned into this paper's numbered citations.
+const KEY = new RegExp('\\(([a-z]+[0-9]{4}[a-z]?)\\)', 'g');
+const cited = (t: string) => t.replace(KEY, (m: string, id: string) => (refById(id) ? cite(id) : m));
+const ids = g.theories.map((t) => t.id);
+---
+<Doc
+  title="Knots: seven mechanisms, what each would do, and a recording that would tell them apart"
+  kicker="Preprint · not peer reviewed"
+  current="research"
+  description="A preprint: seven mechanisms for the knots people who work with the body report, each run as a model from its own physiology, what each predicts, and the recording at release that would decide."
+>
+  <div class="paper">
+    <p class="byline">Eugene Jhong · Knots of Existence, independent · <span class="mono">28 September 2026 · draft 1 · field guide run {g.run.inputs}</span></p>
+    <p class="byline mono">Correspondence and objections: <a href={`${repo}/issues`}>github.com/ejhong/knots/issues</a> · <a href={`${base}/research/preprint.pdf`}>PDF</a> · <a href={`${base}/research/pilot/`}>the pilot protocol</a></p>
+
+    <section class="abstract">
+      <h2>Abstract</h2>
+      <p>People who work with the body report knots: small places that hold for months or years and let go within seconds, under a
+        hand, with a slow breath or to attention, often with a tingle over the skin. No one has recorded one letting go. We set out seven
+        mechanisms that could explain them: a small artery held shut where it pierces the fascia (perforators), vascular smooth muscle
+        latched by a held prediction (the vascular latch), a myofascial trigger point, densified hyaluronan in the gliding layer between
+        the fasciae, a sensitised nerve where it pierces the fascia, motor units latched on by persistent inward currents (a motor switch),
+        and perception. Each was run as a model from its own physiology, with {conf.sourced} parameters taken from a quoted line of a
+        paper and {conf.guessed} marked as guesses with ranges, through the same scenes (a stressful moment, slow breathing, attention,
+        a resting hand, rolling, heat, an hour of moods) in {K} sampled settings each; what its knots did was read off the runs, not
+        fitted to anyone's reports. The models part most at the moment of release: skin flow floods in (perforators), flow rises
+        slowly (the latch), stiffness falls in the muscle (trigger points), the layers slide again (densification), a nerve's firing
+        falls (nerves), a motor unit falls silent (the motor switch), or nothing changes in the tissue (perception). Set against
+        practitioners' reports, the perforator model, extended with the sleeve of sliding tissue around each vessel, reproduces most
+        of them, including release with a roller ({rep('roller', 'T1')} settings), sparks ({rep('spark', 'T1')}), stiffness
+        ({rep('stiff', 'T1')}) and larger knots freeing smaller ones but not the reverse ({rep('trees', 'T1')}); releases to attention
+        alone point instead to the latch ({rep('attention', 'T2')}) or the motor switch. Knots may be more than one thing. We propose a
+        pilot recording at the moment of release, with laser speckle, single-motor-unit EMG and ultrasound against a pressed sham,
+        whose outcome each model predicts in advance.</p>
+    </section>
+
+    <section>
+      <h2>1. The problem</h2>
+      <p>Massage therapists, physiotherapists and contemplative practitioners describe the same thing in different words: discrete,
+        tender places in the soft tissue, most often over the neck, shoulders and back, that can persist for years and yet let go
+        within seconds. Accounts from contemplative practice and bodywork add detail: knots seem to answer to the breath, letting go on
+        a slow out-breath; deeper ones to focused attention; a patient hand or a foam roller releases them one place at a time; a hot
+        shower softens many at once; they gather where stress is held and limit movement; a release can come with a small pop or a
+        tingle across a patch of skin, and another knot may move in nearby. These are impressions, not measurements, but they are
+        specific enough to test.</p>
+      <p>The speed is the first clue. Collagen, scar and adhesion change over days and weeks, so whatever lets go within a breath must
+        be a state the body is holding, not a structure it has built. At least seven candidates have been proposed or can be
+        assembled from established physiology, and they disagree about where a knot is, what holds it and what releases it. None has
+        been tested against a recording of a release, because none has been made.</p>
+      <p>Rather than choose among them, we ask each to show itself: to grow its own knots, from its own physiology, in the same piece of
+        body under the same scenes, and to say how they would feel, respond and let go, and what an instrument would record. Where their
+        knots differ in something a hand or an instrument can see, a measurement can decide.</p>
+    </section>
+
+    <section>
+      <h2>2. Models and methods</h2>
+      <h3>2.1 One patch, the same scenes</h3>
+      <p>Every model lives in the same 4 cm square of the upper back over the trapezius (skin, fat, the superficial and deep fascia,
+        muscle), with stress held more toward the neck and at one place beside a spot where a hand rests and attention goes. Each places
+        its own units where its anatomy puts them. The scenes are the same for all: rest, three minutes of stress, then a held level;
+        thirty slow breaths (4 s in, 6 s out); the same with attention on the spot; subtle breaths with attention; a hand resting on the
+        spot for a minute; a roller over a quiet place, and over the knot; five minutes of heat, as in a hot shower or a sauna; an hour of stress that wanders as moods
+        do; half an hour more at the held level. Stress is one shared unit (0 rest, 1 a surge) mapped onto each theory's own inputs in a
+        runner whose mapping is written out.</p>
+
+      <h3>2.2 The seven models</h3>
+      <p><strong>Perforators.</strong> A small artery with tone in its wall is a switch: the pressure inside pushes it open, its muscle
+        pulls it shut, and because muscle is strongest at one length there is a band of tone over which both states are stable
+        {' '}<Fragment set:html={cite('burton1951', 'nichol1951')} />. Parameters come from measured wall strength, thickness and
+        pressure; the breath acts through the skin's sympathetic reflex {' '}<Fragment set:html={cite('mayrovitz2026')} /> and through
+        movement, which cuts smooth muscle's force {' '}<Fragment set:html={cite('ljung1975')} />. Vessels form trees of a parent and its
+        children sharing pressure, with conducted responses along their walls {' '}<Fragment set:html={cite('segal1989')} />. Each vessel
+        crosses the gliding plane in a sleeve of sliding tissue {' '}<Fragment set:html={cite('guimberteau2005')} /> that its flow keeps
+        wet; shut, the sleeve dries, its hyaluronan crowds (viscosity rising as the third or fourth power of concentration
+        {' '}<Fragment set:html={cite('cowman2015')} />), and it can jam. A knot is a vessel held shut by its own wall; a shut vessel
+        starves its patch, and its nerve bursts as blood returns (the spark).</p>
+      <p><strong>The vascular latch.</strong> Johnson's account {' '}<Fragment set:html={cite('johnson2023')} />: a held prediction
+        commands a region's small arteries; the contraction clamps the region and cuts it off from awareness, so the prediction cannot
+        update. Formalised as a loop between the prediction and the clamp, set from the account's two claims (durable while unattended;
+        not set by ordinary stress alone); attention or touch lets the prediction update. The latch-bridge state itself economises and
+        does not remember {' '}<Fragment set:html={cite('rembold1991')} />.</p>
+      <p><strong>Trigger points.</strong> The energy crisis {' '}<Fragment set:html={cite('gerwin2004')} />: endplate activity contracts
+        sarcomeres, the contraction squeezes their capillaries, and starved sarcomeres cannot relax; sustained pressure lengthens the
+        contracture over the tens of seconds of pressure release; a fast release twitches.</p>
+      <p><strong>Densification.</strong> The gliding layer as a thixotropic material with a critical stress
+        {' '}<Fragment set:html={cite('coussot2002')} />: it rebuilds a structure at rest and loses it under shear, so between two drives
+        both a jammed and a fluid state hold; a jammed patch gives way slowly and then all at once. Hyaluronan alone hardly changes with
+        pH in the body's range {' '}<Fragment set:html={cite('gatej2005')} /> and does not gel {' '}<Fragment set:html={cite('krause2001')} />,
+        so a structure that jams must be more than hyaluronan.</p>
+      <p><strong>Nerves.</strong> A nerve of the skin, sensitised where it pierces the fascia beside a perforator
+        {' '}<Fragment set:html={cite('weum2016', 'quintner1994')} />, fires when pressed or stretched after a neuritis
+        {' '}<Fragment set:html={cite('dilley2005', 'dilley2008')} /> and when the sympathetic drive rises, about fourteen seconds late
+        {' '}<Fragment set:html={cite('devor1994')} />. It has no switch: a knot is felt while its drive lasts.</p>
+      <p><strong>The motor switch.</strong> Spinal motor neurons, once recruited, keep firing on a fraction of the input that recruited
+        them, through persistent inward currents set by serotonin and noradrenaline {' '}<Fragment set:html={cite('gorassini1998', 'heckman2008')} />;
+        the metabolites of the contraction keep the loop going {' '}<Fragment set:html={cite('johansson1991')} />. A knot is a latched
+        unit; it unclenches at once when inhibited.</p>
+      <p><strong>Perception.</strong> Central gain, arousal and attention turn ordinary input into a place felt as a knot, with a
+        little hysteresis {' '}<Fragment set:html={cite('woolf2011')} />. Nothing in the tissue changes.</p>
+
+      <h3>2.3 What is felt and recorded</h3>
+      <p>The same rules for all: a finger feels stiffness through skin and fat, weaker as (a/√(a² + d²))³ for a region of size a at
+        depth d, above a threshold of touch; tenderness from each theory's own sensitiser; and what an instrument would record at the spot
+        and at a pressed sham: skin flow by laser speckle, single motor units by surface EMG, stiffness by elastography, the layers'
+        sliding by ultrasound, a nerve's firing.</p>
+
+      <h3>2.4 Settings, scale and portraits</h3>
+      <p>Each theory runs in {K} settings drawn by Sobol sampling across the ranges of its uncertain numbers. Every parameter carries
+        its source and the quoted line, checked word for word against PubMed records, or is marked as a guess with a range. One shared
+        rule sets each theory's scale (a stressful moment forms knots at the typical place; the held stress keeps them; the held stress
+        alone does not form them); it is calibration, not a finding. Each theory's portrait is generated from the runs: a line holds in
+        every setting (structural for that theory), in some (with the sampled number that best predicts where), or in none. The code
+        and every number are open {' '}<Fragment set:html={cite('knotsrepo')} />.</p>
+    </section>
+
+    <section>
+      <h2>3. Results</h2>
+      <h3>3.1 What physics rules out</h3>
+      <p>A liquid resists motion, not position: at its most viscous, hyaluronan around a vessel exerts a drag {Math.round(col.pressure_over_drag)}{' '}
+        times weaker than the pressure holding the vessel open {' '}<Fragment set:html={cite('nicholls2018', 'fede2018')} />. A patch of
+        skin warms with a time constant of at least {Math.round(cool.tau_s_at_max_flow)} s even at maximal skin flow, so warming cannot
+        release a knot within a breath. Warmth thins hyaluronan by only about 2% a degree {' '}<Fragment set:html={cite('cowman2015')} />.
+        A vessel pressed shut cannot reopen until the pressure lifts. The sympathetic drive reaches a sensitised nerve only after about
+        fourteen seconds {' '}<Fragment set:html={cite('devor1994')} />. And healthy small arteries hold themselves shut only over a band
+        of tone ({f2(s.Aopen)}–{f2(s.Afold)} of maximal, rest {f2(s.urest)}); held shut at {ad.stories.hold_mult}× resting tone, their
+        muscle adapts to the new length and the knot sets, holding at rest, after about {setHealthy.toFixed(1)} h
+        {' '}<Fragment set:html={cite('syyong2008', 'martinezlemus2004')} />.</p>
+
+      <h3>3.2 The trace at release</h3>
+      <p>The seven models part most sharply at the moment of release (Table 1). In every setting of each model the trace is its own; one
+        recording at a release would separate them.</p>
+      <table class="t">
+        <caption>Table 1. What an instrument would record as a knot lets go, and what a hand would find, by model.</caption>
+        <thead><tr><th>Model</th><th>At release</th><th>A finger finds</th><th>Under a resting hand</th><th>Attention alone</th></tr></thead>
+        <tbody>
+          {g.theories.map((th) => (
+            <tr>
+              <th scope="row">{th.name}</th>
+              <td>{cell(th.id, 'record')}</td>
+              <td>{cell(th.id, 'bump')}</td>
+              <td>{cell(th.id, 'hand')}</td>
+              <td>{cell(th.id, 'attention')}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+
+      <h3>3.3 What a breath would have to do</h3>
+      <p>However complex its pattern, a breath reaches a knot only through a few routes: the drive to its vessels or motor units, the
+        tissue's movement, attention. For each model we found the least calming of the knot's own drive, held for a given time, that frees
+        the typical knot (Figure 1). In no model does a single breath free the typical knot through drive; minutes of slow breathing do in
+        some. The breath's movement, and attention where a model gives it a route, do what a single calming cannot.</p>
+      <figure class="fig" set:html={envelopeChart(g.theories)} />
+      <p class="figcap">Figure 1. The least calming, as a share of the holding stress, that frees the typical knot (thick) and the easiest
+        quarter (thin), against how long it lasts; grey bars: what a slow out-breath, a subtle breath and minutes of slow breathing do.</p>
+
+      <h3>3.4 The perforator view in detail</h3>
+      <p><em>Trees.</em> <Fragment set:html={text('T1', 'family')} /></p>
+      <p><em>Stiffness.</em> <Fragment set:html={text('T1', 'stiff')} /></p>
+      <p><em>Rolling and warmth.</em> <Fragment set:html={text('T1', 'rolled')} /> <Fragment set:html={text('T1', 'warmth')} /></p>
+      <div class="two-sw">
+        <figure class="sw" set:html={switchChart((byId('T1') as unknown as { switch?: Switch }).switch)} />
+        <figure class="sw" set:html={switchChart((byId('T4') as unknown as { switch?: Switch }).switch)} />
+      </div>
+      <p class="figcap">Figure 2. Two of the switches. Left: a perforator's wall, open or shut over a band of tone. Right: the gliding
+        layer, fluid or jammed over a band of movement: a jammed patch stays jammed under movement that keeps a fluid one fluid.</p>
+
+      <h3>3.5 The reports and the models</h3>
+      <p>Only after the models had been run did we set practitioners' reports against them (Table 2). The perforator model, the most
+        detailed of the seven, reproduces the most; attention alone points to the latch and the motor switch; the layers' stiffness is
+        shared by densification, trigger points, the motor switch and the perforators' sleeves; four reports reach no model yet.</p>
+      <table class="t rep">
+        <caption>Table 2. In how many of the settings where it could happen each model's knots do what is reported (— no route).</caption>
+        <thead><tr><th>Report</th>{g.theories.map((th) => <th>{th.name}</th>)}</tr></thead>
+        <tbody>
+          {(g.reports ?? []).filter((r) => r.id !== 'stress').map((r) => (
+            <tr>
+              <th scope="row">{r.label}</th>
+              {ids.map((id) => <td>{rep(r.id, id)}</td>)}
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </section>
+
+    <section>
+      <h2>4. Discussion</h2>
+      <p><strong>More than one kind of knot.</strong> No single model reproduces every report. A perforator held shut, with its sleeve,
+        accounts for the spark, the release with a roller or a lifting hand, stiffness that outlasts the release until the layer is
+        moved, and larger knots freeing smaller ones; heat, once the breaths' own share is taken out, frees about as many latch knots
+        as perforator knots. It does not account for knots that let go to attention alone, which a
+        latched clamp or a latched motor unit would. The simplest reading is that practitioners meet at least two kinds of knot, and a
+        recording should classify each release rather than crown one theory.</p>
+      <p><strong>Perforators and latches: one muscle, two holds.</strong> Both are vascular smooth muscle held contracted, and heat
+        reaches both through the same number in these models. They differ in what holds them: a perforator by its wall's mechanics (a
+        band of tone over which open and shut are both stable), the latch by information (a prediction that keeps its vessels clamped
+        and the region out of awareness). They need not compete: a held prediction could be the command that keeps a perforator inside
+        its band. Such a knot would let go to attention and to a roller alike, and spark as it went: the combination is the next model
+        to build.</p>
+      <p><strong>Peeling and filling.</strong> Some describe the fascia beneath the skin peeling apart along lines, leaving places that
+        feel hollow, and then a filling-in felt as re-stitching. The perforator view suggests where to look: the perforators and their
+        sleeves are the stitches that tether the superficial fascia to the deep; if many sleeves free at once and the returning flood
+        fills the gliding plane, the layers could part along the lines between tethers, and close again as the fluid is taken up and the
+        sleeves re-hold. This is not modelled; the fascia as a system of its own is the next model to build.</p>
+      <p><strong>What would refute each.</strong> A structural line in a model, one that holds in every setting, is what a measurement can
+        refute. A perforator knot that lets go while a hand still presses it; a latch knot that lets go with no rise in flow; a trigger point
+        with no change in the muscle's stiffness; a densified patch whose layers slide as before; a nerve's knot a local anaesthetic cannot
+        touch; a motor-switch knot with no unit falling silent; and, for perception, any change in the tissue that times itself to the felt
+        release.</p>
+      <p><strong>Limits.</strong> Most numbers specific to knots are guesses, marked and sampled; the models' traits say which of them
+        decide each result. Three of the seven formalisations (the latch, densification, nerves) are ours, not yet checked by those who hold
+        them. The shared scale gives every theory knots to study, by construction. The reports are rough impressions. A model shows what a
+        mechanism would do with these numbers; it cannot show that knots are that mechanism.</p>
+      <p><strong>Safety.</strong> Deep somatic and contemplative work can cause severe and lasting difficulties
+        {' '}<Fragment set:html={cite('lindahl2017', 'farias2020')} />. Nothing here is a practice or a protocol for anyone to try; any
+        recording belongs under ethics review, with ordinary breathing, comfortable pressure, and nothing on the front of the neck.</p>
+    </section>
+
+    <section>
+      <h2>5. The measurement</h2>
+      <p>A pilot of twelve participants with three to five knots each, about ninety minutes, gives forty to sixty release events, each
+        marked by the participant with a button. At each: laser speckle over the knot and a pressed sham
+        {' '}<Fragment set:html={cite('roustit2010', 'minson2001')} />; high-density surface EMG over the upper trapezius, decomposed into
+        single motor units {' '}<Fragment set:html={cite('negro2016', 'dideriksen2016')} />; and ultrasound of the layers' sliding
+        {' '}<Fragment set:html={cite('langevin2011')} />, before, at, and after the release and after the shoulder moves; with a blinded
+        Doppler map of perforators under the knots. The predictions are fixed in advance by the models' runs. The protocol is on one
+        page: <a href={`${base}/research/pilot/`}>the pilot</a>.</p>
+    </section>
+
+    <section class="small">
+      <h2>Data, code and assistance</h2>
+      <p>All models, parameters with their sources, runs and figures are open at {repo}, and every figure and number on this page is
+        generated from them (field guide run {g.run.inputs}). The models, the code and this text were developed with an AI assistant
+        (Claude, Anthropic); the author is responsible for the content, and errors are welcome as issues.</p>
+    </section>
+
+    <section class="refs">
+      <h2>References</h2>
+      <ol>
+        {order.map((id) => {
+          const r = refById(id);
+          return r ? (
+            <li id={`ref-${id}`}>
+              {r.authors}{r.year > 0 ? ` (${r.year})` : ''}. {r.title}. <em>{r.venue}</em>.{' '}
+              {r.url && <a href={r.url}>{r.url.replace('https://', '')}</a>}
+            </li>
+          ) : (
+            <li id={`ref-${id}`}>{id === 'knotsrepo' ? `Knots of Existence: models, parameters and runs. ${repo}` : id}</li>
+          );
+        })}
+      </ol>
+    </section>
+  </div>
+</Doc>
+
+<style>
+  .paper {
+    max-width: 720px;
+    font-family: var(--font-serif);
+    font-size: 13.5px;
+    line-height: 1.62;
+  }
+  .mono {
+    font-family: var(--font-mono);
+  }
+  .byline {
+    font-family: var(--font-sans);
+    font-size: 12px;
+    margin: 0 0 4px;
+  }
+  .byline.mono {
+    font-size: 9.5px;
+    color: var(--muted);
+    margin-bottom: 14px;
+  }
+  .abstract {
+    background: var(--frame-bg);
+    border-left: 3px solid var(--seal);
+    padding: 10px 16px 4px;
+    border-radius: 0 8px 8px 0;
+    margin-bottom: 8px;
+  }
+  h2 {
+    font-family: var(--font-sans);
+    font-size: 15px;
+    font-weight: 700;
+    margin: 22px 0 6px;
+  }
+  .abstract h2 {
+    margin-top: 2px;
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--seal);
+  }
+  h3 {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 700;
+    margin: 14px 0 4px;
+  }
+  p {
+    margin: 0 0 9px;
+  }
+  :global(.paper .cite) {
+    font-size: 11px;
+    white-space: nowrap;
+  }
+  :global(.paper .cite a) {
+    color: var(--accent-dark);
+    text-decoration: none;
+  }
+  .t {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 11.5px;
+    margin: 8px 0 12px;
+  }
+  .t caption {
+    caption-side: top;
+    text-align: left;
+    font-style: italic;
+    font-size: 11.5px;
+    color: var(--muted);
+    margin-bottom: 4px;
+  }
+  .t th,
+  .t td {
+    text-align: left;
+    vertical-align: top;
+    padding: 4px 8px 4px 0;
+    border-bottom: 1px solid var(--border);
+  }
+  .t thead th {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: 400;
+    color: var(--muted);
+  }
+  .t tbody th {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    font-size: 11px;
+  }
+  .rep td {
+    font-family: var(--font-mono);
+    font-size: 10px;
+    white-space: nowrap;
+  }
+  .rep tbody th {
+    font-family: var(--font-serif);
+    font-weight: 400;
+  }
+  .fig {
+    margin: 8px 0 2px;
+  }
+  .fig :global(svg),
+  .sw :global(svg) {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .two-sw {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+    margin: 8px 0 2px;
+  }
+  .sw {
+    margin: 0;
+    background: var(--panel-bg);
+    border-radius: 8px;
+    padding: 6px;
+  }
+  .figcap {
+    font-size: 11.5px;
+    font-style: italic;
+    color: var(--muted);
+  }
+  .small p {
+    font-size: 12px;
+  }
+  .refs ol {
+    padding-left: 22px;
+    font-size: 11px;
+    line-height: 1.5;
+  }
+  .refs li {
+    margin-bottom: 3px;
+  }
+  .refs a {
+    color: var(--accent-dark);
+    word-break: break-all;
+  }
+  @media (max-width: 700px) {
+    .two-sw {
+      grid-template-columns: 1fr;
+    }
+    .t {
+      display: block;
+      overflow-x: auto;
+    }
+  }
+  @media print {
+    .paper {
+      font-size: 10.5px;
+      line-height: 1.45;
+      max-width: none;
+    }
+    h2 {
+      font-size: 12px;
+      break-after: avoid;
+    }
+    h3 {
+      font-size: 11px;
+      break-after: avoid;
+    }
+    .t,
+    .fig,
+    .two-sw {
+      break-inside: avoid;
+    }
+  }
+</style>

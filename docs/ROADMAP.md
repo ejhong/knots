@@ -83,7 +83,8 @@ kept in `sim/archive/`; what it built (the models, the parameters and their sour
 - [ ] G3, the rest: the motor switch with the vessel it squeezes; the latch's own rate constants (Hai and Murphy)
 - [ ] G4: the atlas driven by the models, theory by theory
 - [ ] G5: the fascia as a second system (its own phase and safety review)
-- [ ] G6: the measurement: a lab-ready protocol, a preprint, collaborators
+- [x] G6, drafted (28 Sep): a preprint (`/research/preprint/`), a one-page pilot protocol (`/research/pilot/`), both with PDFs, and the groups who could help, on the Research page
+- [ ] G6, next: the author's review; pre-registration; approaching a lab (the author's call)
 - [ ] Measure or source what decides the most: the wall's length–tension width and thickness; how fast the skin's small arteries
   ease when drive falls; how hard a few latched motor units squeeze a vessel beside them
 

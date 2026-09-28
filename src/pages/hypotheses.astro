@@ -69,7 +69,7 @@ const DIFFER: [string, string][] = [
   ['attention', 'Attention, no touch'],
   ['hand', 'A resting hand'],
   ['rolled', 'Rolling the knot'],
-  ['warmth', 'Warmth'],
+  ['warmth', 'Heat'],
   ['spark', 'A spark'],
   ['record', 'What a recording shows'],
 ];
@@ -127,7 +127,7 @@ const index = [
           ))}
         </div>
         <p class="what" data-what></p>
-        <p class="hint mono">tap a theory to see it up close</p>
+        <p class="hint mono">tap a theory to see it up close, below</p>
         <div class="patches">
           {g.theories.map((th) => (
             <div class="card" data-card={th.id} tabindex="0" role="button" aria-label={`${th.name}: see it up close`}>

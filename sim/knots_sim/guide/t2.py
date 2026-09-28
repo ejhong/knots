@@ -10,7 +10,8 @@ How the scenes map onto it (a new formalisation, written out for its proponents 
 - A slow breath lowers stress; minutes of it calm.
 - Attention at a place raises its awareness (attend); a hand brings the region it presses into awareness (press_aware),
   and so does a roller; the clamp cuts awareness down (block).
-- Warmth, as in a hot shower, lowers the clamp's command (warm_clamp): the account lists heat among its releases.
+- Heat, as in a hot shower or a sauna, lowers the clamp's command (warm_vessel), by the same number as it lowers a
+  perforator's tone: both are vascular smooth muscle. The account lists heat among its releases.
 - A knot is a region held by its prediction and clamped (c > ½, f > ½). It is felt only as far as awareness reaches it:
   unattended, a dull blind spot; attended or pressed, tender. Nothing larger than a small artery stiffens: nothing
   firm for a finger. When it lets go, the latch relaxes over tens of seconds: a slow warming, not a spark.
@@ -49,7 +50,8 @@ WORDS = {
     "vessel": "clamped artery",
     "stiff_none": "Nothing at the knot resists a stretch: what is clamped is a small artery.",
     "rolled": "Each pass brings the region into awareness for a moment.",
-    "warmth": "Warmth lowers the clamp's command; the account lists heat among its releases.",
+    "warmth": "Heat lowers the clamp's command, by the same number as a perforator's tone; the held prediction then has to "
+              "let go too, which heat reaches only through the clamp. The account lists heat among its releases.",
     "inside": "Clamped, the region is cut off from awareness: a dull blind spot, hardly felt until attention or a hand "
               "brings it back, and then tender.",
     "inside_cell": "a dull blind spot",
@@ -116,7 +118,7 @@ class Runner:
         self.vessel_mm, self.vessel_depth = 0.2, float(np.median(depth))  # a small artery, what a finger would meet
         self.warm = warmth_sample(k, seed)
         wt = load("warmth")
-        self.more = {q: (self.warm[q], wt[q].label) for q in ("warm_clamp", "warm_tau")}
+        self.more = {q: (self.warm[q], wt[q].label) for q in ("warm_vessel", "warm_tau")}
 
     def _scale(self) -> np.ndarray:
         """w_s per setting by the shared rule, for the typical region (median spread, full share): the least that lets
@@ -178,7 +180,7 @@ class Runner:
             if i == steps:
                 break
             W = warmed(W, scene, t, self.warm["warm_tau"], DT)
-            lm.step(P, st, s_eff, att, press, DT, REST - (self.warm["warm_clamp"] * W)[:, None])
+            lm.step(P, st, s_eff, att, press, DT, REST - (self.warm["warm_vessel"] * W)[:, None])
         return st
 
     def formed(self) -> lm.State:

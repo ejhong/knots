@@ -50,7 +50,7 @@ WORDS = {
     "stiffness": "A contracture resists a stretch: the taut band itself.",
     "stiff_cell": "a taut band",
     "rolled": "Each pass is a brief press, not the sustained pressure that lengthens the contracture.",
-    "no_warmth": "The model gives warmth no route: the account's releases are pressure, stretch and needling.",
+    "no_warmth": "The model gives heat no route: the account's releases are pressure, stretch and needling.",
     "inside": "Its acid, sensitising milieu stirs the muscle's nerves: an ache felt from inside.",
     "inside_cell": "an ache",
     "layer": "in the muscle",

@@ -452,18 +452,18 @@ def character(m, runner, runs: dict, extra: dict) -> dict:
     wa = runs.get("warmth")
     if wa is not None:
         if words.get("no_warmth"):
-            T.append(trait("warmth", "release", "Warmth", words["no_warmth"], cell="no route", silent=True))
+            T.append(trait("warmth", "release", "Heat", words["no_warmth"], cell="no route", silent=True))
         else:
             t_w = np.array([_release_of(wa, k, target[k]) for k in range(K)])
             helped_w = tgt & np.isfinite(t_w) & (~np.isfinite(t_b) | (t_w + 5.0 < t_b))
             rel_w = [(k, j) for k, j, _ in releases(wa.t, wa.held) if held0[k, j]]
             share_w = np.array([len({j for kk, j in rel_w if kk == k}) / max(counts[k], 1) for k in range(K)])
-            say = (f"With five minutes of warmth, as in a hot shower, and the same slow breaths, the knot at the spot lets go "
+            say = (f"With five minutes of heat, as in a hot shower or a sauna, and the same slow breaths, the knot at the spot lets go "
                    f"where the breaths alone would not, or sooner, {how_often(helped_w, tgt)}"
                    + (f", after about {_mmss(_median(t_w[helped_w]))}" if helped_w.any() else "")
                    + f"; across the patch about {100 * _median(share_w[anyk]):.0f}% let go (with the breaths alone, "
                    f"{100 * _median(share_rel[anyk]):.0f}%). {words['warmth']}")
-            T.append(trait("warmth", "release", "Warmth", say, helped_w, tgt, nums,
+            T.append(trait("warmth", "release", "Heat", say, helped_w, tgt, nums,
                            cell=("frees it" if helped_w[tgt].mean() >= 0.5 else ("sometimes" if helped_w.any() else "no"))
                            if tgt.any() else "—"))
     envl = extra.get("envelope")

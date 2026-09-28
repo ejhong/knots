@@ -257,11 +257,11 @@ export function mountGuide(root: HTMLElement, base: string): void {
 
   $$<HTMLButtonElement>('[data-scene]').forEach((b) => b.addEventListener('click', () => choose(b.dataset.scene!)));
   $$<HTMLElement>('[data-card]').forEach((c) => {
-    c.addEventListener('click', () => select(c.dataset.card!));
+    c.addEventListener('click', () => select(c.dataset.card!, false));
     c.addEventListener('keydown', (e) => {
       if (e.key === 'Enter' || e.key === ' ') {
         e.preventDefault();
-        select(c.dataset.card!);
+        select(c.dataset.card!, false);
       }
     });
   });

@@ -108,8 +108,8 @@ SCENES = (
           "formed", 300.0, 0.5, roll_until=180.0),
     Scene("rolled", "Rolling the knot", "A roller passes over the knot at the spot once every three seconds for three "
           "minutes, then stops.", "formed", 300.0, 0.5, roll_until=180.0, roll_at="spot"),
-    Scene("warmth", "Warmth", "Five minutes of warmth over the whole patch, as in a hot shower, with the same slow breaths.",
-          "formed", 360.0, 0.5, breath_until=300.0, warm_until=300.0),
+    Scene("warmth", "Heat", "Five minutes of heat over the whole patch, as in a hot shower or a sauna, with the same slow "
+          "breaths.", "formed", 360.0, 0.5, breath_until=300.0, warm_until=300.0),
     Scene("after", "After one lets go", "A hand rests on the knot at the spot until it lets go (a minute at most); the slow "
           "breaths go on for ten minutes more.", "formed", 660.0, 1.0, breath_until=660.0, hand_until=60.0, work=True),
     Scene("moods", "An hour of moods", "For an hour the stress rises and falls, as moods do.",
