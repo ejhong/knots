@@ -50,7 +50,8 @@ def _inputs_hash() -> str:
     """A hash of everything a run depends on: the model code and the parameter tables."""
     h = hashlib.sha256()
     guide = SIM / "knots_sim" / "guide"  # the field guide has its own run and hash (knots_sim.guide.export)
-    for f in sorted([*(p for p in (SIM / "knots_sim").rglob("*.py") if guide not in p.parents),
+    tooling = {"library.py", "pubmed.py"}  # the library's tooling changes no result
+    for f in sorted([*(p for p in (SIM / "knots_sim").rglob("*.py") if guide not in p.parents and p.name not in tooling),
                      *(p for p in (SIM / "params").glob("*.yaml") if p.name not in ("senses.yaml", "conduction.yaml")),
                      *(SIM / "observations").glob("*.yaml")]):
         h.update(f.relative_to(SIM).as_posix().encode())
