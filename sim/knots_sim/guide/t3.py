@@ -61,6 +61,8 @@ WORDS = {
     "breath": "Relaxation lowers endplate activity, and the breath's movement stretches the band.",
     "attention": "Attention concentrates the breath's stretch at the spot.",
     "micro": "Small breaths stretch the band little; the calm they bring lowers endplate activity a little.",
+    "needs_what": "endplate activity at the knot",
+    "needs": "The energy crisis holds by its own squeezed capillaries: it needs pressure or stretch, not calm alone.",
     "hand": "Sustained pressure lengthens the contracture slowly, over the tens of seconds of pressure release.",
     "letgo": "The contracture relaxes as energy returns.",
     "spark": "A release fast enough twitches: the local twitch response.",
@@ -95,6 +97,8 @@ class Runner:
         area = np.array([s["nodule_area"] for s in self.se]) * 100.0  # cm² to mm²
         self.a_along = np.sqrt(area * 1.5 / np.pi)
         self.a_across = self.a_along / 1.5
+        self._dS = np.zeros(k)  # a calming aimed at the knot (the envelope), per setting
+        self._aim = np.zeros((k, self.lay.n), bool)
         self._formed = None
         self.variant = "drive+stretch"  # "aimed": attention aims the relaxation at the spot
 
@@ -136,6 +140,8 @@ class Runner:
                     strain = P["breath_strain"] * moved(scene, t)
                     if scene.attending(t):
                         strain = np.where(self.under_hand[None, :], strain * P["focus_gain"], strain)
+            if scene.calm_until and t < scene.calm_until:  # the knot's own drive lowered, aimed at it alone
+                s = s - self._dS[:, None] * self._aim
             press_now = np.where((pressing[:, None] & self.under_hand[None, :]) |
                                  (scene.rolling(t) & self.rolled[None, :]), P["palpation"], 0.0)
             rate = np.zeros_like(st.c) if last is None else np.abs(strain - last) / DT
@@ -168,6 +174,8 @@ class Runner:
         d = ((self.lay.pos - patch.SPOT) ** 2).sum(axis=1)
         target = np.array([int(np.argmin(np.where(held0[k] & self.under_hand, d, np.inf))) if (held0[k] & self.under_hand).any()
                            else self.lay.focal for k in range(self.K)])
+        self._aim = np.zeros((self.K, self.lay.n), bool)
+        self._aim[np.arange(self.K), target] = True
         frames = Frames(scene.duration, scene.frame)
         work = (Hand(self.K), target) if scene.work else None
         st = self._integrate(scene, st, frames, work)

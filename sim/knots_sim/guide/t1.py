@@ -64,6 +64,8 @@ WORDS = {
     "attention": "Drive is not local: attention changes only how much the breath moves the tissue at the spot.",
     "micro": "Small breaths move the tissue little and change drive little: what is left is attention concentrating their "
              "movement at the spot.",
+    "needs_what": "the sympathetic drive to the knot's own small artery",
+    "needs": "Tone eases slowly when drive falls (the gasp reflex's recovery, fitted to one recording), so a calming has to last.",
     "hand": "A vessel pressed shut cannot reopen until the pressure lifts.",
     "letgo": "As it opens, blood floods the starved patch.",
     "spark": "As blood returns the vessel's nerve bursts: a tingle over the patch it feeds.",
@@ -111,6 +113,8 @@ class Runner:
         self.rolled = self.lay.in_roll()
         self.roi = self.lay.near(patch.SPOT, patch.ROI_R)
         self.sham = self.lay.near(patch.SHAM, patch.ROI_R)
+        self._dS = np.zeros(k)  # a calming aimed at the knot (the envelope), per setting
+        self._aim = np.zeros((k, self.lay.n), bool)
         self._formed = None
         self.variant = "both"  # the breath through drive and movement; "aimed": attention aims the drive at the spot
 
@@ -190,6 +194,8 @@ class Runner:
                 mv = mv + (self.strain * moved(scene, t))[:, None]
                 if scene.attending(t):
                     mv = np.where(self.under_hand[None, :], mv * self.focus[:, None], mv)
+        if scene.calm_until and t < scene.calm_until:  # the knot's own drive lowered, aimed at it alone
+            u = u - (self.U * self._dS)[:, None] * self.zone[None, :] * self._aim
         press = np.zeros((Kk, N), bool)
         press |= pressing[:, None] & self.under_hand[None, :]
         if scene.rolling(t):
@@ -216,6 +222,8 @@ class Runner:
         x0 = Y0[0].reshape(Kk, N)
         held0 = (x0 < SHUT * self.xc) & self.bist
         target = self._target(held0)
+        self._aim = np.zeros_like(held0)
+        self._aim[np.arange(Kk), target] = True
         frames = Frames(scene.duration, scene.frame)
         hand = Hand(Kk) if scene.work else None
         Y = self._integrate(scene, Y0, frames, hand, target)

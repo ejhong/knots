@@ -2,6 +2,7 @@
 import Doc from '../../layouts/Doc.astro';
 import guide from '../../data/sim/guide.json';
 import type { GuideIndex, Trait } from '../../sim/guide/data';
+import { envelopeChart } from '../../sim/guide/envelope';
 
 const g = guide as unknown as GuideIndex;
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
@@ -34,6 +35,7 @@ const ROWS: [string, string][] = [
   ['breath', 'Slow breathing'],
   ['attention', 'Attention, no touch'],
   ['micro', 'Subtle breaths, attending'],
+  ['needs', 'What a breath must do'],
   ['hand', 'A resting hand'],
   ['letgo', 'How it lets go'],
   ['spark', 'A spark'],
@@ -144,6 +146,13 @@ const index = [
     <h2>How they differ</h2>
     <p class="sub">The same scenes, four answers. Where two columns part on something a hand or an instrument can tell, that is a test
       (see{' '}<a href={`${base}/research/#measurement`}>the measurement</a>).</p>
+    <h3 class="h3">What a breath would have to do</h3>
+    <p class="sub">However complex its pattern, a breath reaches a knot only through a few routes: the drive to its vessels or its motor
+      units, the tissue's movement, attention. So the models need its effect, not its pattern. For each theory: the least calming of the
+      knot's own drive, aimed at it and held for a time, that frees the typical knot (thick line) and the easiest quarter (thin), in 32
+      settings. The grey bars are what a breath does. Perception has no drive of its own at a place, so its calming is of arousal,
+      everywhere.</p>
+    <figure class="env" set:html={envelopeChart(g.theories)} />
     <div class="table-wrap">
       <table class="differ">
         <thead>
@@ -468,6 +477,23 @@ const index = [
   }
   .table-wrap {
     overflow-x: auto;
+  }
+  .h3 {
+    font-family: var(--font-sans);
+    font-size: 13.5px;
+    font-weight: 700;
+    margin: 18px 0 2px;
+  }
+  .env {
+    margin: 6px 0 22px;
+    max-width: 780px;
+    overflow-x: auto;
+  }
+  .env :global(svg) {
+    display: block;
+    width: 100%;
+    min-width: 560px;
+    height: auto;
   }
   .differ {
     border-collapse: collapse;

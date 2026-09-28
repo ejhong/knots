@@ -20,7 +20,7 @@ import numpy as np
 
 from ..exam import out_breath
 from ..theories import t1 as a1, t3 as a3, t6 as a6, t7 as a7
-from . import patch, senses, t1, t3, t6, t7, traits
+from . import envelope as ev, patch, senses, t1, t3, t6, t7, traits
 from .base import K, SEED, releases, formations, typical, wave
 from .scenes import SCENES, SURGE
 
@@ -85,6 +85,8 @@ def run_theory(m, k: int) -> dict:
         extra["hand_excite"] = runner.run(_scene("hand"), variant="excite")
         age = a7.ageing(runner.ps, "inhibit")
         extra["ageing"] = (age.brief_released, age.long_persists)
+    env = ev.envelope(runner)
+    extra["envelope"] = (env, ev.summary(env, runner.ps))
     print(f"  {m.ID} extra      {time.time() - t0:6.1f} s", flush=True)
     ch = traits.character(m, runner, runs, extra)
     held0 = runs["forms"].held[-1]
@@ -94,7 +96,7 @@ def run_theory(m, k: int) -> dict:
         ok = held0.any(axis=1)
     X = runner.settings()
     typ = typical(X, ok if ok.any() else np.ones(k, bool))
-    return {"runner": runner, "runs": runs, "character": ch, "typical": typ}
+    return {"runner": runner, "runs": runs, "character": ch, "typical": typ, "envelope": extra["envelope"][1]}
 
 
 def _scene(sid: str):
@@ -225,7 +227,7 @@ def main(k: int = K) -> dict:
         R = results[m.ID]
         index["theories"].append({"id": m.ID, "key": m.KEY, "name": m.NAME, "glyph": m.GLYPH, "typical": R["typical"],
                                   "layout": _layout(m, R["runner"], R["typical"]), "traits": R["character"]["traits"],
-                                  "counts": R["character"]["counts"]})
+                                  "counts": R["character"]["counts"], "envelope": R["envelope"]})
     INDEX.parent.mkdir(parents=True, exist_ok=True)
     INDEX.write_text(json.dumps(index, ensure_ascii=False, separators=(",", ":")) + "\n")
     FILMS.mkdir(parents=True, exist_ok=True)

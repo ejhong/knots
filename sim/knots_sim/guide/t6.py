@@ -56,6 +56,8 @@ WORDS = {
     "breath": "A slow breath eases arousal and is felt as safety; the in-breath is felt a little less.",
     "attention": "Attention first turns up what is felt there, then, with the breath, quiets it.",
     "micro": "Attention with safety quiets a place whatever the breath's size.",
+    "needs_what": "arousal, everywhere at once (perception has no drive of its own at a place)",
+    "needs": "What is felt follows arousal and attention; sensitisation keeps a place loud after arousal falls.",
     "hand": "A hand adds input and draws attention: the place is felt more under it.",
     "letgo": "What goes is what is felt.",
     "spark": "",
@@ -83,6 +85,8 @@ class Runner:
         self.zone = self.lay.zone
         self.under_hand = self.lay.near(patch.SPOT, patch.HAND_R)
         self.rolled = self.lay.in_roll()
+        self._dS = np.zeros(k)  # a calming aimed at the knot (the envelope), per setting
+        self._aim = np.zeros((k, self.lay.n), bool)
         self._formed = None
 
     def _rest(self):
@@ -107,6 +111,8 @@ class Runner:
                                  "hand": pressing.copy()})
             if i == steps:
                 break
+            if scene.calm_until and t < scene.calm_until:  # perception has no local drive: arousal, everywhere
+                s = s - self._dS
             breathing = scene.breathing(t)
             w = wave(scene, t)
             if breathing:

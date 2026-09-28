@@ -31,6 +31,7 @@ RELEVANT = {  # which sampled numbers can bear on each trait: "model" is the the
     "breath": ("model", "hold", *BREATH),
     "attention": ("model", "hold", *BREATH, "focus_gain"),
     "micro": ("model", "hold", *BREATH, "focus_gain"),
+    "needs": ("model", "hold", *BREATH),
     "hand": ("model", "hold", "palpation", "press_strain", *BREATH),
     "spark": ("model", "hold", "spark", "palpation", *BREATH),
     "move": ("model", "hold", "palpation", "press_strain", *BREATH),
@@ -71,6 +72,7 @@ class Numbers:
     """The sampled numbers per setting that a theory's traits could depend on, with their labels and kinds."""
 
     def __init__(self, m, runner):
+        self.ps = runner.ps
         self.cols: dict[str, tuple[np.ndarray, str, str]] = {}
         for q, p in load(m.TABLES[0]).items():
             if p.range and q in runner.ps[0]:
@@ -365,6 +367,9 @@ def character(m, runner, runs: dict, extra: dict) -> dict:
                f"{100 * _median(share_rel[anyk]):.0f}%). {words['micro']}")
         T.append(trait("micro", "release", "To subtle breaths, attending", say, went_m, tgt, nums,
                        cell=(f"at the spot {how_often(went_m, tgt).replace('in ', '')}" if went_m.any() else "no") if tgt.any() else "—"))
+    envl = extra.get("envelope")
+    if envl is not None:
+        T.append(_needs(envl, words, K, nums))
     ha = runs["hand"]
     t_h = np.array([_release_of(ha, k, target[k]) for k in range(K)])
     under, lift = tgt & (t_h < 60.0), tgt & (t_h >= 60.0) & (t_h < 65.0)
@@ -468,6 +473,35 @@ def character(m, runner, runs: dict, extra: dict) -> dict:
     # --- what an instrument would record ---
     T.append(trait("record", "record", "What an instrument would record", _record(m, runs, target, tgt), cell=words["record_cell"]))
     return {"traits": T, "counts": counts.tolist(), "any": anyk.tolist()}
+
+
+def _needs(envl, words, K, nums) -> dict:
+    """What a breath would have to do, whatever its pattern: the least calming of the knot's own drive that frees it."""
+    env, summ = envl
+    rows, br = summ["rows"], summ["breath"]
+    held = env["held"]
+    pct = lambda x: f"{100 * x:.0f}%"
+    # the claim: no single breath (a step as large as a slow out-breath's, for as long as one, 4 s) frees it through drive
+    i4 = env["durations"].index(4.0)
+    one = np.array([p["breath_fall"] / p["hold"] for p in nums.ps])
+    single = held & np.isfinite(env["need"][i4]) & (env["need"][i4] <= one)
+    first = next((r for r in rows if r["median"] is not None), None)
+    what = words.get("needs_what", "its drive")
+    if first is None:
+        easy = next((r for r in rows if r["q25"] is not None), None)
+        lead = ("No fall in it frees the typical knot, even to rest for a minute"
+                + (f"; the easiest quarter need about {pct(easy['q25'])} of the holding stress taken away for {easy['d']:.0f} s"
+                   if easy else "") + ".")
+    else:
+        last = rows[-1]
+        lead = (f"To free the typical knot it must fall by about {pct(first['median'])} of the holding stress for "
+                f"{first['d']:.0f} s" + (f", or {pct(last['median'])} for a minute" if last["median"] is not None and last["d"] != first["d"] else "")
+                + (f"; nothing shorter than {first['d']:.0f} s frees it" if first["d"] > 1 else "") + ".")
+    say = (f"Whatever its pattern, a breath reaches this knot through {what}. {lead} A slow out-breath lowers it by about "
+           f"{pct(br['out_breath'])} for a few seconds, a subtle breath by {pct(br['subtle'])}, minutes of slow breathing by about "
+           f"{pct(br['minutes'])}, sustained. So one breath frees it {how_often(single, held)}. {words.get('needs', '')}").strip()
+    return trait("needs", "release", "What a breath would have to do", say, ~single, held, nums,
+                 cell=(f"{pct(first['median'])} for {first['d']:.0f} s" if first else "not by calming alone"))
 
 
 def _record(m, runs, target, tgt) -> str:

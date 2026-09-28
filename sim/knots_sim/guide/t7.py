@@ -62,6 +62,8 @@ WORDS = {
     "breath": "The breath lowers the descending drive and the monoamines that deepen the latch.",
     "attention": "Attention at a place inhibits its units.",
     "micro": "Attention inhibits the units at the spot whatever the breath's size; the breath itself adds little.",
+    "needs_what": "the unit's input (a fall in drive, or inhibition, such as attention's)",
+    "needs": "The latch holds a unit on at a small share of the input that recruited it: the input must fall far below that.",
     "hand": "A held hand excites the units under it for a moment and then inhibits them (which a hand does is not known; "
             "the other variant follows).",
     "letgo": "The unit falls silent and its fibres relax: an unclenching.",
@@ -99,6 +101,8 @@ class Runner:
         # what a unit's territory is, felt: across the fibres its measured width; along them, a long band
         self.a_across = np.array([s["territory"] for s in self.se])[:, None] / 2 * (self.lay.a_across / self.lay.a_across.mean())[None, :]
         self.a_along = np.array([s["unit_length"] for s in self.se])[:, None] / 2 * np.ones(N)[None, :]
+        self._dS = np.zeros(k)  # a calming aimed at the knot (the envelope), per setting
+        self._aim = np.zeros((k, self.lay.n), bool)
         self._formed = None
 
     def _scale(self) -> np.ndarray:
@@ -147,6 +151,8 @@ class Runner:
                 s = s + P["breath_fall"][:, 0] * (P["breath_in_share"][:, 0] * max(w, 0.0) + min(w, 0.0)) \
                     - calmed(scene, t, P["breath_calm"][:, 0], P["tau_calm"][:, 0])
             drive = s[:, None] * self.zone[None, :] * self.U[:, None]
+            if scene.calm_until and t < scene.calm_until:  # the knot's own drive lowered, aimed at it alone
+                drive = drive - (self._dS[:, None] * self.zone[None, :] * self.U[:, None]) * self._aim
             extra = np.zeros_like(drive)
             if scene.attending(t):
                 extra = extra - np.where(self.under_hand[None, :], P["focus_inhibit"], 0.0)
@@ -179,6 +185,8 @@ class Runner:
         d = ((self.lay.pos - patch.SPOT) ** 2).sum(axis=1)
         target = np.array([int(np.argmin(np.where(latched[k] & self.under_hand, d, np.inf))) if (latched[k] & self.under_hand).any()
                            else self.lay.focal for k in range(self.K)])
+        self._aim = np.zeros((self.K, self.lay.n), bool)
+        self._aim[np.arange(self.K), target] = True
         frames = Frames(scene.duration, scene.frame)
         work = (Hand(self.K), target) if scene.work else None
         st = self._integrate(scene, st, frames, work, variant)

@@ -36,6 +36,7 @@ class Scene:
     surge: bool = False  # the scene itself runs the surge (from rest)
     pattern: str = "slow"  # the breath's shape: "slow" (4 s in, 6 s out) or "micro" (small sips in, a long slow release)
     breath_amp: float = 1.0  # its size, as a share of a slow breath's effect on drive, movement and calm
+    calm_until: float = 0.0  # the knot's own drive lowered (by the runner's `_dS`, per setting) from 0 until then
 
     def level(self, t: float) -> str:
         """'rest', 'surge' or 'hold' at time t."""
