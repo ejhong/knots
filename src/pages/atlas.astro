@@ -196,9 +196,14 @@ const pct = (a: number) => ((a - 1) / 89) * 100;
     color: var(--text);
   }
   @media (max-width: 480px) {
+    /* above the corner lines (the hint and the credit), and wrapped rather than cut */
     .first-hint {
       font-size: 10px;
-      bottom: 14px;
+      bottom: 40px;
+      white-space: normal;
+      width: max-content;
+      max-width: calc(100% - 32px);
+      text-align: center;
     }
   }
   .notes-panel :global(.section-svg) {
