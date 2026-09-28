@@ -11,6 +11,7 @@ A living list. Checked items are live.
 - [x] Figure from MakeHuman (CC0): age 1–90, female↔male, runtime subdivision
 - [x] Perforator ladder: roots → 374 major → ~3,600 medium → ~100,000 small; trees along the skin
 - [x] Knot simulation: vessel tone / collar gel / nerve; breath-gated release; conducted dilation up the tree; age settle
+- [x] Consistency pass with the field guide's model: the hold is the wall's tone (the collar is the stiffness sleeve only); a knot lets go as the press lifts; a release frees the children it holds, down the tree, never up
 - [x] Tools: press (exhale-gated), roll, hydrodissect, stress brush; scenarios (back ache, desk neck, headache, anxious, cold, sauna)
 - [x] Stars and light climbing the trees on release
 - [ ] The fascia over days (later): peeling, hollowing and re-knitting, drawn from reports

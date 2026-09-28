@@ -6,17 +6,20 @@ interface Pulse {
   cum: Float32Array;
   s: number;
   strength: number;
+  /** m per real second: set so the bead arrives when its child lets go. */
+  speed: number;
 }
 
 /**
- * Light running up the tree: conducted vasodilation made visible. A
- * release sends a bead of light from the perforator along the skin toward
- * its parent and on to the root, fading as it climbs.
+ * Light running down a tree: the flow returning as a vessel opens. A
+ * release sends a bead of light from the vessel along its drawn branches
+ * to each held child it frees, arriving as that one lets go, fading as it
+ * goes. (A child's release sends nothing back up: release runs down a
+ * tree, not up. Twigs to the small perforators are not drawn, so a small
+ * child only lights where it is.)
  */
 export class Pulses {
   private active: Pulse[] = [];
-  /** Display speed (m per real second); the sim carries the true rate. */
-  speed = 0.09;
   trail = 0.035;
   maxActive = 90;
 
@@ -26,37 +29,26 @@ export class Pulses {
     private positions: () => Float32Array,
   ) {}
 
-  /** Starts a pulse from a perforator toward its root. */
-  emit(node: number, strength = 1) {
+  /** Starts a bead from a vessel (a perforator, or a root at count + r) down its tree to one of its children, arriving in `duration` s. */
+  emitDown(from: number, to: number, strength: number, duration: number) {
     const L = this.ladder;
-    if (node >= L.count) return;
-    let start = L.vertex[node];
-    if (L.level[node] === 0) {
-      const p = L.parent[node];
-      if (p < 0) return;
-      start = L.vertex[p];
-      strength *= 0.5;
-    }
-    // Branch (to the major) then trunk (to the root).
+    if (to >= L.count) return;
+    // The drawn paths: a root's trunk to a major, a major's branch to a medium.
+    const lvl = L.level[to];
+    const pred = lvl === 2 ? L.trunkPred : lvl === 1 ? L.branchPred : null;
+    if (!pred || (from >= L.count) !== (lvl === 2)) return;
+    const end = from >= L.count ? -1 : L.vertex[from];
+    // Up from the child to the vessel that feeds it, then reversed.
     const path: number[] = [];
-    let v = start;
+    let v = L.vertex[to];
     let guard = 0;
-    if (L.level[node] <= 1) {
-      while (v >= 0 && guard++ < 4000) {
-        path.push(v);
-        const p = L.branchPred[v];
-        if (p < 0) break;
-        v = p;
-      }
-    }
-    guard = 0;
     while (v >= 0 && guard++ < 4000) {
-      if (path[path.length - 1] !== v) path.push(v);
-      const p = L.trunkPred[v];
-      if (p < 0) break;
-      v = p;
+      path.push(v);
+      if (v === end) break;
+      v = pred[v];
     }
-    if (path.length < 2) return;
+    if (path.length < 2 || (end >= 0 && path[path.length - 1] !== end)) return;
+    path.reverse();
     const P = this.positions();
     const cum = new Float32Array(path.length);
     for (let i = 1; i < path.length; i++) {
@@ -65,7 +57,7 @@ export class Pulses {
       cum[i] = cum[i - 1] + Math.hypot(P[a] - P[b], P[a + 1] - P[b + 1], P[a + 2] - P[b + 2]);
     }
     if (this.active.length >= this.maxActive) this.active.shift();
-    this.active.push({ path, cum, s: 0, strength });
+    this.active.push({ path, cum, s: 0, strength, speed: cum[cum.length - 1] / Math.max(0.05, duration) });
   }
 
   get busy() {
@@ -85,7 +77,7 @@ export class Pulses {
     const trail = this.trail;
     const keep: Pulse[] = [];
     for (const p of this.active) {
-      p.s += this.speed * dt;
+      p.s += p.speed * dt;
       const total = p.cum[p.cum.length - 1];
       const fade = p.strength * Math.max(0, 1 - p.s / (total + trail * 3)) ** 0.6;
       for (let i = 0; i < p.path.length; i++) {

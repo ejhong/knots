@@ -90,7 +90,7 @@ export const CHAPTERS: Chapter[] = [
     title: 'Trees, and knots that move',
     seconds: 24,
     html: `<p>A perforator stays in place, but each belongs to a tree of vessels, and each tree has a root: a source artery feeding a whole territory of skin. Small arteries <em>conduct</em>. A dilation that starts at one branch travels along the vessel wall toward the vessel that feeds it, at millimetres to centimetres a second.</p>
-<p>This may be why knots seem to move. When one branch opens, flow and pressure shift across its tree, and the neighbouring vessels adjust — some relaxing, some tightening — until the territory settles into a new balance. Felt from the inside, that would be knots moving into the gap and finding new places: the evening-out people describe. In the model, freeing a parent frees most of its children, but freeing a child does not free its parent: release runs down a tree, not up. Here each release sends light along its tree.</p>`,
+<p>This may be why knots seem to move. When one branch opens, flow and pressure shift across its tree, and the neighbouring vessels adjust — some relaxing, some tightening — until the territory settles into a new balance. Felt from the inside, that would be knots moving into the gap and finding new places: the evening-out people describe. In the model, freeing a parent frees most of its children, but freeing a child does not free its parent: release runs down a tree, not up. Here a release sends light down its tree to the knots it frees.</p>`,
     refs: ['segal1986', 'saintcyr2009'],
     scene: { pose: { p: [-0.5, 0.76, -1.1], t: [0.0, 0.68, -0.03] }, age: 50, demo: 'release', trees: 1.6 },
   },

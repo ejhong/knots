@@ -106,8 +106,10 @@ export class AtlasScene {
   private knotSlowUntil = 0;
   /** A newly chosen theory's knots fade in (0 → 1). */
   private theoryFade = 1;
-  private lastPlan = -1;
-  private pendingPlan: { p: Vector3; r: number } | null = null;
+  /** A press on the perforator view while it lasts: where, and when pressure last came (scene clock, s). */
+  private press: { p: Vector3; r: number; at: number } | null = null;
+  /** The move-in to plan once the knots a lift let go, and the children they free, have gone. */
+  private pendingPlan: { p: Vector3; r: number; at: number } | null = null;
   /** Knots of the site theories (trigger points, densification, nerves, perception), built when first chosen. */
   theories: Partial<Record<string, SiteKnots>> = {};
   /** Traditional (and clinical) maps, each built the first time it is shown. */
@@ -264,11 +266,9 @@ export class AtlasScene {
     this.rootMarkers = new RootMarkers(this.roots.length);
     this.picker = new Picker(this.layers.floorGeometry, body.normals, body.triangles);
     this.pulses = new Pulses(this.ladder, this.trees, () => this.body.positions);
+    // Light runs down the tree from a vessel that opens to each held child it frees, arriving as that one lets go.
     this.sim.onRelease((e) => {
-      if (e.node < this.ladder.count) {
-        const lvl = e.level;
-        if (lvl >= 1 || Math.random() < 0.25) this.pulses.emit(e.node, lvl === 2 ? 1 : lvl === 1 ? 0.8 : 0.5);
-      }
+      for (const f of e.frees) this.pulses.emitDown(e.node, f.node, this.sim.level[f.node] === 2 ? 1 : 0.8, f.delay);
     });
     const scene = this.engine.scene;
     scene.add(
@@ -404,6 +404,7 @@ export class AtlasScene {
     // A new age (or a reset) eases in; releases stay quick.
     this.knotSlowUntil = this.clock + 0.8;
     this.moves.length = 0;
+    this.press = null;
     this.pendingPlan = null;
     this.migrants.clear();
     this.sim.settle(age);
@@ -1171,34 +1172,38 @@ export class AtlasScene {
   }
 
   /**
-   * The perforator view. Knots under the press let go (small ones at once,
-   * larger ones with more pressure); then, over about a second, the knots
+   * The perforator view. A press eases the walls of the knots under it (small
+   * ones at once, larger ones with more pressure), but a pressed vessel stays
+   * shut: the eased knots let go as the press lifts (updateMigration), and
+   * each frees the held children it was holding a moment later, down its
+   * tree; a child frees nothing back up. Then, over about a second, the knots
    * around move in to fill the space, in waves — the nearest first — each
-   * into a less crowded spot nearer the gap, so the area evens out. What
-   * let go does not come back: a worked area thins, and there are fewer
-   * knots over time. A release never sets off another.
+   * into a less crowded spot nearer the gap, so the area evens out. What let
+   * go does not come back: a worked area thins, and there are fewer knots
+   * over time.
    */
   private releasePerforators(p: Vector3, radius: number, amount: number) {
     const sim = this.sim;
     const s2 = 2 * (radius * 0.6) ** 2;
-    let released = 0;
+    let touched = false;
     this.grid.query(p.x, p.y, p.z, radius, (i, d) => {
       if (sim.hold[i] <= 0) return;
-      if (sim.pressKnot(i, amount * Math.exp(-(d * d) / s2)) > 0) released++;
+      sim.pressKnot(i, amount * Math.exp(-(d * d) / s2));
+      touched = true;
     });
-    if (!released) return;
+    this.press = { p: p.clone(), r: Math.max(radius, this.press?.r ?? 0), at: this.clock };
+    if (!touched) return;
     sim.computeOutputs();
     this.syncKnots();
-    // Plan the migration now, or (while a press is held) at most four times a second.
-    if (this.clock - this.lastPlan >= 0.25) this.planMigration(p, radius);
-    else this.pendingPlan = { p: p.clone(), r: radius };
   }
+
+  /** A press counts as lifted once no pressure has come for this long (s). */
+  private static LIFT = 0.15;
 
   /** Typical spacing of knots by rung (m), which sets how far each step of a move goes. */
   private static SPACING = [0.0055, 0.024, 0.06];
 
   private planMigration(p: Vector3, radius: number) {
-    this.lastPlan = this.clock;
     const L = this.ladder;
     const P = this.cloud.positions;
     const hold = this.sim.hold;
@@ -1277,10 +1282,21 @@ export class AtlasScene {
     return [0, 1, 2].map((c) => P[i * 3 + c] + N[i * 3 + c] * off);
   }
 
-  /** Departures, glides and arrivals of migrating knots. */
+  /** A press lifting, then the departures, glides and arrivals of migrating knots. */
   private updateMigration(dt: number) {
     this.clock += dt;
-    if (this.pendingPlan && this.clock - this.lastPlan >= 0.25) {
+    // The press lifts: the knots it eased let go now, and the knots around
+    // move in once the children they free have gone too.
+    if (this.press && this.clock - this.press.at >= AtlasScene.LIFT) {
+      const { p, r } = this.press;
+      this.press = null;
+      if (this.sim.lift()) {
+        this.sim.computeOutputs();
+        this.syncKnots();
+        this.pendingPlan = { p, r, at: this.clock + this.sim.freeing() + 0.05 };
+      }
+    }
+    if (this.pendingPlan && this.clock >= this.pendingPlan.at) {
       const { p, r } = this.pendingPlan;
       this.pendingPlan = null;
       this.planMigration(p, r);

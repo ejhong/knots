@@ -369,7 +369,7 @@ function bindTooltip(viz: HTMLElement, scene: AtlasScene, card: MapCard) {
       if (!perf) return '';
       const stuck = sim.stuck[i] === 1;
       return `<div class="t-state ${stuck ? 'stuck' : 'open'}">${stuck ? 'held — a knot' : 'open'}</div>
-        <div class="bars">${bar('vessel', sim.tone[i], sim.tone[i] > 0.6)}${bar('hold', sim.gel[i], sim.gel[i] > 0.5)}${bar('nerve', sim.nerve[i], sim.nerve[i] > 0.5)}</div>`;
+        <div class="bars">${bar('vessel', sim.tone[i], sim.tone[i] > 0.6)}${bar('sleeve', sim.gel[i], sim.gel[i] > 0.5)}${bar('nerve', sim.nerve[i], sim.nerve[i] > 0.5)}</div>`;
     };
     if (h.root >= 0) {
       const r = scene.roots[h.root];
@@ -430,6 +430,7 @@ function bindHypotheses(viz: HTMLElement, panel: HTMLElement, scene: AtlasScene)
   const whereEl = panel.querySelector<HTMLElement>('[data-section-where]')!;
   const q = new URLSearchParams(location.search).get('h');
   if (q && hypothesisById(q)?.ready) sel.value = q;
+  const base = import.meta.env.BASE_URL.replace(/\/?$/, '/');
 
   // The cross-section follows the pointer; it starts at the dissection window.
   let place = { dSup: 0.0042, dDeep: 0.01, region: 'upper back' };
@@ -442,7 +443,10 @@ function bindHypotheses(viz: HTMLElement, panel: HTMLElement, scene: AtlasScene)
     scene.setHypothesis(h.id);
     panel.querySelector('[data-card-kicker]')!.textContent = h.name;
     panel.querySelector('[data-census-note]')!.textContent = h.count;
-    panel.querySelector('[data-card-body]')!.innerHTML = `<p>${h.short}</p><p><em>Where.</em> ${h.layer}</p><p><em>Holds.</em> ${h.holds}</p>`;
+    // The atlas is the anatomy; how the theory's knots behave is in its film, in the field guide.
+    panel.querySelector('[data-card-body]')!.innerHTML =
+      `<p>${h.short}</p><p><em>Where.</em> ${h.layer}</p><p><em>Holds.</em> ${h.holds}</p>` +
+      `<p><a href="${base}hypotheses/?theory=${h.id}#watch">Watch its knots, scene by scene →</a></p>`;
     drawSection();
   };
   sel.addEventListener('change', show);

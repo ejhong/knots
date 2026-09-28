@@ -11,7 +11,7 @@ src/viewer/AtlasScene.ts   assembles everything below and steps it each frame
  ├─ perforators/PerforatorCloud   100k points, relief-lit; knots swell into embers; stars
  ├─ perforators/TreeLines  unique tree edges with flow weight; pulses; drifting light toward roots
  ├─ perforators/RootMarkers  rings at the roots (gates)
- ├─ sim/KnotSim            per-site tone/gel/nerve; breath; tree coupling; release events
+ ├─ sim/KnotSim            per-site wall tone (the hold) / sleeve / nerve; breath; release on lift; frees down the tree
  ├─ interaction/*          picking (refit BVH), tools, hover
  └─ ui/AtlasUI, ui/HeroScene  DOM bindings
 ```

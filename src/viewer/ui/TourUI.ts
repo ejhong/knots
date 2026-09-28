@@ -206,7 +206,7 @@ export function mountTour(viz: HTMLElement, panel: HTMLElement) {
     return scene.engine.flyTo({ position: p, target: t, fov: pose.fov ?? 30 }, duration);
   }
 
-  /** Presses a stuck knot near a point until it lets go on an exhale. */
+  /** Presses a held knot near a point until its wall has eased, then lifts: it lets go as the press lifts. */
   function releaseNear(p: Vector3, radius: number, filter: (i: number) => boolean) {
     const L = scene.ladder;
     const P = scene.cloud.positions;
@@ -224,9 +224,11 @@ export function mountTour(viz: HTMLElement, panel: HTMLElement) {
     let held = 0;
     const off = scene.engine.onFrame(({ dt }) => {
       held += dt;
+      if (!scene.sim.stuck[best] || scene.sim.canOpen(best) || held > 7) {
+        off();
+        return;
+      }
       scene.sim.applyPress(nodes, 1);
-      if (held > 0.4) scene.sim.hydrodissect(nodes.map(([j, w]) => [j, w * 0.06] as [number, number]));
-      if (!scene.sim.stuck[best] || held > 7) off();
     });
     return true;
   }
@@ -293,12 +295,18 @@ export function mountTour(viz: HTMLElement, panel: HTMLElement) {
         );
         break;
       }
-      case 'release':
+      case 'release': {
+        // A major first, where one is held: its release frees the smaller knots it holds, down its tree
+        // (light runs along the drawn branches to the medium ones).
+        const L = scene.ladder;
+        const major = (i: number) => L.level[i] === 2;
+        const holdsMedium = (i: number) => major(i) && scene.sim.holding(i).some((c) => L.level[c] === 1);
         every(3.2, () => {
           if (scene.sim.breath.phase === 'inhale') return;
-          releaseNear(target(), 0.12, () => true);
+          releaseNear(target(), 0.12, holdsMedium) || releaseNear(target(), 0.12, major) || releaseNear(target(), 0.12, () => true);
         });
         break;
+      }
       case 'theories': {
         // The alternate theories in turn on the same body: Johnson's latches first.
         const order = ['latch', 'trigger-point', 'densification', 'nerve', 'central'];

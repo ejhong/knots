@@ -292,8 +292,10 @@ export function mountGuide(root: HTMLElement, base: string): void {
     if (film) seek(t);
   });
   new IntersectionObserver((es) => (visible = es.some((e) => e.isIntersecting)), { threshold: 0.01 }).observe(root);
-  const fromHash = index.theories.find((th) => `#${th.key}` === location.hash);
-  if (fromHash) selected = fromHash.id;
+  // The theory a link asked for: ?theory=<key> (as from the atlas), or #<key>.
+  const asked = new URLSearchParams(location.search).get('theory') ?? location.hash.slice(1);
+  const pick = index.theories.find((th) => th.key === asked);
+  if (pick) selected = pick.id;
   choose(scene.id);
   requestAnimationFrame(loop);
 }

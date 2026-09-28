@@ -3,7 +3,8 @@ import type { AtlasScene } from '../AtlasScene';
 /**
  * Aggravations and reliefs. Each scenario raises sympathetic drive in the
  * zones it loads; knots swell and multiply over sim-minutes. Lifting the
- * scenario removes the drive but not the knots — the collar remembers.
+ * scenario removes the drive but not the knots: a shut vessel holds until its
+ * tone falls below its band.
  */
 export interface Scenario {
   id: string;

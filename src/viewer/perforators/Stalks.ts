@@ -301,7 +301,7 @@ function createCollarMaterial() {
         float r = length(c);
         if (r > 1.0) discard;
         float px = fwidth(r);
-        // Open: a thin ring. Stuck: the collar thickens and fills — gelled.
+        // Open: a thin ring. Held: the ring where it passes the fascia thickens and fills.
         float width = mix(0.07, 0.16, vKnot);
         float ring = 1.0 - smoothstep(width, width + px * 1.5, abs(r - 0.66));
         float fill = (1.0 - smoothstep(0.62, 0.66, r)) * vKnot * 0.12;

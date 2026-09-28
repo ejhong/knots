@@ -44,7 +44,7 @@ Pushing to `main` deploys to GitHub Pages via `.github/workflows/deploy.yml`; ev
 | Figure | `scripts/body/`, `src/viewer/body/` | MakeHuman hm08 base mesh + age targets (CC0), morphed female↔male and 1–90 y, Catmull–Clark at runtime |
 | Anatomical placement | `src/viewer/anchors/` | Landmark “locators” (rays from skeletal points) → anchors pinned to mesh topology, so everything follows the figure through a life |
 | Perforator ladder | `src/viewer/perforators/generate.ts` | ~40 source roots → 374 major → ~3,600 medium → ~100,000 small, blue-noise sampled; trees are shortest paths along the skin |
-| Knot simulation | `src/viewer/sim/` | Per-site vessel tone / collar gel / nerve, breath-gated, tree-coupled, age-settled; scenarios add drive |
+| Knot simulation | `src/viewer/sim/` | Per-site wall tone (the hold) / sleeve / nerve, breath-gated, released as a press lifts, freeing down the tree, age-settled; scenarios add drive |
 | Hypotheses, maps, references | `src/data/` | Plain typed data; one registry feeds the atlas and the pages |
 | Pages | `src/pages/` | Astro, static |
 

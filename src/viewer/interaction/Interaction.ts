@@ -113,7 +113,7 @@ export class Interaction {
       const double = !e.shiftKey && !!last && now - last.t < Interaction.DOUBLE_MS && Math.hypot(p.x - last.x, p.y - last.y) < (this.hoverOn ? 16 : 30);
       this.down = { x: p.x, y: p.y, t: now, still: true, place: e.shiftKey, double };
       if (double) {
-        // The second press of a double-click releases at once (and lets go of the selection).
+        // The second press of a double-click presses at once (and lets go of the selection); its knots go as it lifts.
         this.lastClick = null;
         for (const cb of this.selectListeners) cb(null);
         const hit = this.cast(p.x, p.y, p.w, p.h);
