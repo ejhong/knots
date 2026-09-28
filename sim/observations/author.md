@@ -40,3 +40,11 @@ discussion's table is in `sim/BRIEF.md`.
 - 27 Sep 2026, on pressure and the breath: "Also my thought is we don’t know if the palpitation pressure vs complex
   meditative breath for release. I think breath plus attention alone may be enough but the pressure may help focus
   attention to area."
+- 28 Sep 2026, answering: does a knot come back as the hand lifts; knots over bone; attention without touch or touch
+  without attention; do others fade when one is worked: "Doesn’t seem to come back as lift. But sometimes it feels like a
+  new one migrates in. But feels like a different one for some reason. 2 I don’t think so but not fully sure. 3.
+  Attention with no touch I believe (with some complex breath). 4. Don’t think so."
+- 28 Sep 2026, on the direction: "I don’t feel like giving you all these exact details and constraining to them feels
+  right. I was hoping the sims would say how the knots should behave rather than me saying it. Each sim should show well
+  this is how they would feel respond move etc. and we could see the sim and it would give all these characteristics of
+  how the knots should bd under that theory."
