@@ -26,7 +26,7 @@ from __future__ import annotations
 import numpy as np
 
 from .. import adapt
-from ..exam import (AGE_DEPTH, BACK_WITHIN, MOOD_FOR, PATCH, PERIOD, PRESS_FOR, ROUTES, SURGE, T0, WITHIN, AgeOut, ClusterOut, Density, Patch, PatchOut, Single,
+from ..exam import (AGE_DEPTH, BACK_WITHIN, MOOD_FOR, PATCH, PERIOD, PRESS_FOR, ROUTES, SURGE, T0, WITHIN, AgeOut, ClusterOut, Density, Hand, Patch, PatchOut, Single,
                     SingleOut, breath_wave, calm, coming_and_going, held_again, mood, out_breath, releases)
 from ..models import tree as tr
 from ..models import vessel as v
@@ -42,12 +42,15 @@ VARIANTS = {
     "both+adaptation": "both, with the muscle adapting to a held length over hours (knots can set)",
 }
 SILENT = {"O3"}
+FEEL = {"bump": False, "unclench": False}  # what the hand feels (O17), from the account of what a knot is
 NOTES = {"O3": "Nothing in the vessel switch turns on hydration.",
          "O15": "Small vessels rise to the skin on the order of 100,000, one every 4-5 mm (estimated from the skin's area); the major ones, 374 on average (taylor1987).",
          "O1.3": "Through drive alone the breath is not local, so focusing it changes nothing; through movement, focus concentrates the movement at the place; aimed, it lowers the drive there.",
          "O2.2": "Pressed, the vessel is squeezed and cannot open: it lets go within a second of the hand lifting, not under it.",
          "O8.1": "A release lowers the pressure its siblings share, by several mmHg, but not enough to shut one; a neighbour shuts only if something else pushes on it by 10 mmHg or more (exploratory/2026-09-27-migration-pressure.py), where tissue pressure under the skin rises only a few mmHg as it fills (christ1997).",
-         "O10.1": "Without adaptation nothing remembers how long a knot was held; with it, a knot held for hours can set and hold at rest (findings 003)."}
+         "O10.1": "Without adaptation nothing remembers how long a knot was held; with it, a knot held for hours can set and hold at rest (findings 003).",
+         "O17.1": "The account places the felt knot at the fascial ring and gives it no bump: a shut vessel leaves its patch with less blood, nothing firmer. Feeding the muscle beneath, it could make one, slow to go (PLAN.md finding 17).",
+         "O17.2": "A vessel reopening floods its patch (a flush, a tingle) rather than unclenching."}
 SHUT = 1.5
 VARY = ("Tmax", "r100", "P", "xopt", "beta", "width", "wall", "xc")
 _CACHE: dict = {}
@@ -338,7 +341,7 @@ def cluster(ps: list[dict], variant: str) -> ClusterOut:
         gain = np.ones(u_m.shape)
         gain[:, target] = B["focus_gain"][:, 0]  # attention at the worked knot
         aimed = gain if base == "aimed" else 1.0
-        gone = np.zeros(len(ps), bool)  # the knot has let go: the hand lifts, and does not come back
+        hand = Hand(len(ps), start=press[0])  # worked until it lets go, a minute at most; then it lifts
 
         def inputs(t, x):
             u = tree["urest"].copy() if t < SURGE[0] else u_m.copy()
@@ -351,14 +354,12 @@ def cluster(ps: list[dict], variant: str) -> ClusterOut:
                                  B["breath_strain"] * gain, B["breath_calm"] * U[:, None] * aimed, B["tau_calm"])
                 u = u + du
                 mv = mv + np.zeros(u.shape)
-            if t >= press[0]:
-                gone[:] |= x[:, target] >= SHUT * tree["xc"][:, 0]
-            if press[0] <= t < press[1]:  # worked until it lets go, for at most a minute
-                pe[:, target] = np.where(gone, 0.0, palp)
-                mv[:, target] = np.where(gone, mv[:, target], np.maximum(mv[:, target], strain))
+            pressing = hand.step(t, x[:, target] < SHUT * tree["xc"][:, 0])
+            pe[:, target] = np.where(pressing, palp, 0.0)
+            mv[:, target] = np.where(pressing, np.maximum(mv[:, target], strain), mv[:, target])
             return np.clip(u, 0, 1), pe, np.clip(mv, 0, 1)
 
-        return tr.run(tree, inputs, duration, dt=0.02, every=10, sees=True)
+        return tr.run(tree, inputs, duration, dt=0.02, every=10, sees=True), hand.released_at
 
     # O8.2, per set: within BACK_WITHIN s of the knot's release, a knot back at its place, by route, and how soon
     how = {r_: np.zeros(K, bool) for r_ in ROUTES}
@@ -372,20 +373,17 @@ def cluster(ps: list[dict], variant: str) -> ClusterOut:
     # A parent and four children: release the parent; how many children go with it, within 10 s? And after it: is the
     # parent shut again, or is a child still (or again) shut beneath it?
     parent = _trees(ps, np.array([0.30] + list(np.linspace(*wall_range, 4))), rigid=False)
-    r = run_tree(parent, 0, press[1] + BACK_WITHIN + 10.0)
+    r, let_go = run_tree(parent, 0, press[1] + BACK_WITHIN + 10.0)
     s = r["x"] < SHUT * parent["xc"][None]
     t = r["t"]
     before = s[np.searchsorted(t, press[0]) - 1]
     with_ = np.zeros(K, int)
     tested_with = np.zeros(K, bool)
     for k in range(K):
-        if not before[k, 0]:
-            continue
-        opened = np.flatnonzero((t >= press[0]) & ~s[:, k, 0])
-        if not len(opened):
+        if not before[k, 0] or np.isnan(let_go[k]):
             continue
         tested_with[k] = True
-        t_open = t[opened[0]]
+        t_open = let_go[k]
         win = s[(t >= t_open) & (t <= t_open + 10.0), k, 1:]
         with_[k] = int((before[k, 1:] & ~win[-1]).sum())
         came_back(k, "same", held_again(t, s[:, k, 0], t_open))
@@ -396,20 +394,17 @@ def cluster(ps: list[dict], variant: str) -> ClusterOut:
     sib = _trees(ps, np.array([0.30] + list(np.linspace(*wall_range, 6))), rigid=True)
     knot = sib["V"] - 1
     near = list(range(1, knot))
-    r2 = run_tree(sib, knot, press[1] + BACK_WITHIN + 10.0)
+    r2, let_go2 = run_tree(sib, knot, press[1] + BACK_WITHIN + 10.0)
     s2 = r2["x"] < SHUT * sib["xc"][None]
     t2 = r2["t"]
     before2 = s2[np.searchsorted(t2, press[0]) - 1]
     new = np.zeros(K, bool)
     tested_new = np.zeros(K, bool)
     for k in range(K):
-        if not before2[k, knot]:
-            continue
-        opened = np.flatnonzero((t2 >= press[0]) & ~s2[:, k, knot])
-        if not len(opened):
+        if not before2[k, knot] or np.isnan(let_go2[k]):
             continue
         tested_new[k] = True
-        t_open = t2[opened[0]]
+        t_open = let_go2[k]
         window = (t2 >= t_open) & (t2 <= t_open + BACK_WITHIN)
         later = s2[window, k][:, near]
         newly = ~before2[k, near] & later.any(axis=0)

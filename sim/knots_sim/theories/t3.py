@@ -25,7 +25,7 @@ from __future__ import annotations
 
 import numpy as np
 
-from ..exam import (BACK_WITHIN, MOOD_FOR, PATCH, PERIOD, PRESS_FOR, ROUTES, SURGE, T0, WITHIN, AgeOut, ClusterOut, Density, Patch, PatchOut, Single,
+from ..exam import (BACK_WITHIN, MOOD_FOR, PATCH, PERIOD, PRESS_FOR, ROUTES, SURGE, T0, WITHIN, AgeOut, ClusterOut, Density, Hand, Patch, PatchOut, Single,
                     SingleOut, breath_wave, calm, coming_and_going, held_again, mood, out_breath, releases)
 from ..models import triggerpoint as tp
 from ..params import load, values
@@ -37,12 +37,15 @@ VARIANTS = {
     "aimed": "relaxation, aimed by attention: at the attended place the breath lowers drive focus_gain times as far",
 }
 SILENT = {"O3"}
+FEEL = {"bump": True, "unclench": True}  # what the hand feels (O17), from the account of what a knot is
 NOTES = {"O3": "Nothing in the energy crisis turns on hydration.",
          "O10.1": "Its slow sustaining factors (weeks) are not modelled yet.",
          "O15": "Hundreds of sites, a few regions in each muscle (300 taken as representative); the active nidus is 1-2 mm (hubbard1993).",
          "O8.1": "New knots after a release come from the taut band's load shifting to its neighbours: an extension of the account.",
          "O2.2": "Pressure release takes tens of seconds (60-90 s at the pressures used, pecosmartin2019), not one out-breath.",
-         "O4.2": "Which endplates hold a knot is set more by their own activity than by where stress is held."}
+         "O4.2": "Which endplates hold a knot is set more by their own activity than by where stress is held.",
+         "O17.1": "The contraction knot in a taut band, stiffer than its surroundings (sikdar2009): a bump in muscle.",
+         "O17.2": "It lets go as the contracture relaxes, over tens of seconds under a press."}
 _CACHE: dict = {}
 
 
@@ -250,25 +253,23 @@ def patch(ps: list[dict], variant: str, protocol: Patch) -> PatchOut:
 
 
 def _work_first(P1, a0, st, coupling, K, V, variant, duration):
-    """Press and breathe at unit 0 of each group of V (with attention there) until it lets go, for at most PRESS_FOR s
-    (the hand then lifts and does not come back, as for every theory); keep breathing."""
+    """Press and breathe at unit 0 of each group of V (with attention there) until it lets go and stays let go for
+    GONE_FOR s under the hand, for at most PRESS_FOR s (the hand then lifts and does not come back: exam.Hand, as for
+    every theory); keep breathing."""
     stretch, aim = variant == "drive+stretch", variant == "aimed"
     n = K * V
     first = np.arange(K) * V
-    released_at = np.full(K, np.nan)
+    hand = Hand(K)  # worked until it lets go, for at most a minute; then it lifts
 
     def inputs(t, st_):
-        held = st_.c[first] > tp.HELD
-        for k in np.flatnonzero(np.isnan(released_at) & ~held):
-            released_at[k] = t
         live = np.zeros(n, bool)
-        live[first] = np.isnan(released_at) & (t < PRESS_FOR)  # worked until it lets go, for at most a minute
+        live[first] = hand.step(t, st_.c[first] > tp.HELD)
         local = np.where(live, P1["focus_gain"], 1.0)
         ds, strain = _breath(t, stretch, P1, local, local if aim else 1.0)
         return P1["hold"] + ds, strain + np.zeros(n), np.where(live, P1["palpation"], 0.0), coupling(st_)
 
     r = tp.simulate(P1, a0, inputs, duration, dt=0.05, every=20, state=st)
-    return r, released_at
+    return r, hand.released_at
 
 
 def cluster(ps: list[dict], variant: str) -> ClusterOut:

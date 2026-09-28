@@ -26,6 +26,7 @@ params/adapt.yaml        length adaptation: how fast and how far a held vessel's
 params/interface.yaml    what every theory shares in the trials: stress held, the breath, the hand (guessed or sourced)
 params/perception.yaml   T6, perception: gain, arousal, attention, the in-breath, overbreathing
 params/triggerpoint.yaml T3, trigger points: the energy crisis at an endplate, pressure release, the twitch
+params/motorswitch.yaml  T7, the motor switch: the latch (persistent inward currents) and the metabolic loop, mostly guessed
 observations/spec.yaml   the exam: what people report, as tests (versioned; seal.yaml keeps v1-v3's seals)
 knots_sim/
   pubmed.py              PubMed E-utilities and Europe PMC full texts, paced and cached (.cache/, ignored)
@@ -35,10 +36,12 @@ knots_sim/
   models/tree.py         a parent and its children, each a switch, sharing pressure; many trees at once
   models/perception.py   T6: places on a body map felt as knots through gain, arousal and attention
   models/triggerpoint.py T3: an endplate's contracture held by its own ischaemia
+  models/motorswitch.py  T7: motor units that latch on and are kept on by their own metabolites
   exam.py                the harness: the shared trials and pass criteria, every theory through them, matrix.json
   aimed.py               a breath aimed at one place (route B6, the author's hypothesis): how narrow it must be; aimed.json
   instrument.py          what an instrument would record: the exam's trials read as laser speckle, elastography; instrument.json
-  theories/t1.py t3.py t6.py   each theory's mapping onto the trials, written out for its proponents to check
+  apart.py               the hand or the attention it draws (Q4): each theory's press taken apart; apart.json
+  theories/t1.py t3.py t6.py t7.py   each theory's mapping onto the trials, written out for its proponents to check
   scenarios.py           the trials as input scores: a knot forms, holds, lets go
   breath.py              the breath's routes over knot depth: release maps, the least movement per breath
   field.py               a patch of perforators under one breath: broad against focused release

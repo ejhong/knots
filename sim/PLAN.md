@@ -426,13 +426,16 @@ matrix shows each variant's cells and its joint pass, and the best variant per p
 | O16.2 | Some knot forms and lets go within a single breath |
 | O6 | A release brings, within seconds, a brief sensory signal confined to the released knot's own patch |
 | O8.1 | After one knot lets go, a new knot forms nearby within minutes, and the held count evens out |
-| O8.2 | (exam v3) Sometimes, within 10 minutes of a knot letting go, a knot is back at its place: the same unit again, one beneath it (a vessel's children), or an immediate neighbour newly held (siblings on a feed, adjacent band units, the eight places around it). Not run yet: see §11 |
+| O8.2 | (exam v3; rough from v4) Sometimes, within 10 minutes of a knot letting go, a knot is back at its place: the same unit again, one beneath it (a vessel's children), or an immediate neighbour newly held (siblings on a feed, adjacent band units, the eight places around it) |
+| O17.1, O17.2 | (exam v4, rough) A knot is a bump beneath the skin, and it goes with the release like an unclenching: read from each theory's own account of what a knot is (its `FEEL`), the same in every setting |
+| O18 | (exam v4, rough) Pressing or rolling brings a knot out over minutes: not run until every theory has a rolling trial |
 | O13 | Releasing one knot lets ≥ 3 others go with it, within seconds |
 | O15 | The theory's unit exists at ≥ dozens per square inch and ~10⁵ in a body (anatomical counts, sourced) |
 | O5, O9, O10 | Not run until the mechanics and body stages (O10's young-and-old part can run with T1's adaptation); O7, O11 noted |
 
 **Theories in matrix v1.** T1 (variants: the breath through drive, through movement, both; with and without adaptation),
-T3 and T6; T2 once the Hai–Murphy rate constants are in hand (§11); T4 and T5 next.
+T3 and T6; T2 once the Hai–Murphy rate constants are in hand (§11); T4 and T5 next. From exam v4, T7, the motor switch (variants: a held
+hand that excites, or that excites and then inhibits; attention inhibits in both).
 
 **T6, perception** (the account to beat; hypotheses.ts at its strongest). Sites on a body map, each with a peripheral input
 (ordinary tissue signals, raised where muscles guard under stress) and a local gain; a central gain set by threat and
@@ -470,6 +473,15 @@ ones not yet built included; any later change reruns them all):
 - *A press as its own literature has it.* T3's pressure works through the band's slow lengthening, calibrated so that a
   knot of middle depth lets go in τ_p (60–90 s, pecosmartin2019); as first written it let go in seconds or never.
 - *Sparks within 10 s*, the exam's reading of "within seconds".
+- *One hand for every theory* (27 Sep): pressed until the knot lets go, a minute at most; then it lifts and does not come
+  back. Found building O8.2, where the hands differed by theory. From exam v4 the knot must stay let go for 2 s under the
+  hand before it lifts (`exam.Hand`): the motor switch's knot, silenced under the hand, could be back the moment it lifted,
+  and that flicker had counted as a release.
+- *Slow breathing begins without a jump* (27 Sep, exam v4): it began at the bottom of an out-breath, a step from the
+  breathing before it that let the motor switch's easiest knots go at once, before any out-breath. It now begins halfway up
+  an in-breath, where the wave crosses its middle; the first out-breath starts 2 s in, and every theory is rerun with it.
+- *Rough impressions are shown, not decisive* (exam v4, the author: "Take all my answers as just rough feelings"): parts
+  resting on them (O8.2, O17, O18) are scored and shown, and left out of the joint pass.
 
 A zero means none of 32 settings, not impossible; where a zero is structural (drive is not local, so focus changes
 nothing through drive alone), the adapter's notes say so, and the cell's hover carries it.

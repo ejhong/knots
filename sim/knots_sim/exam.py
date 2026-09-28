@@ -34,7 +34,7 @@ import yaml
 SIM = Path(__file__).resolve().parents[1]
 SPEC = SIM / "observations" / "spec.yaml"
 SITE = SIM.parent / "src" / "data" / "sim" / "matrix.json"
-THEORIES = ("t1", "t3", "t6")
+THEORIES = ("t1", "t3", "t6", "t7")
 SILENT, NOT_RUN = "silent", "not run"
 K = 32  # parameter sets per theory (a power of two, as the Sobol sampler wants)
 SEED = 17
@@ -59,15 +59,17 @@ AGE_DEPTH = 0.3  # the knot that ages: a third of the way up its band
 SPARK = 0.05  # a sensation, on each theory's own 0-1 scale
 WITHIN = 10.0  # "within seconds" (the reading): a spark counts if it comes within 10 s of the release
 PRESS_FOR = 60.0  # a press held for six breaths, then lifted
-EASE_AT = INHALE + (PERIOD - INHALE) / 2  # or a hand that eases off halfway through the first out-breath (reading, v2)
+START = INHALE / 2  # slow breaths begin halfway up an in-breath, where the wave crosses its middle: no jump from the breath before them
+FIRST_OUT = INHALE - START  # so the first out-breath begins 2 s in
+EASE_AT = FIRST_OUT + (PERIOD - INHALE) / 2  # or a hand that eases off halfway through the first out-breath (reading, v2)
 SURGE = (5.0, 185.0)  # a surge of stress (1 in the shared unit), three minutes long, forms the knots
 T0 = SURGE[1] + 200.0  # then the holding stress, 200 s, before any trial starts
 PREP = BREATHS * PERIOD  # a local trial starts after 30 broad breaths
 
 
 def out_breath(t: np.ndarray | float) -> np.ndarray:
-    """During an out-breath (breaths start with the in-breath)."""
-    return np.mod(t, PERIOD) >= INHALE
+    """During an out-breath (slow breaths start halfway up an in-breath)."""
+    return np.mod(np.asarray(t) + START, PERIOD) >= INHALE
 
 
 def calm(t: np.ndarray | float, size, tau):
@@ -76,14 +78,16 @@ def calm(t: np.ndarray | float, size, tau):
 
 
 def breath_wave(t: np.ndarray) -> np.ndarray:
-    """+1 at the top of the in-breath, -1 at the end of the out-breath."""
-    ph = np.mod(t, PERIOD)
+    """+1 at the top of the in-breath, -1 at the end of the out-breath; 0 at t = 0, halfway up the first in-breath, so
+    slow breathing starts without a jump (it once started at -1, the bottom of an out-breath: a step at the onset that
+    released some theories' easiest knots at once, corrected 27 Sep 2026)."""
+    ph = np.mod(np.asarray(t) + START, PERIOD)
     return np.where(ph < INHALE, -np.cos(np.pi * ph / INHALE), np.cos(np.pi * (ph - INHALE) / (PERIOD - INHALE)))
 
 
 @dataclass(frozen=True)
 class Single:
-    """One held knot, then slow breaths from t = 0 (starting with an in-breath)."""
+    """One held knot, then slow breaths from t = 0 (starting halfway up an in-breath)."""
 
     focus: bool = False  # focused attention, and the breath, at the knot's place
     press: bool = False  # a hand or roller on the knot from t = 0 for press_for s
@@ -143,20 +147,24 @@ class Patch:
     `stress` until T0, then: one slow breath; 30 slow breaths everywhere (broad); 30 broad breaths, then 30 focused at
     the spot (focused); 30 broad breaths, then a press at the spot with attention and slow breaths for PRESS_FOR s and
     30 s more of slow breaths (press); nothing for HOLD_FOR s (hold, to count the knots); or, from rest, an hour of slow
-    breaths while mood moves the stress (mood). Times below are s after T0 (for mood, from its start)."""
+    breaths while mood moves the stress (mood). Times below are s after T0 (for mood, from its start). Hand and attention
+    apart (the author, 27 Sep 2026: "breath plus attention alone may be enough but the pressure may help focus attention
+    to area"): as press, but attention at the spot without a hand (attend), a hand with attention elsewhere (hand), or
+    neither, the slow breaths going on (rest)."""
 
-    kind: str  # "one_breath" | "broad" | "focused" | "press" | "hold" | "mood"
+    kind: str  # "one_breath" | "broad" | "focused" | "press" | "attend" | "hand" | "rest" | "hold" | "mood"
     stress: float = 1.0
 
     @property
     def start(self) -> float:
         """When the scored phase starts: a local trial follows 30 broad breaths."""
-        return PREP if self.kind in ("focused", "press") else 0.0
+        return PREP if self.kind in ("focused", "press", "attend", "hand", "rest") else 0.0
 
     @property
     def breathing_for(self) -> float:
-        return {"one_breath": PERIOD, "broad": PREP, "focused": 2 * PREP, "press": PREP + PRESS_FOR + 30.0,
-                "hold": 0.0, "mood": MOOD_FOR}[self.kind]
+        if self.kind in ("press", "attend", "hand", "rest"):
+            return PREP + PRESS_FOR + 30.0
+        return {"one_breath": PERIOD, "broad": PREP, "focused": 2 * PREP, "hold": 0.0, "mood": MOOD_FOR}[self.kind]
 
     @property
     def duration(self) -> float:
@@ -165,8 +173,9 @@ class Patch:
     def at(self, t: float) -> tuple[bool, bool, bool]:
         """At time t: (breathing slowly, attention at the spot, a hand pressing the spot)."""
         s = t - self.start
-        local = {"focused": 0 <= s < PREP, "press": 0 <= s < PRESS_FOR}.get(self.kind, False)
-        return t < self.breathing_for, local, self.kind == "press" and local
+        working = 0 <= s < (PREP if self.kind == "focused" else PRESS_FOR)
+        local = working and self.kind in ("focused", "press", "attend")
+        return t < self.breathing_for, local, working and self.kind in ("press", "hand")
 
 
 @dataclass
@@ -178,13 +187,14 @@ class PatchOut:
 
 
 def releases(t: np.ndarray, held: np.ndarray, start: float) -> tuple[np.ndarray, np.ndarray]:
-    """From a record of which units hold ([time, unit]): those held at `start`, and when each first let go after it
-    (s from `start`; nan if it held throughout)."""
-    i0 = max(int(np.searchsorted(t, start, side="right")) - 1, 0)
+    """From a record of which units hold ([time, unit]): those held just before `start` (the last record before it, so a
+    knot let go by the work's first step still counts as held when it began), and when each first let go after it (s
+    from `start`; nan if it held throughout)."""
+    i0 = max(int(np.searchsorted(t, start, side="left")) - 1, 0)
     held0 = held[i0].astype(bool)
     gone = ~held[i0:].astype(bool) & held0
     first = np.argmax(gone, axis=0)
-    return held0, np.where(gone.any(axis=0), t[i0:][first] - t[i0], np.nan)
+    return held0, np.where(gone.any(axis=0), np.maximum(t[i0:][first] - start, 0.0), np.nan)
 
 
 def coming_and_going(t: np.ndarray, held: np.ndarray) -> tuple[np.ndarray, np.ndarray]:
@@ -243,9 +253,14 @@ class Part:
     obs: str
     says: str
     short: str  # what a theory must do, as a phrase: "it can ..."
+    rough: bool = False  # rests on the author's rough impressions (v4): scored and shown, never in the joint pass
 
 
 PARTS = (
+    Part("O17.1", "O17", "A knot is a bump the hand can feel, beneath the skin", "be a bump beneath the skin", rough=True),
+    Part("O17.2", "O17", "When a knot lets go its bump goes with it, as a contraction letting go",
+         "let its bump go like an unclenching", rough=True),
+    Part("O18", "O18", "Pressing or rolling can bring a knot out, over minutes", "bring a knot out by rolling", rough=True),
     Part("O1.1", "O1", "A slow out-breath lets the easiest knots go, during an out-breath",
          "let an easy knot go on the out-breath"),
     Part("O1.2", "O1", "One relaxing breath lets three or more knots go, within that breath",
@@ -272,7 +287,7 @@ PARTS = (
     Part("O8.1", "O8", "After one knot lets go, a new one forms nearby within minutes",
          "form a new knot nearby after a release"),
     Part("O8.2", "O8", "Sometimes, after a knot lets go, a knot is back in the same or a similar spot within 10 minutes",
-         "put a knot back in the same spot after a release"),
+         "put a knot back in the same spot after a release", rough=True),
     Part("O13", "O13", "Releasing one knot lets three or more others go with it, within seconds",
          "let three or more go with one"),
     Part("O15", "O15", "The unit exists at dozens per square inch and about 100,000 in a body",
@@ -284,12 +299,38 @@ PARTS = (
 )
 NOT_RUN_YET = {  # parts no trial can test yet, and why
     "O5": "it needs the mechanics stage (stiffness and stretch)",
+    "O18": "it needs a rolling trial in every theory",
     "O9": "it needs the body stage (both sides)",
     "O10.2": "it needs the body stage (a life's accumulation)",
 }
 BACK_WITHIN = 600.0  # O8.2: "a new knot appears in what seems like the same place", within 10 minutes (v3's reading)
 ROUTES = ("same", "beneath", "beside")
 GONE_FOR = 2.0  # a knot that is held again sooner never let go: a flicker across the threshold, not a release
+
+
+class Hand:
+    """One hand for every theory's cluster trial. From `start` it presses the worked knot (one per set) until the knot
+    lets go and stays let go for GONE_FOR s under it (one held again sooner never let go, so the hand stays), for
+    PRESS_FOR s at most; then it lifts and does not come back. `released_at`: when each knot let go (s, on the trial's
+    clock; nan if it has not); once the hand has lifted, the first time it lets go, whatever follows (held_again reads
+    a return). Found with the motor switch (27 Sep 2026), whose knot, silenced under the hand, could be back the moment
+    it lifted, and was being counted as released."""
+
+    def __init__(self, n: int, start: float = 0.0):
+        self.start = start
+        self.released_at = np.full(n, np.nan)
+        self.lifted = np.zeros(n, bool)
+
+    def step(self, t: float, held: np.ndarray) -> np.ndarray:
+        """held: per set, whether its worked knot holds at t. Returns per set whether the hand presses at t."""
+        if t < self.start:
+            return np.zeros(len(self.lifted), bool)
+        held = np.asarray(held, bool)
+        self.released_at[~self.lifted & held] = np.nan  # held (again) under the hand: it has not let go
+        self.released_at[~held & np.isnan(self.released_at)] = t
+        with np.errstate(invalid="ignore"):
+            self.lifted |= (t >= self.start + PRESS_FOR) | (t >= self.released_at + GONE_FOR)
+        return ~self.lifted
 
 
 def held_again(t: np.ndarray, held: np.ndarray, t_rel: float) -> np.ndarray:
@@ -307,7 +348,7 @@ def _count(rel: np.ndarray, lo: float, hi: float) -> int:
 
 def _within_seconds(pressed: SingleOut) -> np.ndarray:
     """Per set: at least half of the knots let go within 10 s of the out-breath's start, during it (O2's readings)."""
-    first_out = (pressed.rel_t >= INHALE) & (pressed.rel_t < INHALE + 10.0) & pressed.during_out
+    first_out = (pressed.rel_t >= FIRST_OUT) & (pressed.rel_t < FIRST_OUT + 10.0) & pressed.during_out
     n = pressed.formed.sum(axis=1)
     return (np.where(pressed.formed, first_out, False).sum(axis=1) >= 0.5 * n) & (n > 0)
 
@@ -371,6 +412,9 @@ def score_variant(theory, ps: list[dict], variant: str, meta: dict | None = None
     cells["O10.1"] = NOT_RUN if age is None else age.brief_released & age.long_persists
     d = theory.density()
     cells["O15"] = np.full(len(ps), d.per_mm2 >= 1 / 25 and d.total >= 1e5) if d is not None else SILENT
+    # What the hand feels (O17): read from the theory's own account of what a knot is, the same in every setting
+    cells["O17.1"] = np.full(len(ps), bool(theory.FEEL["bump"]))
+    cells["O17.2"] = np.full(len(ps), bool(theory.FEEL["unclench"]))
     for pid in NOT_RUN_YET:
         cells[pid] = NOT_RUN
     for pid in theory.SILENT:
@@ -433,7 +477,7 @@ def run_variant(name: str, variant: str, k: int = K, seed: int = SEED) -> dict:
     ps = theory.sample(k, seed)
     meta: dict = {}
     cells = score_variant(theory, ps, variant, meta)
-    scored = [v for v in cells.values() if not isinstance(v, str)]
+    scored = [cells[p.id] for p in PARTS if not p.rough and not isinstance(cells[p.id], str)]  # rough parts: shown only
     joint = np.all(np.array(scored), axis=0) if scored else np.zeros(len(ps), bool)
     return {
         "name": variant,
@@ -496,12 +540,12 @@ def main(workers: int = 4) -> dict:
         "run": {"inputs": inputs_hash(), **_git()},
         "exam": {"version": exam["version"], "updated": str(exam["updated"]),
                  "sha256": hashlib.sha256(SPEC.read_bytes()).hexdigest()},
-        "trials": {"surge_s": SURGE[1] - SURGE[0], "settle_s": T0 - SURGE[1], "breath_s": [INHALE, PERIOD - INHALE],
+        "trials": {"surge_s": SURGE[1] - SURGE[0], "settle_s": T0 - SURGE[1], "breath_s": [INHALE, PERIOD - INHALE], "breath_start_s": START,
                    "breaths": BREATHS, "press_s": PRESS_FOR, "ease_s": EASE_AT, "hold_s": HOLD_FOR, "mood_s": MOOD_FOR,
                    "depths": list(DEPTHS), "patch": PATCH["n"],
                    "samples": K, "seed": SEED},
-        "parts": [{"id": p.id, "obs": p.obs, "says": p.says, "short": p.short, "not_run": NOT_RUN_YET.get(p.id)}
-                  for p in PARTS],
+        "parts": [{"id": p.id, "obs": p.obs, "says": p.says, "short": p.short, "not_run": NOT_RUN_YET.get(p.id),
+                   "rough": p.rough} for p in PARTS],
         "theories": theories,
     }
     SITE.parent.mkdir(parents=True, exist_ok=True)

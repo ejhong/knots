@@ -156,6 +156,16 @@ export function crossSectionSVG({ dSup, dDeep, hypothesis, region, tone = 'dark'
       note = 'a sensitised nerve where it pierces the fascia';
       break;
     }
+    case 'motor-switch': {
+      // A few fibres of one motor unit, held short together: a contraction in muscle.
+      const my = yDeep + (yBottom - yDeep) * 0.4;
+      for (const dy of [-3.2, 0, 3.2]) {
+        parts.push(`<line x1="${mid - 8}" x2="${mid + 34}" y1="${(my + dy).toFixed(1)}" y2="${(my + dy).toFixed(1)}" stroke="${c.band}" stroke-width="1.3" opacity="0.8" stroke-linecap="round"/>`);
+      }
+      dot(mid + 13, my, 3.2);
+      note = 'a few motor units latched on: a contraction in muscle';
+      break;
+    }
     case 'central':
       note = 'nothing special in the tissue: made in the spinal cord and brain';
       break;

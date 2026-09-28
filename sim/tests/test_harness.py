@@ -122,7 +122,7 @@ def test_the_instrument_study_is_current_and_reads_the_trials():
 
     a = json.loads(instrument.SITE.read_text())
     assert a["run"]["inputs"] == instrument.inputs_hash(), "instrument.json is stale: run `uv run python -m knots_sim.instrument`"
-    assert set(a["traces"]) == {"T1", "T3", "T6"}
+    assert set(a["traces"]) == {"T1", "T3", "T6", "T7"}
     for tr in a["traces"].values():
         assert len(tr["t"]) == len(tr["knot"]) == len(tr["pressed"]) == len(tr["far"])
     t1 = a["reads"]["T1"]["drive"]["press"]
@@ -131,3 +131,16 @@ def test_the_instrument_study_is_current_and_reads_the_trials():
     assert t1["lift_sham"]["median"] > 0  # and a press flushes a pressed place with no knot
     for row in a["design"]["dark"] + a["design"]["gone"]:
         assert all(n is None or n >= 3 for n in row["needed"])
+
+
+def test_the_hand_and_attention_study_is_current():
+    from knots_sim import apart
+
+    a = json.loads(apart.SITE.read_text())
+    assert a["run"]["inputs"] == apart.inputs_hash(), "apart.json is stale: run `uv run python -m knots_sim.apart`"
+    for tid, (_, variants) in apart.RUNS.items():
+        for v in variants:
+            rows = a["rows"][tid][v]
+            assert list(rows) == list(apart.KINDS)
+            # the same knots, whatever the work: what was held when it began does not depend on what came after
+            assert len({r["knots"] for r in rows.values()}) == 1

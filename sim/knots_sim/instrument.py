@@ -16,6 +16,8 @@ theory's state is read as an instrument would read it:
 - The nodule: a trigger point's contracture (elastography, taking stiffness to follow it: guessed) and its capillary
   flow as its model has it (Doppler ultrasound at the nidus).
 - What is felt: perception's felt intensity, for timing only. Nothing in its tissue changes.
+- Single motor units, by surface EMG that picks them out (the motor switch): whether the knot's unit fires, and the share
+  of units firing at the shams. A unit's firing is its knot, in that model, so what it adds is the timing and the shams.
 
 What it asks of each reading: before any release, does the knot's patch differ from its neighbours'? At a press and its
 lift, how does the knot's site change from before the press to after the lift, beside a pressed site that held no knot
@@ -48,7 +50,7 @@ BEFORE, AFTER = (-10.0, -1.0), (5.0, 15.0)  # s around an event: the windows com
 TRACE = (-20.0, 100.0)  # s around the press's start: the trace drawn
 Z = 1.959964 + 0.841621  # two-sided 5%, power 80%
 RUNS = {"T1": ("t1", ("drive", "movement", "aimed")), "T3": ("t3", ("drive", "drive+stretch", "aimed")),
-        "T6": ("t6", ("arousal",))}
+        "T6": ("t6", ("arousal",)), "T7": ("t7", ("inhibit", "excite"))}
 KINDS = ("press", "broad", "focused")
 
 
@@ -90,6 +92,12 @@ def record(tid: str, variant: str, kind: str) -> dict:
         r = runs[-1]
         reading = {"stiffness": r["c"].astype(float), "nidus_flow": r["q"].astype(float)}
         held, tau = r["c"] > th.tp.HELD, r["t"]
+    elif tid == "T7":
+        with _listening(th.ms, "simulate") as runs:
+            out = th.patch(ps, variant, protocol)
+        r = runs[-1]
+        reading = {"firing": r["on"].astype(float)}
+        held, tau = r["knot"], r["t"]
     else:
         with _listening(th, "simulate") as runs:
             out = th.patch(ps, variant, protocol)
@@ -203,6 +211,13 @@ def read(rec: dict, tid: str) -> dict:
                 put("nidus_flow", _mean(q, tau, press0 + PRESS_FOR, AFTER) - _mean(q, tau, press0, BEFORE))
             else:
                 put("nidus_flow", _mean(q, tau, t, AFTER) - _mean(q, tau, t, BEFORE))
+        elif tid == "T7":
+            f = rec["reading"]["firing"]
+            put("firing_before", _mean(f[:, k * N + j], tau, press0 if kind != "broad" else t, BEFORE))
+            put("firing_after", _mean(f[:, k * N + j], tau, t, AFTER))
+            if kind == "press" and len(st["pressed"]):  # units under the same hand that held no knot, while it presses
+                put("pressed_firing", _mean(f[:, k * N + st["pressed"]].mean(axis=1), tau, press0, (0.0, PRESS_FOR)))
+            put("far_firing", _mean(f[:, k * N + st["far"]].mean(axis=1), tau, t, AFTER))
         else:
             F = rec["reading"]["felt"]
             put("felt_before", _mean(F[:, k * N + j], tau, press0, BEFORE))
@@ -229,6 +244,10 @@ def trace(rec: dict, tid: str, s: float = 0.6, step: float = 0.5) -> dict | None
         c = rec["reading"]["stiffness"]
         pressed = c[:, k * N + st["pressed"]].mean(axis=1) if len(st["pressed"]) else np.zeros(len(tau))
         series = {"knot": at(c[:, k * N + j]), "pressed": at(pressed), "far": at(c[:, k * N + st["far"]].mean(axis=1))}
+    elif tid == "T7":
+        f = rec["reading"]["firing"]
+        pressed = f[:, k * N + st["pressed"]].mean(axis=1) if len(st["pressed"]) else np.zeros(len(tau))
+        series = {"knot": at(f[:, k * N + j]), "pressed": at(pressed), "far": at(f[:, k * N + st["far"]].mean(axis=1))}
     else:
         F = rec["reading"]["felt"]
         pressed = F[:, k * N + st["pressed"]].mean(axis=1) if len(st["pressed"]) else np.zeros(len(tau))
@@ -286,7 +305,7 @@ def main(workers: int = 4) -> dict:
     from .export import _git
 
     jobs = [(tid, variant, kind) for tid, (_, variants) in RUNS.items() for variant in variants for kind in KINDS
-            if not (kind == "focused" and variant not in ("aimed", "movement", "arousal", "drive+stretch"))]
+            if not (kind == "focused" and variant not in ("aimed", "movement", "arousal", "drive+stretch", "inhibit"))]
     with ProcessPoolExecutor(workers) as pool:
         done = list(pool.map(_job, jobs))
     reads: dict = {}

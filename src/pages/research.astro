@@ -6,6 +6,7 @@ import adaptData from '../data/sim/adapt.json';
 import matrixData from '../data/sim/matrix.json';
 import aimedData from '../data/sim/aimed.json';
 import instrumentData from '../data/sim/instrument.json';
+import apartData from '../data/sim/apart.json';
 import { refById } from '../data/references';
 import { switchDiagram } from '../sim/draw';
 import { cellMark, countsStrip, decisionTree, fieldPanels, knotSets, leastMovement, recordings, releaseMap, treeStory, type AdaptStudy, type BreathMaps, type Cell, type FieldStudy, type InstrumentStudy, type Matrix, type TreeFigure } from '../sim/figures';
@@ -75,8 +76,14 @@ const ROWS: { glyph: string; key: string; name: string; id?: string; why?: strin
   { glyph: '点', key: 'trigger-point', name: 'Trigger points', id: 'T3' },
   { glyph: '膠', key: 'densification', name: 'Densification', why: 'to model: the layers’ glide, and hyaluronan thinning as they move' },
   { glyph: '神経', key: 'nerve', name: 'Nerves', why: 'to model: a sensitised nerve where it pierces the fascia' },
+  { glyph: '握', key: 'motor-switch', name: 'Motor switch', id: 'T7' },
   { glyph: '覚', key: 'central', name: 'Perception', id: 'T6' },
 ];
+// How many theories there are, and how many have sat the exam, in words.
+const WORD = ['no', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
+const nAll = WORD[ROWS.length];
+const nRun = WORD[mx.theories.length];
+const Cap = (w: string) => w[0].toUpperCase() + w.slice(1);
 const mxTheory = (id?: string) => mx.theories.find((t) => t.id === id);
 const obsTitle = Object.fromEntries(obs.map((o) => [o.id, o.title]));
 const partGroups = mx.parts.reduce<{ obs: string; parts: typeof mx.parts }[]>((acc, part) => {
@@ -136,6 +143,15 @@ const handOf = (id: string, variant?: string) => {
 const h1 = handOf('T1');
 const h3 = handOf('T3', 'drive');
 const h6 = handOf('T6');
+const h7 = handOf('T7', 'inhibit');
+// Q4, the hand or the attention it draws: each theory's press taken apart (src/data/sim/apart.json, from `knots_sim.apart`).
+type ApartCell = { settings: number; knots: number; spot: number | null; elsewhere: number | null; median_s: number | null };
+const apart = apartData as unknown as { run: { inputs: string; commit: string }; samples: number; press_s: number; window_s: number; kinds: string[]; rows: Record<string, Record<string, Record<string, ApartCell>>> };
+const APART_KINDS: [string, string][] = [['rest', 'breaths only'], ['attend', 'attention alone'], ['hand', 'a hand alone'], ['press', 'both']];
+const apartRows = ['T1', 'T3', 'T7', 'T6'].flatMap((tid) =>
+  Object.entries(apart.rows[tid] ?? {}).map(([variant, cells]) => ({ tid, name: mxTheory(tid)?.name ?? tid, variant, cells })),
+);
+const apartAt = (tid: string, variant: string, kind: string) => apart.rows[tid]?.[variant]?.[kind]?.spot ?? null;
 type Change = { version: number; date: string; items: string[] };
 const changeLog = (exam as unknown as { changes: Change[] }).changes ?? [];
 const history = (exam as unknown as { history?: { version: number; date: string; sha256: string; commit: string }[] }).history ?? [];
@@ -197,9 +213,11 @@ const designRows = (rows: InstrumentStudy['design']['dark']) =>
 const b1 = backs('T1');
 const b3 = backs('T3');
 const b6 = backs('T6');
+const b7 = backs('T7');
 const e1 = examOf('T1');
 const e3 = examOf('T3');
 const e6 = examOf('T6');
+const e7 = examOf('T7');
 const inExam = (e: ReturnType<typeof examOf>) => `In the exam, in at least a quarter of its settings: ${phrases(e.can) || 'nothing'}.`;
 const notInExam = (e: ReturnType<typeof examOf>) => (e.none.length ? `In the exam, in none of its ${nSets} settings: ${phrases(e.none)}.` : '');
 
@@ -210,6 +228,7 @@ const THEORIES = [
   { glyph: '点', id: 'trigger-point', name: 'Trigger points', who: 'Travell · Simons', hold: 'An energy crisis at an overactive endplate: contracture squeezes the capillaries, and ischaemia withholds the energy to relax.', release: 'Sustained compression, stretch, needling; a local twitch as it goes.', status: 'modelled', statusText: 'the energy crisis at an endplate; through the exam' },
   { glyph: '膠', id: 'densification', name: 'Densification', who: 'Stecco', hold: 'Hyaluronan between the fascial layers turned viscous: the layers stop gliding.', release: 'Friction, heat and movement.', status: 'open', statusText: 'to model' },
   { glyph: '神経', id: 'nerve', name: 'Nerves', who: 'Quintner · Cohen', hold: 'A sensitised nerve where it pierces the fascia.', release: 'Nerve gliding, desensitisation, freeing it with fluid.', status: 'open', statusText: 'to model' },
+  { glyph: '握', id: 'motor-switch', name: 'Motor switch', who: 'Johansson · Sojka; Heckman', hold: 'A few motor units latched on: persistent inward currents keep a motor neuron firing below the input that recruited it, deeper under stress chemistry; the contraction’s own metabolites keep driving it.', release: 'Inhibition: the unit falls silent and its patch unclenches at once. A falling drive on the out-breath; held pressure or attention, if they inhibit.', status: 'modelled', statusText: 'motor units that latch, with their metabolic loop; through the exam' },
   { glyph: '覚', id: 'central', name: 'Perception', who: 'clinical medicine', hold: 'Raised gain in the pain pathways, kept up by threat, attention and poor sleep.', release: 'Safety, sleep, a change of attention; overbreathing makes tingling anywhere.', status: 'modelled', statusText: 'gain, arousal and attention on a body map: the account to beat; through the exam' },
 ];
 
@@ -234,6 +253,10 @@ const VERDICTS: { glyph: string; name: string; status: string; can: string; cann
     can: 'Sensitivity where nerves pierce the fascia, which is where the perforators are.',
     cannot: 'Be told apart from perforators by location alone; it needs no change in blood flow at release.',
     open: 'Nerve-specific tests at the knots themselves.' },
+  { glyph: '握', name: 'Motor switch', status: 'modelled',
+    can: `Make a bump beneath the skin that goes at once, like an unclenching: a few motor units latched by their persistent inward currents and kept on by the metabolites of their own contraction, silent when inhibited. ${inExam(e7)}`,
+    cannot: `${notInExam(e7)} Remember years: nothing in the switch outlasts its loop, so an old knot needs the muscle or its supply to change beneath it.`,
+    open: 'Whether a knot is a latched unit at all: single-unit EMG over a knot as it lets go. How deep a knot’s latch is; whether held pressure and attention inhibit its units; how many units a body keeps working.' },
   { glyph: '覚', name: 'Perception', status: 'modelled',
     can: `Any place and a queue by salience: when the loudest spot quiets, the next is noticed. ${inExam(e6)}`,
     cannot: `Change the tissue at the spot when a knot lets go: it predicts nothing local. ${notInExam(e6)}`,
@@ -246,6 +269,7 @@ const WHERE: { glyph: string; name: string; where: string; count: string; scalp:
   { glyph: '点', name: 'Trigger points', where: 'the endplate zones of taut bands, inside muscle', count: 'hundreds, at mapped sites', scalp: 'only over its few muscles', inside: 'no', test: 'palpation against endplate zones (EMG) and ultrasound nodules' },
   { glyph: '膠', name: 'Densification', where: 'the loose layers between fasciae', count: 'tens to hundreds of patches, centimetres across', scalp: 'yes (the galea’s loose layer)', inside: 'no', test: 'ultrasound thickness of the loose layers under each knot' },
   { glyph: '神経', name: 'Nerves', where: 'where cutaneous nerves pierce the fascia', count: 'thousands, beside the medium and major perforators', scalp: 'yes', inside: 'no', test: 'nerve tests at each knot; the same places as perforators' },
+  { glyph: '握', name: 'Motor switch', where: 'in muscle, wherever its motor units are kept working at a low level; less over bone', count: 'not yet counted: the small groups of units a body keeps working', scalp: 'only over its few muscles', inside: 'no', test: 'palpation against ultrasound (in muscle or not) and single-unit EMG' },
   { glyph: '覚', name: 'Perception', where: 'anywhere attention and sensitisation make them', count: 'no fixed number; they can move', scalp: 'yes', inside: 'yes, as felt', test: 'sham places, and whether knots follow attention' },
 ];
 
@@ -256,12 +280,14 @@ const SIGS: { name: string; glyph: string; modelled?: boolean; cells: [string, s
   { name: 'Trigger points', glyph: '点', cells: [['none', 'little'], ['up', 'the taut band lets go; flow returns'], ['down', 'the nodule softens'], ['down', 'spontaneous activity falls; a twitch'], ['none', 'little at the skin'], ['here', 'a referred pattern']] },
   { name: 'Densification', glyph: '膠', cells: [['none', 'not required'], ['none', 'not required'], ['down', 'glide between layers returns'], ['none', 'no change'], ['silent', 'warmth may come first'], ['silent', 'not stated']] },
   { name: 'Nerves', glyph: '神経', cells: [['none', 'not required'], ['none', 'not required'], ['none', 'no change'], ['none', 'no change'], ['none', 'no change'], ['here', 'along the nerve’s territory']] },
+  { name: 'Motor switch', glyph: '握', cells: [['none', 'little'], ['up', 'the patch unclenches at once; flow returns'], ['down', 'the bump softens within a second'], ['down', 'a single motor unit falls silent at the felt release'], ['none', 'little'], ['silent', 'not stated']] },
   { name: 'Perception', glyph: '覚', cells: [['none', 'none locally; any change equal at a sham site'], ['none', 'none locally'], ['none', 'no change'], ['silent', 'may relax everywhere'], ['none', 'none locally'], ['any', 'anywhere; follows CO₂']] },
 ];
 const OUTCOMES: { shows: string; fits: string; not: string }[] = [
   { shows: 'the knot’s patch darker than its neighbours before, and not after (beyond the flush of every pressed place)', fits: 'perforators; the vascular latch, if skin vessels latch', not: 'perception; trigger points (in their model the skin does not change)' },
   { shows: 'a dark spot at the knot that stays dark through its release', fits: 'the ordinary unevenness of skin', not: 'the vessel view, for that knot' },
   { shows: 'nothing in the skin, and the nodule softening under the probe', fits: 'trigger points', not: 'perception; perforators' },
+  { shows: 'a single motor unit falling silent at the felt release, and the bump softening within a second', fits: 'the motor switch', not: 'perforators; perception; trigger points, if no twitch and no slow softening under the hand' },
   { shows: 'nothing in the tissue, at the knot or anywhere', fits: 'perception; or a signal not recorded (glide between layers, a nerve)', not: 'perforators; trigger points' },
   { shows: 'the same change at the knot and far from it', fits: 'the breath’s drive, everywhere: it says nothing of the knot', not: '–' },
 ];
@@ -288,7 +314,7 @@ const index = [
   title="Knots: an open problem, and the experiment that would settle it"
   kicker="For researchers"
   current="research"
-  lede="People who work with the body find places that hold for years and let go in a breath. Six mechanisms could explain them. Here each is being run as a model with measured numbers, to ask what each can do, and what one recording at the moment of release would show under each."
+  lede="People who work with the body find places that hold for years and let go in a breath. Seven mechanisms could explain them. Here each is being run as a model with measured numbers, to ask what each can do, and what one recording at the moment of release would show under each."
   description="An open problem in physiology: what holds a knot, and what lets it go. The theories as models with measured numbers, their predictions, and the experiment that would tell them apart."
   glyph="究"
   index={index}
@@ -301,8 +327,9 @@ const index = [
         <strong>The problem.</strong> Bodyworkers and contemplative practitioners report knots: discrete places in the body
         that hold, sometimes for years, and let go within seconds, under a hand or with a particular breath, often with a
         tingle over the spot, sometimes one releasing many others. Nothing about them has been recorded at the moment of
-        release. At least six mechanisms have been proposed: a vessel held shut at a fascial perforation, smooth muscle
-        in the latch state, a myofascial trigger point, densified hyaluronan, a sensitised nerve, and perception.
+        release. At least seven mechanisms could explain them: a vessel held shut at a fascial perforation, smooth muscle
+        in the latch state, a myofascial trigger point, densified hyaluronan, a sensitised nerve, motor units that latch on,
+        and perception.
       </p>
       <p>
         <strong>What is done so far.</strong> Each theory is being written as a dynamical model in its strongest form,
@@ -312,8 +339,8 @@ const index = [
         small arteries only while tone stays well above rest, until, held an hour or two, its muscle adapts to being shut and
         the knot sets, holding at rest. Hyaluronan cannot hold a vessel, and warming cannot release one within a breath. The breath can release a knot
         through two routes, drive and movement, both fitted to measurements. A vessel holding a knot upstream shuts the
-        vessels below it, and releasing it frees most of them at once. Three of the six, perforators, trigger points and
-        perception, have now sat the same exam, each in {nSets} plausible settings: no variant of any does everything people
+        vessels below it, and releasing it frees most of them at once. {Cap(nRun)} of the {nAll}, perforators, trigger points, the
+        motor switch and perception, have now sat the same exam, each in {nSets} plausible settings: no variant of any does everything people
         report at once{noneCan.length > 0 && <>, and none can {phrases(noneCan)}</>}. <a href="#findings">What this says about each theory.</a>
       </p>
       <p>
@@ -339,11 +366,11 @@ const index = [
       setting, what turns on numbers still guessed, what could be noticed without an instrument, and what an instrument would show.
     </p>
     <ol class="findings">
-      <li><span class="kind">the map: rests on guessed ranges</span> <strong>Three theories through one exam, and none does everything.</strong> Perforators, trigger points and perception, each
+      <li><span class="kind">the map: rests on guessed ranges</span> <strong>{Cap(nRun)} theories through one exam, and none does everything.</strong> Perforators, trigger points, the motor switch and perception, each
         in its strongest form, sat the same trials in {nSets} plausible settings each (<a href="#exam">the matrix</a>). No variant
         of any produces every report at once{noneCan.length > 0 && <>, and none can {phrases(noneCan)}</>}. Each leads somewhere
-        different: perforators are the likeliest {strengths('T1')}; trigger points, {strengths('T3')}; perception,{' '}
-        {strengths('T6')}.</li>
+        different: perforators are the likeliest {strengths('T1')}; trigger points, {strengths('T3')}; the motor switch,{' '}
+        {strengths('T7') || 'nowhere alone'}; perception, {strengths('T6')}.</li>
       <li><span class="kind">you could notice this</span> <strong>When a pressed knot lets go splits the theories.</strong> Pressed, with a slow out-breath, a knot often lets go within
         seconds (O2); asked, the author could not say whether under the hand or as it eases off, so the exam takes either (v2) and
         the question stays <a href="#open">open</a>. The theories part on exactly that. Held a minute and lifted, the perforator
@@ -419,7 +446,7 @@ const index = [
       </table>
     </div>
     <p class="fine-print">
-      Three theories have been through the <a href="#exam">exam</a>, each by its best variant for each part; the vascular latch shares the perforators'
+      {Cap(nRun)} theories have been through the <a href="#exam">exam</a>, each by its best variant for each part; the vascular latch shares the perforators'
       core. The other rows come from their own statements and the checks that touch them, until their models run. A theory with more rows filled is not a
       better theory, only a more tested one.
     </p>
@@ -523,6 +550,33 @@ const index = [
             Shares of the knots each model holds, over its {nSets} settings and the knot depths, pressed for a minute with slow
             breaths and then lifted. Generated with the matrix (below).
           </p>
+          <p class="obs-text" id="apart"><span class="oid mono">Q4</span> The hand and the attention it draws, taken apart.</p>
+          <div class="table-wrap hand-wrap">
+            <table class="hand">
+              <caption class="sr-only">The hand and attention apart: the share of the knots at the spot that let go, worked four ways</caption>
+              <thead><tr><th scope="col">theory · variant</th>{APART_KINDS.map(([, label]) => <th scope="col">{label}</th>)}</tr></thead>
+              <tbody>
+                {
+                  apartRows.map((row) => (
+                    <tr>
+                      <th scope="row">{row.name} <span class="mx-variant">{variantLabel(row.variant)}</span></th>
+                      {APART_KINDS.map(([kind]) => {
+                        const c = row.cells[kind];
+                        return <td class="mono">{c?.spot === null || c?.spot === undefined ? '–' : pct(c.spot)}{c?.median_s ? <span class="who">median {Math.round(c.median_s)} s</span> : null}</td>;
+                      })}
+                    </tr>
+                  ))
+                }
+              </tbody>
+            </table>
+          </div>
+          <p class="set-aside-sub">
+            The patch's knots after 30 broad breaths, worked four ways for a minute at the spot, the slow breaths going on: a
+            hand with attention there (the exam's press), attention alone, a hand while attention is elsewhere, or neither. The
+            share of the knots held there that let go by {Math.round(apart.window_s - apart.press_s)} s after the minute, over each model's{' '}
+            {apart.samples} settings. Generated by <span class="mono">uv run python -m knots_sim.apart</span> (run{' '}
+            <span class="mono">{apart.run.inputs}</span>).
+          </p>
         </div>
       )
     }
@@ -534,8 +588,8 @@ const index = [
       Each theory, as a model in its strongest form, sits the same trials: a single knot at a range of depths, a patch of{' '}
       {mx.trials.patch} places where stress is held, a cluster, and an hour of breath and mood. Every part of the exam is
       scored in {nSets} settings sampled across the theory's own plausible ranges, and a cell shows the share in which the part
-      holds, never one tuned setting. Where turning words into equations is a choice, each choice is a row. Three of six
-      theories have run: this is the first matrix. It says what each can do, never which is true.
+      holds, never one tuned setting. Where turning words into equations is a choice, each choice is a row. {Cap(nRun)} of {nAll}
+      theories have run. It says what each can do, never which is true.
     </p>
     <p class="legend-row" aria-hidden="true">
       <span><Fragment set:html={cellMark(1)} /> holds in every setting</span>
@@ -543,6 +597,7 @@ const index = [
       <span><Fragment set:html={cellMark(0)} /> in none of {nSets}</span>
       <span><Fragment set:html={cellMark('silent')} /> silent: the account says nothing</span>
       <span>blank: not run yet</span>
+      <span><span class="rough-key"></span> shaded: a rough impression of the author's, shown and not counted in “all”</span>
     </p>
     <div class="table-wrap">
       <table class="matrix">
@@ -551,10 +606,10 @@ const index = [
           <tr>
             <th scope="col" rowspan="2" class="mx-name">theory · variant</th>
             {partGroups.map((g) => <th scope="colgroup" colspan={g.parts.length} class="mx-obs" title={`${g.obs} ${obsTitle[g.obs] ?? ''}`}>{g.obs}</th>)}
-            <th scope="col" rowspan="2" class="mx-joint" title="the share of settings that pass every scored part at once">all</th>
+            <th scope="col" rowspan="2" class="mx-joint" title="the share of settings that pass every scored part at once, rough impressions aside">all</th>
           </tr>
           <tr>
-            {mx.parts.map((part) => <th scope="col" class="mx-part" title={`${part.id} ${part.says}`}>{part.id.includes('.') ? `.${part.id.split('.')[1]}` : '·'}</th>)}
+            {mx.parts.map((part) => <th scope="col" class:list={['mx-part', { 'mx-rough': part.rough }]} title={`${part.id} ${part.says}${part.rough ? ' (a rough impression: shown, not counted in “all”)' : ''}`}>{part.id.includes('.') ? `.${part.id.split('.')[1]}` : '·'}</th>)}
           </tr>
         </thead>
         <tbody>
@@ -579,13 +634,13 @@ const index = [
                     const c = v.cells[part.id] as Cell;
                     const text = cellText(t, part.id, part.says, c, (v as unknown as { tested?: Record<string, number | null> }).tested?.[part.id]);
                     return (
-                      <td class:list={['mx-cell', { 'mx-dim': typeof c !== 'number' }]} title={text}>
+                      <td class:list={['mx-cell', { 'mx-dim': typeof c !== 'number', 'mx-rough': part.rough }]} title={text}>
                         <Fragment set:html={cellMark(c)} />
                         <span class="sr-only">{text}</span>
                       </td>
                     );
                   })}
-                  <td class="mx-joint mono" title={`passes every scored part at once in ${Math.round(v.joint * t.samples)} of ${t.samples} settings`}>{v.joint > 0 ? pct(v.joint) : '0'}</td>
+                  <td class="mx-joint mono" title={`passes every scored part at once, rough impressions aside, in ${Math.round(v.joint * t.samples)} of ${t.samples} settings`}>{v.joint > 0 ? pct(v.joint) : '0'}</td>
                 </tr>
               ));
             })
@@ -596,7 +651,7 @@ const index = [
     <details class="parts-key">
       <summary>The parts, as scored</summary>
       <ol>
-        {mx.parts.map((part) => <li><span class="mono oid">{part.id}</span> {part.says}</li>)}
+        {mx.parts.map((part) => <li><span class="mono oid">{part.id}</span> {part.says}{part.rough ? <span class="who"> · rough</span> : null}</li>)}
       </ol>
       <p class="fine-print">
         The trials, the same for every theory: a surge of stress for {Math.round(mx.trials.surge_s / 60)} minutes forms the knots, the
@@ -639,7 +694,7 @@ const index = [
     <p class="find">
       After a release, “a new knot appears in what seems like the same place”: perhaps “the same perforator”, perhaps “a knot from
       somewhere else moved there” (the author, <span class="mono oid">O8.2</span>). In each theory's cluster the worked knot is
-      pressed until it lets go, for a minute at most; the hand lifts, and the slow breaths and the holding stress go on. Over the
+      pressed until it lets go and stays let go for 2 s, for a minute at most; the hand lifts, and the slow breaths and the holding stress go on. Over the
       settings in which it let go, the share in which a knot is held at its place again within 10 minutes, and by which route.
     </p>
     <div class="table-wrap hand-wrap">
@@ -671,9 +726,9 @@ const index = [
       The same unit counts once it has been let go for 2 s (sooner is a flicker, not a release). Beneath: a vessel's children,
       which a released parent can leave shut; they were there all along, felt once the parent no longer masks them, and are
       counted from 10 s after the release, the soonest the trial looks. Beside: a unit next to it that was not held before (a
-      sibling on the same feed; a neighbouring endplate on the taut band; one of the eight places around it on the body map). Which
-      it is, the reports cannot say; a Doppler probe (a deeper vessel), a needle EMG (the same endplate) or nothing in the tissue at
-      all would.
+      sibling on the same feed; a neighbouring endplate on the taut band; one of the eight places around it on the body map or in the
+      muscle). Which it is, the reports cannot say; a Doppler probe (a deeper vessel), a needle EMG (the same endplate), single-unit
+      EMG (the same motor unit firing again) or nothing in the tissue at all would.
     </p>
     <p class="fine-print">
       Run <span class="mono">{mx.run.inputs}</span>{mx.run.commit ? <> at commit <span class="mono">{mx.run.commit}</span></> : null}, against exam v{mx.exam.version}{' '}
@@ -1002,8 +1057,9 @@ const index = [
       Perforators: skin perfusion over each place's patch, as laser speckle would read it (it sees the skin's superficial supply,{' '}
       <Fragment set:html={cite('odoherty2009')} />), with the knot's patch fed {Math.round(100 * inst.own_share[1])}% by its own vessel and the rest by its
       neighbours (a guess: each vessel's territory is linked to its neighbours', <Fragment set:html={cite('saintcyr2009')} />). Trigger points: the
-      nodule's contracture, which elastography would read as stiffness. Perception: what is felt; nothing in its tissue changes. Hover a line for
-      its values.
+      nodule's contracture, which elastography would read as stiffness. Motor switch: whether a motor unit fires, as surface EMG that picks out
+      single units would read it (1 at the knot: its unit firing; at the shams, the share of units firing). Perception: what is felt; nothing in
+      its tissue changes. Hover a line for its values.
     </p>
     <div class="two">
       <p class="find"><span class="kind">an instrument would tell</span> <strong>A press flushes every place it presses.</strong> Held stress narrows
@@ -1561,6 +1617,17 @@ const index = [
     height: 16px;
     display: inline-block;
     vertical-align: middle;
+  }
+  .matrix .mx-rough,
+  .rough-key {
+    background: var(--frame-bg);
+  }
+  .rough-key {
+    display: inline-block;
+    width: 12px;
+    height: 12px;
+    vertical-align: middle;
+    border: 1px solid var(--border);
   }
   .mx-joint {
     text-align: center;

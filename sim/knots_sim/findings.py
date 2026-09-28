@@ -342,7 +342,12 @@ FAIRNESS = """- *One rule for the stress unit.* 1 is a surge that forms knots, a
 - *Minutes of slow breathing calm* (oneda2010, adler2019): every theory whose breath acts through drive gets that sustained
   fall as well as each breath's dip; zero is in its range.
 - *Each press as its own literature has it:* the trigger point's pressure release is calibrated to its quoted 60–90 s.
-- *Sparks within 10 s*, the exam's reading of "within seconds"."""
+- *Sparks within 10 s*, the exam's reading of "within seconds".
+- *One hand for every theory:* pressed until the knot lets go and stays let go for 2 s under it (one back sooner never
+  let go), for a minute at most; then it lifts and does not come back.
+- *Slow breathing begins without a jump:* halfway up an in-breath, so the first out-breath begins 2 s in (exam v4).
+- *Rough impressions are shown, not decisive:* parts that rest on the author's rough impressions are scored and left out of
+  the joint pass (exam v4)."""
 
 
 def _share(c) -> str:
@@ -365,6 +370,8 @@ def write_exam(m: dict) -> Path:
     joint = max(v["joint"] for t in th for v in t["variants"])
     who = "; ".join(f"{t['id']} {t['name']} ({', '.join(v['name'] for v in t['variants'])})" for t in th)
     lower = lambda s: s[0].lower() + s[1:]
+    word = ['no', 'one', 'two', 'three', 'four', 'five', 'six', 'seven'][len(th)]
+    rough = [p for p in parts if p.get('rough')]
 
     lines = [f"""# Every theory through the same exam. Findings 004
 
@@ -376,14 +383,15 @@ out at the top of its file in `sim/knots_sim/theories/`, for its proponents to c
 
 ## In brief
 
-Three of six theories have sat the exam: {who}. Each part was scored in {n} settings sampled across the theory's own
-plausible ranges; a cell is the share of settings in which the part holds. It says what each theory can do, never which is
-true.
+{word.capitalize()} of the seven theories have sat the exam: {who}. Each part was scored in {n} settings sampled across the
+theory's own plausible ranges; a cell is the share of settings in which the part holds. It says what each theory can do,
+never which is true. Parts that rest on the author's rough impressions ({', '.join(p['id'] for p in rough)}) are scored
+and shown, and left out of the joint pass (exam v4).
 """]
-    lines.append(f"- **All at once.** The best joint pass, every scored part in one setting, is {_share(joint)}."
+    lines.append(f"- **All at once.** The best joint pass, every scored part in one setting (rough impressions aside), is {_share(joint)}."
                  + (" No variant does everything the reports describe." if joint == 0 else ""))
     if none_can:
-        lines.append("- **None of the three can yet:** " + "; ".join(f"{p['id']} {lower(p['says'])}" for p in none_can) + ".")
+        lines.append(f"- **None of the {word} can yet:** " + "; ".join(f"{p['id']} {lower(p['says'])}" for p in none_can) + ".")
     if only:
         lines.append("- **Only one can:** " + "; ".join(
             f"{p['id']} {p['short']} ({t['name']}, in {round(best(t, p['id']) * n)} of {n} settings)" for p, t in only) + ".")
@@ -402,6 +410,14 @@ true.
                  " not say whether under the hand or as it eases off, so the exam takes either (v2). The theories split on it: "
                  + "; ".join(f"{t['name']} lets {_share(t['variants'][0]['hand']['under'])} go under the hand and"
                              f" {_share(t['variants'][0]['hand']['lift'])} as it lifts" for t in th) + ".")
+
+    felt = [t for t in th if all(v["cells"].get("O17.1") == 1 for v in t["variants"])]
+    unclench = [t for t in th if all(v["cells"].get("O17.2") == 1 for v in t["variants"])]
+    lines.append("- **What the hand feels (O17, rough).** A knot can be felt as a bump, from a grain to perhaps a penny across,"
+                 " beneath the skin, and it goes as it lets go, like an unclenching (the author, 27 Sep 2026). Read from each"
+                 " theory's own account of what a knot is, the same in every setting: a bump beneath the skin in "
+                 + (", ".join(t["name"] for t in felt) or "none") + "; one that goes like an unclenching in "
+                 + (", ".join(t["name"] for t in unclench) or "none") + ". Only a contraction in muscle makes both.")
 
     cols = [(t, v) for t in th for v in t["variants"]]
     lines.append("\n## The matrix\n")
@@ -494,7 +510,19 @@ true.
     lines.append("- *The cluster trials' hand differed by theory.* The perforators' press ran its full minute whether or not the"
                  " knot had let go; the trigger point's and perception's hand lifted at the release but pressed again if the knot"
                  " came back, which made knots near their threshold flicker. Found building O8.2 (27 Sep 2026): in every theory"
-                 " the knot is now pressed until it lets go, for a minute at most, and the hand does not come back.\n")
+                 " the knot is now pressed until it lets go, for a minute at most, and the hand does not come back.")
+    lines.append("- *Slow breathing began with a jump.* The shared breath started at the bottom of an out-breath, a step from the"
+                 " breathing before it that let some of the motor switch's easiest knots go at once, before any out-breath. Found"
+                 " building the seventh theory (27 Sep 2026): slow breathing now begins halfway up an in-breath, the first"
+                 " out-breath 2 s in, and every theory is rerun with it.")
+    lines.append("- *A knot back under the hand within 2 s had been counted as let go.* In the cluster trials the hand lifted at"
+                 " the first moment the knot let go; the motor switch's knot, silenced under the hand, could be back the moment"
+                 " it lifted, a flicker counted as a release. Now the hand stays until the knot has been let go for 2 s under"
+                 " it, for every theory (27 Sep 2026).")
+    lines.append("- *A knot let go in the work's first step was not counted as held when it began.* The patch trials read what"
+                 " was held at the start from the record just after the work's first step; a unit silenced at once by"
+                 " attention or a hand was missed. Found taking the hand and attention apart (27 Sep 2026); the record just"
+                 " before it is read now, for every theory.\n")
     tested = [(t, v, pid, share) for t in th for v in t["variants"] for pid, share in v.get("tested", {}).items()]
     if tested:
         lines.append("Trials that ran, per theory and variant: " + "; ".join(
@@ -512,6 +540,7 @@ true.
   dated version of the exam.
 - Each theory is one formalisation of its account, in its strongest form as `src/data/hypotheses.ts` states it, with variants
   where the equations are a choice. Its proponents may formalise it otherwise; the mapping is written out to be checked.
+- The rough parts rest on the author's impressions, \"not definitive but to be considered\": shown, not in the joint pass.
 - The vascular latch, densification and the nerve view are not modelled yet; mirroring (O9), stiffness (O5) and accumulation
   with age (O10.2) need the mechanics and body stages.
 """.format(n=n, one=f"{100 / n:.0f}%"))

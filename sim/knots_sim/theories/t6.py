@@ -20,7 +20,7 @@ from __future__ import annotations
 
 import numpy as np
 
-from ..exam import (AGE_DEPTH, BACK_WITHIN, MOOD_FOR, PATCH, PERIOD, PRESS_FOR, ROUTES, SURGE, T0, AgeOut, ClusterOut, Patch,
+from ..exam import (AGE_DEPTH, BACK_WITHIN, MOOD_FOR, PATCH, PERIOD, PRESS_FOR, ROUTES, SURGE, T0, AgeOut, ClusterOut, Hand, Patch,
                     PatchOut, Single, SingleOut, calm, coming_and_going, held_again, mood, out_breath, releases)
 from ..models.perception import State, simulate
 from ..params import load, values
@@ -28,11 +28,14 @@ from ..params import load, values
 ID, NAME = "T6", "Perception"
 VARIANTS = {"arousal": "the breath eases arousal and is felt as safety; attention and pressure act on what is felt at a place"}
 SILENT = {"O3", "O15"}
+FEEL = {"bump": False, "unclench": False}  # what the hand feels (O17), from the account of what a knot is
 NOTES = {"O3": "Nothing in the account turns on hydration.",
          "O15": "The account has no unit to count: knots are places made tender, as many as the body map resolves.",
          "O6": "Its tingling comes from overbreathing, in the hands, face and trunk at once (macefield1991), not at a release.",
          "O1.1": "Its easy knots fade on the in-breath, when pain is felt less (arsenault2013), not on the out-breath.",
-         "O2.2": "A press adds input and draws attention, so a pressed knot is felt more: it fades, if at all, when the hand lifts, not under it."}
+         "O2.2": "A press adds input and draws attention, so a pressed knot is felt more: it fades, if at all, when the hand lifts, not under it.",
+         "O17.1": "Nothing in the tissue changes: the bump is an ordinary structure made tender, felt as a knot.",
+         "O17.2": "What goes is what is felt; nothing lets go in the tissue."}
 _CACHE: dict = {}
 
 
@@ -207,13 +210,11 @@ def cluster(ps: list[dict], variant: str) -> ClusterOut:
             target[k] = k * N + int(np.argmax(np.where(held[sl], st.F[sl], -np.inf)))
     work = np.zeros(K * N, bool)
     work[target[target >= 0]] = True
-    released_at = np.full(K, np.nan)
+    hand = Hand(K)  # worked until it lets go, for at most a minute; then it lifts
+    released_at = hand.released_at
 
     def inputs(t, st_):
-        for k in np.flatnonzero((target >= 0) & np.isnan(released_at)):
-            if not st_.h[target[k]]:
-                released_at[k] = t
-        live = work & np.repeat(np.isnan(released_at), N) & (t < PRESS_FOR)  # until it lets go, for at most a minute
+        live = work & np.repeat(hand.step(t, (target >= 0) & st_.h[np.maximum(target, 0)]), N)
         return (P["hold"] - calm(t, P["breath_calm"], P["tau_calm"]), True, live.astype(float),
                 np.where(live, P["palpation"][S["group"]], 0.0))
 

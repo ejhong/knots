@@ -25,18 +25,19 @@ const GLYPH: Record<string, string> = {
   'trigger-point': '点',
   densification: '膠',
   nerve: '神経',
+  'motor-switch': '握',
   central: '覚',
 };
 // Where each theory stands in the simulation (the Research page).
 // In the exam: the parts each modelled theory can pass in some plausible setting, with its best variant (matrix.json).
 const mx = matrixData as unknown as Matrix;
-const EXAM_ID: Record<string, string> = { perforator: 'T1', 'trigger-point': 'T3', central: 'T6' };
+const EXAM_ID: Record<string, string> = { perforator: 'T1', 'trigger-point': 'T3', 'motor-switch': 'T7', central: 'T6' };
 const examLine = (key: string) => {
   const t = mx.theories.find((x) => x.id === EXAM_ID[key]);
   if (!t) return '';
   const scored = mx.parts.filter((part) => t.variants.some((v) => typeof v.cells[part.id] === 'number'));
   const can = scored.filter((part) => t.variants.some((v) => (v.cells[part.id] as number) > 0));
-  return `run through the sealed exam: ${can.length} of its ${scored.length} scored parts hold in some plausible setting`;
+  return `run through exam v${mx.exam.version}: ${can.length} of its ${scored.length} scored parts hold in some plausible setting`;
 };
 const TESTS: Record<string, string> = {
   perforator: `modelled: one vessel from measured numbers, the breath by drive and by movement, a tree of a parent and its children, and how a knot sets when held; ${examLine('perforator')}`,
@@ -44,6 +45,7 @@ const TESTS: Record<string, string> = {
   'trigger-point': `modelled: the energy crisis at an endplate, released by pressure and stretch; ${examLine('trigger-point')}`,
   densification: 'to model',
   nerve: 'to model',
+  'motor-switch': `modelled: motor units that latch on under stress and are kept on by their own metabolites, released by inhibition; ${examLine('motor-switch')}`,
   central: `modelled: gain, arousal and attention on a body map, the account every other view has to beat; ${examLine('central')}`,
 };
 const index = [
@@ -55,8 +57,8 @@ const index = [
   title="What is a knot?"
   kicker="Hypotheses"
   current="hypotheses"
-  lede="Six answers, each given at its strongest — its own best evidence and its own sharpest test. They are not all rivals, and where they part, they can be tested."
-  description="What is a knot? Six answers — perforators held shut, the vascular latch, the trigger point, fascial densification, sensitised nerves, and perception — each at its strongest."
+  lede="Seven answers, each given at its strongest — its own best evidence and its own sharpest test. They are not all rivals, and where they part, they can be tested."
+  description="What is a knot? Seven answers — perforators held shut, the vascular latch, the trigger point, fascial densification, sensitised nerves, motor units that latch on, and perception — each at its strongest."
   glyph="説"
   index={index}
   wide

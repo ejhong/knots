@@ -270,7 +270,7 @@ export function decisionTree(): string {
   box(260, 96, 360, 46, ['2. Where, and in what? Flow in the skin, flow or', 'stiffness in the muscle, glide between layers, the nerve?']);
   const leaves = [
     { x: 10, cond: 'skin flow, in seconds', name: 'Perforators', sub: 'at the fascia', glyph: '結' },
-    { x: 184, cond: 'muscle flow, stiffness', name: 'Trigger points', sub: 'or a latch in muscle', glyph: '点閂' },
+    { x: 184, cond: 'muscle: stiffness, EMG', name: 'Trigger point,', sub: 'motor switch; latch', glyph: '点握' },
     { x: 358, cond: 'glide between layers', name: 'Densification', sub: 'the loose layers', glyph: '膠' },
     { x: 532, cond: 'nerve signs only', name: 'Nerves', sub: 'where they pierce', glyph: '神経' },
   ];
@@ -552,7 +552,7 @@ export interface Matrix {
   run: { inputs: string; commit: string; dirty: boolean };
   exam: { version: number; updated: string; sha256: string };
   trials: { surge_s: number; settle_s: number; breath_s: number[]; breaths: number; press_s: number; hold_s: number; mood_s: number; depths: number[]; patch: number; samples: number; seed: number };
-  parts: { id: string; obs: string; says: string; short: string; not_run?: string | null }[];
+  parts: { id: string; obs: string; says: string; short: string; not_run?: string | null; rough?: boolean }[];
   theories: MatrixTheory[];
 }
 
@@ -591,11 +591,12 @@ const PANELS: Record<string, { name: string; reads: string; unit: string; line?:
   T1: { name: 'Perforators', reads: 'skin perfusion over the patch', unit: '× relaxed flow' },
   T3: { name: 'Trigger points', reads: 'the nodule (contracture)', unit: '0–1', line: { y: 0.5, label: 'held above' } },
   T6: { name: 'Perception', reads: 'what is felt', unit: '1: a knot forms', line: { y: 1, label: 'a knot forms above' } },
+  T7: { name: 'Motor switch', reads: 'single motor units (EMG)', unit: 'share of units firing' },
 };
 
 export function recordings(inst: InstrumentStudy): string {
-  const ids = ['T1', 'T3', 'T6'].filter((id) => inst.traces[id]);
-  const pw = 212;
+  const ids = ['T1', 'T3', 'T7', 'T6'].filter((id) => inst.traces[id]);
+  const pw = ids.length > 3 ? 172 : 212;
   const gap = 34;
   const L = 36;
   const top = 58;
@@ -696,7 +697,8 @@ export function countsStrip(m: Matrix, estimate: [number, number] = [1e5, 1e6]):
     const y = top + 17 + i * 34;
     out.push(`<text x="${L - 12}" y="${y + 3}" text-anchor="end" fill="${PAPER.text}" font-size="10" ${MONO}>${esc(t.name)}</text>`);
     if (!c) {
-      out.push(`<text x="${L}" y="${y + 3}" fill="${PAPER.muted}" font-size="9" ${SERIF} font-style="italic">no unit to count: as many places as sensitisation and attention make</text>`);
+      const why = t.id === 'T6' ? 'no unit to count: as many places as sensitisation and attention make' : 'not counted yet: its units in a body are not sourced';
+      out.push(`<text x="${L}" y="${y + 3}" fill="${PAPER.muted}" font-size="9" ${SERIF} font-style="italic">${esc(why)}</text>`);
       return;
     }
     const all = X(c.units);

@@ -1,0 +1,126 @@
+# T7, the motor switch (knots_sim/models/motorswitch.py): motor units that latch on (persistent inward currents) and the
+# loop that keeps them on (johansson1991). Added 27 Sep 2026. The switch's parts are measured in people; that a knot is a
+# latched motor unit is untested, and every number below that says what a knot's units would do is guessed, sampled
+# across its range. Same format as vessel.yaml.
+
+model: motorswitch
+title: The motor switch
+parameters:
+  H:
+    symbol: H
+    label: "the latch: how far below its recruiting input a unit keeps firing"
+    value: 0.55
+    unit: "1"
+    range: [0.3, 0.8]
+    confidence: inferred
+    source: heckman2008
+    locator: abstract
+    quote: "The PIC markedly amplifies synaptic input, up to fivefold or more, depending on the level of monoaminergic input."
+    note: "Amplified fivefold, a unit keeps firing on a fifth of the input that recruited it (H up to 0.8, at full facilitation). How much a knot's units have is not known."
+
+  tau_d:
+    symbol: τ_d
+    label: "how fast the descending drive reaches a motor neuron"
+    value: 1.0
+    unit: s
+    range: [0.5, 3.0]
+    confidence: guessed
+    note: "Drive reaches the neuron through synapses and dendrites, so a change of it arrives smoothed, over about a second."
+
+  tau_M:
+    symbol: τ_M
+    label: "how fast monoamine facilitation follows stress"
+    value: 40.0
+    unit: s
+    range: [10.0, 120.0]
+    confidence: guessed
+    note: "Serotonin and noradrenaline set the currents' strength (heckman2008); how fast they follow a change of stress at a spinal motor pool is not known."
+
+  k_w:
+    symbol: k_w
+    label: "how much repeated activation deepens the latch"
+    value: 0.5
+    unit: "1"
+    range: [0.0, 1.0]
+    confidence: guessed
+    note: "The currents' amplitude can grow with repeated activation (heckman2008); by how much, in a knot, is not known."
+
+  tau_w:
+    symbol: τ_w
+    label: "how fast that warm-up builds and fades"
+    value: 120.0
+    unit: s
+    range: [30.0, 300.0]
+    confidence: guessed
+
+  spread:
+    symbol: σ_θ
+    label: "the spread of units' recruitment thresholds"
+    value: 0.4
+    unit: "log"
+    range: [0.2, 0.6]
+    confidence: guessed
+    note: "Units in a pool are recruited over a range of inputs; the spread across one patch is not measured."
+
+  g_m:
+    symbol: g_m
+    label: "the loop: how strongly a unit's own metabolites drive it"
+    value: 0.5
+    unit: "threshold"
+    range: [0.1, 1.0]
+    confidence: guessed
+    note: "johansson1991 proposes that the metabolites of static contraction drive the gamma system and the spindles, and so the same motor neurons, raising stiffness and metabolites again. Its strength is not measured."
+
+  tau_m:
+    symbol: τ_m
+    label: "how fast the metabolites build and wash out"
+    value: 90.0
+    unit: s
+    range: [30.0, 300.0]
+    confidence: guessed
+    note: "As T3's milieu (tau_milieu), the same quantity."
+
+  squeeze:
+    symbol: κ
+    label: "how far a firing unit squeezes its own supply"
+    value: 0.8
+    unit: "1"
+    range: [0.5, 0.95]
+    confidence: guessed
+    note: "As T3's squeeze: a sustained contraction presses on its own capillaries."
+
+  g_n:
+    symbol: g_n
+    label: "how much a unit's metabolites drive its neighbours"
+    value: 0.15
+    unit: "threshold"
+    range: [0.0, 0.3]
+    confidence: guessed
+    note: "The loop spreads to neighbouring units and muscles (johansson1991); by how much is not known."
+
+  press_gain:
+    symbol: g_p
+    label: "a hand's input to the units it presses, per 40 mmHg"
+    value: 0.5
+    unit: "threshold"
+    range: [0.2, 1.0]
+    confidence: guessed
+    note: "Pressure on a muscle reaches its motor neurons through its sensors; how strongly, and with which sign when held, is not known (the variants)."
+
+  inhibit_after:
+    symbol: t_i
+    label: "when a held hand turns from exciting to inhibiting"
+    value: 8.0
+    unit: s
+    range: [2.0, 20.0]
+    confidence: guessed
+    note: "In the variant in which held pressure inhibits the units it presses."
+
+  focus_inhibit:
+    symbol: g_f
+    label: "how strongly attention at a place inhibits its units"
+    value: 0.3
+    unit: "threshold"
+    range: [0.1, 0.6]
+    confidence: guessed
+    note: "Descending neuromodulation is diffuse and inhibition focused, in the motor system (heckman2008's account); that attention can aim that inhibition at a place is the view's assumption."

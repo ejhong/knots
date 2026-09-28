@@ -35,3 +35,8 @@ discussion's table is in `sim/BRIEF.md`.
 - 27 Sep 2026, asked about knots over bone, whether a knot pinches up with the skin, and a twitch at a release: "Maybe
   less over bone. Doesn’t seem to pinch with the skin. Not sure about a twitch more like a release feel like unclenching
   might be right or relaxing."
+- 27 Sep 2026, on how to weigh the answers above: "Take all my answers as just rough feelings. Not definitive but to be
+  considered."
+- 27 Sep 2026, on pressure and the breath: "Also my thought is we don’t know if the palpitation pressure vs complex
+  meditative breath for release. I think breath plus attention alone may be enough but the pressure may help focus
+  attention to area."
