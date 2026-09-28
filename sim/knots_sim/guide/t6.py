@@ -58,6 +58,7 @@ WORDS = {
     "micro": "Attention with safety quiets a place whatever the breath's size.",
     "needs_what": "arousal, everywhere at once (perception has no drive of its own at a place)",
     "needs": "What is felt follows arousal and attention; sensitisation keeps a place loud after arousal falls.",
+    "family": "No trees: places on the body map are not branches of one another.",
     "hand": "A hand adds input and draws attention: the place is felt more under it.",
     "letgo": "What goes is what is felt.",
     "spark": "",

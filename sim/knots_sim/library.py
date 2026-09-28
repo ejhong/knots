@@ -177,6 +177,10 @@ NEW = [
      "A single motor unit's territory measured with ultrasound-guided scanning EMG in tibialis anterior: 1.5 to 14.7 mm across, 7.2 mm on average."),
     ("17369051", "cescon2008", ["anatomy", "imaging"],
      "Over the upper trapezius the fat beneath the skin measured 3 to 18 mm by ultrasound, and the muscle's innervation zone lay mid-way between C7 and the acromion."),
+    ("2923241", "segal1989", ["vascular", "animals"],
+     "Dilations and constrictions started on an arteriole propagate along its wall both ways, decaying with a length constant of about 1.9 mm; those started on daughter vessels enter the parent and sum there."),
+    ("1858919", "segal1991", ["vascular", "animals"],
+     "A dilation started at the end of a terminal arteriole with no flow was conducted more than 1 mm upstream into its parent, and blood flowed into the capillaries it fed."),
 ]
 
 # Existing entries that the simulation also leans on gain the models tag.

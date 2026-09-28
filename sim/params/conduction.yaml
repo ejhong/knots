@@ -1,0 +1,27 @@
+# Conducted vasomotor responses (knots_sim/guide/t1.py): a dilation or constriction started on a small artery spreads along
+# its wall, both ways, into its parent and its other branches, decaying with distance (segal1986, segal1989, segal1991).
+# Used by the field guide's perforator trees. Same format as vessel.yaml.
+
+model: conduction
+title: Conducted dilation
+parameters:
+  length_const:
+    symbol: λ
+    label: "how far a vasomotor response travels along a small artery's wall (its length constant)"
+    value: 2.0
+    unit: mm
+    range: [1.8, 2.4]
+    confidence: measured
+    source: segal1989
+    locator: abstract
+    quote: "this decay was characterized by mechanical length constants of 1.9 and 1.8 mm for ACh and NE, respectively."
+    note: "2.1 and 2.4 mm in hamster muscle arterioles (segal1991). Dilations and constrictions both conduct, upstream and downstream."
+
+  cross_branch:
+    symbol: κ
+    label: "the share of a conducted response that crosses a branch point"
+    value: 0.7
+    unit: "1"
+    range: [0.3, 1.0]
+    confidence: guessed
+    note: "Responses started on daughter vessels propagate into the parent and sum linearly there (segal1989); how much is lost at the branch is not stated."

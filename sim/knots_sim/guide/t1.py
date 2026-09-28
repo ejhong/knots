@@ -66,6 +66,7 @@ WORDS = {
              "movement at the spot.",
     "needs_what": "the sympathetic drive to the knot's own small artery",
     "needs": "Tone eases slowly when drive falls (the gasp reflex's recovery, fitted to one recording), so a calming has to last.",
+    "family": "Conducted dilation fades along the wall over about 2 mm (segal1989), and a child's knot sits some 4-5 mm from its parent's.",
     "hand": "A vessel pressed shut cannot reopen until the pressure lifts.",
     "letgo": "As it opens, blood floods the starved patch.",
     "spark": "As blood returns the vessel's nerve bursts: a tingle over the patch it feeds.",
@@ -115,8 +116,37 @@ class Runner:
         self.sham = self.lay.near(patch.SHAM, patch.ROI_R)
         self._dS = np.zeros(k)  # a calming aimed at the knot (the envelope), per setting
         self._aim = np.zeros((k, self.lay.n), bool)
+        self._conduction(seed)
         self._formed = None
         self.variant = "both"  # the breath through drive and movement; "aimed": attention aims the drive at the spot
+
+    def _conduction(self, seed: int) -> None:
+        """Conducted vasomotor responses (segal1986, segal1989, segal1991): each vessel's activation is pulled toward its
+        parent's and its children's, by κ exp(-d/λ) for a path d mm along the vessels (a child to its parent: their
+        distance; siblings: through the parent, κ² exp(-(d₁ + d₂)/λ)). Both dilation and constriction conduct."""
+        from scipy.stats import qmc
+
+        from ..params import load as _load
+
+        tab = _load("conduction")
+        keys = tuple(tab)
+        X = qmc.Sobol(len(keys), seed=seed + 202).random(self.K)
+        vals = {q: tab[q].range[0] + X[:, i] * (tab[q].range[1] - tab[q].range[0]) for i, q in enumerate(keys)}
+        self.more = {q: (vals[q], tab[q].label) for q in keys}  # sampled numbers the traits can depend on
+        lam, kap = vals["length_const"], vals["cross_branch"]
+        pos, par = self.lay.pos, self.lay.parent
+        N = self.lay.n
+        d = np.sqrt(((pos[:, None, :] - pos[None, :, :]) ** 2).sum(-1))
+        W = np.zeros((self.K, N, N))
+        for j in range(N):
+            p = par[j]
+            if p < 0:
+                continue
+            W[:, j, p] = W[:, p, j] = kap * np.exp(-d[j, p] / lam)
+            for i in range(N):
+                if i != j and par[i] == p:
+                    W[:, j, i] = kap**2 * np.exp(-(d[j, p] + d[i, p]) / lam)
+        self.W = W
 
     def _scale(self) -> np.ndarray:
         """U per setting by the shared rule, at the typical vessel that can hold (the median over the forest)."""
@@ -168,7 +198,7 @@ class Runner:
                                  "hand": pressing.copy()})
             if i == steps:
                 break
-            u = self._inputs(scene, t, pressing, mv_mood)
+            u = self._inputs(scene, t, pressing, mv_mood, Y[1].reshape(Kk, N))
             k1 = F(Y, u)
             k2 = F(Y + DT / 2 * k1, u)
             k3 = F(Y + DT / 2 * k2, u)
@@ -178,10 +208,12 @@ class Runner:
             Y[1:] = np.clip(Y[1:], 0.0, 1.0)
         return Y
 
-    def _inputs(self, scene: Scene, t: float, pressing: np.ndarray, mv_mood) -> tuple:
+    def _inputs(self, scene: Scene, t: float, pressing: np.ndarray, mv_mood, A: np.ndarray | None = None) -> tuple:
         Kk, N = self.K, self.lay.n
         s = stress(scene, t, self.hold, mv_mood)
         u = self.urest + (self.U * s)[:, None] * self.zone[None, :]
+        if A is not None:  # conducted: each vessel's command pulled toward its relatives' activation
+            u = u + np.einsum("kij,kj->ki", self.W, A) - self.W.sum(axis=2) * A
         mv = np.zeros((Kk, N))
         pe = np.zeros((Kk, N))
         if scene.breathing(t):
@@ -231,6 +263,61 @@ class Runner:
             self._formed = Y.copy()
         self.variant = "both"
         return self._read(scene, frames, target)
+
+    def family(self) -> dict:
+        """The author's question: what does a child's release do to its parent and its siblings, and a parent's to its
+        children? From the knots a stressful moment leaves, with the stress held on, one vessel's own drive falls to rest
+        for a minute (a release aimed at it alone): in turn the held child nearest the spot whose parent is held, and the
+        held parent nearest the spot. Per setting: whether each let go, and what its relatives did within that minute
+        and the half minute after."""
+        from .scenes import Scene
+
+        Kk, N = self.K, self.lay.n
+        par = self.lay.parent
+        Y0 = self.formed()
+        x0 = Y0[0].reshape(Kk, N)
+        held0 = (x0 < SHUT * self.xc) & self.bist
+        dist = ((self.lay.pos - patch.SPOT) ** 2).sum(axis=1)
+        sc = Scene("family", "", "", "formed", 90.0, 0.5, film=False, calm_until=60.0)
+        out = {}
+        for role in ("child", "parent"):
+            pick = np.full(Kk, -1)
+            for k in range(Kk):
+                if role == "child":
+                    ok = np.array([par[j] >= 0 and held0[k, j] and held0[k, par[j]] for j in range(N)])
+                else:
+                    ok = np.array([par[j] < 0 and held0[k, j] for j in range(N)])
+                if ok.any():
+                    pick[k] = int(np.argmin(np.where(ok, dist, np.inf)))
+            aim = np.zeros((Kk, N), bool)
+            has = pick >= 0
+            aim[np.flatnonzero(has), pick[has]] = True
+            self._aim, self._dS = aim, self.hold.copy()
+            frames = Frames(sc.duration, sc.frame)
+            self._integrate(sc, Y0.copy(), frames)
+            x = frames.stack("x")
+            t = frames.times[: len(x)]
+            held = (x < SHUT * self.xc[None]) & self.bist[None]
+            gone = lambda k, j: bool(held[0, k, j] and (~held[t >= 5.0, k, j]).any())
+            res = {"n": int(has.sum()), "self": np.zeros(Kk, bool), "parent": np.zeros(Kk, bool),
+                   "siblings": np.zeros(Kk), "sib_n": np.zeros(Kk), "children": np.zeros(Kk), "kid_n": np.zeros(Kk),
+                   "has": has}
+            for k in np.flatnonzero(has):
+                j = pick[k]
+                res["self"][k] = gone(k, j)
+                if role == "child":
+                    p = par[j]
+                    res["parent"][k] = gone(k, p)
+                    sibs = [i for i in range(N) if par[i] == p and i != j and held[0, k, i]]
+                    res["siblings"][k] = sum(gone(k, i) for i in sibs)
+                    res["sib_n"][k] = len(sibs)
+                else:
+                    kids = [i for i in range(N) if par[i] == j and held[0, k, i]]
+                    res["children"][k] = sum(gone(k, i) for i in kids)
+                    res["kid_n"][k] = len(kids)
+            out[role] = res
+        self._aim, self._dS = np.zeros((Kk, N), bool), np.zeros(Kk)
+        return out
 
     def _target(self, held0: np.ndarray) -> np.ndarray:
         """Per setting, the knot a scene works on: the held vessel nearest the spot under the hand, else the nearest."""

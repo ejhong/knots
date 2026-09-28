@@ -64,6 +64,7 @@ WORDS = {
     "micro": "Attention inhibits the units at the spot whatever the breath's size; the breath itself adds little.",
     "needs_what": "the unit's input (a fall in drive, or inhibition, such as attention's)",
     "needs": "The latch holds a unit on at a small share of the input that recruited it: the input must fall far below that.",
+    "family": "Motor units are not arranged in trees: neighbours share only their metabolites' drive.",
     "hand": "A held hand excites the units under it for a moment and then inhibits them (which a hand does is not known; "
             "the other variant follows).",
     "letgo": "The unit falls silent and its fibres relax: an unclenching.",

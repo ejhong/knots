@@ -51,7 +51,7 @@ def _inputs_hash() -> str:
     h = hashlib.sha256()
     guide = SIM / "knots_sim" / "guide"  # the field guide has its own run and hash (knots_sim.guide.export)
     for f in sorted([*(p for p in (SIM / "knots_sim").rglob("*.py") if guide not in p.parents),
-                     *(p for p in (SIM / "params").glob("*.yaml") if p.name != "senses.yaml"),
+                     *(p for p in (SIM / "params").glob("*.yaml") if p.name not in ("senses.yaml", "conduction.yaml")),
                      *(SIM / "observations").glob("*.yaml")]):
         h.update(f.relative_to(SIM).as_posix().encode())
         h.update(f.read_bytes())

@@ -69,6 +69,7 @@ def run_theory(m, k: int) -> dict:
         print(f"  {m.ID} {s.id:10s} {time.time() - t0:6.1f} s", flush=True)
     extra = {}
     if m is t1:
+        extra["family"] = runner.family()
         extra["attention_aimed"] = runner.run(_scene("attention"), variant="aimed")
         extra["breathing_aimed"] = runner.run(_scene("breathing"), variant="aimed")
         age = a1.ageing(runner.ps, "both")

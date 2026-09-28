@@ -35,6 +35,7 @@ RELEVANT = {  # which sampled numbers can bear on each trait: "model" is the the
     "hand": ("model", "hold", "palpation", "press_strain", *BREATH),
     "spark": ("model", "hold", "spark", "palpation", *BREATH),
     "move": ("model", "hold", "palpation", "press_strain", *BREATH),
+    "family": ("model", "hold"),
     "time": ("model", "hold"),
 }
 PHASES = (  # where in the breath: seconds after the out-breath begins (it lasts 6 s; the in-breath 4)
@@ -82,6 +83,8 @@ class Numbers:
                 self.cols[q] = (np.array([s[q] for s in runner.ps], float), p.label, "interface")
         for q, p in load("senses").items():
             self.cols[q] = (np.array([s[q] for s in runner.se], float), p.label, "senses")
+        for q, (v, lab) in getattr(runner, "more", {}).items():  # a runner's own sampled numbers (the trees' conduction)
+            self.cols[q] = (np.asarray(v, float), lab, "model")
 
     def for_trait(self, tid: str) -> list[tuple[np.ndarray, str]]:
         keep = RELEVANT.get(tid, ("model",))
@@ -448,6 +451,22 @@ def character(m, runner, runs: dict, extra: dict) -> dict:
                                  ("it comes back", same[went].mean() >= 0.3)) if on]
         T.append(trait("move", "move", "After one lets go", say, together | nearby | same, went, nums,
                        cell=" · ".join(parts) or "nothing follows"))
+
+    # --- parents and children ---
+    fam = extra.get("family")
+    if fam is None:
+        T.append(trait("family", "move", "Parents and children", words["family"], cell="no trees", silent=True))
+    else:
+        c, p = fam["child"], fam["parent"]
+        hc, hp = c["has"], p["has"]
+        say = (f"Free one child under a held parent (its own drive down to rest for a minute): the child itself lets go "
+               f"{how_often(c['self'], hc)}, its parent {how_often(c['parent'], hc)}, and a sibling "
+               f"{how_often(c['siblings'] > 0, hc)}. Free the parent instead: it lets go {how_often(p['self'], hp)}, and "
+               f"{_median(p['children'][hp & p['self']]):.0f} of its {_median(p['kid_n'][hp]):.0f} held children go with it "
+               f"(the median). {words['family']}")
+        up = c["parent"]
+        T.append(trait("family", "move", "Parents and children", say, ~up, hc, nums,
+                       cell="release runs down the tree, not up" if not up[hc].any() else "a child can free its parent"))
 
     # --- over time ---
     age = extra.get("ageing")

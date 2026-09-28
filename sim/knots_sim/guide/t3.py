@@ -63,6 +63,7 @@ WORDS = {
     "micro": "Small breaths stretch the band little; the calm they bring lowers endplate activity a little.",
     "needs_what": "endplate activity at the knot",
     "needs": "The energy crisis holds by its own squeezed capillaries: it needs pressure or stretch, not calm alone.",
+    "family": "Nothing in this account links trigger points in trees: its key point and satellites are not modelled yet.",
     "hand": "Sustained pressure lengthens the contracture slowly, over the tens of seconds of pressure release.",
     "letgo": "The contracture relaxes as energy returns.",
     "spark": "A release fast enough twitches: the local twitch response.",

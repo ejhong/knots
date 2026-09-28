@@ -1479,6 +1479,36 @@
   "note": "A dilation started at one point on an arteriole propagates along its wall, upstream, independently of flow."
  },
  {
+  "id": "segal1989",
+  "authors": "Segal SS, Damon DN, Duling BR",
+  "year": 1989,
+  "title": "Propagation of vasomotor responses coordinates arteriolar resistances",
+  "venue": "Am J Physiol 256:H832-7",
+  "url": "https://doi.org/10.1152/ajpheart.1989.256.3.H832",
+  "pmid": "2923241",
+  "kind": "paper",
+  "tags": [
+   "vascular",
+   "animals"
+  ],
+  "note": "Dilations and constrictions started on an arteriole propagate along its wall both ways, decaying with a length constant of about 1.9 mm; those started on daughter vessels enter the parent and sum there."
+ },
+ {
+  "id": "segal1991",
+  "authors": "Segal SS",
+  "year": 1991,
+  "title": "Microvascular recruitment in hamster striated muscle: role for conducted vasodilation",
+  "venue": "Am J Physiol 261:H181-9",
+  "url": "https://doi.org/10.1152/ajpheart.1991.261.1.H181",
+  "pmid": "1858919",
+  "kind": "paper",
+  "tags": [
+   "vascular",
+   "animals"
+  ],
+  "note": "A dilation started at the end of a terminal arteriole with no flow was conducted more than 1 mm upstream into its parent, and blood flowed into the capillaries it fed."
+ },
+ {
   "id": "shah2005",
   "authors": "Shah JP, Phillips TM, Danoff JV et al.",
   "year": 2005,
