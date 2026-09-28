@@ -59,6 +59,9 @@ const TELLS: { key: string; q: string; ask: string }[] = [
   { key: 'hand', q: 'Under a resting hand, when does it let go?', ask: 'step 1' },
   { key: 'attention', q: 'Does attention alone, without touch, let it go?', ask: 'step 1' },
   { key: 'spark', q: 'Is there a spark, and when?', ask: 'step 1' },
+  { key: 'stiff', q: 'Does a stretch meet a block at the knot?', ask: 'step 1, then step 2' },
+  { key: 'rolled', q: 'Rolled over, does it let go?', ask: 'step 1' },
+  { key: 'warmth', q: 'Does warmth, as in a hot shower, free it?', ask: 'step 1' },
   { key: 'needs', q: 'What would a breath have to do (the least calming that frees the typical knot)?', ask: 'the field guide' },
   { key: 'time', q: 'Once the stress has gone, can an old knot stay?', ask: 'following knots over weeks' },
 ];
@@ -180,7 +183,8 @@ const index = [
     <ol class="steps">
       <li><strong>Noticing, with no instrument.</strong> When does a knot let go under a resting hand? {cap(handGroups.join('; '))}. Does attention alone, without touch, free it? {cap(attGroups.join('; '))}. Is there a tingle
         over the spot as it goes (perforators), a twitch (trigger points), or a tingle along a nerve's branches when it is
-        pressed (nerves)? Does the skin slide over it (densification: not)? Does it come back to the same point
+        pressed (nerves)? Does the skin slide over it (densification: not)? Does a stretch meet a block there, and does the block go
+        with the knot or stay until the layer is moved (a perforator's sleeve can stay stuck)? Does it come back to the same point
         each time the stress returns (nerves, whose knots can sit only where a nerve pierces the fascia)?</li>
       <li><strong>Ultrasound over a few knots,</strong> with colour Doppler and a measure of the layers' sliding: in which
         layer a bump is (a trigger point's nodule, or a motor switch's band, in muscle); whether a perforator runs beneath

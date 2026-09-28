@@ -23,6 +23,8 @@ export type FrameInput = {
   t: number; // model seconds
   hand: boolean;
   roll: boolean;
+  rollAt?: string; // "spot": the roller passes over the knot at the spot; else a quiet corner
+  warm?: boolean; // warmth over the whole patch, as in a hot shower
   attend: boolean;
   breath: number; // -1..1
 };
@@ -45,6 +47,7 @@ export class PatchView {
   private held: Float32Array;
   private act: Float32Array;
   private halo: Float32Array;
+  private stf: Float32Array; // how much each unit blocks a stretch (the perforators' jammed sleeves)
   private flashes: Flash[] = [];
   private lastT = -1;
   readonly lay: Layout;
@@ -62,6 +65,7 @@ export class PatchView {
     this.held = new Float32Array(n);
     this.act = new Float32Array(n);
     this.halo = new Float32Array(n);
+    this.stf = new Float32Array(n);
     this.stiff = th.id === 'T3' || th.id === 'T7';
     this.resize();
   }
@@ -88,6 +92,7 @@ export class PatchView {
     this.held.fill(0);
     this.act.fill(0);
     this.halo.fill(0);
+    this.stf.fill(0);
     this.flashes = [];
     this.lastT = -1;
   }
@@ -99,6 +104,7 @@ export class PatchView {
       this.held[j] = this.cells.held(f, j) ? 1 : 0;
       this.act[j] = this.cells.active(f, j) ? 1 : 0;
       this.halo[j] = this.haloTarget(f, j);
+      this.stf[j] = this.cells.stiff(f, j);
     }
     this.flashes = [];
     this.lastT = -1;
@@ -302,6 +308,7 @@ export class PatchView {
       this.held[j] += (h - this.held[j]) * (h > this.held[j] ? kOn : kOff);
       this.act[j] += (a - this.act[j]) * (a > this.act[j] ? kOn : kOff);
       this.halo[j] += (ht - this.halo[j]) * (ht > this.halo[j] ? kOn : kOff);
+      this.stf[j] += (c.stiff(f, j) - this.stf[j]) * kOff;
     }
     // flashes: events the playhead has just passed
     if (this.film && this.lastT >= 0 && inp.t > this.lastT && inp.t - this.lastT < 60) {
@@ -310,7 +317,12 @@ export class PatchView {
     this.lastT = inp.t;
     ctx.globalCompositeOperation = 'lighter';
     const id = this.th.id;
-    if (id === 'T1') this.drawT1();
+    if (id === 'T1') {
+      this.drawT1();
+      ctx.globalCompositeOperation = 'source-over';
+      this.drawSleeves();
+      ctx.globalCompositeOperation = 'lighter';
+    }
     else if (id === 'T2') this.drawT2();
     else if (id === 'T3') this.drawT3();
     else if (id === 'T4') this.drawT4(now);
@@ -343,6 +355,24 @@ export class PatchView {
     ctx.scale(1, ry / rx);
     this.glow(0, 0, rx, color, a);
     ctx.restore();
+  }
+
+  /** A perforator's sleeve that has jammed: the layers pinned at the vessel, a pale ring around it. */
+  private drawSleeves(): void {
+    const ctx = this.ctx;
+    const L = this.lay;
+    for (let j = 0; j < L.n; j++) {
+      const a = Math.max(0, (this.stf[j] - 0.3) / 0.7);
+      if (a <= 0.01) continue;
+      const r = (L.kind[j] === 'parent' ? 1.5 : 1.0) * this.s;
+      ctx.strokeStyle = rgba(INKC.ivory, 0.5 * a);
+      ctx.lineWidth = 1.1;
+      ctx.setLineDash([1.5, 1.8]);
+      ctx.beginPath();
+      ctx.arc(this.X(L.pos[j][0]), this.Y(L.pos[j][1]), r, 0, Math.PI * 2);
+      ctx.stroke();
+      ctx.setLineDash([]);
+    }
   }
 
   private drawT1(): void {
@@ -567,7 +597,10 @@ export class PatchView {
       ctx.stroke();
     }
     if (inp.roll) {
-      const [[x0, y0], [x1, y1]] = this.patch.roll;
+      // a roller: over the quiet corner, or a bar across the knot at the spot
+      const [[x0, y0], [x1, y1]] = inp.rollAt === 'spot'
+        ? [[sx - this.patch.hand_r, sy - 3], [sx + this.patch.hand_r, sy + 3]]
+        : this.patch.roll;
       ctx.fillStyle = rgba(INKC.hand, 0.16);
       ctx.strokeStyle = rgba(INKC.hand, 0.6);
       ctx.lineWidth = 1;
@@ -575,6 +608,10 @@ export class PatchView {
       ctx.rect(this.X(x0), this.Y(y1), (x1 - x0) * this.s, (y1 - y0) * this.s);
       ctx.fill();
       ctx.stroke();
+    }
+    if (inp.warm) {
+      ctx.fillStyle = rgba(INKC.ochre, 0.06);
+      ctx.fillRect(0, 0, this.px, this.px);
     }
   }
 }

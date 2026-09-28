@@ -47,6 +47,10 @@ WORDS = {
     "stiff": True,
     "bump": "A small firm nodule on a taut band, about the size measured by ultrasound (0.16 cm², sikdar2009).",
     "bump_cell": "a small nodule on a band",
+    "stiffness": "A contracture resists a stretch: the taut band itself.",
+    "stiff_cell": "a taut band",
+    "rolled": "Each pass is a brief press, not the sustained pressure that lengthens the contracture.",
+    "no_warmth": "The model gives warmth no route: the account's releases are pressure, stretch and needling.",
     "inside": "Its acid, sensitising milieu stirs the muscle's nerves: an ache felt from inside.",
     "inside_cell": "an ache",
     "layer": "in the muscle",
@@ -111,6 +115,7 @@ class Runner:
         P = self.P
         mv_mood = moods(self.ps, scene.duration) if scene.mood else None
         hold = P["hold"][:, 0]
+        rolled = self.under_hand if scene.roll_at == "spot" else self.rolled
         last = None
         steps = int(round(scene.duration / DT))
         fall_max = np.zeros_like(st.c)
@@ -144,7 +149,7 @@ class Runner:
             if scene.calm_until and t < scene.calm_until:  # the knot's own drive lowered, aimed at it alone
                 s = s - self._dS[:, None] * self._aim
             press_now = np.where((pressing[:, None] & self.under_hand[None, :]) |
-                                 (scene.rolling(t) & self.rolled[None, :]), P["palpation"], 0.0)
+                                 (scene.rolling(t) & rolled[None, :]), P["palpation"], 0.0)
             rate = np.zeros_like(st.c) if last is None else np.abs(strain - last) / DT
             last = strain
             q = (1 - P["squeeze"] * st.c) * np.maximum(1 - press_now / P["occlude"], 0.0)
@@ -212,7 +217,7 @@ class Runner:
                           "capillary_flow": pick(q)},
                    inst={"needle_emg": pick(drive) / np.maximum(self.mid, 1e-9)[None, :], "stiffness": pick(c),
                          "muscle_flow": pick(q)},
-                   stress=s, hand=frames.stack("hand"), target=target)
+                   stress=s, hand=frames.stack("hand"), target=target, stiff=c)
 
     def settings(self) -> np.ndarray:
         keys = ("stress_gain", "squeeze", "relax", "use", "tau_energy", "milieu_gain", "tau_milieu", "hold", "palpation",

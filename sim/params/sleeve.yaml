@@ -1,0 +1,80 @@
+# The perforator's sleeve (knots_sim/models/sleeve.py): the loose, hyaluronan-rich sliding tissue around a perforator's
+# bundle where it passes through the fascia, which lets the layers glide past the vessel (guimberteau2005). Added to the
+# perforator view (T1) on 28 Sep 2026, to ask whether its knots can stiffen: a sleeve is kept wet by the flow through the
+# vessel it surrounds; a shut vessel dries it, its hyaluronan crowds and thickens (cowman2015), and a dry sleeve can jam,
+# pinning the layers at the vessel. Its structure follows the gliding layer's thixotropy (densification.yaml,
+# coussot2002). The crowding exponent is inferred from measurements; every other number is guessed and sampled.
+# Same format as vessel.yaml.
+
+model: sleeve
+title: The perforator's sleeve
+parameters:
+  theta:
+    symbol: θ_s
+    label: "how long a still sleeve takes to rebuild its structure"
+    value: 300.0
+    unit: s
+    range: [30.0, 3600.0]
+    confidence: guessed
+
+  steep:
+    symbol: n_s
+    label: "how steeply the sleeve's viscosity rises with its structure"
+    value: 2.5
+    unit: "1"
+    range: [2.0, 3.0]
+    confidence: guessed
+
+  x_max:
+    symbol: x_max,s
+    label: "the most structure a still sleeve builds"
+    value: 8.0
+    unit: "1"
+    range: [6.0, 10.0]
+    confidence: guessed
+
+  crowd:
+    symbol: α
+    label: "how steeply the sleeve's viscosity rises as it dries (the power of its hyaluronan's concentration)"
+    value: 3.5
+    unit: "1"
+    range: [3.0, 4.0]
+    confidence: inferred
+    source: cowman2015
+    locator: "full text, Real HA solutions show nonideality due to mutual macromolecular crowding"
+    quote: "varying as the third or fourth power of the change"
+    note: "In crowded hyaluronan solutions a change of concentration changes the viscosity as its third or fourth power; the same review ties immobility, crowded hyaluronan and lost gliding to felt stiffness."
+
+  dry:
+    symbol: d
+    label: "how much of its water a sleeve loses when its vessel's flow stops (and can gain in the flood after)"
+    value: 0.15
+    unit: "1"
+    range: [0.1, 0.3]
+    confidence: guessed
+    note: "A shut arteriole lowers the pressure in the capillaries it feeds, so less fluid leaves them while drainage goes on."
+
+  tau_w:
+    symbol: τ_w
+    label: "how slowly a sleeve's water follows its vessel's flow"
+    value: 600.0
+    unit: s
+    range: [120.0, 1800.0]
+    confidence: guessed
+
+  spread:
+    symbol: σ_s
+    label: "how unevenly the sleeves are moved by ordinary movement"
+    value: 0.05
+    unit: log
+    range: [0.02, 0.08]
+    confidence: guessed
+    note: "Kept small, so a wet sleeve stays free wherever ordinary movement reaches it: a layer stilled by stress is densification's account (densification.yaml); here the question is what a shut vessel does to its own sleeve."
+
+  roll_shear:
+    symbol: r_s
+    label: "how much a roller's pass shears a sleeve, as a multiple of ordinary movement"
+    value: 4.0
+    unit: "1"
+    range: [2.0, 10.0]
+    confidence: guessed

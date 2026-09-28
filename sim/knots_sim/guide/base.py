@@ -30,6 +30,7 @@ class Run:
     stress: np.ndarray | None = None  # (F, K) the shared stress
     hand: np.ndarray | None = None  # (F, K) a hand resting on the spot
     target: np.ndarray | None = None  # (K,) the unit a scene works on (the knot at the spot)
+    stiff: np.ndarray | None = None  # how much each unit blocks a stretch or a slide (0-1), where a theory has anything to
 
 
 class Frames:
@@ -86,6 +87,27 @@ def calmed(scene: Scene, t: float, size: np.ndarray, tau: np.ndarray) -> np.ndar
     if not scene.breath_until:
         return np.zeros_like(size)
     return scene.breath_amp * calm(min(t, scene.breath_until), size, tau)
+
+
+def warmth_sample(k: int, seed: int) -> dict[str, np.ndarray]:
+    """The warmth scene's numbers (params/warmth.yaml), each theory's own Sobol draw, log-uniform where the range is wide."""
+    from scipy.stats import qmc
+
+    from ..params import load
+
+    tab = load("warmth")
+    keys = tuple(tab)
+    X = qmc.Sobol(len(keys), seed=seed + 404).random(k)
+    out = {}
+    for i, q in enumerate(keys):
+        lo, hi = tab[q].range
+        out[q] = np.exp(np.log(lo) + X[:, i] * np.log(hi / lo)) if lo > 0 and hi / lo > 4 else lo + X[:, i] * (hi - lo)
+    return out
+
+
+def warmed(W: np.ndarray, scene: Scene, t: float, tau: np.ndarray, dt: float) -> np.ndarray:
+    """One step of how warm the skin is (0 as usual, 1 as warm as the scene makes it), per setting."""
+    return W + dt * (float(scene.warming(t)) - W) / tau
 
 
 def typical(X: np.ndarray, ok: np.ndarray) -> int:

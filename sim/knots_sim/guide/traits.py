@@ -37,6 +37,9 @@ RELEVANT = {  # which sampled numbers can bear on each trait: "model" is the the
     "move": ("model", "hold", "palpation", "press_strain", *BREATH),
     "family": ("model", "hold"),
     "time": ("model", "hold"),
+    "stiff": ("model", "hold"),
+    "rolled": ("model", "hold", "palpation", "press_strain"),
+    "warmth": ("model", "hold", *BREATH),
 }
 PHASES = (  # where in the breath: seconds after the out-breath begins (it lasts 6 s; the in-breath 4)
     (0.0, 3.0, "early in the out-breath"),
@@ -273,6 +276,35 @@ def character(m, runner, runs: dict, extra: dict) -> dict:
     else:
         T.append(trait("bump", "feel", "Found by a finger", words["bump"], all_, all_, cell=words["bump_cell"]))
 
+    # --- stiffness: does a stretch meet a block at the knot? ---
+    lin = runs["lingers"]
+    if lin.stiff is None:
+        T.append(trait("stiff", "feel", "Stiffness", words["stiff_none"], np.zeros(K, bool), all_, cell="no block"))
+    else:
+        kk_, tgl = np.arange(K), lin.target
+        valid = lin.held[-1, kk_, tgl]
+        ok = valid & (lin.stiff[-1, kk_, tgl] >= 0.5)
+        at0 = valid & (lin.stiff[0, kk_, tgl] >= 0.5)
+        say = f"{words['stiffness']} Held half an hour more, the knot at the spot blocks a stretch {how_often(ok, valid)}"
+        late = ok & ~at0
+        if late.any():
+            first = [float(lin.t[np.argmax(lin.stiff[:, k, tgl[k]] >= 0.5)]) for k in np.flatnonzero(late)]
+            say += f"; where it did not at first, the block comes after about {_mmss(_median(first))}"
+        say += "."
+        ar = extra.get("stiff_release")
+        if ar is not None:
+            jam = ar["held"] & ar["jam"]
+            if jam.any():
+                opened = jam & np.isfinite(ar["t_open"])
+                freed = opened & np.isfinite(ar["t_free"])
+                say += (f" When such a knot lets go (its own drive calmed for a minute), its vessel opens after about "
+                        f"{_mmss(_median(ar['t_open'][opened]))}; its sleeve slides again within ten minutes {how_often(freed, opened)}"
+                        + (f", about {_mmss(_median(ar['t_free'][freed] - ar['t_open'][freed]))} later" if freed.any() else "")
+                        + (", and otherwise stays stuck until the layer is sheared (a roller, a moving hand)" if (opened & ~freed).any() else "")
+                        + ".")
+        T.append(trait("stiff", "feel", "Stiffness", say, ok, valid, nums,
+                       cell=words["stiff_cell"] if valid.any() and ok[valid].mean() >= 0.5 else "sometimes a block"))
+
     # --- where they are, and how many ---
     zone = lay.zone
     top, bottom = zone >= np.quantile(zone, 2 / 3), zone <= np.quantile(zone, 1 / 3)
@@ -417,6 +449,23 @@ def character(m, runner, runs: dict, extra: dict) -> dict:
                f"{100 * _median(share_rel[anyk]):.0f}%). {words['micro']}")
         T.append(trait("micro", "release", "To subtle breaths, attending", say, went_m, tgt, nums,
                        cell=(f"at the spot {how_often(went_m, tgt).replace('in ', '')}" if went_m.any() else "no") if tgt.any() else "—"))
+    wa = runs.get("warmth")
+    if wa is not None:
+        if words.get("no_warmth"):
+            T.append(trait("warmth", "release", "Warmth", words["no_warmth"], cell="no route", silent=True))
+        else:
+            t_w = np.array([_release_of(wa, k, target[k]) for k in range(K)])
+            helped_w = tgt & np.isfinite(t_w) & (~np.isfinite(t_b) | (t_w + 5.0 < t_b))
+            rel_w = [(k, j) for k, j, _ in releases(wa.t, wa.held) if held0[k, j]]
+            share_w = np.array([len({j for kk, j in rel_w if kk == k}) / max(counts[k], 1) for k in range(K)])
+            say = (f"With five minutes of warmth, as in a hot shower, and the same slow breaths, the knot at the spot lets go "
+                   f"where the breaths alone would not, or sooner, {how_often(helped_w, tgt)}"
+                   + (f", after about {_mmss(_median(t_w[helped_w]))}" if helped_w.any() else "")
+                   + f"; across the patch about {100 * _median(share_w[anyk]):.0f}% let go (with the breaths alone, "
+                   f"{100 * _median(share_rel[anyk]):.0f}%). {words['warmth']}")
+            T.append(trait("warmth", "release", "Warmth", say, helped_w, tgt, nums,
+                           cell=("frees it" if helped_w[tgt].mean() >= 0.5 else ("sometimes" if helped_w.any() else "no"))
+                           if tgt.any() else "—"))
     envl = extra.get("envelope")
     if envl is not None:
         T.append(_needs(envl, words, K, nums))
@@ -447,6 +496,22 @@ def character(m, runner, runs: dict, extra: dict) -> dict:
     T.append(trait("hand", "release", "Under a resting hand", say, ok, tgt, nums,
                    cell={"under": "under the hand", "lift": "as the hand lifts", "later": "later",
                          "never": "not within a minute"}[which] + (" (never under it)" if not under.any() and which != "under" else "")))
+    rk = runs.get("rolled")
+    if rk is not None:
+        tr_k = np.array([_release_of(rk, k, rk.target[k]) for k in range(K)])
+        there = rk.held[0, np.arange(K), rk.target]
+        during, after_ = there & (tr_k < 180.0), there & (tr_k >= 180.0) & np.isfinite(tr_k)
+        never_ = there & ~np.isfinite(tr_k)
+        which, ok = _majority([("during", during), ("after", after_), ("never", never_)], there)
+        lead = {"during": f"Rolled over, it lets go while the roller works, {how_often(during, there)}"
+                          + (f", after about {_mmss(_median(tr_k[during]))}" if during.any() else ""),
+                "after": f"It lets go after the roller stops, {how_often(after_, there)}",
+                "never": f"Rolled over for three minutes, it does not let go within the scene, {how_often(never_, there)}"}[which]
+        others = [r for r in (f"while it rolls {how_often(during, there)}" if which != "during" and during.any() else "",
+                              f"after it stops {how_often(after_, there)}" if which != "after" and after_.any() else "") if r]
+        T.append(trait("rolled", "release", "Rolling the knot", f"{lead}{'; ' + ', '.join(others) if others else ''}. {words['rolled']}",
+                       ok, there, nums, cell={"during": "while rolled", "after": "after the roller stops",
+                                             "never": "not within the scene"}[which]))
     fall_b, fall_t = [], []
     for run in (br, ha):
         for k, j, tr_ in releases(run.t, run.held):

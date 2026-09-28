@@ -55,7 +55,7 @@ export type PatchIndex = {
   share: number[][];
 };
 
-export type SceneIndex = { id: string; name: string; what: string; duration: number; frame: number; film: boolean };
+export type SceneIndex = { id: string; name: string; what: string; duration: number; frame: number; film: boolean; roll_at?: string };
 
 export type GuideIndex = {
   run: { inputs: string; settings: number; seed: number; commit?: string };
@@ -63,7 +63,12 @@ export type GuideIndex = {
   scenes: SceneIndex[];
   theories: TheoryIndex[];
   not_yet: { id: string; key: string; name: string; glyph: string; why: string }[];
+  reports?: ReportRow[];
 };
+
+/** A report (the Introduction's observations) against every model: in how many settings its knots do it. */
+export type ReportCell = { n?: number; k?: number; share?: number | null; note?: string; silent?: boolean; calibration?: boolean };
+export type ReportRow = { id: string; label: string; basis: string; theories: Record<string, ReportCell> };
 
 export type FilmTheory = {
   setting: number;
@@ -86,11 +91,13 @@ export type Film = {
   breath: (number | null)[];
   attend: number[];
   roll: number[];
+  warm?: number[];
+  roll_at?: string;
   theories: Record<string, FilmTheory>;
 };
 
-/** A theory's run of one scene, decoded: per frame and unit, held, active, tenderness (1 = tender) and the felt bump
- * (1 = the edge of touch). */
+/** A theory's run of one scene, decoded: per frame and unit, held, active, tenderness (1 = tender), the felt bump (1 =
+ * the edge of touch) and how much it blocks a stretch (0-1). */
 export class Cells {
   readonly frames: number;
   readonly n: number;
@@ -105,7 +112,7 @@ export class Cells {
   }
 
   private at(f: number, j: number): number {
-    return (Math.min(Math.max(f, 0), this.frames - 1) * this.n + j) * 2;
+    return (Math.min(Math.max(f, 0), this.frames - 1) * this.n + j) * 3;
   }
   held(f: number, j: number): boolean {
     return (this.bytes[this.at(f, j)] & 128) !== 0;
@@ -118,6 +125,9 @@ export class Cells {
   }
   bump(f: number, j: number): number {
     return (this.bytes[this.at(f, j) + 1] / 255) * 4;
+  }
+  stiff(f: number, j: number): number {
+    return this.bytes[this.at(f, j) + 2] / 255;
   }
   count(f: number): number {
     let c = 0;

@@ -48,6 +48,9 @@ WORDS = {
     "bump": "Nothing firm for a finger to find: a nerve of the skin is a millimetre across. Pressed, the point is tender, "
             "and past a level it tingles along the nerve's branches.",
     "bump_cell": "nothing firm; a tender point",
+    "stiff_none": "Nothing at the knot resists a stretch; stretching a sensitised nerve makes it fire (dilley2005), an ache, not a block.",
+    "rolled": "Each pass presses the nerve, which tingles along its branches; nothing frees it.",
+    "no_warmth": "The model gives warmth no route to a sensitised nerve.",
     "inside": "A sensitised nerve firing on its own: an ache or a burn at a fixed point, sometimes spreading along its "
               "branches.",
     "inside_cell": "an ache at a fixed point",
@@ -131,6 +134,7 @@ class Runner:
         for _ in range(late.lag.max() + 1):  # the stress before the scene began: what the drive already follows
             late.push(sig)
         was = np.zeros_like(sig, bool)
+        rolled = self.under_hand if scene.roll_at == "spot" else self.rolled
         for i in range(steps + 1):
             t = i * DT
             s = stress(scene, t, self.hold, mv_mood)
@@ -147,7 +151,7 @@ class Runner:
             if work is not None:
                 hand, target = work
                 pressing = hand.step(t, own[np.arange(self.K), target] > 1.0)
-            press = np.where((pressing[:, None] & self.under_hand[None, :]) | (scene.rolling(t) & self.rolled[None, :]),
+            press = np.where((pressing[:, None] & self.under_hand[None, :]) | (scene.rolling(t) & rolled[None, :]),
                              P["palpation"], 0.0)
             total = own + self.S * P["press_gain"] * press / 40.0
             if events is not None:

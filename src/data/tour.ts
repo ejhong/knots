@@ -67,7 +67,7 @@ export const CHAPTERS: Chapter[] = [
 <li><b>Peeling.</b> Some have reported layers of the fascia beneath the skin peeling apart along lines, leaving places that feel hollow. It is rare and little understood — one reason for <a href="#moderation">the caution at the end</a>.</li>
 <li><b>Filling.</b> Then a filling-in, felt as re-stitching, that can move like a snake along a limb, up the body, or up into the head.</li>
 </ul>
-<p>The contemplative traditions describe much of this in their own words.</p>`,
+<p>The contemplative traditions describe much of this in their own words. How each theory's model answers these reports is set out on the <a href="HYP#reports">Hypotheses</a> page.</p>`,
     refs: ['bolton1936', 'kelly2016', 'konrad2023', 'lindahl2017'],
     scene: { pose: { p: [0.34, 0.66, -1.5], t: [0.02, 0.62, -0.02] }, age: 46, demo: 'breath' },
   },
@@ -90,7 +90,7 @@ export const CHAPTERS: Chapter[] = [
     title: 'Trees, and knots that move',
     seconds: 24,
     html: `<p>A perforator stays in place, but each belongs to a tree of vessels, and each tree has a root: a source artery feeding a whole territory of skin. Small arteries <em>conduct</em>. A dilation that starts at one branch travels along the vessel wall toward the vessel that feeds it, at millimetres to centimetres a second.</p>
-<p>This may be why knots seem to move. When one branch opens, flow and pressure shift across its tree, and the neighbouring vessels adjust — some relaxing, some tightening — until the territory settles into a new balance. Felt from the inside, that would be knots moving into the gap and finding new places: the evening-out people describe. Here each release sends light along its tree.</p>`,
+<p>This may be why knots seem to move. When one branch opens, flow and pressure shift across its tree, and the neighbouring vessels adjust — some relaxing, some tightening — until the territory settles into a new balance. Felt from the inside, that would be knots moving into the gap and finding new places: the evening-out people describe. In the model, freeing a parent frees most of its children, but freeing a child does not free its parent: release runs down a tree, not up. Here each release sends light along its tree.</p>`,
     refs: ['segal1986', 'saintcyr2009'],
     scene: { pose: { p: [-0.5, 0.76, -1.1], t: [0.0, 0.68, -0.03] }, age: 50, demo: 'release', trees: 1.6 },
   },
@@ -101,8 +101,9 @@ export const CHAPTERS: Chapter[] = [
     title: 'The fascia',
     seconds: 24,
     html: `<p>The superficial fascia runs unbroken from scalp to sole — the galea over the skull, the SMAS of the face, the platysma of the neck, the membranous layers of the trunk and limbs — and glides over the deep fascia on a plane of loose, hyaluronan-rich tissue. It is not free everywhere: it is anchored to bone along particular lines, and tethered by fibrous strands and by the perforators that pass through it. Deeper down, the fascia is built more like channels — walls between the muscles, and sleeves around the vessels and nerves, drawn here in gold.</p>
+<p>Where a perforator passes through, a sleeve of sliding tissue lets the layers glide past it. Its flow keeps the sleeve wet; a shut vessel would let it dry, and hyaluronan thickens steeply as it crowds, until the sleeve could pin the layers at the vessel — perhaps the dull blocks a stretch meets. A pinned sleeve may stay stuck after its knot lets go, until the layer is moved.</p>
 <p>The reports about the fascia seem to belong to this layer: layers that peel apart along lines, places left feeling hollow, and a filling-in felt as re-stitching. Separated layers are known to close again, the way two wet surfaces meet and hold when pressed together, and then to bond for good — fibrin bridging the gap, then collagen.</p>`,
-    refs: ['gray2020', 'benias2018', 'guimberteau2015', 'langevin2011'],
+    refs: ['gray2020', 'benias2018', 'guimberteau2015', 'cowman2015', 'langevin2011'],
     scene: { pose: { p: [1.07, 0.66, -1.05], t: [0.05, 0.61, -0.02] }, age: 46, layers: true, lift: 1, channels: true, fasciaOnly: true },
   },
   {
@@ -123,7 +124,7 @@ export const CHAPTERS: Chapter[] = [
     title: 'Across a life',
     seconds: 30,
     html: `<p>Knots accumulate with age, and they grow. The young have few. As we age, resting sympathetic tone rises and the small vessels of the skin respond less readily — all over the body — so every perforator slowly becomes likelier to hold, those under daily stress first. A young knot is small and comes and goes; an old one is larger and persists, and as they gather the body stiffens. The two curves — knots, and the reactivity of the skin’s vessels — have never been laid over each other. If knots are held perforators, they should match place by place.</p>
-<p>Here a life plays from one to ninety: almost none in infancy, about a fifth of perforators held in the thirties, two-thirds by the late fifties, approaching nine in ten. The count in the corner is a prediction, not a measurement: no one has yet taken a census of knots.</p>`,
+<p>Here a life plays from one to ninety: almost none in infancy, about a fifth of perforators held in the thirties, two-thirds by the late fifties, approaching nine in ten. The count in the corner illustrates the perforator view; it is not a measurement: no one has yet taken a census of knots.</p>`,
     scene: { pose: { p: [-0.62, 0.66, 1.9], t: [0, 0.52, 0] }, demo: 'life' },
   },
   {
@@ -144,7 +145,7 @@ export const CHAPTERS: Chapter[] = [
     title: 'Alternate theories',
     seconds: 22,
     html: `<p>Perforators are one answer. Michael Johnson’s <em>vasocomputation</em> places held tension in latched vascular smooth muscle — predictions held as vascular clamps. It may describe a system of its own, closer to the clinging of the mind than to the knots a roller finds; or the two may prove to be views of the same knots.</p>
-<p>The trigger-point hypothesis finds contraction knots at overactive motor endplates inside muscle. Fascial densification places knots in thickened hyaluronan between the layers. A nerve view finds sensitised nerves where they pierce the fascia. And the physician’s first answer places knots in perception: the spinal cord and brain turn ordinary signals into tender spots, overbreathing makes the sparks, and attention makes the map. Each predicts something different, and each can be drawn on the same body: here they are in turn, beginning with Johnson’s latches — the same knot, in each theory’s place. See <a href="HYP">Hypotheses</a>, or choose one in the <a href="ATLAS">Atlas</a>.</p>`,
+<p>The trigger-point hypothesis finds contraction knots at overactive motor endplates inside muscle. Fascial densification places knots in thickened hyaluronan between the layers. A nerve view finds sensitised nerves where they pierce the fascia. And the physician’s first answer places knots in perception: the spinal cord and brain turn ordinary signals into tender spots, overbreathing makes the sparks, and attention makes the map. Each has now been run as a model from its own physiology, and at the moment a knot lets go each would leave a different trace: skin flow flooding in, flow rising slowly, stiffness falling in the muscle, the layers sliding again, a nerve’s firing falling, a motor unit falling silent, or nothing in the tissue at all. One recording at a release would tell them apart. See <a href="HYP">Hypotheses</a>. Each can also be drawn on the same body: here they are in turn, beginning with Johnson’s latches — the same knot, in each theory’s place; or choose one in the <a href="ATLAS">Atlas</a>.</p>`,
     refs: ['johnson2023', 'gerwin2004', 'stecco2011', 'quintner1994', 'woolf2011'],
     scene: { pose: { p: [-1.4, 0.7, -1.2], t: [0, 0.55, 0] }, age: 46, turntable: true, demo: 'theories' },
   },

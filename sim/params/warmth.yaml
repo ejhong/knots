@@ -1,0 +1,43 @@
+# Warmth over the patch, as in a hot shower (the scene "warmth"): what it does in each theory that has a route for it.
+# Local heating dilates the skin's small vessels through a fast axon reflex and a slower nitric-oxide response, to most of
+# their maximal flow, whatever the nerves do (minson2001); a hot shower warms the skin less than the 42 °C of that test.
+# The latch's account lists heat among its releases; densification's layer thins with warmth (densification.yaml).
+# Every number here is guessed and sampled. Added 28 Sep 2026. Same format as vessel.yaml.
+
+model: warmth
+title: Warmth
+parameters:
+  warm_tau:
+    symbol: τ_heat
+    label: "how fast the skin warms and its small vessels answer"
+    value: 120.0
+    unit: s
+    range: [60.0, 300.0]
+    confidence: guessed
+    note: "Under local heating, skin flow reaches a first peak within minutes (the axon reflex) and a plateau later (nitric oxide), minson2001."
+
+  warm_drop:
+    symbol: ΔA_heat
+    label: "how much a hot shower's warmth lowers the tone of the skin's small arteries (perforators), as a share of maximal"
+    value: 0.15
+    unit: "1"
+    range: [0.05, 0.4]
+    confidence: guessed
+    note: "Local heating to 42 °C brings skin flow to most of its maximum, and a nerve block does not change it (minson2001); a shower warms the skin less."
+
+  warm_clamp:
+    symbol: ΔA_latch
+    label: "how much warmth lowers the latch's clamp command"
+    value: 0.15
+    unit: "1"
+    range: [0.05, 0.3]
+    confidence: guessed
+    note: "The latch's account lists heat among its releases (cycles of heat and cold); its small arteries are the skin's and the muscle's."
+
+  warm_layer:
+    symbol: ΔT_shower
+    label: "how much a hot shower warms the gliding layer beneath the skin and fat"
+    value: 1.5
+    unit: °C
+    range: [0.5, 3.0]
+    confidence: guessed

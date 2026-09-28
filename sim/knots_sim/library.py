@@ -203,6 +203,12 @@ NEW = [
      "In cutaneous nerve entrapment of the abdominal wall, the point of maximal pain lies where perforating vessels exit through the rectus fascia."),
     ("6706739", "sejersted1984", ["anatomy"],
      "Pressure inside a contracting muscle rises linearly with its force, and with the distance from its fascia: it is least at the fascia."),
+    ("15695007", "guimberteau2005", ["fascia", "anatomy"],
+     "Filmed in living people: the sliding tissue under the skin is a web of tiny fluid-filled cells, walled in collagen and filled with proteoglycans, that lets the skin, fat, fascia and vessels glide past each other."),
+    ("11568143", "minson2001", ["vascular"],
+     "Local heating of the skin raises its blood flow to most of its maximum, through a fast axon reflex and a slower nitric-oxide response; a nerve block does not change it."),
+    ("22196433", "schleip2012b", ["fascia"],
+     "Stretch squeezes water out of dense fascia; at rest it returns, past where it was, and the tissue stiffens: fascia's stiffness follows its water."),
     ("16250795", "lundberg1994", ["mind"],
      "Mental stress raises the trapezius muscle's electrical activity, with or without a physical load."),
 ]

@@ -44,7 +44,10 @@ theory's account and its model's behaviour belong together, and one page is simp
      The clock shows model time and how much it is compressed.
    - *Up close*, the chosen theory: its patch large; **beneath**, the cross-section of the knot at the spot; **on the
      instruments**, strip charts of what a recording would show at the spot and at the sham.
-3. **The seven theories**, in the site's order, each a section with a "watch it" button (chooses it in the instrument and
+3. **The reports and the models** (`#reports`): the Introduction's observations against the seven models, a circle per
+   cell filled by the share of settings in which the model does it; a dash where it has no route. Generated
+   (`guide/reports.py`).
+4. **The seven theories**, in the site's order, each a section with a "watch it" button (chooses it in the instrument and
    scrolls there) and its atlas link. Two columns (one on a phone):
    - *What it says*: the cross-section, the account in its strongest form, where / made of / holds / releases / timescale /
      breath / travel, its evidence and its sharpest test, its references.
@@ -52,9 +55,9 @@ theory's account and its model's behaviour belong together, and one page is simp
      the band where both states are stable, where rest and the holding stress put the typical knot), then the key traits
      with their marks (● every setting, ◐ some, and what it depends on, ○ none, — silent), and the full portrait folded
      beneath. All seven are modelled.
-4. **How they differ** (`#differ`): the traits as a table across the modelled theories; then what a breath would have to do
+5. **How they differ** (`#differ`): the traits as a table across the modelled theories; then what a breath would have to do
    (the envelope chart).
-5. **How it is made**: the patch, the senses, the settings, the scaling rule, the sources; the moderation note.
+6. **How it is made**: the patch, the senses, the settings, the scaling rule, the sources; the moderation note.
 
 ## The patch, drawn
 
@@ -68,6 +71,8 @@ muscle); stress held as a barely warmer wash toward the neck side. Each theory's
   fibres. A knot is a terracotta bead with its band drawn taut; a release softens it; a twitch runs along the band in jade.
 - **Perception**: no units in the tissue; soft places at the body map's resolution. A knot is a broad terracotta glow with
   no core, brighter as it is felt; attention is a thin jade ring.
+- **Perforators' sleeves**: where a sleeve has jammed, a pale dotted ring around its vessel (the layers pinned there); in
+  the plate, the sleeve around the vessel at the gliding plane thickens and its outline hardens.
 - **Densification**: the gliding layer as the faintest loose strokes; where it slides, short strokes drift; a stuck
   region is a broad terracotta wash joined with its stuck neighbours, still; giving way, it fades as the strokes drift
   again.

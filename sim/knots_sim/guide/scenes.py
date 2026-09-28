@@ -37,6 +37,8 @@ class Scene:
     pattern: str = "slow"  # the breath's shape: "slow" (4 s in, 6 s out) or "micro" (small sips in, a long slow release)
     breath_amp: float = 1.0  # its size, as a share of a slow breath's effect on drive, movement and calm
     calm_until: float = 0.0  # the knot's own drive lowered (by the runner's `_dS`, per setting) from 0 until then
+    roll_at: str = "corner"  # where the roller passes: "corner" (a quiet place) or "spot" (over the knot there)
+    warm_until: float = 0.0  # warmth over the whole patch, as in a hot shower, from 0 until then
 
     def level(self, t: float) -> str:
         """'rest', 'surge' or 'hold' at time t."""
@@ -52,6 +54,9 @@ class Scene:
 
     def hand(self, t: float) -> bool:
         return t < self.hand_until
+
+    def warming(self, t: float) -> bool:
+        return t < self.warm_until
 
     def rolling(self, t: float) -> bool:
         return t < self.roll_until and (t % 3.0) < 1.0
@@ -101,6 +106,10 @@ SCENES = (
           pattern="micro", breath_amp=1 / 3),
     Scene("rolling", "Rolling", "A roller presses a quiet corner once every three seconds for three minutes, then stops.",
           "formed", 300.0, 0.5, roll_until=180.0),
+    Scene("rolled", "Rolling the knot", "A roller passes over the knot at the spot once every three seconds for three "
+          "minutes, then stops.", "formed", 300.0, 0.5, roll_until=180.0, roll_at="spot"),
+    Scene("warmth", "Warmth", "Five minutes of warmth over the whole patch, as in a hot shower, with the same slow breaths.",
+          "formed", 360.0, 0.5, breath_until=300.0, warm_until=300.0),
     Scene("after", "After one lets go", "A hand rests on the knot at the spot until it lets go (a minute at most); the slow "
           "breaths go on for ten minutes more.", "formed", 660.0, 1.0, breath_until=660.0, hand_until=60.0, work=True),
     Scene("moods", "An hour of moods", "For an hour the stress rises and falls, as moods do.",

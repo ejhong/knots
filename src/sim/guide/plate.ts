@@ -53,10 +53,13 @@ const set = (el: SVGElement | null, attrs: Record<string, string | number>) => {
   for (const [k, v] of Object.entries(attrs)) el.setAttribute(k, String(v));
 };
 
-/** Perforators: the small artery rising through its ring in the deep fascia, its lumen and flow from the run. */
+/** Perforators: the small artery rising through its ring in the deep fascia, its lumen and flow from the run; around it
+ * where it crosses the gliding plane, its sleeve of sliding tissue, which thickens and pins the layers as it jams. */
 const t1: Plate = {
   svg: svgWrap(
     `<g id="p-patch"><ellipse cx="180" cy="${Y.skin + 12}" rx="70" ry="16" fill="${INKC.knot}" opacity="0"/></g>
+     <rect id="p-sleeve" x="156" y="${Y.sup - 3}" width="48" height="${Y.deep - Y.sup + 6}" rx="9" fill="${rgba(INKC.ivory, 0.04)}" stroke="${rgba(INKC.ivory, 0.25)}" stroke-width="1" stroke-dasharray="2 2"/>
+     <text x="${156 - 4}" y="${Y.sup + 8}" text-anchor="end" ${MONO} font-size="7" fill="${rgba(INKC.stone, 0.9)}">its sleeve</text>
      <rect id="p-wall" x="171" y="${Y.skin + 4}" width="18" height="${Y.bottom - Y.skin - 4}" rx="3" fill="${rgba(INKC.vessel, 0.2)}"/>
      <rect id="p-lumen" x="175" y="${Y.skin + 4}" width="10" height="${Y.bottom - Y.skin - 4}" rx="2" fill="${rgba(INKC.vessel, 0.55)}"/>
      <line id="p-flow" x1="180" x2="180" y1="${Y.bottom}" y2="${Y.skin + 6}" stroke="${INKC.ivory}" stroke-width="1.4" stroke-dasharray="2 9" opacity="0.6"/>
@@ -81,8 +84,15 @@ const t1: Plate = {
     set(q(root, '#p-patch ellipse'), { opacity: (0.16 * Math.min((s.debt ?? 0) / 0.3, 1)).toFixed(2) });
     const nerve = Math.min((s.nerve ?? 0) / 0.08, 1);
     set(q(root, '#p-nerve'), { stroke: nerve > 0.05 ? rgba(INKC.spark, 0.35 + 0.6 * nerve) : rgba(INKC.ivory, 0.35) });
+    const sleeve = Math.min(Math.max(s.sleeve ?? 0, 0), 1);
+    const jam = sleeve > 0.55;
+    set(q(root, '#p-sleeve'), {
+      fill: rgba(INKC.ivory, 0.04 + 0.22 * sleeve),
+      stroke: rgba(INKC.ivory, jam ? 0.6 : 0.25),
+      'stroke-dasharray': jam ? 'none' : '2 2',
+    });
     const r = q(root, '#p-read');
-    if (r) r.textContent = `lumen ${(100 * lumen).toFixed(0)}% of rest · tone ${(s.tone ?? 0).toFixed(2)} · debt ${(s.debt ?? 0).toFixed(2)}`;
+    if (r) r.textContent = `lumen ${(100 * lumen).toFixed(0)}% of rest · tone ${(s.tone ?? 0).toFixed(2)} · sleeve ${sleeve.toFixed(2)}${jam ? ' (stuck)' : ''} · water ${(s.water ?? 1).toFixed(2)}`;
   },
 };
 

@@ -48,6 +48,10 @@ WORDS = {
     "bump": "A firm band along the fibres, 5-10 mm wide and a few centimetres long: a motor unit's territory contracted. "
             "Overlapping units make it firmer.",
     "bump_cell": "a firm band along the fibres",
+    "stiffness": "A latched unit's fibres are contracted: they resist a stretch until it falls silent.",
+    "stiff_cell": "a contracted band",
+    "rolled": "Each pass excites the units under it.",
+    "no_warmth": "The model gives warmth no route to the motor neurons.",
     "inside": "Its contraction and its metabolites are sensed by the muscle's own sensors: a clench or an ache, felt from inside.",
     "inside_cell": "a clench, an ache",
     "layer": "in the muscle",
@@ -132,6 +136,7 @@ class Runner:
         hold = P["hold"][:, 0]
         steps = int(round(scene.duration / DT))
         since = np.full(self.K, -1.0)  # when the hand landed, per setting
+        rolled = self.under_hand if scene.roll_at == "spot" else self.rolled
         for i in range(steps + 1):
             t = i * DT
             pressing = np.full(self.K, scene.hand(t))
@@ -160,7 +165,7 @@ class Runner:
             hand_in = self._hand(np.maximum(t - since, 0.0)[:, None], variant)
             extra = extra + np.where(pressing[:, None] & self.under_hand[None, :], hand_in, 0.0)
             if scene.rolling(t):
-                extra = extra + np.where(self.rolled[None, :], P["press_gain"] * P["palpation"] / 40.0, 0.0)
+                extra = extra + np.where(rolled[None, :], P["press_gain"] * P["palpation"] / 40.0, 0.0)
             st.D = st.D + DT * (drive - st.D) / P["tau_d"]
             st.M = st.M + DT * (np.clip(s, 0, None)[:, None] - st.M) / P["tau_M"]
             loop = P["g_m"] * st.m + P["g_n"] * (st.m @ self.NB.T)
@@ -210,7 +215,7 @@ class Runner:
                    events=[], focal={"firing": pick(on).astype(float), "metabolites": pick(m), "facilitation": pick(M),
                                      "drive": pick(D) / self.theta[np.arange(self.K), target][None, :]},
                    inst={"emg_units": on[:, :, cover].sum(axis=2).astype(float), "stiffness": self._felt_at_spot(bump)},
-                   stress=frames.stack("s"), hand=frames.stack("hand"), target=target)
+                   stress=frames.stack("s"), hand=frames.stack("hand"), target=target, stiff=on.astype(float))
 
     def _felt_at_spot(self, bump: np.ndarray) -> np.ndarray:
         """How firm the spot itself is to a hand, frame by frame: every firing unit's band, summed there."""

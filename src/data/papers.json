@@ -693,6 +693,21 @@
   "note": "In toned coronary arterioles, a larger pressure pulse at the same mean pressure widens the lumen: the pulse itself dilates, with or without the endothelium."
  },
  {
+  "id": "guimberteau2005",
+  "authors": "Guimberteau JC, Sentucq-Rigall J, Panconi B et al.",
+  "year": 2005,
+  "title": "[Introduction to the knowledge of subcutaneous sliding system in humans]",
+  "venue": "Ann Chir Plast Esthet 50:19-34",
+  "url": "https://doi.org/10.1016/j.anplas.2004.10.012",
+  "pmid": "15695007",
+  "kind": "paper",
+  "tags": [
+   "fascia",
+   "anatomy"
+  ],
+  "note": "Filmed in living people: the sliding tissue under the skin is a web of tiny fluid-filled cells, walled in collagen and filled with proteoglycans, that lets the skin, fat, fascia and vessels glide past each other."
+ },
+ {
   "id": "hack1995",
   "authors": "Hack GD, Koritzer RT, Robinson WL et al.",
   "year": 1995,
@@ -1183,6 +1198,20 @@
   "note": "A model of a postural muscle whose motor units take turns: more load or less strength shortens each unit's rest, a route into the energy crisis that replaces the Cinderella hypothesis."
  },
  {
+  "id": "minson2001",
+  "authors": "Minson CT, Berry LT, Joyner MJ",
+  "year": 2001,
+  "title": "Nitric oxide and neurally mediated regulation of skin blood flow during local heating",
+  "venue": "J Appl Physiol (1985) 91:1619-26",
+  "url": "https://doi.org/10.1152/jappl.2001.91.4.1619",
+  "pmid": "11568143",
+  "kind": "paper",
+  "tags": [
+   "vascular"
+  ],
+  "note": "Local heating of the skin raises its blood flow to most of its maximum, through a fast axon reflex and a slower nitric-oxide response; a nerve block does not change it."
+ },
+ {
   "id": "miron1989",
   "authors": "Miron D, Duncan GH, Bushnell CM",
   "year": 1989,
@@ -1579,6 +1608,20 @@
    "fascia"
   ],
   "note": "Fascia can contract on its own, via myofibroblasts."
+ },
+ {
+  "id": "schleip2012b",
+  "authors": "Schleip R, Duerselen L, Vleeming A et al.",
+  "year": 2012,
+  "title": "Strain hardening of fascia: static stretching of dense fibrous connective tissues can induce a temporary stiffness increase accompanied by enhanced matrix hydration",
+  "venue": "J Bodyw Mov Ther 16:94-100",
+  "url": "https://doi.org/10.1016/j.jbmt.2011.09.003",
+  "pmid": "22196433",
+  "kind": "paper",
+  "tags": [
+   "fascia"
+  ],
+  "note": "Stretch squeezes water out of dense fascia; at rest it returns, past where it was, and the tissue stiffens: fascia's stiffness follows its water."
  },
  {
   "id": "schwartz2022",

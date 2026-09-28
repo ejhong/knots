@@ -10,6 +10,7 @@ How the scenes map onto it (a new formalisation, written out for its proponents 
 - A slow breath lowers stress; minutes of it calm.
 - Attention at a place raises its awareness (attend); a hand brings the region it presses into awareness (press_aware),
   and so does a roller; the clamp cuts awareness down (block).
+- Warmth, as in a hot shower, lowers the clamp's command (warm_clamp): the account lists heat among its releases.
 - A knot is a region held by its prediction and clamped (c > ½, f > ½). It is felt only as far as awareness reaches it:
   unattended, a dull blind spot; attended or pressed, tender. Nothing larger than a small artery stiffens: nothing
   firm for a finger. When it lets go, the latch relaxes over tens of seconds: a slow warming, not a spark.
@@ -23,7 +24,7 @@ from scipy.stats import qmc
 from ..models import latch as lm
 from ..params import load
 from . import patch, senses
-from .base import K, SEED, Frames, Run, calmed, moods, stress, wave
+from .base import K, SEED, Frames, Run, calmed, moods, stress, warmed, warmth_sample, wave
 from .scenes import SURGE, SETTLED, Scene
 
 ID, KEY, NAME, GLYPH = "T2", "latch", "Vascular latch", "閂"
@@ -46,6 +47,9 @@ WORDS = {
     "bump": "Nothing firm for a finger to find: what stiffens is no larger than a small artery.",
     "bump_cell": "nothing firm",
     "vessel": "clamped artery",
+    "stiff_none": "Nothing at the knot resists a stretch: what is clamped is a small artery.",
+    "rolled": "Each pass brings the region into awareness for a moment.",
+    "warmth": "Warmth lowers the clamp's command; the account lists heat among its releases.",
     "inside": "Clamped, the region is cut off from awareness: a dull blind spot, hardly felt until attention or a hand "
               "brings it back, and then tender.",
     "inside_cell": "a dull blind spot",
@@ -110,6 +114,9 @@ class Runner:
         self._aim = np.zeros((k, N), bool)
         self._formed = None
         self.vessel_mm, self.vessel_depth = 0.2, float(np.median(depth))  # a small artery, what a finger would meet
+        self.warm = warmth_sample(k, seed)
+        wt = load("warmth")
+        self.more = {q: (self.warm[q], wt[q].label) for q in ("warm_clamp", "warm_tau")}
 
     def _scale(self) -> np.ndarray:
         """w_s per setting by the shared rule, for the typical region (median spread, full share): the least that lets
@@ -146,6 +153,8 @@ class Runner:
         mv_mood = moods(self.ps, scene.duration) if scene.mood else None
         steps = int(round(scene.duration / DT))
         zeros = np.zeros_like(st.c)
+        rolled = self.under_hand if scene.roll_at == "spot" else self.rolled
+        W = np.zeros(self.K)
         for i in range(steps + 1):
             t = i * DT
             pressing = np.full(self.K, scene.hand(t))
@@ -161,14 +170,15 @@ class Runner:
             if scene.calm_until and t < scene.calm_until:
                 s_eff = s_eff - self._dS[:, None] * self._aim
             att = np.where(scene.attending(t) & self.under_hand[None, :], 1.0, 0.0) + zeros
-            press = np.where((pressing[:, None] & self.under_hand[None, :]) | (scene.rolling(t) & self.rolled[None, :]), 1.0, 0.0)
+            press = np.where((pressing[:, None] & self.under_hand[None, :]) | (scene.rolling(t) & rolled[None, :]), 1.0, 0.0)
             e = (P["aware0"] + P["attend"] * att + P["press_aware"] * press) * (1 - P["block"] * st.f)
             if frames is not None:
                 while frames.due(t):
                     frames.take({"c": st.c.copy(), "f": st.f.copy(), "e": np.clip(e, 0, 1), "s": s.copy(), "hand": pressing.copy()})
             if i == steps:
                 break
-            lm.step(P, st, s_eff, att, press, DT, REST)
+            W = warmed(W, scene, t, self.warm["warm_tau"], DT)
+            lm.step(P, st, s_eff, att, press, DT, REST - (self.warm["warm_clamp"] * W)[:, None])
         return st
 
     def formed(self) -> lm.State:

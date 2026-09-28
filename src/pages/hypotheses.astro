@@ -4,7 +4,7 @@ import { HYPOTHESES } from '../data/hypotheses';
 import { refById } from '../data/references';
 import { crossSectionSVG } from '../lib/crossSection';
 import guide from '../data/sim/guide.json';
-import type { GuideIndex, Trait } from '../sim/guide/data';
+import type { GuideIndex, ReportCell, Trait } from '../sim/guide/data';
 import { envelopeChart } from '../sim/guide/envelope';
 import { switchChart, type Switch } from '../sim/guide/switch';
 
@@ -40,7 +40,7 @@ const GLYPH: Record<string, string> = {
   central: '覚',
 };
 // The predictions shown first, for every modelled theory; the rest are in its full portrait.
-const KEY_TRAITS = ['inside', 'bump', 'forms', 'breath', 'hand', 'needs', 'spark', 'move'];
+const KEY_TRAITS = ['inside', 'bump', 'stiff', 'hand', 'attention', 'record'];
 const GROUPS: [string, string][] = [
   ['feel', 'What it feels like'],
   ['where', 'Where they are'],
@@ -62,26 +62,39 @@ const MARK_WORD: Record<string, string> = {
 const DIFFER: [string, string][] = [
   ['inside', 'Felt from inside'],
   ['bump', 'Found by a finger'],
+  ['stiff', 'Stiffness'],
   ['where', 'Where'],
-  ['many', 'In a 4 cm patch'],
   ['forms', 'How they form'],
   ['breath', 'Slow breathing'],
   ['attention', 'Attention, no touch'],
-  ['micro', 'Subtle breaths, attending'],
-  ['needs', 'What a breath must do'],
   ['hand', 'A resting hand'],
-  ['letgo', 'How it lets go'],
+  ['rolled', 'Rolling the knot'],
+  ['warmth', 'Warmth'],
   ['spark', 'A spark'],
-  ['move', 'After one lets go'],
-  ['family', 'Parents and children'],
-  ['time', 'Held for hours'],
   ['record', 'What a recording shows'],
 ];
+// The account at a glance; the rest of its rows fold beneath.
+const SHORT_ROWS = new Set(['layer', 'holds', 'releases', 'test']);
+// A report's cell: a circle filled by the share of settings in which the model does it.
+const pie = (c: ReportCell | undefined) => {
+  if (!c) return '';
+  if (c.calibration) return `<span class="rc-cal mono" title="${c.note ?? ''}">scale</span>`;
+  if (c.silent || c.share === null || c.share === undefined) return `<span class="rc-none" title="${c.note ?? ''}">—</span>`;
+  const r = 6.5;
+  const a = 2 * Math.PI * c.share;
+  const x = 8 + r * Math.sin(a);
+  const y = 8 - r * Math.cos(a);
+  const fill = c.share >= 0.999 ? `<circle cx="8" cy="8" r="${r}" fill="currentColor"/>`
+    : c.share > 0.001 ? `<path d="M8 8 L8 ${8 - r} A${r} ${r} 0 ${c.share > 0.5 ? 1 : 0} 1 ${x.toFixed(2)} ${y.toFixed(2)} Z" fill="currentColor"/>` : '';
+  const title = `${c.k} of ${c.n} settings${c.note ? `; ${c.note}` : ''}`;
+  return `<svg class="rc" viewBox="0 0 16 16" width="15" height="15" role="img" aria-label="${title}"><title>${title}</title><circle cx="8" cy="8" r="${r}" fill="none" stroke="currentColor" stroke-width="1"/>${fill}</svg>`;
+};
 const traitOf = (id: string, key: string): Trait | undefined => g.theories.find((t) => t.id === id)?.traits.find((x) => x.id === key);
 const mins = (s: number) => (s >= 120 ? `${Math.round(s / 60)} min` : `${Math.round(s)} s`);
 const cap = (w: string) => w[0].toUpperCase() + w.slice(1);
 const index = [
   { id: 'watch', label: 'watch them' },
+  { id: 'reports', label: 'the reports and the models' },
   ...HYPOTHESES.map((h, i) => ({ id: h.id, label: `${String(i + 1).padStart(2, '0')} ${h.label}` })),
   { id: 'differ', label: 'how they differ' },
   { id: 'made', label: 'how it is made' },
@@ -164,6 +177,35 @@ const index = [
       </div>
     </section>
 
+    {g.reports && (
+      <section id="reports" class="sec full" data-glyph="聞">
+        <h2>The reports, and the models</h2>
+        <p class="sub">What people who work with knots report (the Introduction's observations, in the site's own words), and in how many
+          of the plausible settings each theory's model does it. The models were built without the reports; this is the comparison that
+          comes after. A full circle: in every setting; an empty one: in none; a dash: the model has no route to it.</p>
+        <div class="table-wrap">
+          <table class="rep">
+            <thead>
+              <tr><th></th>{g.theories.map((th) => <th scope="col"><a href={`#${th.key}`}><span class="glyph">{th.glyph}</span> {th.name}</a></th>)}</tr>
+            </thead>
+            <tbody>
+              {g.reports.map((r) => (
+                <tr>
+                  <th scope="row"><span class="rl">{r.label}</span>{r.basis && <span class="rb">{r.basis}</span>}</th>
+                  {g.theories.map((th) => <td set:html={pie(r.theories[th.id])} />)}
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <p class="caption">No model yet reaches the last four: mirroring, water, the well-being after a release, and the layers that peel and fill.
+          The reports are rough impressions, not measurements, and the perforator model is the most detailed of the seven (the site's own
+          proposal): a model with more parts can reach more reports, and the others, built out, may reach further. Where a model and a
+          report agree it is a hint, not a proof; the measurement that would decide is on the{' '}
+          <a href={`${base}/research/#measurement`}>Research</a> page.</p>
+      </section>
+    )}
+
     {
       HYPOTHESES.map((h, i) => {
         const th = byKey[h.id];
@@ -205,13 +247,24 @@ const index = [
                   ))}
                 </div>
                 <dl class="kv">
-                  {ROWS.map(([k, label]) => (
+                  {ROWS.filter(([k]) => SHORT_ROWS.has(k as string)).map(([k, label]) => (
                     <>
                       <dt>{label}</dt>
                       <dd>{h[k] as string}</dd>
                     </>
                   ))}
                 </dl>
+                <details class="more">
+                  <summary class="mono">more of the account</summary>
+                  <dl class="kv">
+                    {ROWS.filter(([k]) => !SHORT_ROWS.has(k as string)).map(([k, label]) => (
+                      <>
+                        <dt>{label}</dt>
+                        <dd>{h[k] as string}</dd>
+                      </>
+                    ))}
+                  </dl>
+                </details>
                 <p class="refs mono">
                   {h.refs
                     .map((r) => refById(r))
@@ -782,6 +835,62 @@ const index = [
     font-family: var(--font-sans);
     font-weight: 700;
   }
+  /* ---------- the reports and the models ---------- */
+  .rep {
+    border-collapse: collapse;
+    font-size: 12px;
+    min-width: 760px;
+  }
+  .rep th,
+  .rep td {
+    padding: 6px 10px 6px 0;
+    border-bottom: 1px solid var(--border);
+    vertical-align: middle;
+    text-align: left;
+  }
+  .rep thead th {
+    font-family: var(--font-sans);
+    font-size: 11.5px;
+  }
+  .rep thead a {
+    color: var(--text);
+    text-decoration: none;
+  }
+  .rep tbody th {
+    font-weight: 400;
+    max-width: 300px;
+  }
+  .rep .rl {
+    display: block;
+    font-family: var(--font-serif);
+    font-size: 12.5px;
+  }
+  .rep .rb {
+    display: block;
+    font-family: var(--font-mono);
+    font-size: 8.5px;
+    color: var(--faint);
+    margin-top: 1px;
+  }
+  .rep td {
+    color: var(--accent-dark);
+  }
+  .rep :global(.rc) {
+    display: block;
+  }
+  .rep :global(.rc-none) {
+    color: var(--faint);
+  }
+  .rep :global(.rc-cal) {
+    font-size: 8.5px;
+    color: var(--faint);
+  }
+  details.more summary {
+    cursor: pointer;
+    font-size: 9.5px;
+    color: var(--muted);
+    margin: 4px 0 8px;
+  }
   /* ---------- how they differ ---------- */
   .table-wrap {
     overflow-x: auto;
@@ -817,7 +926,9 @@ const index = [
   @media (max-width: 760px) {
     /* the row names stay put while the theories scroll past */
     .differ tbody th,
-    .differ thead th:first-child {
+    .differ thead th:first-child,
+    .rep tbody th,
+    .rep thead th:first-child {
       position: sticky;
       left: 0;
       z-index: 1;

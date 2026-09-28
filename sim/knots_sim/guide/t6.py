@@ -43,6 +43,9 @@ WORDS = {
     "bump": "Nothing firm for a finger to find: nothing in the tissue changes. What a finger meets is an ordinary structure, "
             "felt more.",
     "bump_cell": "nothing firm",
+    "stiff_none": "Nothing at the knot resists a stretch: nothing in the tissue changes.",
+    "rolled": "Each pass is felt: the place is louder while it is rolled.",
+    "no_warmth": "The model gives warmth no route; that a warm shower calms arousal is not modelled.",
     "inside": "Felt from inside is all it is: a place the nervous system turns up.",
     "inside_cell": "all it is",
     "tender": "What is felt there is turned up by arousal, guarding and attention: tenderness is all it is.",
@@ -98,6 +101,7 @@ class Runner:
         P, Pp = self.P, self.Pp
         mv_mood = moods(self.ps, scene.duration) if scene.mood else None
         g0 = np.ones_like(st.g)
+        rolled = self.under_hand if scene.roll_at == "spot" else self.rolled
         steps = int(round(scene.duration / DT))
         for i in range(steps + 1):
             t = i * DT
@@ -120,7 +124,7 @@ class Runner:
                 s = s - calmed(scene, t, P["breath_calm"], P["tau_calm"])
             att = np.where(scene.attending(t) & self.under_hand[None, :], 1.0, 0.0) + np.zeros_like(st.F)
             att = np.where(pressing[:, None] & self.under_hand[None, :], 1.0, att)  # a hand draws attention to itself
-            press = np.where((pressing[:, None] & self.under_hand[None, :]) | (scene.rolling(t) & self.rolled[None, :]),
+            press = np.where((pressing[:, None] & self.under_hand[None, :]) | (scene.rolling(t) & rolled[None, :]),
                              P["palpation"][:, None], 0.0)
             drive = s + (P["breath_fall"] * (P["breath_in_share"] * max(w, 0.0) + min(w, 0.0)) if breathing else 0.0)
             st.a = st.a + DT * (drive - st.a) / P["tau_arousal"]

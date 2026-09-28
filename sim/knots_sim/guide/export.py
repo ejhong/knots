@@ -20,7 +20,7 @@ import numpy as np
 
 from ..exam import out_breath
 from ..theories import t1 as a1, t3 as a3, t6 as a6, t7 as a7
-from . import envelope as ev, patch, senses, t1, t2, t3, t4, t5, t6, t7, traits
+from . import envelope as ev, patch, reports as rp, senses, t1, t2, t3, t4, t5, t6, t7, traits
 from .base import K, SEED, releases, formations, typical, wave
 from .scenes import SCENES, SURGE
 
@@ -65,6 +65,7 @@ def run_theory(m, k: int) -> dict:
         extra["ageing"] = (age.brief_released, age.long_persists)
         age = a1.ageing(runner.ps, "both+adaptation")
         extra["ageing_adapt"] = (age.brief_released, age.long_persists)
+        extra["stiff_release"] = runner.aged_release()
     elif m in (t2, t4, t5):
         a, b = runner.ageing()
         extra["ageing"] = (~a, b)  # (a young knot lets go when its stress ends, an old one stays)
@@ -91,7 +92,7 @@ def run_theory(m, k: int) -> dict:
         ok = held0.any(axis=1)
     X = runner.settings()
     typ = typical(X, ok if ok.any() else np.ones(k, bool))
-    return {"runner": runner, "runs": runs, "character": ch, "typical": typ, "envelope": extra["envelope"][1]}
+    return {"runner": runner, "runs": runs, "character": ch, "typical": typ, "envelope": extra["envelope"][1], "extra": extra}
 
 
 def _scene(sid: str):
@@ -271,14 +272,15 @@ def _switch(m, runner, k: int) -> dict:
 
 
 def _pack(run, k: int) -> str:
-    """Two bytes per unit and frame: held (bit 7), active (bit 6) and tenderness (0-63, to 2x tender); then the felt bump
-    (0-255, to 4x the edge of touch)."""
+    """Three bytes per unit and frame: held (bit 7), active (bit 6) and tenderness (0-63, to 2x tender); the felt bump
+    (0-255, to 4x the edge of touch); and how much it blocks a stretch (0-255, of 1)."""
     held = run.held[:, k].astype(np.uint8)
     act = run.active[:, k].astype(np.uint8)
     ten = np.clip(np.round(run.tender[:, k] / 2.0 * 63), 0, 63).astype(np.uint8)
     b0 = (held << 7) | (act << 6) | ten
     b1 = np.clip(np.round(run.bump[:, k] / 4.0 * 255), 0, 255).astype(np.uint8)
-    return base64.b64encode(np.stack([b0, b1], axis=-1).tobytes()).decode()
+    b2 = (np.zeros_like(b1) if run.stiff is None else np.clip(np.round(run.stiff[:, k] * 255), 0, 255).astype(np.uint8))
+    return base64.b64encode(np.stack([b0, b1, b2], axis=-1).tobytes()).decode()
 
 
 def _round(x, nd=3) -> list:
@@ -337,7 +339,8 @@ def _film(scene, results: dict) -> dict:
     t = next(iter(results.values()))["runs"][scene.id].t
     out = {"scene": scene.id, "duration": scene.duration, "frame": scene.frame, "frames": len(t),
            "breath": _round([wave(scene, x) for x in t], 2),
-           "attend": [int(scene.attending(x)) for x in t], "roll": [int(scene.rolling(x)) for x in t], "theories": {}}
+           "attend": [int(scene.attending(x)) for x in t], "roll": [int(scene.rolling(x)) for x in t],
+           "warm": [int(scene.warming(x)) for x in t], "roll_at": scene.roll_at, "theories": {}}
     for m in MODULES:
         R = results[m.ID]
         run, k = R["runs"][scene.id], R["typical"]
@@ -366,10 +369,11 @@ def main(k: int = K) -> dict:
         "patch": {"size": patch.SIZE, "spot": patch.SPOT.tolist(), "hand_r": patch.HAND_R, "sham": patch.SHAM.tolist(),
                   "roi_r": patch.ROI_R, "roll": [patch.ROLL[0].tolist(), patch.ROLL[1].tolist()],
                   "share": np.round(patch.share(grid), 3).reshape(40, 40).tolist()},
-        "scenes": [{"id": s.id, "name": s.name, "what": s.what, "duration": s.duration, "frame": s.frame, "film": s.film}
-                   for s in SCENES],
+        "scenes": [{"id": s.id, "name": s.name, "what": s.what, "duration": s.duration, "frame": s.frame, "film": s.film,
+                    "roll_at": s.roll_at} for s in SCENES],
         "theories": [],
         "not_yet": list(NOT_YET),
+        "reports": rp.reports(results, MODULES),
     }
     for m in MODULES:
         R = results[m.ID]

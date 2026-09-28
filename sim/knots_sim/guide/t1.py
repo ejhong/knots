@@ -10,9 +10,13 @@ How the scenes map onto it (the exam's mapping, theories/t1.py, written out for 
   in-breath raises it again, and minutes of slow breathing calm; each breath moves the tissue at each vessel.
 - Attention concentrates the breath's movement at the spot (focus_gain times); drive is not local.
 - A hand is palpation pressure on the vessels under it and a change of shape; a roller the same, 1 s in every 3.
-- A knot is a vessel shut by its own wall that can hold (its switch is bistable). Nothing in the tissue stiffens: a shut
-  vessel is a fraction of a millimetre across. Its territory runs into oxygen debt (tenderness), and when blood returns
-  its nerve bursts (the spark), over the patch it feeds.
+- A knot is a vessel shut by its own wall that can hold (its switch is bistable). A shut vessel is a fraction of a
+  millimetre across: nothing firm to find. Its territory runs into oxygen debt (tenderness), and when blood returns its
+  nerve bursts (the spark), over the patch it feeds.
+- Each vessel passes through the fascia in a sleeve of sliding tissue (models/sleeve.py). Its flow keeps the sleeve wet;
+  shut, the sleeve dries over minutes and can jam, pinning the layers there: a stretch meets a block (stiffness). Ordinary
+  movement shears the sleeves, the breath's movement a little more; a roller shears the sleeves it passes.
+- Warmth, as in a hot shower, lowers the tone of the skin's small arteries (warm_drop, over warm_tau: minson2001).
 """
 
 from __future__ import annotations
@@ -20,11 +24,13 @@ from __future__ import annotations
 import numpy as np
 
 from ..exam import Hand
+from ..models import densification as dm
+from ..models import sleeve as sl
 from ..models import tree as tr
 from ..params import load, values
 from ..theories import t1 as adapter
 from . import patch, senses
-from .base import K, SEED, Frames, Run, calmed, moods, moved, releases, stress, typical, wave
+from .base import K, SEED, Frames, Run, calmed, moods, moved, releases, stress, typical, warmed, warmth_sample, wave
 from .scenes import Scene
 
 ID, KEY, NAME, GLYPH = "T1", "perforator", "Perforators", "結"
@@ -47,7 +53,14 @@ def _record(med: dict, n: int) -> str:
 
 WORDS = {
     "stiff": False,
-    "bump": "Nothing firm for a finger to find, only tenderness where it presses.",
+    "bump": "Nothing firm for a finger to find, only tenderness where it presses; where its sleeve has jammed, the skin does "
+            "not slide over it.",
+    "stiffness": "Each vessel passes the fascia in a sleeve of sliding tissue that its flow keeps wet; shut, the sleeve dries, "
+                 "its hyaluronan crowds (cowman2015), and it can jam, pinning the layers there.",
+    "stiff_cell": "a block, once its sleeve jams",
+    "rolled": "Each pass presses the vessel shut and lifts: it can reopen only in the lifts, while the squeezing weakens its "
+              "wall's muscle (ljung1975) and the roller shears its sleeve.",
+    "warmth": "Warmth lowers the tone of the skin's small arteries whatever the nerves do (minson2001).",
     "bump_cell": "nothing firm",
     "inside": "The patch a shut vessel starves signals through its own nerve: a held, achy place, felt without touching, and "
               "a tingle as it lets go.",
@@ -117,6 +130,10 @@ class Runner:
         self._dS = np.zeros(k)  # a calming aimed at the knot (the envelope), per setting
         self._aim = np.zeros((k, self.lay.n), bool)
         self._conduction(seed)
+        self._sleeve(seed)
+        self.warm = warmth_sample(k, seed)
+        wt = load("warmth")
+        self.more |= {q: (self.warm[q], wt[q].label) for q in ("warm_drop", "warm_tau")}
         self.vessel_mm = float(np.median([2 * p["r100"] * 1e3 for p in self.ps]))  # what a finger would meet
         self.vessel_depth = float(np.median([s["skin"] + s["fat"] for s in self.se]))
         self._formed = None
@@ -150,6 +167,27 @@ class Runner:
                     W[:, j, i] = kap**2 * np.exp(-(d[j, p] + d[i, p]) / lam)
         self.W = W
 
+    def _sleeve(self, seed: int) -> None:
+        """Each vessel's sleeve (models/sleeve.py): its own numbers per setting, sampled; how much ordinary movement
+        moves each one (spread); and the scale of that movement, by the sleeve's own rule."""
+        from scipy.stats import qmc
+
+        tab = load("sleeve")
+        keys = tuple(tab)
+        X = qmc.Sobol(len(keys), seed=seed + 303).random(self.K)
+        vals = {}
+        for i, q in enumerate(keys):
+            lo, hi = tab[q].range
+            vals[q] = np.exp(np.log(lo) + X[:, i] * np.log(hi / lo)) if lo > 0 and hi / lo > 4 else lo + X[:, i] * (hi - lo)
+        self.more |= {f"sleeve_{q}": (vals[q], tab[q].label) for q in keys}
+        N = self.lay.n
+        edges = np.array([sl.scale(n, xm, a, d) for n, xm, a, d in zip(vals["steep"], vals["x_max"], vals["crowd"], vals["dry"])])
+        self.sU, self.suc, self.suj, self.sxc, self.sxj = edges.T
+        self.sfree = np.array([dm.steady(n, xm, float(u))[0] for n, xm, u in zip(vals["steep"], vals["x_max"], self.sU)])
+        self.PS = {q: np.repeat(v, N).reshape(self.K, N) for q, v in vals.items()} | {"warm_coeff": np.zeros((self.K, N))}
+        z = np.random.default_rng(47).normal(0, 1, N)
+        self.smob = np.exp(self.PS["spread"] * z[None, :])
+
     def _scale(self) -> np.ndarray:
         """U per setting by the shared rule, at the typical vessel that can hold (the median over the forest)."""
         ur, Ao, Af = self.urest, self.Aopen, self.Afold
@@ -166,9 +204,12 @@ class Runner:
     # ---------- the integrator ----------
 
     def _rest(self) -> np.ndarray:
-        Y = np.zeros((8, self.K * TREES, V))
+        """The forest at rest: rows 0-7 the vessels (models/tree.py), 8 each sleeve's structure (free), 9 its water."""
+        Y = np.zeros((10, self.K * TREES, V))
         Y[0] = self.tree["pars"]["xrest"]
         Y[1] = self.urest.reshape(-1, V)
+        Y[8] = np.repeat(self.sfree, self.lay.n).reshape(-1, V)
+        Y[9] = 1.0
         return Y
 
     def _integrate(self, scene: Scene, Y: np.ndarray, frames: Frames | None, hand: Hand | None = None,
@@ -180,11 +221,13 @@ class Runner:
         mv_mood = moods(self.ps, scene.duration) if scene.mood else None
         names = tr.v.PARAMS
 
-        def F(Y, u):
-            pars["P"], _ = tr.pressures(tree, Y[0])
-            d = f(tuple(Y), u, tuple(pars[q] for q in names))
-            return np.array([np.broadcast_to(di, Y[0].shape) for di in d], dtype=float)
+        def F(Z, u):
+            pars["P"], _ = tr.pressures(tree, Z[0])
+            d = f(tuple(Z), u, tuple(pars[q] for q in names))
+            return np.array([np.broadcast_to(di, Z[0].shape) for di in d], dtype=float)
 
+        W = np.zeros(Kk)  # how warm the skin is
+        rolled = self.under_hand if scene.roll_at == "spot" else self.rolled
         steps = int(round(scene.duration / DT))
         for i in range(steps + 1):
             t = i * DT
@@ -196,24 +239,38 @@ class Runner:
             if frames is not None:
                 while frames.due(t):
                     frames.take({"x": x.copy(), "A": Y[1].reshape(Kk, N).copy(), "m": Y[2].reshape(Kk, N).copy(),
-                                 "n": Y[3].reshape(Kk, N).copy(), "s": stress(scene, t, self.hold, mv_mood),
+                                 "n": Y[3].reshape(Kk, N).copy(), "xs": Y[8].reshape(Kk, N).copy(),
+                                 "w": Y[9].reshape(Kk, N).copy(), "s": stress(scene, t, self.hold, mv_mood),
                                  "hand": pressing.copy()})
             if i == steps:
                 break
-            u = self._inputs(scene, t, pressing, mv_mood, Y[1].reshape(Kk, N))
-            k1 = F(Y, u)
-            k2 = F(Y + DT / 2 * k1, u)
-            k3 = F(Y + DT / 2 * k2, u)
-            k4 = F(Y + DT * k3, u)
-            Y = Y + DT / 6 * (k1 + 2 * k2 + 2 * k3 + k4)
-            Y[0] = np.maximum(Y[0], tree["xc"])
-            Y[1:] = np.clip(Y[1:], 0.0, 1.0)
+            W = warmed(W, scene, t, self.warm["warm_tau"], DT)
+            u = self._inputs(scene, t, pressing, mv_mood, Y[1].reshape(Kk, N), W, rolled)
+            Z = Y[:8]
+            k1 = F(Z, u)
+            k2 = F(Z + DT / 2 * k1, u)
+            k3 = F(Z + DT / 2 * k2, u)
+            k4 = F(Z + DT * k3, u)
+            Z = Z + DT / 6 * (k1 + 2 * k2 + 2 * k3 + k4)
+            Z[0] = np.maximum(Z[0], tree["xc"])
+            Z[1:] = np.clip(Z[1:], 0.0, 1.0)
+            # the sleeves: wetted by their vessels' flow, sheared by movement, the breath's and a roller's
+            q = np.minimum((Z[0].reshape(Kk, N) / self.xrest) ** 4, 4.0)
+            shake = 1.0 + (self.strain * moved(scene, t))[:, None] if scene.breathing(t) else 1.0
+            us = self.sU[:, None] * self.smob * shake
+            if scene.rolling(t):
+                us = us + self.sU[:, None] * self.PS["roll_shear"] * rolled[None, :]
+            xs, w = sl.step(self.PS, Y[8].reshape(Kk, N), Y[9].reshape(Kk, N), us, q, DT)
+            Y = np.concatenate([Z, xs.reshape(1, -1, V), w.reshape(1, -1, V)])
         return Y
 
-    def _inputs(self, scene: Scene, t: float, pressing: np.ndarray, mv_mood, A: np.ndarray | None = None) -> tuple:
+    def _inputs(self, scene: Scene, t: float, pressing: np.ndarray, mv_mood, A: np.ndarray | None = None,
+                W: np.ndarray | None = None, rolled: np.ndarray | None = None) -> tuple:
         Kk, N = self.K, self.lay.n
         s = stress(scene, t, self.hold, mv_mood)
         u = self.urest + (self.U * s)[:, None] * self.zone[None, :]
+        if W is not None:  # warmth lowers the skin's small arteries' tone, whatever the nerves do (minson2001)
+            u = u - (self.warm["warm_drop"] * W)[:, None]
         if A is not None:  # conducted: each vessel's command pulled toward its relatives' activation
             u = u + np.einsum("kij,kj->ki", self.W, A) - self.W.sum(axis=2) * A
         mv = np.zeros((Kk, N))
@@ -233,7 +290,7 @@ class Runner:
         press = np.zeros((Kk, N), bool)
         press |= pressing[:, None] & self.under_hand[None, :]
         if scene.rolling(t):
-            press |= self.rolled[None, :]
+            press |= (self.rolled if rolled is None else rolled)[None, :]
         pe = np.where(press, self.palp[:, None], pe)
         mv = np.where(press, np.maximum(mv, self.press_strain[:, None]), mv)
         sh = (-1, V)
@@ -263,6 +320,8 @@ class Runner:
         Y = self._integrate(scene, Y0, frames, hand, target)
         if scene.start == "rest" and variant == "both":
             self._formed = Y.copy()
+        if scene.id == "lingers" and variant == "both":
+            self._aged = Y.copy()  # the knots held half an hour more: aged_release starts here
         self.variant = "both"
         return self._read(scene, frames, target)
 
@@ -332,7 +391,7 @@ class Runner:
         return out
 
     def _read(self, scene: Scene, frames: Frames, target: np.ndarray) -> Run:
-        x, A, m, n = (frames.stack(q) for q in ("x", "A", "m", "n"))
+        x, A, m, n, xs, w = (frames.stack(q) for q in ("x", "A", "m", "n", "xs", "w"))
         t = frames.times[: len(x)]
         held = (x < SHUT * self.xc[None]) & self.bist[None]
         shut = x < SHUT * self.xc[None]
@@ -356,11 +415,48 @@ class Runner:
         k_v = np.array([s["k_vessel"] for s in self.se])
         touch = np.array([s["touch"] for s in self.se])
         bump = senses.felt(k_v[None, :, None] * held, a[None], a[None], depth[None, :, None], touch[None, :, None])
+        # the sleeves: how freely the layers slide at each vessel, as a share of a free sleeve's
+        ns = self.PS["steep"][None]
+        glide = np.clip((1 + self.sfree[None, :, None] ** ns) / (1 + xs**ns), 0.0, 1.5)
+        stiff = np.clip(1 - glide, 0.0, 1.0)
         return Run(theory=ID, scene=scene.id, t=t, held=held, bump=bump, tender=tender,
                    active=shut & ~held, events=events,
-                   focal={"lumen": pick(x / self.xrest[None]), "tone": pick(A), "debt": pick(m), "nerve": pick(n)},
-                   inst={"flow_spot": roi(self.roi), "flow_sham": roi(self.sham)},
-                   stress=frames.stack("s"), hand=frames.stack("hand"), target=target)
+                   focal={"lumen": pick(x / self.xrest[None]), "tone": pick(A), "debt": pick(m), "nerve": pick(n),
+                          "sleeve": pick(xs) / self.PS["x_max"][:, 0][None, :], "water": pick(w)},
+                   inst={"flow_spot": roi(self.roi), "flow_sham": roi(self.sham), "glide_spot": glide[:, :, self.roi].mean(axis=2)},
+                   stress=frames.stack("s"), hand=frames.stack("hand"), target=target, stiff=stiff)
+
+    def aged_release(self) -> dict:
+        """The stiffness of an older knot, and how it goes: from the knots a stressful moment leaves, half an hour more at
+        the holding stress (time for a shut vessel's sleeve to dry and jam), then the knot at the spot's own drive lowered
+        to rest for a minute (a release aimed at it) and ten minutes after. Per setting: whether it was held and its
+        sleeve jammed, when its vessel reopened, and when its sleeve slid again."""
+        from .scenes import Scene
+
+        Kk, N = self.K, self.lay.n
+        Y = getattr(self, "_aged", None)
+        if Y is None:
+            Y = self._integrate(Scene("aged", "", "", "formed", 1800.0, 10.0, film=False), self.formed(), None)
+        Y = Y.copy()
+        x0 = Y[0].reshape(Kk, N)
+        held0 = (x0 < SHUT * self.xc) & self.bist
+        target = self._target(held0)
+        k = np.arange(Kk)
+        ns = self.PS["steep"][:, 0]
+        stuck = lambda xs_: (1 + self.sfree[None] ** ns[None]) / (1 + xs_ ** ns[None]) <= 0.5  # blocks a stretch (stiff >= 0.5)
+        jam0 = stuck(Y[8].reshape(Kk, N)[k, target][None])[0]
+        self._aim = np.zeros((Kk, N), bool)
+        self._aim[k, target] = True
+        self._dS = self.hold.copy()
+        frames = Frames(660.0, 1.0)
+        self._integrate(Scene("aged_release", "", "", "formed", 660.0, 1.0, film=False, calm_until=60.0), Y, frames)
+        self._aim, self._dS = np.zeros((Kk, N), bool), np.zeros(Kk)
+        x, xs = frames.stack("x"), frames.stack("xs")
+        t = frames.times[: len(x)]
+        opened = ~((x[:, k, target] < SHUT * self.xc[:, 0][None]) & self.bist[k, target][None])
+        free = ~stuck(xs[:, k, target])
+        first = lambda b: np.array([t[np.argmax(b[:, j])] if b[:, j].any() else np.inf for j in range(Kk)])
+        return {"held": held0[k, target], "jam": jam0, "t_open": first(opened), "t_free": first(free)}
 
     def settings(self) -> np.ndarray:
         """The sampled numbers per setting, for choosing a typical one."""

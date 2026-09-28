@@ -13,7 +13,7 @@ const index = indexData as unknown as GuideIndex;
 const VIEW_SECONDS = 36; // how long a scene takes to watch
 
 const INST: Record<string, [string, string, string][]> = {
-  T1: [['flow_spot', 'skin flow at the spot (laser speckle)', INKC.vessel], ['flow_sham', 'at the sham', INKC.stone]],
+  T1: [['flow_spot', 'skin flow at the spot (laser speckle)', INKC.vessel], ['flow_sham', 'at the sham', INKC.stone], ['glide_spot', 'the layers sliding at the spot (ultrasound)', INKC.ivory]],
   T2: [['flow_spot', 'blood flow at the spot', INKC.vessel], ['flow_sham', 'at the sham', INKC.stone]],
   T3: [['stiffness', 'contracture at the spot (elastography)', INKC.ivory], ['needle_emg', 'endplate activity (needle EMG)', INKC.ochre]],
   T4: [['glide_spot', 'the layers sliding at the spot (ultrasound)', INKC.ivory], ['glide_sham', 'at the sham', INKC.stone]],
@@ -160,7 +160,7 @@ export function mountGuide(root: HTMLElement, base: string): void {
     const stress = ft.stress.map((v, i) => `${i ? 'L' : 'M'}${x(i * film!.frame).toFixed(1)} ${(44 - 12 * ((v ?? 0) / smax)).toFixed(1)}`).join(' ');
     timeline.setAttribute('viewBox', `0 0 ${W} ${H}`);
     timeline.innerHTML = `
-      ${band(ft.hand, 29, 5, 'rgba(201,167,124,0.55)')}${band(film.attend, 35, 3, 'rgba(168,230,205,0.55)')}${band(film.roll, 29, 5, 'rgba(201,167,124,0.35)')}
+      ${band(ft.hand, 29, 5, 'rgba(201,167,124,0.55)')}${band(film.attend, 35, 3, 'rgba(168,230,205,0.55)')}${band(film.roll, 29, 5, 'rgba(201,167,124,0.35)')}${film.warm ? band(film.warm, 41, 3, 'rgba(201,164,95,0.5)') : ''}
       <path d="${stress}" fill="none" stroke="rgba(201,164,95,0.55)" stroke-width="1"/>
       ${breath ? `<path d="${breath}" fill="none" stroke="rgba(230,220,205,0.45)" stroke-width="1"/>` : ''}
       <line data-head x1="0" x2="0" y1="0" y2="${H}" stroke="rgba(230,220,205,0.8)" stroke-width="1"/>`;
@@ -196,7 +196,7 @@ export function mountGuide(root: HTMLElement, base: string): void {
     const w = film.breath[f] ?? 0;
     for (const th of index.theories) {
       const ft = film.theories[th.id];
-      const inp = { f, t, hand: !!ft.hand[f], roll: !!film.roll[f], attend: !!film.attend[f], breath: w };
+      const inp = { f, t, hand: !!ft.hand[f], roll: !!film.roll[f], rollAt: film.roll_at, warm: !!film.warm?.[f], attend: !!film.attend[f], breath: w };
       views.get(th.id)?.draw(inp, dt, now);
       if (th.id === selected) {
         closeView?.draw(inp, dt, now);

@@ -3,7 +3,7 @@
 *Status (28 Sep 2026): G0 done (this plan; the exam, the matrix and the author's words off the site). G1 is live and
 G3's main part is done: the engine (`knots_sim/guide/`) runs all seven theories (perforators with conducted dilation
 in their trees, the vascular latch, trigger points, densification, nerves, the motor switch and perception) through
-eight scenes in 32 settings each, and the Hypotheses page shows each theory's account beside what its model shows, with
+ten scenes in 32 settings each, and the Hypotheses page shows each theory's account beside what its model shows, with
 the instrument at the top (`/simulation/` redirects there); each theory's portrait is generated from the runs
 (`findings/guide.md`); G2 is done: the Research page leads with where the seven part, generated from the guide. Next: the rest of G3, then G4. The first version of this phase,
 an exam that scored the theories against the author's reports, is in [archive/](archive/2026-09-28-exam-plan.md); what
@@ -109,6 +109,12 @@ vessel beside them. With that, the seven accounts cover the serious contenders; 
   Weak: every number for knots is a guess. In the guide: territories along the fibres; a latched unit's fibres are
   scattered through its territory, so one unit is a diffuse firmness and a bump needs several together (the senses, §5);
   attention inhibits; a hand excites, or excites and then inhibits (variants).
+- *T1's sleeve* (28 Sep, `models/sleeve.py`). The perforator model could not stiffen, yet knots are reported to limit
+  movement. Each vessel passes the fascia in a sleeve of sliding tissue (guimberteau2005) that its flow keeps wet; shut,
+  the sleeve dries, its hyaluronan crowds (viscosity as the third or fourth power of concentration, cowman2015), and it
+  can jam (the gliding layer's thixotropy, coussot2002), pinning the layers at the vessel: a stretch meets a block, which
+  cowman2015 ties to felt stiffness. The model's sharpest prediction: the spark comes as the vessel opens, but a jammed
+  sleeve can stay stuck until the layer is sheared (a roller, a moving hand). Its drying and rebuilding times are guessed.
 - *T2.* The latch-bridge economises; by itself it does not remember: relaxation follows calcium (rembold1991). In
   Johnson's account the memory is elsewhere, in the held prediction the clamp keeps out of awareness, so the guide builds
   that loop (`models/latch.py`, 28 Sep): stress writes a prediction; the prediction commands its region's vessels; the
@@ -170,6 +176,8 @@ them onto its own inputs in its runner, written out for its proponents to check.
 | Rolling | a roller over a quiet place, once every 3 s for three minutes | whether pressing brings knots out, or frees them |
 | After it lets go | the deepest knot at the spot worked until it goes; ten minutes more | whether others go with it; a new one nearby; one back in the same place |
 | An hour of moods | stress wanders as moods do, with slow breaths | whether knots come and go |
+| Rolling the knot | a roller over the knot at the spot, once every 3 s for three minutes | whether rolling frees it, as a foam roller is reported to |
+| Warmth | five minutes of warmth over the patch, as in a hot shower, with slow breaths | whether warmth frees knots |
 | Held for hours | stress held half an hour, or three hours, then gone | whether an old knot outlasts its stress |
 
 Every scene runs in K plausible settings (Sobol over each theory's own parameter ranges, K = 32 to start). The film shows a
@@ -187,6 +195,10 @@ The same questions for every theory, answered per setting from its runs, then su
 Traits set by the shared scale (the surge forms knots at the typical place; the holding stress keeps them) are
 calibration: shown as such, never as findings. Numbers from guessed parameters are the map, not the finding; the words say
 which.
+
+**The reports and the models** (28 Sep, `guide/reports.py`): after the models have spoken, the Introduction's observations
+(in the site's words) set against them: for each report and theory, in how many settings its knots do it, or why the model
+cannot say. A recognition aid, not a score; nothing is fitted to it.
 
 ## 8. Rules
 

@@ -5,7 +5,8 @@ import { CHAPTERS } from '../data/tour';
 import { refById } from '../data/references';
 import '../styles/app.css';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
-const html = (s: string) => s.replaceAll('href="HYP"', `href="${base}/hypotheses/"`).replaceAll('href="ATLAS"', `href="${base}/atlas/"`);
+const html = (s: string) =>
+  s.replaceAll('href="HYP#', `href="${base}/hypotheses/#`).replaceAll('href="HYP"', `href="${base}/hypotheses/"`).replaceAll('href="ATLAS"', `href="${base}/atlas/"`);
 ---
 <Base current="intro" app>
   <section class="visualization" data-tour>

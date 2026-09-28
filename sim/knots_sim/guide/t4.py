@@ -26,7 +26,7 @@ from scipy.stats import qmc
 from ..models import densification as dm
 from ..params import load
 from . import patch, senses
-from .base import K, SEED, Frames, Run, calmed, moods, moved, stress, wave
+from .base import K, SEED, Frames, Run, calmed, moods, moved, stress, warmed, warmth_sample, wave
 from .scenes import SURGE, Scene
 
 ID, KEY, NAME, GLYPH = "T4", "densification", "Densification", "膠"
@@ -49,6 +49,10 @@ WORDS = {
     "bump": "Nothing firm for a finger to find: what changes is how the layers slide. A finger that slides the skin finds "
             "it held there, over a patch a centimetre or more across.",
     "bump_cell": "nothing firm; the skin does not slide",
+    "stiffness": "The jammed layer resists sliding: a stretch pulls against it.",
+    "stiff_cell": "the layers do not slide",
+    "rolled": "The roller shears the layer beneath it: past its band, a jammed patch gives way.",
+    "warmth": "Warmth thins the layer only about 2% a degree (cowman2015).",
     "inside": "The layers stop gliding, so movement pulls on the fascia's nerve endings where they are stuck: an ache or a "
               "pull when moving, quiet when still.",
     "inside_cell": "a pull when moving",
@@ -132,13 +136,16 @@ class Runner:
         self._chronic = None
         self._formed = None
         self.vessel_mm, self.vessel_depth = 0.0, float(np.median(self.depth))
+        self.warm = warmth_sample(k, seed)
+        wt = load("warmth")
+        self.more = {q: (self.warm[q], wt[q].label) for q in ("warm_layer", "warm_tau")}
 
     # --- the drive ---
-    def _drive(self, s_eff, mv: float, rolling: bool, pressing: np.ndarray, variant: str) -> np.ndarray:
+    def _drive(self, s_eff, mv: float, rolling: bool, pressing: np.ndarray, variant: str, rolled=None) -> np.ndarray:
         P, U = self.P, self.U[:, None]
         u = U * self.mob * (np.exp(-P["guard"] * np.maximum(s_eff, 0.0)) + P["breath_move"] * mv)
         if rolling:
-            u = u + U * P["roll_shear"] * self.rolled[None, :]
+            u = u + U * P["roll_shear"] * (self.rolled if rolled is None else rolled)[None, :]
         if variant == "friction":
             u = u + U * P["friction"] * (pressing[:, None] & self.under_hand[None, :])
         return u
@@ -159,6 +166,8 @@ class Runner:
         mv_mood = moods(self.ps, scene.duration) if scene.mood else None
         steps = int(round(scene.duration / DT))
         u = np.zeros_like(x)
+        rolled = self.under_hand if scene.roll_at == "spot" else self.rolled
+        W = np.zeros(self.K)
         for i in range(steps + 1):
             t = i * DT
             pressing = np.full(self.K, scene.hand(t))
@@ -175,13 +184,15 @@ class Runner:
             s_eff = s[:, None] * self.zone[None, :]
             if scene.calm_until and t < scene.calm_until:  # the knot's own stress lowered, aimed at it alone
                 s_eff = s_eff - self._dS[:, None] * self._aim
-            u = self._drive(s_eff, mv, scene.rolling(t), pressing, variant)
+            u = self._drive(s_eff, mv, scene.rolling(t), pressing, variant, rolled)
             if frames is not None:
                 while frames.due(t):
                     frames.take({"x": x.copy(), "u": u.copy(), "T": T.copy(), "s": s.copy(), "hand": pressing.copy()})
             if i == steps:
                 break
-            T = T + DT * (P["hand_warm"] * (pressing[:, None] & self.under_hand[None, :]) - T) / P["tau_warm"]
+            W = warmed(W, scene, t, self.warm["warm_tau"], DT)
+            hot = P["hand_warm"] * (pressing[:, None] & self.under_hand[None, :]) + (self.warm["warm_layer"] * W)[:, None]
+            T = T + DT * (hot - T) / P["tau_warm"]
             x = dm.step(P, x, u, T, DT)
         return x, T
 
@@ -226,7 +237,8 @@ class Runner:
                    focal={"structure": pick(x) / xm[None, :], "sliding": np.clip(pick(glide), 0, 1.5),
                           "drive": pick(u) / self.uj[None, :], "warmth": pick(T)},
                    inst={"glide_spot": np.clip(roi(self.roi), 0, 1.5), "glide_sham": np.clip(roi(self.sham), 0, 1.5)},
-                   stress=frames.stack("s"), hand=frames.stack("hand"), target=target)
+                   stress=frames.stack("s"), hand=frames.stack("hand"), target=target,
+                   stiff=np.clip(1 - glide, 0.0, 1.0))
 
     def ageing(self) -> tuple[np.ndarray, np.ndarray]:
         """A jammed patch at the typical place, held half an hour, or three hours, at the holding stress; then the stress
