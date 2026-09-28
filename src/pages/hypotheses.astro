@@ -3,8 +3,6 @@ import Doc from '../layouts/Doc.astro';
 import { HYPOTHESES } from '../data/hypotheses';
 import { refById } from '../data/references';
 import { crossSectionSVG } from '../lib/crossSection';
-import matrixData from '../data/sim/matrix.json';
-import type { Matrix } from '../sim/figures';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const ROWS: [keyof (typeof HYPOTHESES)[number], string][] = [
   ['layer', 'Where'],
@@ -28,26 +26,17 @@ const GLYPH: Record<string, string> = {
   'motor-switch': '握',
   central: '覚',
 };
-// Where each theory stands in the simulation (the Research page).
-// In the exam: the parts each modelled theory can pass in some plausible setting, with its best variant (matrix.json).
-const mx = matrixData as unknown as Matrix;
-const EXAM_ID: Record<string, string> = { perforator: 'T1', 'trigger-point': 'T3', 'motor-switch': 'T7', central: 'T6' };
-const examLine = (key: string) => {
-  const t = mx.theories.find((x) => x.id === EXAM_ID[key]);
-  if (!t) return '';
-  const scored = mx.parts.filter((part) => t.variants.some((v) => typeof v.cells[part.id] === 'number'));
-  const can = scored.filter((part) => t.variants.some((v) => (v.cells[part.id] as number) > 0));
-  return `run through exam v${mx.exam.version}: ${can.length} of its ${scored.length} scored parts hold in some plausible setting`;
+// Where each theory stands in the field guide (the Simulation page): modelled from its own physiology, or not yet.
+const GUIDE: Record<string, string> = {
+  perforator: 'modelled: small arteries from measured numbers, in trees of a parent and its children; the breath by drive and by movement; how a knot sets when held',
+  latch: 'not yet modelled: it shares the vessel and how a held vessel sets; the latch itself needs its rate constants (Hai & Murphy)',
+  'trigger-point': 'modelled: the energy crisis at an endplate, released by pressure and stretch',
+  densification: 'not yet modelled: a loose layer that stiffens at rest and thins with movement and warmth',
+  nerve: 'not yet modelled: a sensitised nerve where it pierces the fascia',
+  'motor-switch': 'modelled: motor units that latch on under stress and are kept on by their own metabolites, released by inhibition',
+  central: 'modelled: gain, arousal and attention on a body map, the account every other view has to beat',
 };
-const TESTS: Record<string, string> = {
-  perforator: `modelled: one vessel from measured numbers, the breath by drive and by movement, a tree of a parent and its children, and how a knot sets when held; ${examLine('perforator')}`,
-  latch: 'in part: it shares the vessel switch and its adaptation; the latch itself needs the Hai–Murphy rate constants',
-  'trigger-point': `modelled: the energy crisis at an endplate, released by pressure and stretch; ${examLine('trigger-point')}`,
-  densification: 'to model',
-  nerve: 'to model',
-  'motor-switch': `modelled: motor units that latch on under stress and are kept on by their own metabolites, released by inhibition; ${examLine('motor-switch')}`,
-  central: `modelled: gain, arousal and attention on a body map, the account every other view has to beat; ${examLine('central')}`,
-};
+const MODELLED = new Set(['perforator', 'trigger-point', 'motor-switch', 'central']);
 const index = [
   ...HYPOTHESES.map((h, i) => ({ id: h.id, label: `${String(i + 1).padStart(2, '0')} ${h.label}` })),
   { id: 'compare', label: 'side by side' },
@@ -98,8 +87,8 @@ const index = [
           ))}
         </dl>
         <p class="tests">
-          <span class="mono k">in the tests</span> {TESTS[h.id]}.{' '}
-          <a href={`${base}/research/#${EXAM_ID[h.id] ? 'exam' : 'theories'}`}>Research →</a>
+          <span class="mono k">in the field guide</span> {GUIDE[h.id]}.{' '}
+          <a href={`${base}/simulation/${MODELLED.has(h.id) ? `#${h.id}` : ''}`}>Simulation →</a>
         </p>
         <p class="refs mono">
           {h.refs

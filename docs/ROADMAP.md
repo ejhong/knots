@@ -62,41 +62,26 @@ A living list. Checked items are live.
 - [x] Sitemap (`/knots/sitemap.xml`); Research and Simulation in the top bar and indexed
 - [ ] Social image per page
 
-## Simulation — the theories against the observations
-Plan: `sim/PLAN.md`, reassessed 26 Sep 2026: *can* (every theory through the same exam), *signatures* (what an instrument would
-record at a release under each), *decide* (the measurement that settles it, with predictions sealed first). The section's
-design: `docs/SIMULATION.md`.
-- [x] Stage 0: the plan, the section's design, the Python package (`sim/`, uv) and CI
-- [x] PubMed client and library tooling (`knots_sim.pubmed`, `knots_sim.library`); quotes checked word for word (`knots_sim.params --verify`)
-- [x] T1 as the vessel switch: 22 parameters (12 sourced, 10 guessed and marked), fitted to the gasp reflex and reactive hyperaemia
-- [x] T1, one knot: the switch's band, trials (a knot forms, holds, lets go by easing, by pressure, by uneven breath), robustness (Sobol, 49,152 sets)
-- [x] Feasibility checks: hyaluronan cannot hold, cooling cannot release within a breath, the latch does not remember
-- [x] Write once: SymPy → numpy and TypeScript, with golden-trajectory tests
-- [x] The switch and the bench, live at `/simulation/`; findings note 001
-- [x] The perforator theory presented as the simulation found it: the vessel holds itself, the collar does not, breath by drive and by movement
-- [x] The movement route in T1, fitted to squeezed arteries; release maps over knot depth for drive and movement; the least movement per breath
-- [x] The tree: a parent's knot makes a cluster of its children, its release frees most of them, the hardest stays (256 trees)
-- [x] The Research page (`/research/`, in the top bar): the problem, the observations as a dated draft, the theories, what physics allows, breath, trees, what each theory predicts a recording would show, the experiment, what we need
-- [x] The field: a patch of knots under one breath, broad against focused
-- [x] What the simulations show, and a verdict per theory (can / cannot / open), on the Research page
-- [x] Where knots are and how many: the location test as step 0 of the decision tree (O15, from the introduction)
-- [ ] M1, the rest: the other breath routes (local nerve, attention, chemistry) in a shared interface; the pulse variant; the field (a patch of perforators under one breath, broad against focused)
-- [x] The exam sealed (v1, 26 Sep 2026): from the introduction and the author's words, with its readings and scoring; essay-only reports set aside
-- [x] Exam v2 (27 Sep 2026): O2 takes a hand that holds or eases off; Q1 (under the hand or as it lifts) open, with each theory's prediction; the perforators' migration trial fixed and every trial's run count reported
-- [x] Exam v3 (27 Sep 2026): O8.2, a knot back in the same place, in the author's words; sealed before its trials (not run yet)
-- [ ] O8.2's trials in every theory, and pressure around a released knot (sim/PLAN.md §11)
-- [x] M2: T6 and T3 as models; the harness (`knots_sim/exam.py`) with its fairness rules; matrix v1 with counts, on the Research page (`#exam`); findings 004
-- [ ] M3: T2 live (Hai–Murphy; needs the paper) with latch hardening; T4, T5, the gamma loop, hybrids; matrix v2
-- [ ] M4: instrument models; each theory's fingerprint at a release; the decision tree for labs, its predictions sealed
-- [ ] M5: clusters and the queue for every theory (how clusters form, let go together, and where they sit); the spatial test (the traditions' maps and trigger points against published perforator maps); network (O8); body (O9, O10); the atlas driven by the model
-- [ ] M6: a preprint, with code and results cited by DOI; the lab protocol; outreach to labs and proponents
-- [ ] Measure or source what decides the most: the wall's length–tension width and thickness (whether a knot holds at rest); how fast the skin's small arteries ease when drive falls (one breath or many); hairy-skin reflexes
+## Simulation — the field guide
+Plan: `sim/PLAN.md` (28 Sep 2026): each theory, run from its own physiology through the same scenes, shows how its knots would
+feel, respond and move, and what an instrument would record; where they part, a measurement decides. The pages' design:
+`docs/SIMULATION.md`. The exam phase (26–28 Sep: every theory scored against the author's reports) is retired, and its plan
+kept in `sim/archive/`; what it built (the models, the parameters and their sources, the checks, the instrument readings) carries over.
+- [x] Built before the turn: the vessel switch from measured numbers (12 sourced, 10 guessed), the checks (hyaluronan cannot hold;
+  warming cannot release within a breath; the latch economises), the tree, how a knot sets, trigger points, perception and the
+  motor switch as models; the PubMed library tooling; the vessel bench
+- [x] G0: the plan; the exam, the matrix and the author's words off the site; the Research page made lean
+- [ ] G1: the engine (patch, scenes, senses, a runner per theory, traits) for T1, T3, T6, T7; the field guide v1 on `/simulation/`
+- [ ] G2: Research rebuilt around the tells and the measurement ladder, generated from the guide
+- [ ] G3: densification (T4), nerves (T5), the motor switch with the vessel it squeezes; the latch (T2) once its rate constants are sourced
+- [ ] G4: the atlas driven by the models, theory by theory
+- [ ] G5: the fascia as a second system (its own phase and safety review)
+- [ ] G6: the measurement: a lab-ready protocol, a preprint, collaborators
+- [ ] Measure or source what decides the most: the wall's length–tension width and thickness; how fast the skin's small arteries
+  ease when drive falls; how hard a few latched motor units squeeze a vessel beside them
 
 ## Open questions (for the author)
-- Pressed, with a slow out-breath: does a knot let go while the hand still presses, or as it eases off? Not watched for so
-  far ("could be either", 27 Sep 2026); the theories split on it (open question Q1 on the Research page). Worth noticing
-  next time.
+- Pressed, with a slow out-breath: does a knot let go while the hand still presses, or as it eases off? The theories split on it.
 - How should manipulation (pressure, breath) return to the atlas, if at all?
-- The simulation's open decisions (`sim/PLAN.md` §13): the section's name, and when `/simulation/` joins the top bar; what
-  "attention" means in the models; a pilot measurement; a co-author; OSF and Zenodo accounts; reports from other practitioners.
-- Papers to get for the simulation: `sim/PLAN.md` §11 (Hai & Murphy 1988; Fredberg 1996 and 1999).
+- The simulation: a pilot measurement; a co-author; reports from other practitioners (`sim/PLAN.md` §10–11).
+- Papers to get: Hai & Murphy 1988 (the latch's rate constants, for T2).

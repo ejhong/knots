@@ -3,10 +3,11 @@
 A long-running visualisation project: a static Astro site with a Three.js atlas of the body's perforators and knots.
 Owner: Eugene Jhong. Source essays: `docs/source/*.md` (the Substack posts are canonical).
 
-**Next phase: simulation.** Every theory as a dynamical model, run against the reported observations; from the survivors, what
-an instrument would record at a release under each, and the measurement that would settle it; a new section of the site to
-show all of it. Read `sim/PLAN.md` (the research plan: its path, next steps, papers to get and open decisions) and
-`docs/SIMULATION.md` (the section's design) before any simulation work.
+**Now: the field guide.** Each theory, run as a model from its own physiology, grows its knots in the same patch of body and
+meets the same scenes, and shows how its knots would feel, respond and move, and what an instrument would record; where
+the theories differ, a measurement can decide. Read `sim/PLAN.md` (the plan: aim, theories, senses, scenes, stages) and
+`docs/SIMULATION.md` (the pages' design) before any simulation work. (The exam of 26–28 Sep, which scored theories against
+the author's reports, is retired: `sim/archive/`.)
 
 ## Principles
 
@@ -24,21 +25,15 @@ show all of it. Read `sim/PLAN.md` (the research plan: its path, next steps, pap
   atlas menu uses its one- or two-word `label`.
 - **Verified references only.** Add papers to `src/data/papers.json` from PubMed E-utilities output (title/authors/venue/DOI), never
   from memory.
-- **Simulation: *can*, not *is*.** The models ask which theories can produce which observations, at what parameter cost, and what
-  would tell them apart; never which theory is true. Each theory in its strongest form, as `hypotheses.ts` states it, with
-  variants wherever the equations are a choice. Every parameter carries its source (`papers.json` id, locator, quoted line) or is
-  marked as guessed: never a number from memory. The exam (`sim/observations/spec.yaml`) is versioned: each change dated, with
-  its reason, in its `changes`, and every result names the version it used (v1–v3 were also sealed by hash: history in
-  `seal.yaml`). Preregistration, sealed and timestamped, is for predictions of a real experiment, before any data. Results are
-  shown first as what each theory does; pass shares are the map. Results are generated, never edited by hand, and each names its
-  run. On the site, simulated inputs are *trials*. How the breath acts is kept open: it enters every model as routes (drive,
-  movement, local nerve, attention, chemistry, and drive aimed at one place: the author's hypothesis), each a variant, never
-  one assumed mechanism (`sim/PLAN.md` §2).
-- **Useful, not impressive** (the author, 27 Sep 2026). With this many unknowns, a result earns its place only if it is one of
-  three kinds: a *can* or *cannot* that holds in every plausible setting; a question the author could answer by noticing;
-  or what a measurement would show, and what each outcome would rule out. Say which kind, and whether it rests on guessed
-  numbers. Shares of settings and precise-looking numbers from guessed parameters are secondary, never the headline. The
-  work ends in a measurement: favour what designs it over more model breadth or polish.
+- **Simulation: the models speak first.** Each theory, in its strongest form as `hypotheses.ts` states it (variants wherever the
+  equations are a choice), is run from its own physiology through the same scenes, and its knots' behaviour is read off the
+  runs; nothing is fitted to anyone's reports, and no theory is scored against them. Every parameter carries its source
+  (`papers.json` id, locator, quoted line) or is marked guessed with a range: never a number from memory. Traits are generated,
+  never written by hand, and say whether they hold in every plausible setting, depend on an unmeasured number (which), or
+  never happen; numbers from guessed parameters are the map, not the finding. Calibration (the shared stress scale) is shown as
+  calibration. The work ends in a measurement: favour what designs it over more breadth or polish.
+- **No author quotes on the site.** The author's answers to questions are rough impressions, not written for presentation;
+  the site speaks in its own words. On the site, simulated inputs are *scenes*.
 
 ## Layout
 
@@ -51,16 +46,16 @@ show all of it. Read `sim/PLAN.md` (the research plan: its path, next steps, pap
   - `interaction/` picking and tools; `ui/` DOM bindings for the atlas and hero
   - `data/` roots, knot zones, perforator density (anatomical data used by the viewer)
 - `src/data/` — site-wide registries: hypotheses, references (+ `papers.json`), timeline, map index
-- `src/pages/` — introduction, atlas, hypotheses, research (the case for researchers), traditions, library, about, simulation (the
-  bench; `lab` is a dev bench)
-- `src/sim/` — the simulation in the browser: `models/*.ts` (generated from Python; never edit), `vessel.ts` (stepper,
-  calibration, inputs), `draw.ts` and `figures.ts` (figures as SVG strings), `bench.ts` (the live instrument); `src/data/sim/`
-  (generated)
+- `src/pages/` — introduction, atlas, hypotheses, simulation (the field guide), research (the case for researchers), traditions,
+  library, about (`lab` is a dev bench)
+- `src/sim/` — the simulation in the browser: `guide/` (the field guide: player, patches, plates, instruments, character),
+  `models/*.ts` (generated from Python; never edit), `vessel.ts` and `bench.ts` (the live vessel bench), `draw.ts` and
+  `figures.ts` (figures as SVG strings); `src/data/sim/` and `public/sim/` (generated)
 - `scripts/body/build-body.ts` — regenerates `public/models/body.*` from MakeHuman (cached downloads)
 - `scripts/shot.ts` — Playwright screenshot bench; use it to check visual changes
-- `sim/` — the simulation phase (Python, uv), built stage by stage (`sim/README.md` has the layout as it grows): `PLAN.md` (its
-  source brief is `BRIEF.md`); `knots_sim/` models, trials, scoring, sweeps, codegen, export; `observations/` and `params/` (the
-  data people review); `results/` (run manifests)
+- `sim/` — the simulation (Python, uv; `sim/README.md` has the layout): `PLAN.md`; `knots_sim/guide/` the field guide's engine
+  (patch, scenes, senses, one runner per theory, traits, export); `knots_sim/models/` the theories' models; `params/` every
+  number with its source; `archive/` the exam phase
 - `docs/` — `DESIGN.md` (look), `ARCHITECTURE.md`, `DATA.md` (formats), `SIMULATION.md` (the simulation section), `ROADMAP.md`
 
 ## Conventions
@@ -77,11 +72,10 @@ show all of it. Read `sim/PLAN.md` (the research plan: its path, next steps, pap
 
 - `npm run dev` then `npx tsx scripts/shot.ts /knots/atlas shots/x.png --eval "…"` (`window.atlas` is the scene).
 - `SHOT_CHROMIUM=<path>` points `scripts/shot.ts` at another Chromium (cloud sessions set it to the pre-installed one).
-- Simulation (`cd sim`): `uv run pytest`; `uv run python -m knots_sim.export` regenerates everything the site shows (the
-  TypeScript models, `src/data/sim/*.json`, the findings note; a test fails if it is stale); `uv run python -m
-  knots_sim.params --verify` checks every quote against its source; `uv run python -m knots_sim.pubmed search "…"` finds
-  papers, and `knots_sim.library` adds them to `papers.json` from PubMed's own records.
+- Simulation (`cd sim`): `uv run pytest`; `uv run python -m knots_sim.guide` runs every theory through every scene and writes
+  the field guide's data; `uv run python -m knots_sim.export` regenerates the vessel bench's data and the TypeScript models;
+  `uv run python -m knots_sim.params --verify` checks every quote against its source; `uv run python -m knots_sim.pubmed
+  search "…"` finds papers, and `knots_sim.library` adds them to `papers.json` from PubMed's own records.
 - Deploy: push to `main` (GitHub Actions → Pages at https://ejhong.github.io/knots/). Every push also runs `ci.yml`: the sim
   tests, plus the site checks on branches other than `main`.
-- Roadmap and open questions: `docs/ROADMAP.md`; the simulation's next steps and papers to get: `sim/PLAN.md` §11; its open
-  decisions: §13.
+- Roadmap and open questions: `docs/ROADMAP.md`; the simulation's stages: `sim/PLAN.md` §10.

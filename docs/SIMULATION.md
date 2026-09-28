@@ -1,237 +1,100 @@
 # The simulation section — design
 
-*The site's side of the simulation phase. The research plan is `sim/PLAN.md`; the look is `docs/DESIGN.md`. The section
-now has two pages. `/research/` (in the top bar as Research) is the case for researchers: the problem,
-the observations, sealed, the theories, what physics allows, time (how a knot sets), the breath's routes, trees, what each theory
-predicts a recording would show, the experiment as a decision tree, and what is needed; its figures are drawn at build
-time by `src/sim/figures.ts`. `/simulation/` (in the top bar as Simulation) is the bench. Both are indexed and listed in the sitemap. Built so far at
-`/simulation/`: the switch and the bench for T1 (the vessel switch), the four checks, the
-predictions, robustness, the model against measurements, and every parameter with its quote. Still to come, in the order of
-`sim/PLAN.md` §9–10: the breath's routes and the field, the exam, the matrix, the fingerprints, and the decision tree for labs.
-The name is decision D1 in the plan.*
+*The site's side of the field guide. The research plan is `sim/PLAN.md`; the look is `docs/DESIGN.md`. Two pages, both in
+the top bar: `/simulation/` (Simulation) is the field guide, where each theory's knots are seen; `/research/` (Research) is
+the case for researchers: what physics allows, where the theories part, and the measurement that would decide. The
+exam-era design is in `sim/archive/`.*
 
-The atlas shows what each theory says a knot *is*. This section shows what each theory can *do*: every theory put through the
-same trials, scored against the same observations, with every number traceable to its source. It adds to the site; nothing
-there is replaced.
+The atlas shows what each theory says a knot *is*. The field guide shows how its knots would *behave*: each theory, run
+from its own physiology, grows its knots in the same patch of body and meets the same scenes; it shows how they would feel
+under a hand, respond, let go and move, and what an instrument would record. Nothing in it is fitted to anyone's reports.
 
 ## Principles
 
-These come on top of `docs/DESIGN.md` and `CLAUDE.md`.
+On top of `docs/DESIGN.md` and `CLAUDE.md`.
 
-- **Honest by construction.** Every figure says it is a model. Every observation carries its evidence (measured, or self-report).
-  The exam shows its frozen version and date before any result, and every result carries its run (date, code version). One line
-  says it plainly: *the simulation tests what each theory can produce; it measures nothing.*
-- **Fair.** The theories appear in the site's order with their glyphs and short labels (結 閂 点 膠 神経 覚). No theory has a colour
-  of its own, and nothing is coloured as good or bad. Variants are shown, not hidden.
-- **Traceable.** Tap any number to see its source (the library entry), the quoted line and its confidence. The equations on the
-  page are generated from the model that ran.
-- **Describe, never prescribe.** *Trials*, not protocols. The bench's controls are the model's inputs, not instructions. No
-  technique, no intensity.
-- **The colour roles hold.** Terracotta is a held knot and nothing else: the held branch, the held state. Jade is release: the
-  released branch, the spark. The indigo seal marks what is frozen and dated. Everything else is ink, stone and paper. Results
-  are marked in ink by shape and fill, never red and green.
-- **Fast.** The page reads small precomputed JSON. The bench runs a generated model of a few hundred lines. Charts are hand-made
-  SVG: no chart library, no web fonts. Equations are native MathML, which renders in system fonts.
-- **Paced by the breath.** Animation follows the paced breath the atlas uses (six a minute, `src/viewer/sim/Breath.ts`), and stops under
-  `prefers-reduced-motion`.
+- **The model shows itself.** Every animated thing is driven by a model's state from a run; nothing is hand-animated. Where
+  time is compressed the clock says so. A theory with nothing to feel shows nothing, and says so.
+- **Fair.** The theories appear in the site's order with their characters and short labels (結 Perforators, 閂 Vascular
+  latch, 点 Trigger points, 膠 Densification, 神経 Nerves, 覚 Perception, 握 Motor switch). The same patch, stress field,
+  scenes, hand and breath for each. No theory has a colour of its own; nothing is coloured as good or bad.
+- **Traceable.** A trait names what it rests on (sourced, or guessed) and the run it came from; the method links to the
+  parameters and their quotes.
+- **Describe, never prescribe.** *Scenes* happen to a model; they are not instructions. The moderation guidance is on the
+  page. No technique, no intensity.
+- **Colour roles hold.** Terracotta is a held knot and nothing else. Jade is release and the spark. Bronze is the hand. The
+  indigo seal marks what is dated. Silver-blue is vessels; stone is structure; everything else is ink and paper.
+- **Fast.** The page imports one small index (`src/data/sim/guide.json`) and fetches one file per scene as it is chosen
+  (`public/sim/guide/<scene>.json`). Canvas for the patches, hand-made SVG for the plates and traces; no libraries, no web
+  fonts.
+- **Paced by the breath**, and still under `prefers-reduced-motion` (the scene opens paused, on its most telling frame).
 
-## Where it lives
+## The field guide, top to bottom
 
-- **A page, `/tests/`** (named per D1), in the top bar after Hypotheses (`src/components/TopBar.astro`). Until D2 decides
-  otherwise it is unlisted (noindex, not in the top bar), like `lab`. *Decided 26 Sep 2026 (D1, D2): two tabs, Research and
-  Simulation, after Hypotheses, both indexed.*
-- **Hypotheses**: each theory's card gains one line, "In the tests", with its row of the matrix and a link to it.
-- **Atlas** (Stage 4): the knots driven by the model; the hover card links to the theory's row.
+A reading page (the paper card with its quiet index), with one ink-stone instrument set into it.
 
-## The page, top to bottom
+1. **Opening.** Title, one paragraph: each theory, run from its own physiology, shows how its knots would behave; nothing
+   here is fitted to anyone's reports; it measures nothing. One mono line with the run and its date.
+2. **The instrument** (ink stone, full width).
+   - *Scenes*: a row of chips, one per scene (`sim/PLAN.md` §6), each with its duration.
+   - *Side by side*: the modelled theories' patches in a row (two by two on a phone), each with its character and label and a
+     live one-line caption ("4 held · the one at the spot let go at 0:42, on the out-breath"). Choosing one opens it up close.
+   - *The timeline*: the breath as a wave, stress as a band, the hand and attention as marks; a scrubber; play and pause;
+     speed. The clock shows model time and how much it is compressed.
+   - *Up close*, the chosen theory: its patch large; **beneath**, the cross-section of the knot at the spot; **on the
+     instruments**, strip charts of what a recording would show at the spot and at the sham; the caption, narrated from the
+     run's events.
+3. **Its character** (paper), for the chosen theory: the traits (§7 of the plan) in groups (feel · form · hold · respond ·
+   let go · move · time · instruments · would rule it out), each with its mark: ● every setting, ◐ some (and what it
+   depends on), ○ none, — silent, · not modelled.
+4. **Side by side, in words**: the traits as a table across the theories, rows where they part first (the tells), each
+   linking to the Research page's measurement.
+5. **Not yet modelled**: the latch, densification and nerves, each with its account in brief and what building it needs.
+6. **Up close: one perforator's switch.** The live vessel bench (the first model), for those who want the physics.
+7. **How it is made**: the patch, the scenes, the senses, the settings, the sources; the moderation note.
 
-A reading page (a paper card with a quiet index, like Hypotheses), with two instruments set into it (an ink panel beside a
-visualisation card, like the atlas) for the switch and the bench.
+## The patch, drawn
 
-### 1. Opening
+On ink stone, seen from above, 4 cm square; fibres of the muscle beneath as the faintest striations (where the theory has
+muscle); stress held as a barely warmer wash toward the neck side. Each theory's units as its anatomy has them:
 
-The title, and one paragraph with the question: which theories can produce what people report, at what cost, and what would tell
-them apart. Beneath it, one line of state in mono, for example `exam v3 · 2026-09-27 · last run 2026-10-… · a1b2c3d`.
+- **Perforators**: small ivory points every 4–5 mm, a ring for each parent, faint silver-blue lines from parent to children.
+  A held knot is a terracotta ember at its ring, with a soft warm halo over the patch it starves (tenderness). A release is
+  a jade star over its patch: the nerve's burst as blood returns.
+- **Trigger points**: a few beads along the zone where the nerve enters the muscle, each on a thin taut band along the
+  fibres. A knot is a terracotta bead with its band drawn taut; a release softens it; a twitch runs along the band in jade.
+- **Perception**: no units in the tissue; soft places at the body map's resolution. A knot is a broad terracotta glow with
+  no core, brighter as it is felt; attention is a thin jade ring.
+- **Motor switch**: faint ellipses along the fibres, one per motor unit's territory. A latched unit glows terracotta through
+  its territory, flickering faintly at its firing rate; overlapping territories add into a firmer bump. Letting go is at
+  once: the glow falls and a jade outline passes.
 
-### 2. The switch
+The hand is a bronze disc (pressing: its rim brightens); the roller a bronze bar; the sham a small stone ring.
 
-The opening image: one knot's bifurcation diagram, alive.
-
-- **Axes.** Sympathetic drive S along the bottom, labelled *calm ← → stressed*; held-ness (or the vessel's flow) up the side.
-- **Branches.** The held branch in terracotta and the released branch in jade, both solid; the unstable branch between them a
-  dashed ink line; the two folds marked with small open rings; the bistable band a faint wash.
-- **The knot.** A dot rides the diagram while the paced breath swings S about its baseline. A stress control moves the baseline.
-  When the dot passes the release fold it drops to the jade branch with a small spark: the pop. When stress carries it past the
-  upper fold it jumps to the held branch. Below the figure, S, the state and the time since release, in mono.
-- **Theories.** Glyph tabs switch between theories. A theory without a switch shows its single curve and a plain sentence, for
-  example: *No bistable region at any plausible parameters: a knot here would follow the breath.*
-- **Caption**, in Georgia italic: the model, its version, and how many parameters are sourced and how many guessed.
-- **Phones:** the figure above, the text below; tap to pause the breath.
-
-### 3. A knot on the bench
-
-The model, running live, laid out like the atlas: an ink panel of controls and readouts beside the card.
-
-- **The drawing.** One perforator in cross-section:
-  - the ring in the deep fascia
-  - the hyaluronan collar, a pearly band whose density shows its viscosity
-  - the artery, in silver-blue, its lumen narrowing as it constricts
-  - the veins beside it
-  - the nerve, a fine line that flashes jade when it fires
-  - a faint lymphatic
-
-  Drawn at true scale where the scale is known; labelled *representative* where it is not.
-- **Traces.** Strip charts of the last minute: S, the vessel's radius or flow, local temperature, pH or O₂, collar viscosity,
-  nerve firing. Thin ink lines; a terracotta wash behind them while the knot is held.
-- **Controls** (bronze, the hand):
-  - *breath*: paced by default, or hold to breathe in and let go to breathe out, as in the atlas; and *how the breath acts*,
-    a selector over its routes (drive, movement, local nerve, attention, chemistry: `sim/PLAN.md` §2), each a variant. How
-    the breath acts is kept open; the page never presents one route as the mechanism
-  - *stress*: a slider
-  - *press*: hold on the drawing
-  - *warmth*: a slider
-  - *reset*
-- **Parameters.** A drawer listing every parameter with its value, units, source and confidence, plus a variant selector where a
-  theory has variants.
-- **Theories.** Any implemented theory can go on the bench, with the same controls: that is the shared interface made visible.
-- **One honest line:** *This is the model, running. It illustrates a hypothesis; it measures nothing.*
-
-### 4. The exam
-
-The observations as tests (versioned: `sim/observations/spec.yaml`); O7 and O11 shown as noted, and the essay-only reports as set aside.
-
-- **Cards.** Each is a small card: the observation in one plain line, the test with its tolerances, an evidence badge (**M**
-  measured or **S** self-report, with sources), and notes (for example, *most theories expected to be silent*).
-- **Groups:** the breath and the hand (O1–O3), load (O4, O16, O5), the spark (O6), clusters and spread (O8, O13), how many (O15),
-  across the body (O9, O10), noted only (O7, O11).
-- **The version line.** The indigo 結 beside *exam v3 · 27 Sep 2026*, linked to the file, with *what changed* folded
-  beneath: each version's date and reasons, and for v1-v3 the commit that sealed them. Versioned rather than sealed since
-  27 Sep 2026 (the author's decision): the reports are one person's and keep sharpening. The seal is kept for the
-  experiment's predictions (§6).
-
-### 5. The matrix
-
-The result.
-
-- **Rows and columns.** Rows are the seven theories in the site's order (glyph and label), with hybrids below a rule. Columns are
-  the observations, with short labels.
-- **Marks,** in ink:
-
-  | Mark | Meaning |
-  |---|---|
-  | filled disc | passes; its area is the share of the theory's plausible parameter range that passes |
-  | open ring | passes somewhere, but the share rounds to nothing |
-  | faint cross | cannot pass at any plausible parameters |
-  | dash | silent: the theory makes no claim |
-  | blank | not yet run |
-
-- **Robustness.** A faint halo spans the share's range as the exam's tolerances move within their bounds.
-- **The last column** is the joint pass rate.
-- **Structural results** sit above the table as plain sentences, for example: *T5 has no switch: nothing holds a knot once the
-  stress is gone.*
-- **Tapping a cell** opens a drawer:
-  - a one-sentence finding
-  - a passing run and a failing run, as small traces
-  - *what would have to be true*: the passing parameter ranges drawn against the literature's
-  - the parameters that decide the result (Sobol indices)
-  - the sources
-- **Phones:** the table scrolls sideways with the glyph column pinned, like the comparison table on Hypotheses.
-
-### 6. What would settle it
-
-The payoff of the section: what a lab should measure first, and what it would see under each theory.
-
-- **Fingerprints.** For each theory and variant, the predicted recording at a release, as an instrument would record it
-  (flow at each depth, skin temperature, stiffness, EMG, sympathetic activity, tissue strain), drawn side by side.
-- **The decision tree.** The cheapest measurement that splits the most theories first, then the next; each branch with the
-  predicted outcomes and the number of release events needed. The predictions are sealed (OSF, dated) before any data, and
-  the tree carries the seal.
-- **For labs.** A one-page summary: the protocol, the instruments, the predicted traces, the controls. It describes a
-  measurement; it gives no technique to anyone practising.
-
-Small multiples, one per discriminating prediction, with the theories that differ drawn side by side:
-
-- skin temperature over the spot at a release (T1 and T2 predict a local rise; T6 predicts none locally)
-- the flicker before a slow release (critical slowing down: switch theories, not smooth ones)
-- where the sparks are felt (the released patch, or anywhere)
-- where knots cluster (at watershed zones, or anywhere; after the network stage)
-
-Each says what it would take to measure: the instrument, and the resolution in time and space. This describes; it does not
-instruct.
-
-### 6b. The field
-
-A patch of skin with a few hundred perforators, each with its own wall drawn from the plausible ranges, under one breath:
-easy knots letting go first and hard ones over many breaths or not at all; broad release (drive, everywhere at once) against
-focused release (movement, where the breath moves the tissue, or a touch); neighbours changing as one lets go. The same
-controls as the bench. It is the bridge from one knot to the atlas.
-
-### 7. How it works
-
-- **Method.** The method in plain words: sampling, scoring, evidence, robustness.
-- **Equations.** Each theory's equations, folded per theory and generated from the models.
-- **Parameters.** The parameter tables with their sources.
-- **The run log.** Each run's date, what changed and why (*T1: collar viscosity range narrowed, from …*), the exam version,
-  the cells of the matrix that moved, and the commit. Milestones can also enter the site's timeline (`src/data/timeline.ts`).
-
-## Visual specifics
-
-- **Type.** Headings in sans (15px, 700); prose in Georgia (13.5px on paper); data, axes and labels in SF Mono (9–11px); IDs such
-  as O1 and T1 in mono.
-- **Lines.** Axes 1px in ink; no gridlines, except faint reference lines at tolerances; direct labels instead of legends.
-- **Tokens.** From `src/styles/tokens.css`: `--terracotta` held, `--sage` release on paper, `--jade-light` on ink, `--seal`
-  frozen, `--stone` structure, `--muted` secondary. The ink cards use the night palette, as the atlas does (terracotta `#e27b61`,
-  spark `#a8e6cd`). A new colour goes into `tokens.css` and `engine/theme.ts` together.
-- **Numbers.** Always with units (s, mm, °C, kPa, Pa·s); two significant figures unless the source gives more; ranges written
-  0.8–2.4.
-- **Accessibility.**
-  - Every figure has a text summary.
-  - The matrix is a real table, with text in every cell (visually hidden where a mark shows), and marks differ by shape as well
-    as fill.
-  - Cells and controls are keyboard-reachable and labelled.
-  - Reduced motion shows the diagram still, with the dot at the baseline.
+**Beneath** (SVG, one per theory): skin, fat, the superficial and deep fascia, muscle, as in the introduction's plate.
+Perforators: the artery rising through its ring, its lumen from the run. Trigger points: the band and its contraction knot,
+its capillaries squeezed. Motor switch: the muscle with one unit's scattered fibres lit, and to one side a small cross-section
+of the spinal cord with the motor neuron, its inputs (descending drive, inhibition, the loop from the muscle's sensors) and
+its latch. Perception: the tissue quiet, and a small body map with its gain.
 
 ## Data contracts: sim → site
 
-All written by `sim/knots_sim/export`, never by hand. Each file carries the run id it came from.
+All written by `uv run python -m knots_sim.guide`, never by hand; each file carries its run (inputs hash, commit, date).
 
 | File | Contents |
 |---|---|
-| `src/data/sim/manifest.json` | run id, date, commit, exam version, package versions |
-| `src/data/sim/exam.json` | the spec as written: observations (id, title, text, words, evidence, sources, notes), readings, open questions, set-aside reports; `version`, `updated`, `changes` (per version: date and reasons) and `history` (the seals of v1-v3) |
-| `src/data/sim/theories.json` | per theory and variant: id (as in `hypotheses.ts`), variant, equations (MathML), parameters with provenance |
-| `src/data/sim/switch/<theory>.json` | bifurcation branches (S, state, stability), folds, loop width |
-| `src/data/sim/matrix.json` | written by `knots_sim.exam` (v1): the run (inputs hash, commit), the exam's version and date, the trials; per part its id, observation, statement and short phrase (and why it is not run, if not; `rough` when it rests on the author's rough impressions, exam v4: scored and shown, left out of the joint pass; O17's parts are read from each theory's `FEEL`, its own account of what a knot is); per theory its variants, each with a cell per part (the share of sampled settings that pass, or `silent`, or `not run`), the per-setting passes, the joint pass and the count (units in a body, share held, median and 10–90% knots, median where any hold); `hand`, when a pressed knot lets go (under the hand, as it lifts, later, holds: open question Q1); `tested`, in how many settings each trial with a precondition ran; `back` (O8.2), after the worked knot lets go, where one comes back within 10 minutes: shares of the settings its trial ran in by route (`same` unit, `beneath` it, `beside` it, `none`) and the median time, from each adapter's `ClusterOut` (`back`, `back_how`, `back_t`, `tested_back`); the theory's notes (why a cell is what it is) |
-| `src/data/sim/apart.json` | written by `knots_sim.apart`: the hand or the attention it draws (open question Q4). The exam's patch trial, per theory and variant, worked four ways for a minute at the spot after 30 broad breaths (`Patch` kinds `press`, `attend`, `hand`, `rest`): per way, the settings with a knot there, the knots held there, the share let go by 30 s after the minute (`spot`) and elsewhere, and the median time |
-| `src/data/sim/instrument.json` | written by `knots_sim.instrument`: what an instrument would record. The exam's own patch trials (press, broad, focused), recorded as they run (no trial of its own), read as instruments would read them: T1 skin perfusion per patch (laser speckle; a patch fed `own_share` by its own vessel, the rest by its neighbours), T3 the nodule's contracture and capillary flow, T6 what is felt. Per theory, variant and protocol (`reads`): the share and spread across settings of the knot's patch against its neighbours before and after its release (`dark_before_*`, `dark_after_*`), a pressed place's flush at the lift (`lift_sham`), release times; `traces`, the press as recorded at a representative site (the knot, a pressed place with no knot, a far place); `design`, how many knots or releases would show the vessel view's two signs by region width, own share and laser speckle's variability (`params/instrument.yaml`) |
-| `src/data/sim/aimed.json` | written by `knots_sim.aimed`: a breath aimed at a place (route B6, the author's hypothesis). The run (inputs: the exam's and the study's own); per theory with a drive to aim (T1, T3) and per footprint width (in grid spacings; `0` not aimed, `all` the whole patch): the share of settings in which the aimed knot lets go, lets go with no other knot besides, goes first; the other knots it lets go besides (near, far); the median time; for T1 the change in flow of open vessels near and far, 20 s into the aimed breaths |
-| `src/data/sim/runs/<theory>-<trial>.json` | representative trajectories, downsampled: passing and failing |
-| `src/data/sim/requirements/<theory>.json` | passing parameter ranges against literature ranges; Sobol indices |
-| `src/data/sim/log.json` | the run log |
-| `src/sim/models/<theory>.ts` | the generated model for the bench: right-hand side, Jacobian, defaults |
+| `src/data/sim/guide.json` | the run; the patch (size, stress field, spot, sham); the scenes (id, name, what happens, duration, frame step, compression); per theory: id, character, label, variants, its units' layout (positions, sizes, kinds, links), and its character (traits by group: id, text, mark, share, depends-on) |
+| `public/sim/guide/<scene>.json` | per theory, the typical setting's run of that scene: frame times; per unit per frame the held state, the felt bump and tenderness (quantised to bytes, base64); events (forms, releases, sparks, twitches: unit, time, size); the knot at the spot's internal state per frame (for the plate); the instruments at the spot and the sham per frame; the inputs per frame (stress, breath, hand, attention) |
+| `sim/findings/guide.md` | the characters as a note, generated with the data |
 
-## How it fits together
+## Visual specifics
 
-```
-sim/observations/spec.yaml ─┐
-sim/params/*.yaml ──────────┤
-sim/knots_sim/models ───────┼─► trials · sweeps · continuation · scoring ─► sim/results/<run>/ ─► export ─► src/data/sim/*.json ─┐
-   (SymPy, written once)    │                                                                                                   ├─► Astro pages
-                            └─► codegen ─► src/sim/models/*.ts (the bench) + MathML equations ─────────────────────────────────┘
-```
-
-- The bench integrates the generated model with a small Rosenbrock (linearly implicit) stepper, using the generated Jacobian, at
-  the frame rate. It runs on the main thread unless profiling says otherwise.
-- Golden-trajectory tests (vitest) check that the TypeScript model reproduces the Python reference runs within tolerance.
-- The Pages build reads the JSON and runs nothing.
-
-## Build order
-
-1. The unlisted page, and the switch from T1 (Stage 1).
-2. The bench (Stage 1).
-3. The exam: as soon as it is drafted, marked *draft* until it is sealed.
-4. The matrix and *What would settle it* (Stage 2).
-5. The top-bar link and the Hypotheses cross-links, when D2 says so.
-6. The atlas driven by the model (Stage 4).
-
-Screenshot every visual change with `scripts/shot.ts` at desktop and phone widths.
+- **Type.** Headings in sans (15px, 700); prose in Georgia (13.5px on paper); data, axes, labels and captions of the
+  instrument in SF Mono (9–11px); the narrated caption in Georgia italic.
+- **Lines.** 1px ink axes; direct labels instead of legends; no gridlines.
+- **Tokens.** From `src/styles/tokens.css`: `--terracotta` held, `--sage`/`--jade-light` release, `--seal`, `--stone`,
+  `--muted`. On ink the night palette the atlas uses (terracotta `#e27b61`, spark `#a8e6cd`, vessels `#b3c4d2`). A new
+  colour goes into `tokens.css` and `engine/theme.ts` together.
+- **Numbers** with units; two significant figures; ranges written 0.8–2.4.
+- **Accessibility.** Each patch has a text summary that follows the caption; the character is a real list with its marks
+  also in words; controls are keyboard-reachable and labelled; reduced motion shows a still frame.

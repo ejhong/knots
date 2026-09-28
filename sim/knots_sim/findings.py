@@ -330,7 +330,7 @@ way (fitted to the 73% of lost force that pulmonary arterial muscle regained at 
     return OUT3
 
 
-EXAM_OUT = OUT.parent / "004-the-exam.md"
+EXAM_OUT = OUT.parents[1] / "archive" / "2026-09-28-findings-004-the-exam.md"  # the exam is retired (PLAN.md §2)
 FAIRNESS = """- *One rule for the stress unit.* 1 is a surge that forms knots, and the holding stress (0.4–0.7) keeps them. Each theory
   sets its one scale so that the typical place that can hold a knot, where stress is held most, sits in the middle of its
   window: the surge makes it a knot, the holding stress keeps it one and cannot make it one alone.

@@ -1,8 +1,9 @@
-# sim — the theories against the observations
+# sim — the field guide's engine
 
-The research engine for the simulation phase: each theory of knots written as a dynamical model, run through the same trials, and
-scored against the same observations. The plan is [PLAN.md](PLAN.md); how the results reach the site is
-[../docs/SIMULATION.md](../docs/SIMULATION.md). The rules every change follows are in the root `CLAUDE.md` (Simulation).
+Each theory of knots written as a model from its own physiology, with every number sourced or marked guessed, and run through
+the same scenes, so that its knots show how they would feel, respond and move. The plan is [PLAN.md](PLAN.md); how the results
+reach the site is [../docs/SIMULATION.md](../docs/SIMULATION.md). The rules every change follows are in the root `CLAUDE.md`
+(Simulation). The exam phase (scoring theories against reports) is retired: [archive/](archive/).
 
 ## Run
 
