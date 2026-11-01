@@ -95,10 +95,10 @@ observations:
   - id: O1
     group: breath
     title: Breath release
-    text: "Knots answer to the breath: they let go on a slow out-breath. A single relaxing breath, the long exhale that comes on its own in a hot shower, can soften many small knots at once; deeper, persistent knots let go only to focused attention and breath. Release can be broad or focused. Easy knots go within a breath or two; hard ones take many breaths. The breath is a learned skill, proprioceptive and meditative."
+    text: "Knots answer to the breath: not simply the out-breath, but a subtle, complex pattern of tiny in- and out-breaths woven together with fine proprioception. A single relaxing breath, the kind that comes on its own in a hot shower, can soften many small knots at once; deeper, persistent knots let go only to focused attention and breath. Release can be broad or focused. Easy knots go within a breath or two; hard ones take many breaths. The breath is a learned skill, proprioceptive and meditative."
     evidence: S
     words:
-      - quote: "Knots seem to answer to the breath. They let go on a slow out-breath, and a single relaxing breath — the long exhale that comes on its own in a hot shower — can soften many small knots at once."
+      - quote: "A single relaxing breath — the kind that comes on its own in a hot shower — can soften many small knots at once."
         from: "the introduction, Observations"
       - quote: "deeper, persistent knots let go only to focused attention and breath."
         from: "the introduction, Observations"
@@ -110,10 +110,10 @@ observations:
   - id: O2
     group: breath
     title: Pressure and attention
-    text: "Pressure and focused attention, a foam roller or a patient hand, release knots one place at a time. Pressed, with a slow out-breath, a knot often lets go within seconds."
+    text: "Pressure and focused attention, a foam roller or a patient hand, release knots one place at a time. Pressed, breathing slowly, a knot often lets go within seconds."
     evidence: S
     words:
-      - quote: "Press into a knot, breathe out slowly, and it often lets go within seconds."
+      - quote: "Press into a knot, breathe slowly, and it often lets go within seconds."
         from: "the introduction, Observations"
       - quote: "Pressure and focused attention — a foam roller, a patient hand — release knots one place at a time."
         from: "the introduction, Observations"
@@ -266,7 +266,7 @@ readings:
   - {words: "a breath", reads: "one slow breath: 4 s in, 6 s out; slow breathing starts halfway up an in-breath (from v4), with no jump from the breathing before it"}
   - {words: "a single relaxing breath", reads: "one slow breath with a long out-breath, with no pressure and no focus on a place"}
   - {words: "within seconds", reads: "within 10 s, during the out-breath"}
-  - {words: "press into a knot, breathe out slowly", reads: "a hand that holds through the out-breath, or one that eases off halfway through it: either counts (v2)"}
+  - {words: "press into a knot, breathe slowly", reads: "a hand that holds through the out-breath, or one that eases off halfway through it: either counts (v2)"}
   - {words: "a new knot appears in what seems like the same place", reads: "within 10 minutes of a knot letting go, a knot is held at its place: the same unit held again; a unit beneath it (a vessel's children, which a released parent can leave shut); or one of its immediate neighbours that was not held before (siblings on one feed, the adjacent units of a taut band, the eight places around it on a body map) (v3)"}
   - {words: "sometimes", reads: "where it happens in the trial: not required every time (v3)"}
   - {words: "the knots can def be felt; doesn't seem to pinch with the skin", reads: "the theory's knot is a physical change the hand could feel beneath the skin, a contraction or stiffening in muscle or fascia; not a change in what is felt alone, nor in blood flow alone (v4)"}

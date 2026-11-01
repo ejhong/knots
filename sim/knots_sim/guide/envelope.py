@@ -5,7 +5,7 @@ seconds, aimed at it alone, with nothing else changing; the least ΔS that lets 
 in every setting. Perception has no local drive: its step lowers arousal, everywhere.
 
 Any breath, however complex, then either reaches that envelope at the knot or does not: the models need its effect, not
-its pattern. A slow out-breath, subtle breaths and minutes of slow breathing are marked against it from the shared
+its pattern. One slow breath, subtle breaths and minutes of slow breathing are marked against it from the shared
 interface's numbers (params/interface.yaml).
 """
 

@@ -32,7 +32,7 @@ A living list. Checked items are live.
 - [x] Deep channels layer: septa, raphes, neurovascular sheaths (22 structures)
 - [x] Release: double-click or hold presses (small knots go at once, larger take more); over ~1 s the knots around glide in to fill the space, in waves, each into a less crowded spot nearer the gap (the area evens out; released knots do not return); click selects; shift-click places the window; reset button
 - [x] Introduction: a magnified plate of one perforator letting go (chapter 02), linked to its place; the fourteen channels over the deep planes (chapter 07)
-- [ ] Release in the introduction; breath gating (release on the out-breath)
+- [ ] Release in the introduction, with the breath (a subtle, complex pattern, not simply the out-breath)
 - [ ] Stress: a control under which knots re-form (and breath under which they ease) — the dynamic return, shown deliberately rather than on a timer
 
 ## Hypotheses in the atlas
@@ -90,7 +90,7 @@ kept in `sim/archive/`; what it built (the models, the parameters and their sour
   ease when drive falls; how hard a few latched motor units squeeze a vessel beside them
 
 ## Open questions (for the author)
-- Pressed, with a slow out-breath: does a knot let go while the hand still presses, or as it eases off? The theories split on it.
+- Pressed, with slow breathing: does a knot let go while the hand still presses, or as it eases off? The theories split on it.
 - How should manipulation (pressure, breath) return to the atlas, if at all?
 - The simulation: a pilot measurement; a co-author; reports from other practitioners (`sim/PLAN.md` §10–11).
 - Papers to get: Hai & Murphy 1988 (the latch's rate constants, for T2).

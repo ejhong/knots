@@ -25,7 +25,7 @@ def _cell(ok: np.ndarray, valid: np.ndarray, note: str = "") -> dict:
 
 # (id, the report in the site's words, what it is read from)
 REPORTS = (
-    ("breath", "They let go on a slow out-breath", "thirty slow breaths: some held knot lets go"),
+    ("breath", "They let go with the breath", "thirty slow breaths: some held knot lets go"),
     ("attention", "Deeper ones let go to focused attention", "attention without touch frees the knot at the spot, or sooner"),
     ("hand", "A patient hand releases them, one at a time", "a resting hand frees the knot at the spot, under it or as it lifts, where the same breaths alone would not, or sooner"),
     ("roller", "A foam roller releases them", "rolled over: the knot at the spot lets go while rolled or within a minute"),

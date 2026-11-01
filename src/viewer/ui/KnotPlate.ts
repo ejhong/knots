@@ -184,8 +184,8 @@ export function createKnotPlate(tone: Tone): KnotPlate {
   const nerveLen = () => nerve.getTotalLength?.() ?? 0;
 
   const CAPTIONS: [number, string, string][] = [
-    [0, 'A knot: the artery held shut by its own wall, its skin short of blood.', 'breathing in · held'],
-    [3.2, 'On the out-breath its tone eases, and the artery snaps open…', 'breathing out · letting go'],
+    [0, 'A knot: the artery held shut by its own wall, its skin short of blood.', 'held'],
+    [3.2, 'With the breath its tone eases, and the artery snaps open…', 'the breath · letting go'],
     [4.8, '…blood returns, and the waking nerve lights its patch of skin.', 'open'],
     [8.6, '', ''],
   ];
@@ -198,7 +198,7 @@ export function createKnotPlate(tone: Tone): KnotPlate {
     const dt = Math.min(0.05, (now - last) / 1000);
     last = now;
     const t = ((now - t0) / 1000) % LOOP;
-    // Release, eased over the out-breath; the plate dips and begins again at the end.
+    // Release, eased over a breath; the plate dips and begins again at the end.
     const open = t < 9.4 ? smooth(3.2, 4.8, t) : 0;
     const dip = t < 8.6 ? 1 : t < 9.4 ? mix(1, 0.12, smooth(8.6, 9.4, t)) : mix(0.12, 1, smooth(9.4, 10.4, t));
     svg.style.opacity = String(dip);

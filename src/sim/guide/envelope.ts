@@ -1,7 +1,7 @@
 /**
  * What a breath would have to do (sim/knots_sim/guide/envelope.py): for each theory, the least calming of the knot's
  * own drive, held for a given time, that frees the typical knot (and the easiest quarter), against what a slow
- * out-breath, a subtle breath and minutes of slow breathing do. Drawn at build time on paper; the theories are told apart
+ * breath, a subtle breath and minutes of slow breathing do. Drawn at build time on paper; the theories are told apart
  * by line, never by colour.
  */
 import type { TheoryIndex } from './data';
@@ -45,7 +45,7 @@ export function envelopeChart(theories: TheoryIndex[]): string {
   const mark = (x0: number, x1: number, s: number, label: string) =>
     `<line x1="${x(x0)}" x2="${x(x1)}" y1="${y(s)}" y2="${y(s)}" stroke="${FAINT}" stroke-width="5" stroke-linecap="round" opacity="0.7"/>` +
     `<text x="${x(x1) + 7}" y="${y(s) + 3}" ${MONO} font-size="8.5" fill="${MUTED}">${label}</text>`;
-  out += mark(2, 4, br.out_breath, 'a slow out-breath');
+  out += mark(2, 4, br.out_breath, 'one slow breath');
   out += mark(2, 5, br.subtle, 'a subtle breath');
   out += mark(24, 64, br.minutes, 'minutes of slow breathing');
   // the theories: the typical knot (median, thick), and the easiest quarter (thin); a legend beneath

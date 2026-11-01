@@ -644,7 +644,7 @@ def _needs(envl, words, K, nums) -> dict:
         lead = (f"To free the typical knot it must fall by about {pct(first['median'])} of the holding stress for "
                 f"{first['d']:.0f} s" + (f", or {pct(last['median'])} for a minute" if last["median"] is not None and last["d"] != first["d"] else "")
                 + (f"; nothing shorter than {first['d']:.0f} s frees it" if first["d"] > 1 else "") + ".")
-    say = (f"Whatever its pattern, a breath reaches this knot through {what}. {lead} A slow out-breath lowers it by about "
+    say = (f"Whatever its pattern, a breath reaches this knot through {what}. {lead} One slow breath lowers it by about "
            f"{pct(br['out_breath'])} for a few seconds, a subtle breath by {pct(br['subtle'])}, minutes of slow breathing by about "
            f"{pct(br['minutes'])}, sustained. So one breath frees it {how_often(single, held)}. {words.get('needs', '')}").strip()
     return trait("needs", "release", "What a breath would have to do", say, ~single, held, nums,

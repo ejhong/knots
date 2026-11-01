@@ -9,7 +9,7 @@ export interface TourScene {
   lift?: number;
   section?: 'sagittal' | 'coronal' | 'neck' | null;
   /**
-   * Special behaviours: `breath` lets many small knots go on a slow exhale,
+   * Special behaviours: `breath` lets many small knots go with a relaxing breath,
    * then presses knots one at a time; `release` only presses.
    */
   demo?: 'breath' | 'release' | 'ladder' | 'life' | 'theories';
@@ -52,10 +52,10 @@ export const CHAPTERS: Chapter[] = [
     glyph: '息',
     title: 'Observations',
     seconds: 32,
-    html: `<p>Press into a knot, breathe out slowly, and it often lets go within seconds. That speed is the first clue. Tissue does not remodel in seconds — collagen, scar and adhesion change over days and weeks — so whatever lets go on an out-breath must be a <strong>state</strong>: something the body is doing, and can stop doing.</p>
+    html: `<p>Press into a knot, breathe slowly, and it often lets go within seconds. That speed is the first clue. Tissue does not remodel in seconds — collagen, scar and adhesion change over days and weeks — so whatever lets go within a breath must be a <strong>state</strong>: something the body is doing, and can stop doing.</p>
 <p>Reports from contemplative practice and bodywork include:</p>
 <ul class="obs">
-<li><b>Breath.</b> Knots seem to answer to the breath. They let go on a slow out-breath, and a single relaxing breath — the long exhale that comes on its own in a hot shower — can soften many small knots at once. Some knots seem to come and go with breath and mood, and some may even be held from moment to moment; deeper, persistent knots let go only to focused attention and breath.</li>
+<li><b>Breath.</b> Knots seem to answer to the breath — not simply to the out-breath, but to a subtle, complex pattern: tiny in- and out-breaths, some barely perceptible, woven together with fine proprioception, the felt sense of the body from inside, much as the breathing used in childbirth, singing or sport is more than in and out. A single relaxing breath — the kind that comes on its own in a hot shower — can soften many small knots at once. Some knots seem to come and go with breath and mood, and some may even be held from moment to moment; deeper, persistent knots let go only to focused attention and breath.</li>
 <li><b>Attention.</b> Pressure and focused attention — a foam roller, a patient hand — release knots one place at a time.</li>
 <li><b>Water.</b> Drinking water seems to ease release, and to speed it.</li>
 <li><b>Stress.</b> Knots seem to worsen under stress, and gather where it is held: neck and shoulders, jaw, belly, low back.</li>
@@ -78,7 +78,7 @@ export const CHAPTERS: Chapter[] = [
     title: 'What a knot might be',
     seconds: 26,
     html: `<p>Beneath the skin lies the superficial fascia, and beneath that a gliding plane over the deep fascia that wraps the muscles. The layers are joined in two ways: by fine fibrous strands, and wherever something passes through — a small artery with its veins, a cutaneous nerve and a lymphatic, rising together through a ring in the fascia. Surgeons call these <em>perforators</em>. They map them with a Doppler probe before raising a flap of skin, because the flap will not lift until the perforators holding it are dealt with.</p>
-<p>Suppose a knot is a perforator held shut. Then each part of the bundle explains something. <strong>The artery is the hold:</strong> a small artery with tone in its wall is a switch, stable open or shut; stress carries it shut, and it stays shut until its tone falls well below the level that closed it. <strong>The breath reaches it:</strong> a deep in-breath tightens the small arteries of the skin within seconds and an out-breath eases them, and the breath’s movement works on the wall itself. <strong>The nerve is the spark:</strong> a shut vessel starves its own patch of skin; when blood returns, the nerve wakes and the patch lights up — a foot waking, in miniature.</p>
+<p>Suppose a knot is a perforator held shut. Then each part of the bundle explains something. <strong>The artery is the hold:</strong> a small artery with tone in its wall is a switch, stable open or shut; stress carries it shut, and it stays shut until its tone falls well below the level that closed it. <strong>The breath reaches it:</strong> a deep in-breath tightens the small arteries of the skin within seconds and they ease as it passes, and the breath’s movement, down to its smallest shifts, works on the wall itself. <strong>The nerve is the spark:</strong> a shut vessel starves its own patch of skin; when blood returns, the nerve wakes and the patch lights up — a foot waking, in miniature.</p>
 <p>Here the layers are drawn apart: major perforators rising through the deep fascia, smaller ones through the superficial fascia, and a knot glowing wherever one is held. The inset magnifies one of them letting go.</p>`,
     refs: ['taylor1987', 'burton1951', 'bolton1936', 'ljung1975'],
     scene: { pose: { p: [0.46, 0.84, -0.86], t: [0.1, 0.78, -0.04] }, age: 46, layers: true, lift: 1, window: true, plate: true },

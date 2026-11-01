@@ -289,7 +289,7 @@ export function mountTour(viz: HTMLElement, panel: HTMLElement) {
             untilPress -= dt;
             if (untilPress <= 0) {
               untilPress = 3.2;
-              if (untilWave > 5 && scene.sim.breath.phase !== 'inhale') releaseNear(target(), 0.14, () => true);
+              if (untilWave > 5) releaseNear(target(), 0.14, () => true);
             }
           }) as () => void,
         );
@@ -302,7 +302,6 @@ export function mountTour(viz: HTMLElement, panel: HTMLElement) {
         const major = (i: number) => L.level[i] === 2;
         const holdsMedium = (i: number) => major(i) && scene.sim.holding(i).some((c) => L.level[c] === 1);
         every(3.2, () => {
-          if (scene.sim.breath.phase === 'inhale') return;
           releaseNear(target(), 0.12, holdsMedium) || releaseNear(target(), 0.12, major) || releaseNear(target(), 0.12, () => true);
         });
         break;
