@@ -2,7 +2,7 @@
 import Doc from '../layouts/Doc.astro';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const CORRESPONDENCES = [
-  ['Ashi points, acupoints', 'China', 'Perforators, held', 'Heine: ~80% of points at fascial perforations; Langevin: 80% on connective-tissue planes; Maurer: bundles at only a few points'],
+  ['Ashi points, acupoints', 'China', 'Perforators, held', 'Reported at 80–100% of points, one small study with controls; vessel–nerve bundles at 2 of 100 in another dissection. Against measured clusters, points only a little nearer than random (see Research)'],
   ['Sinew channels and their knots (結)', 'China', 'Lines where the fascia is anchored to bone', 'Proposed; untested'],
   ['Cou li — the texture between skin and flesh', 'China', 'The superficial fascial plane', 'Proposed'],
   ['Propagated sensation along the channel', 'China', 'Conducted vasodilation along a perforator tree', 'Speeds overlap (cm/s); untested together'],
@@ -67,6 +67,14 @@ const index = [
         For decades, Chinese researchers have also documented <em>propagated sensation along the channel</em>: stimulating a point produces
         warmth or tingling that travels along the meridian at one to ten centimetres a second and is halted by pressure or cold — much the
         profile of a dilation travelling along a tree of vessels.
+      </p>
+      <p>
+        Are the points the perforators? About 80% of them have been reported to lie where a vessel–nerve bundle pierces the fascia,
+        and the channels to run along the planes between muscles, where many perforators travel. Point names may themselves record
+        what early anatomists saw in dissection (<a href={`${base}/library/#shaw2016`}>Shaw, 2016</a>). But the perforators' clusters vary by centimetres between people,
+        practitioners' marks for one point spread as widely, and only one small study has set the points against control points:
+        none has asked how often a point placed at random would land as near a vessel. Set against measured perforator clusters, the points sit only a little nearer than chance:{' '}
+        <a href={`${base}/research/#points`}>the evidence, a test against chance, and the study that would decide it</a>.
       </p>
     </div>
     <p class="in-atlas"><a class="btn" href={`${base}/atlas/?map=meridians`}>channels and points in the atlas →</a> <a class="btn" href={`${base}/atlas/?map=sinew`}>sinew channels →</a></p>
@@ -174,7 +182,7 @@ const index = [
       </table>
     </div>
     <p class="fine prose">
-      Each could be checked blind. Are the classical points perforators? Are the knots of the sinew channels the lines where the fascia is
+      Each could be checked blind. Are the classical points perforators (<a href={`${base}/research/#points`}>a first test</a>)? Are the knots of the sinew channels the lines where the fascia is
       anchored? Are the channels the trees and planes between them?
     </p>
   </section>

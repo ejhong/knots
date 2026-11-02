@@ -85,6 +85,8 @@ kept in `sim/archive/`; what it built (the models, the parameters and their sour
 - [ ] G4: the atlas driven by the models, theory by theory
 - [ ] G5: the fascia as a second system (its own phase and safety review)
 - [x] G6, drafted (28 Sep): a preprint (`/research/preprint/`), a one-page pilot protocol (`/research/pilot/`), both with PDFs, and the groups who could help, on the Research page
+- [x] Perforators and acupoints (2 Nov): are perforators in the same place in everyone, and do the WHO points sit on them? Research `#points`, from `sim/exploratory/2026-11-02-acupoints-perforators.py` (→ `src/data/sim/acupoints.json`); Traditions, the introduction's chapter 07 and the timeline corrected (Heine's 80% is reported, not established)
+- [ ] Perforators and acupoints, next: the same people mapped by thermal camera and Doppler against blinded point marks; or DIEP planning CTAs against the Kidney, Stomach and Spleen lines
 - [ ] G6, next: the author's review; pre-registration; approaching a lab (the author's call)
 - [ ] Measure or source what decides the most: the wall's length–tension width and thickness; how fast the skin's small arteries
   ease when drive falls; how hard a few latched motor units squeeze a vessel beside them

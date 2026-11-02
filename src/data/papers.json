@@ -30,6 +30,20 @@
   "note": "About 5 superior and 8 inferior gluteal perforators of at least 0.5 mm on each side, along two lines across the buttock."
  },
  {
+  "id": "aird2002",
+  "authors": "Aird M, Cobbin DM, Rogers C",
+  "year": 2002,
+  "title": "A study of the relative precision of acupoint location methods",
+  "venue": "J Altern Complement Med 8:635-42",
+  "url": "https://doi.org/10.1089/107555302320825156",
+  "pmid": "12470445",
+  "kind": "paper",
+  "tags": [
+   "acupuncture"
+  ],
+  "note": "How precisely a point is found: for 95% to land on it, it would need to cover almost 13 cm² by the directional method and under 3 cm² by ruler."
+ },
+ {
   "id": "alexandrou2021",
   "authors": "Alexandrou ME, Gkaliagkousi Ε, Loutradis C et al.",
   "year": 2021,
@@ -149,6 +163,22 @@
   "note": "\"Back mice\": firm, rubbery, mobile nodules in the low back that may be fat herniated through the fascial layers; tender ones mimic myofascial pain."
  },
  {
+  "id": "birch2003",
+  "authors": "Birch S",
+  "year": 2003,
+  "title": "Trigger point--acupuncture point correlations revisited",
+  "venue": "J Altern Complement Med 9:91-103",
+  "url": "https://doi.org/10.1089/107555303321222973",
+  "pmid": "12676038",
+  "kind": "paper",
+  "tags": [
+   "acupuncture",
+   "trigger-points",
+   "critique"
+  ],
+  "note": "Melzack's 71% correspondence of trigger points and acupoints is conceptually not possible; more likely about 18–19%, and trigger points correspond to the ashi points."
+ },
+ {
   "id": "boelens2013",
   "authors": "Boelens OB, Scheltinga MR, Houterman S et al.",
   "year": 2013,
@@ -191,6 +221,35 @@
    "breath"
   ],
   "note": "The inspiratory gasp reflex: a deep breath constricts the skin’s vessels within seconds."
+ },
+ {
+  "id": "bossy1975",
+  "authors": "Bossy J, Maurel JC, Godlewski G",
+  "year": 1975,
+  "title": "[Macroscopic substratum of acupuncture points]",
+  "venue": "Bull Assoc Anat (Nancy) 59:357-62",
+  "pmid": "1203548",
+  "kind": "paper",
+  "tags": [
+   "acupuncture",
+   "anatomy"
+  ],
+  "note": "Dissection beneath 201 acupuncture points: a nerve at 29%, a vessel (mostly a vein) at 34%, both at 37% — no one structure common to all."
+ },
+ {
+  "id": "bulla2015",
+  "authors": "Bulla A, De Luca L, Campus GV et al.",
+  "year": 2015,
+  "title": "The localization of the distal perforators of posterior tibial artery: a cadaveric study for the correct planning of medial adipofascial flaps",
+  "venue": "Surg Radiol Anat 37:19-25",
+  "url": "https://doi.org/10.1007/s00276-014-1275-9",
+  "pmid": "24595698",
+  "kind": "paper",
+  "tags": [
+   "perforators",
+   "anatomy"
+  ],
+  "note": "The lowest posterior tibial perforator, in 30 legs: 3.5–8.2 cm above the medial malleolus (median 6.75 cm), always in the septum between the long flexors."
  },
  {
   "id": "burton1951",
@@ -736,6 +795,21 @@
   "note": "Filmed in living people: the sliding tissue under the skin is a web of tiny fluid-filled cells, walled in collagen and filled with proteoglycans, that lets the skin, fat, fascia and vessels glide past each other."
  },
  {
+  "id": "guo2024",
+  "authors": "Guo C, Zhang Y, Ding Z et al.",
+  "year": 2024,
+  "title": "Accuracy analysis of traditional acupoint location and the coincidence of cutaneous arterial perforators and acupoints",
+  "venue": "Clin Anat 37:701-709",
+  "url": "https://doi.org/10.1002/ca.24107",
+  "pmid": "37596915",
+  "kind": "paper",
+  "tags": [
+   "acupuncture",
+   "perforators"
+  ],
+  "note": "Acupoints on the lower limb marked by physicians, perforators by Doppler: 'a certain correspondence', and physicians' marks up to 16.6 mm apart."
+ },
+ {
   "id": "hack1995",
   "authors": "Hack GD, Koritzer RT, Robinson WL et al.",
   "year": 1995,
@@ -763,6 +837,21 @@
    "models"
   ],
   "note": "The latch-bridge model: dephosphorylated cross-bridges that hold smooth-muscle tension cheaply."
+ },
+ {
+  "id": "hamdi2016",
+  "authors": "Hamdi M, Craggs B, Brussaard C et al.",
+  "year": 2016,
+  "title": "Lumbar Artery Perforator Flap: An Anatomical Study Using Multidetector Computed Tomographic Scan and Surgical Pearls for Breast Reconstruction",
+  "venue": "Plast Reconstr Surg 138:343-352",
+  "url": "https://doi.org/10.1097/PRS.0000000000002347",
+  "pmid": "27465158",
+  "kind": "paper",
+  "tags": [
+   "perforators",
+   "imaging"
+  ],
+  "note": "The dominant lumbar artery perforator in 20 patients: mostly the third lumbar (60%), reaching the fat 69.5 mm from the midline."
  },
  {
   "id": "heckman2008",
@@ -880,6 +969,36 @@
    "nerve"
   ],
   "note": "A proposed loop: metabolites of static contraction drive the gamma system and the muscle spindles, raising stiffness and metabolites again, so muscle tension perpetuates itself and spreads to other muscles."
+ },
+ {
+  "id": "kanoi2017",
+  "authors": "Kanoi AV, Panchal KB, Sen S et al.",
+  "year": 2017,
+  "title": "Computed tomography angiographic study of internal mammary perforators and their use as recipient vessels for free tissue transfer in breast reconstruction",
+  "venue": "Indian J Plast Surg 50:50-55",
+  "url": "https://doi.org/10.4103/ijps.IJPS_168_16",
+  "pmid": "28615810",
+  "kind": "paper",
+  "tags": [
+   "perforators",
+   "imaging"
+  ],
+  "note": "Internal mammary perforators on CT angiography: present on both sides in every case, about 1.8 cm from the edge of the breastbone."
+ },
+ {
+  "id": "kao2010",
+  "authors": "Kao HK, Chang KP, Chen YA et al.",
+  "year": 2010,
+  "title": "Anatomical basis and versatile application of the free medial sural artery perforator flap for head and neck reconstruction",
+  "venue": "Plast Reconstr Surg 125:1135-1145",
+  "url": "https://doi.org/10.1097/PRS.0b013e3181d180ac",
+  "pmid": "20335865",
+  "kind": "paper",
+  "tags": [
+   "perforators",
+   "anatomy"
+  ],
+  "note": "Medial sural perforators in 29 legs: 11.4 ± 2.7 cm below the knee crease, never nearer than 6 cm or farther than 18 cm."
  },
  {
   "id": "kelly2016",
@@ -1031,6 +1150,21 @@
   "note": "The skin's reactive hyperaemia is carried largely by sensory nerves and BKCa channels, not prostanoids."
  },
  {
+  "id": "lu2019",
+  "authors": "Lu D, Chan P, Ferris S et al.",
+  "year": 2019,
+  "title": "Anatomic symmetry of anterolateral thigh flap perforators: a computed tomography angiographic study",
+  "venue": "ANZ J Surg 89:584-588",
+  "url": "https://doi.org/10.1111/ans.15005",
+  "pmid": "30836442",
+  "kind": "paper",
+  "tags": [
+   "perforators",
+   "imaging"
+  ],
+  "note": "Anterolateral thigh perforators on both sides of 20 people: their average place differs by 3% of thigh length, but their number is not symmetrical."
+ },
+ {
   "id": "lundberg1994",
   "authors": "Lundberg U, Kadefors R, Melin B et al.",
   "year": 1994,
@@ -1088,6 +1222,21 @@
    "imaging"
   ],
   "note": "A single motor unit's territory measured with ultrasound-guided scanning EMG in tibialis anterior: 1.5 to 14.7 mm across, 7.2 mm on average."
+ },
+ {
+  "id": "martin2013",
+  "authors": "Martin AL, Bissell MB, Al-Dhamin A et al.",
+  "year": 2013,
+  "title": "Computed tomographic angiography for localization of the cutaneous perforators of the leg",
+  "venue": "Plast Reconstr Surg 131:792-800",
+  "url": "https://doi.org/10.1097/PRS.0b013e3182818cb4",
+  "pmid": "23249983",
+  "kind": "paper",
+  "tags": [
+   "perforators",
+   "imaging"
+  ],
+  "note": "CT angiography of the leg: anterior tibial perforators cluster at 83 ± 6, 59 ± 7 and 28 ± 9% of tibial height, peroneal at 61 ± 9 and 27 ± 11%; posterior tibial ones are more evenly spaced."
  },
  {
   "id": "martinezlemus2004",
@@ -1252,6 +1401,21 @@
    "mind"
   ],
   "note": "Attending to a painful heat stimulus makes it more intense and more unpleasant; attending elsewhere makes it less."
+ },
+ {
+  "id": "molsberger2012",
+  "authors": "Molsberger AF, Manickavasagan J, Abholz HH et al.",
+  "year": 2012,
+  "title": "Acupuncture points are large fields: the fuzziness of acupuncture point localization by doctors in practice",
+  "venue": "Eur J Pain 16:1264-70",
+  "url": "https://doi.org/10.1002/j.1532-2149.2012.00145.x",
+  "pmid": "22492604",
+  "kind": "paper",
+  "tags": [
+   "acupuncture",
+   "critique"
+  ],
+  "note": "Seventy-one doctors located 23 points on one man: 95% of their marks fell within 2.7 cm² (PC6) to 41.4 cm² (ST38). Points are fields, not points."
  },
  {
   "id": "moont2010",
@@ -1461,6 +1625,20 @@
   "note": "Laser speckle perfusion imaging is sensitive to the skin's superficial, nutritional supply; a laser Doppler line scanner to deeper vessels."
  },
  {
+  "id": "okumura2016",
+  "authors": "Okumura K, Hashikawa K, Sakakibara S et al.",
+  "year": 2016,
+  "title": "A Study of Internal Thoracic Arteriovenous Principal Perforators by Using Multi-detector Row Computed Tomography Angiography",
+  "venue": "Eplasty 16:e11",
+  "pmid": "26958104",
+  "kind": "paper",
+  "tags": [
+   "perforators",
+   "imaging"
+  ],
+  "note": "The largest internal mammary perforator, in 121 sides: first intercostal space 37.4%, second 39.7%, third 17.6%; the same space on both sides in 49%."
+ },
+ {
   "id": "oneda2010",
   "authors": "Oneda B, Ortega KC, Gusmão JL et al.",
   "year": 2010,
@@ -1594,6 +1772,36 @@
   "note": "Laser speckle contrast imaging of forearm skin is reproducible from week to week: 8% for the peak of reactive hyperaemia, 15% for the plateau of local heating."
  },
  {
+  "id": "rozen2010",
+  "authors": "Rozen WM, Ashton MW, Grinsell D",
+  "year": 2010,
+  "title": "The branching pattern of the deep inferior epigastric artery revisited in-vivo: a new classification based on CT angiography",
+  "venue": "Clin Anat 23:87-92",
+  "url": "https://doi.org/10.1002/ca.20898",
+  "pmid": "19941357",
+  "kind": "paper",
+  "tags": [
+   "perforators",
+   "imaging"
+  ],
+  "note": "CT angiography of 500 hemiabdominal walls: no overall concordance between the two sides in how the deep inferior epigastric artery branches."
+ },
+ {
+  "id": "rozen2010b",
+  "authors": "Rozen WM, Chubb D, Whitaker IS et al.",
+  "year": 2010,
+  "title": "Deep inferior epigastric perforators do not correlate between sides of the body: the role for preoperative imaging",
+  "venue": "J Plast Reconstr Aesthet Surg 63:e842-3",
+  "url": "https://doi.org/10.1016/j.bjps.2010.07.030",
+  "pmid": "20713316",
+  "kind": "paper",
+  "tags": [
+   "perforators",
+   "imaging"
+  ],
+  "note": "A letter: the deep inferior epigastric perforators of the two sides of one body do not correspond, so each side needs its own imaging."
+ },
+ {
   "id": "rydevik1981",
   "authors": "Rydevik B, Lundborg G, Bagge U",
   "year": 1981,
@@ -1609,6 +1817,21 @@
   "note": "Pressure on a nerve slows the blood leaving it at 20–30 mmHg, the blood entering it at 40–50, and stops all flow within it at 60–80."
  },
  {
+  "id": "saad2014",
+  "authors": "Saad A, Rebowe RE, Hogan ME et al.",
+  "year": 2014,
+  "title": "Localization of the dominant deep inferior epigastric artery perforator by computed tomography angiogram: does the standard deep inferior epigastric artery perforator flap design include the dominant perforator?",
+  "venue": "Ann Plast Surg 72:670-3",
+  "url": "https://doi.org/10.1097/SAP.0b013e31826a1897",
+  "pmid": "23241799",
+  "kind": "paper",
+  "tags": [
+   "perforators",
+   "imaging"
+  ],
+  "note": "The dominant abdominal (DIEP) perforator in 150 hemiabdomens: median 3.3 cm lateral to and 0.9 cm below the navel; 83% within 3 cm of it."
+ },
+ {
   "id": "saintcyr2009",
   "authors": "Saint-Cyr M, Wong C, Schaverien M et al.",
   "year": 2009,
@@ -1622,6 +1845,21 @@
    "anatomy"
   ],
   "note": "Each perforator supplies its own territory — a perforasome — linked to its neighbours by direct and indirect vessels."
+ },
+ {
+  "id": "saintcyr2010",
+  "authors": "Saint-Cyr M, Mujadzic M, Wong C et al.",
+  "year": 2010,
+  "title": "The Radial Artery Pedicle Perforator Flap: Vascular Analysis and Clinical Implications",
+  "venue": "Plast Reconstr Surg 125:1469-1478",
+  "url": "https://doi.org/10.1097/PRS.0b013e3181d511e7",
+  "pmid": "20134364",
+  "kind": "paper",
+  "tags": [
+   "perforators",
+   "anatomy"
+  ],
+  "note": "Radial artery perforators in 26 forearms: two main clusters, at 17.6% and 61.7% of the way from the radial styloid to the lateral epicondyle."
  },
  {
   "id": "schiffrin1995",
@@ -1766,6 +2004,21 @@
    "history"
   ],
   "note": "Trigger points then and now: a history from 19th-century “nodules” to microdialysis."
+ },
+ {
+  "id": "shaw2016",
+  "authors": "Shaw V, Mclennan AK",
+  "year": 2016,
+  "title": "Was acupuncture developed by Han Dynasty Chinese anatomists?",
+  "venue": "Anat Rec (Hoboken) 299:643-59",
+  "url": "https://doi.org/10.1002/ar.23325",
+  "pmid": "26861920",
+  "kind": "paper",
+  "tags": [
+   "acupuncture",
+   "history"
+  ],
+  "note": "Point names read against dissection: the nomenclature may record structures seen in cadavers by Han-dynasty anatomists."
  },
  {
   "id": "sikdar2009",
@@ -1962,6 +2215,21 @@
   "note": "Ultrasound elastography measured the stiffer share of the trapezius around trigger points falling as they responded to dry needling."
  },
  {
+  "id": "ulatowski2012",
+  "authors": "Ulatowski Ł",
+  "year": 2012,
+  "title": "Colour Doppler assessment of the perforators of anterolateral thigh flap and its usefulness in preoperative planning",
+  "venue": "Pol Przegl Chir 84:119-25",
+  "url": "https://doi.org/10.2478/v10035-012-0020-5",
+  "pmid": "22659354",
+  "kind": "paper",
+  "tags": [
+   "perforators",
+   "imaging"
+  ],
+  "note": "Colour Doppler of 60 thighs: anterolateral thigh perforators gather in the middle of the line from the hip bone to the kneecap (74.6% in its fifth to seventh tenths); none in 6.6% of thighs."
+ },
+ {
   "id": "vanbavel2014",
   "authors": "VanBavel E, Tuna BG",
   "year": 2014,
@@ -2019,6 +2287,21 @@
    "perforators"
   ],
   "note": "In cutaneous nerve entrapment of the abdominal wall, the point of maximal pain lies where perforating vessels exit through the rectus fascia."
+ },
+ {
+  "id": "weum2016b",
+  "authors": "Weum S, Mercer JB, de Weerd L",
+  "year": 2016,
+  "title": "Evaluation of dynamic infrared thermography as an alternative to CT angiography for perforator mapping in breast reconstruction: a clinical study",
+  "venue": "BMC Med Imaging 16:43",
+  "url": "https://doi.org/10.1186/s12880-016-0144-x",
+  "pmid": "27421763",
+  "kind": "paper",
+  "tags": [
+   "perforators",
+   "imaging"
+  ],
+  "note": "Dynamic infrared thermography after a mild cold challenge: the first hot spots to appear always lay over Doppler-audible perforators seen on CT angiography."
  },
  {
   "id": "whetzel1992",
