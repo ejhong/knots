@@ -6,6 +6,7 @@
  *   npx tsx scripts/pdf.ts [--base http://127.0.0.1:4321] [--only perforator-hypothesis]
  */
 import { chromium } from 'playwright';
+import { browserLaunch } from './browser';
 
 const args = process.argv.slice(2);
 const i = args.indexOf('--base');
@@ -20,7 +21,7 @@ const DOCS: [string, string][] = (
 ).filter(([path]) => j < 0 || path.includes(args[j + 1]));
 
 async function main() {
-  const browser = await chromium.launch({ headless: true, executablePath: process.env.SHOT_CHROMIUM || undefined });
+  const browser = await chromium.launch({ headless: true, ...browserLaunch() });
   const page = await browser.newPage();
   for (const [path, out] of DOCS) {
     await page.goto(base + path, { waitUntil: 'networkidle' });

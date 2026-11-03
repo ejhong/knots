@@ -6,10 +6,12 @@
  *        [--scroll <y>] [--full]
  *
  * Waits for `window.atlasReady` when present. Uses the GPU via ANGLE/Metal
- * where available so WebGL renders at real quality. SHOT_CHROMIUM=<path>
- * launches another Chromium than Playwright's own (cloud sessions set it).
+ * where available so WebGL renders at real quality. Runs the installed Google
+ * Chrome, sandboxed; SHOT_CHROMIUM=<path> runs another Chromium (cloud
+ * sessions set it). See scripts/browser.ts.
  */
 import { chromium } from 'playwright';
+import { browserLaunch } from './browser';
 
 const args = process.argv.slice(2);
 const flag = (name: string, dflt?: string) => {
@@ -24,7 +26,7 @@ async function main() {
   const base = flag('base', 'http://127.0.0.1:4321')!;
   const browser = await chromium.launch({
     headless: true,
-    executablePath: process.env.SHOT_CHROMIUM || undefined,
+    ...browserLaunch(),
     args: ['--use-angle=metal', '--enable-gpu', '--ignore-gpu-blocklist', '--enable-unsafe-swiftshader'],
   });
   const page = await browser.newPage({
