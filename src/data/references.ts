@@ -65,8 +65,8 @@ const EXTRA: Reference[] = [
     note: 'The original: knots as a state, not a structure — “a stale lock file” — the two-key protocol of pressure and breath, and a research programme.',
   },
   {
-    // Title, author, date and DOI from the DataCite record of 10.5281/zenodo.23901649 (draft 1); the URL is the concept
-    // DOI, which resolves to the latest version.
+    // Title, author, date and DOI from the DataCite records of 10.5281/zenodo.23901649 (draft 1) and 10.5281/zenodo.23925028
+    // (draft 3); the URL is the concept DOI, which resolves to the latest version.
     id: 'jhong2026b',
     authors: 'Eugene Jhong (text by Claude Opus 5.5, refereed by Claude Fable 5.1)',
     year: 2026,
