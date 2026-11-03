@@ -1,19 +1,23 @@
 /**
- * The research documents as PDFs: the preprint and the one-page pilot, printed from their pages (A4, the reading
- * layout's print rules) into public/research/. Run against a running site after the guide's data changes:
+ * The research documents as PDFs: the preprint, the one-page pilot and the position paper, printed from their pages
+ * (A4, the reading layout's print rules) into public/research/. Run against a running site after the guide's data changes:
  *
  *   npm run dev   (or npx astro preview)
- *   npx tsx scripts/pdf.ts [--base http://127.0.0.1:4321]
+ *   npx tsx scripts/pdf.ts [--base http://127.0.0.1:4321] [--only perforator-hypothesis]
  */
 import { chromium } from 'playwright';
 
 const args = process.argv.slice(2);
 const i = args.indexOf('--base');
 const base = i >= 0 ? args[i + 1] : 'http://127.0.0.1:4321';
-const DOCS: [string, string][] = [
-  ['/knots/research/preprint/', 'public/research/preprint.pdf'],
-  ['/knots/research/pilot/', 'public/research/pilot.pdf'],
-];
+const j = args.indexOf('--only');
+const DOCS: [string, string][] = (
+  [
+    ['/knots/research/preprint/', 'public/research/preprint.pdf'],
+    ['/knots/research/pilot/', 'public/research/pilot.pdf'],
+    ['/knots/research/perforator-hypothesis/', 'public/research/perforator-hypothesis.pdf'],
+  ] as [string, string][]
+).filter(([path]) => j < 0 || path.includes(args[j + 1]));
 
 async function main() {
   const browser = await chromium.launch({ headless: true, executablePath: process.env.SHOT_CHROMIUM || undefined });

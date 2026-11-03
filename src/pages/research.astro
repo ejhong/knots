@@ -159,7 +159,7 @@ const index = [
   { id: 'points', label: 'perforators and acupoints' },
   { id: 'asks', label: 'what we need' },
   { id: 'method', label: 'method' },
-  { id: 'further', label: 'the preprint, the pilot, who could help' },
+  { id: 'further', label: 'the papers, the pilot, who could help' },
 ];
 ---
 <Doc
@@ -214,7 +214,13 @@ const index = [
       <p>
         <strong>What would settle it.</strong> One recording at the moment a knot lets go, with the few instruments that
         tell those traces apart, after cheaper questions a hand can ask. <a href="#measurement">The ladder below</a>, and{' '}
-        <a href="#further">a preprint, a one-page pilot and who could help</a> at the end.
+        <a href="#further">a position paper, a preprint, a one-page pilot and who could help</a> at the end.
+      </p>
+      <p>
+        <strong>The case for perforators.</strong> A{' '}
+        <a href={`${base}/research/perforator-hypothesis/`}>position paper</a> argues for one mechanism from established
+        physiology alone: what it explains and what it does not, the alternatives in their strongest forms, the fascia, the
+        acupuncture points, the dangers, and the measurements that would refute it.
       </p>
       <p>
         <strong>Perforators and acupoints.</strong> The perforators' source arteries and clusters are the same in everyone; the
@@ -473,7 +479,7 @@ const index = [
       than chance would put them, too little to tell from chance with the evidence there is.
     </p>
     <div class="facts pt-facts">
-      <p class="fact"><span class="big">2.5–4 cm</span><span class="fl">how far one perforator cluster spreads between people: an SD of 6–11% of the shin's length on CT angiography <Fragment set:html={`(${cite('martin2013')})`} />, about one to three cun.</span></p>
+      <p class="fact"><span class="big">2–4 cm</span><span class="fl">how far one perforator cluster spreads between people: an SD of 6–11% of the shin's length on CT angiography <Fragment set:html={`(${cite('martin2013')})`} />, about one to three cun.</span></p>
       <p class="fact"><span class="big">1–3.6 cm</span><span class="fl">how far doctors' marks for one point spread: 95% of 71 doctors' marks fell within 2.7 cm² (PC6) to 41.4 cm² (ST38) <Fragment set:html={`(${cite('molsberger2012')})`} />, a circle of that radius.</span></p>
       <p class="fact"><span class="big">{x2(acu.ratio.median)}</span><span class="fl">the perforator density at {acu.points} WHO points, against points placed at random on the same five lines (median of {acu.variants} variants; p {p2(acu.p.min)}–{p2(acu.p.max)}, below 0.05 in {pct(acu.p.share_below_05)} of them). A map whose points sat on the clusters would score {x2(acu.perfect.min)}–{x2(acu.perfect.max)}, p &lt; 0.0001: the test could see it.</span></p>
     </div>
@@ -710,8 +716,14 @@ const index = [
   </section>
 
   <section id="further" class="sec full" data-glyph="繋">
-    <h2>The preprint, the pilot, and who could help</h2>
+    <h2>The papers, the pilot, and who could help</h2>
     <div class="docs">
+      <a class="doc-card wide" href={`${base}/research/perforator-hypothesis/`}>
+        <span class="dk mono">position paper · draft</span>
+        <span class="dt">The perforator hypothesis: knots as small arteries held shut where they pierce the fascia</span>
+        <span class="dd">The case for one mechanism, from established physiology: what it explains and what it does not, the
+          alternatives in their strongest forms, the fascia, the acupuncture points, the dangers, and what would refute it.</span>
+      </a>
       <a class="doc-card" href={`${base}/research/preprint/`}>
         <span class="dk mono">preprint · draft</span>
         <span class="dt">Knots: seven mechanisms, what each would do, and a recording that would tell them apart</span>
@@ -725,7 +737,7 @@ const index = [
           pressed sham, with each theory's prediction fixed in advance.</span>
       </a>
     </div>
-    <p class="links mono"><a href={`${base}/research/preprint.pdf`}>preprint (PDF)</a><a href={`${base}/research/pilot.pdf`}>pilot (PDF)</a></p>
+    <p class="links mono"><a href={`${base}/research/perforator-hypothesis.pdf`}>position paper (PDF)</a><a href={`${base}/research/preprint.pdf`}>preprint (PDF)</a><a href={`${base}/research/pilot.pdf`}>pilot (PDF)</a></p>
     <h3 class="h3">Who could help</h3>
     <p class="sub">Groups whose published methods or theories bear directly on this, named from their published work, with the
       places their latest PubMed records give. None has been approached, and none is involved in or has endorsed this project; they
@@ -814,6 +826,9 @@ const index = [
   }
   .doc-card:hover {
     border-color: var(--frame-border);
+  }
+  .doc-card.wide {
+    grid-column: 1 / -1;
   }
   .dk {
     font-size: 9.5px;

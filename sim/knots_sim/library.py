@@ -38,7 +38,7 @@ NEW = [
     ("7493417", "lau1995", ["breath", "vascular"],
      "A deep inspiratory gasp cuts fingertip skin blood flow by 59–71%, graded with the depth of the breath."),
     ("42028531", "mayrovitz2026", ["breath", "vascular"],
-     "The inspiratory gasp reflex reviewed: skin vessels constrict 3.6–3.8 s after a gasp, most deeply at 4.6–5.2 s, and recover over about half a minute."),
+     "The inspiratory gasp reflex reviewed: the skin's vessels in the hands and feet constrict 3.6–3.8 s after a gasp, most deeply at 4.6–5.2 s; capillary flow returns to normal some 5–15 s after the gasp, and the review's own trace recovers in about 34 s."),
     ("33959270", "alexandrou2021", ["vascular", "imaging"],
      "Reactive hyperaemia in forearm skin by laser speckle imaging: after an occlusion, flow rises 187% above baseline and peaks about 11 s after release."),
     ("17901123", "lorenzo2007", ["vascular", "nerve"],
@@ -61,7 +61,7 @@ NEW = [
      "The latch-bridge hypothesis reviewed: in sustained contractions calcium, phosphorylation and ATP use fall while force is held."),
     # Movement as a release: stretch, compression and the pulse lower smooth muscle's force.
     ("1120194", "ljung1975", ["vascular", "animals"],
-     "Rhythmic stretch of vascular smooth muscle cuts its active force at once, by an amount set by the stretch's size and rate; even the pulse may ease arterial tone."),
+     "Imposed sinusoidal stretch (vibration at 1–400 Hz, 1–10% of length) promptly cuts the active force of isolated vascular smooth muscle (rat portal vein, rabbit aorta); the authors suggest that even the pulse may sometimes ease arterial tone."),
     ("16497720", "clifford2006", ["vascular", "animals"],
      "Muscle feed arteries squeezed shut widen within seconds of release: by 16% after one 1 s compression, 14% after one of 5 s, and 27% after five of 1 s. Repeated compressions add up; a longer one does not."),
     ("8888697", "goto1996", ["vascular", "animals"],
@@ -200,7 +200,7 @@ NEW = [
     ("23180371", "boelens2013", ["nerve"],
      "In abdominal wall pain from entrapped cutaneous nerves, lidocaine injected at the point of maximal pain relieved it in 13 of 24 patients, saline in 4 of 24."),
     ("26814247", "weum2016", ["nerve", "perforators"],
-     "In cutaneous nerve entrapment of the abdominal wall, the point of maximal pain lies where perforating vessels exit through the rectus fascia."),
+     "Perforator-guided injection for cutaneous nerve entrapment of the abdominal wall: beneath the point of maximal pain, the perforating vessels' exit through the rectus fascia is found by colour Doppler and used as the landmark for injection (15 patients, 128 injections)."),
     ("6706739", "sejersted1984", ["anatomy"],
      "Pressure inside a contracting muscle rises linearly with its force, and with the distance from its fascia: it is least at the fascia."),
     ("15695007", "guimberteau2005", ["fascia", "anatomy"],
@@ -257,6 +257,24 @@ NEW = [
      "Melzack's 71% correspondence of trigger points and acupoints is conceptually not possible; more likely about 18–19%, and trigger points correspond to the ashi points."),
     ("26861920", "shaw2016", ["acupuncture", "history"],
      "Point names read against dissection: the nomenclature may record structures seen in cadavers by Han-dynasty anatomists."),
+    # the perforator hypothesis, as a position paper (/research/perforator-hypothesis/): age
+    ("8458648", "ng1993", ["vascular"],
+     "Resting muscle sympathetic activity rises with age: 16, 30, 40 and 61 bursts per 100 heartbeats in young women, young men, older women and older men."),
+    ("20413421", "holowatz2010", ["vascular"],
+     "With age, the skin's reflex vasoconstriction and vasodilation are both impaired, from diminished sympathetic outflow to weaker responses of the vessels themselves."),
+    ("24976374", "vionnet2014", ["vascular"],
+     "Older skin reaches a lower maximal blood flow when heated, but its relative response to warming is unchanged."),
+    # the position paper: the fascia beyond the knots, and the safety of attention to the body
+    ("42262672", "dowlatshahi2026", ["fascia", "anatomy"],
+     "The retinacula cutis: numerous, consistent fibrous attachments from the deep fascia to the dermis, working as tethers, anchors and boundaries."),
+    ("15513595", "nakajima2004", ["fascia", "anatomy"],
+     "Under the skin lie two adipofascial layers over the whole body: a firm, protective superficial one and a mobile deep one that lets the body's structures glide."),
+    ("30708288", "britton2019", ["contemplative", "safety"],
+     "Mindfulness-related processes, interoception and meditation practice among them, show signs of an inverted U: under some conditions, or past a point, their effects turn negative."),
+    ("6254609", "ochoa1980", ["nerve"],
+     "The tingle after ischaemia recorded in human nerves: ectopic firing in large sensory fibres begins about half a minute after circulation returns and peaks by the second minute, as the felt paraesthesiae do; hyperventilation increases both."),
+    ("17449984", "hsieh2007", ["trigger-points"],
+     "Dry needling a key trigger point in infraspinatus raised the pressure-pain threshold of satellite trigger points in its zone of referral, in 14 patients; the authors propose a spinal mechanism."),
 ]
 
 # Existing entries that the simulation also leans on gain the models tag.

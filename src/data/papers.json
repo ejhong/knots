@@ -237,6 +237,21 @@
   "note": "Dissection beneath 201 acupuncture points: a nerve at 29%, a vessel (mostly a vein) at 34%, both at 37% — no one structure common to all."
  },
  {
+  "id": "britton2019",
+  "authors": "Britton WB",
+  "year": 2019,
+  "title": "Can mindfulness be too much of a good thing? The value of a middle way",
+  "venue": "Curr Opin Psychol 28:159-165",
+  "url": "https://doi.org/10.1016/j.copsyc.2018.12.011",
+  "pmid": "30708288",
+  "kind": "paper",
+  "tags": [
+   "contemplative",
+   "safety"
+  ],
+  "note": "Mindfulness-related processes, interoception and meditation practice among them, show signs of an inverted U: under some conditions, or past a point, their effects turn negative."
+ },
+ {
   "id": "bulla2015",
   "authors": "Bulla A, De Luca L, Campus GV et al.",
   "year": 2015,
@@ -558,6 +573,21 @@
    "trigger-points"
   ],
   "note": "Trigger-point referred-pain patterns track the acupuncture meridians."
+ },
+ {
+  "id": "dowlatshahi2026",
+  "authors": "Dowlatshahi S, Francalancia S, Willard FH et al.",
+  "year": 2026,
+  "title": "Structural and functional anatomy of the retinaculum cutis: review and new insights",
+  "venue": "Anat Sci Int",
+  "url": "https://doi.org/10.1007/s12565-026-00936-8",
+  "pmid": "42262672",
+  "kind": "paper",
+  "tags": [
+   "fascia",
+   "anatomy"
+  ],
+  "note": "The retinacula cutis: numerous, consistent fibrous attachments from the deep fascia to the dermis, working as tethers, anchors and boundaries."
  },
  {
   "id": "elassar2022",
@@ -899,6 +929,20 @@
   "note": "After 4 hours of constriction, arterioles relax more slowly when the drive is removed; the hold still needs calcium, and goes at once without it."
  },
  {
+  "id": "holowatz2010",
+  "authors": "Holowatz LA, Kenney WL",
+  "year": 2010,
+  "title": "Peripheral mechanisms of thermoregulatory control of skin blood flow in aged humans",
+  "venue": "J Appl Physiol (1985) 109:1538-44",
+  "url": "https://doi.org/10.1152/japplphysiol.00338.2010",
+  "pmid": "20413421",
+  "kind": "paper",
+  "tags": [
+   "vascular"
+  ],
+  "note": "With age, the skin's reflex vasoconstriction and vasodilation are both impaired, from diminished sympathetic outflow to weaker responses of the vessels themselves."
+ },
+ {
   "id": "hong1998",
   "authors": "Hong CZ, Simons DG",
   "year": 1998,
@@ -910,7 +954,7 @@
   "tags": [
    "trigger-points"
   ],
-  "note": "Pathophysiological and electrophysiological mechanisms of trigger points; satellites and key points."
+  "note": "Trigger points reviewed: minute loci tied to nerve fibres and motor endplates; referred pain and the local twitch response depend on the spinal cord."
  },
  {
   "id": "hou2002",
@@ -925,6 +969,20 @@
    "trigger-points"
   ],
   "note": "Ischaemic compression eased trigger-point pain either at low pressure held 90 s or at higher pressure held 30 s: pressure and time trade."
+ },
+ {
+  "id": "hsieh2007",
+  "authors": "Hsieh YL, Kao MJ, Kuan TS et al.",
+  "year": 2007,
+  "title": "Dry needling to a key myofascial trigger point may reduce the irritability of satellite MTrPs",
+  "venue": "Am J Phys Med Rehabil 86:397-403",
+  "url": "https://doi.org/10.1097/PHM.0b013e31804a554d",
+  "pmid": "17449984",
+  "kind": "paper",
+  "tags": [
+   "trigger-points"
+  ],
+  "note": "Dry needling a key trigger point in infraspinatus raised the pressure-pain threshold of satellite trigger points in its zone of referral, in 14 patients; the authors propose a spinal mechanism."
  },
  {
   "id": "hubbard1993",
@@ -1132,7 +1190,7 @@
    "vascular",
    "animals"
   ],
-  "note": "Rhythmic stretch of vascular smooth muscle cuts its active force at once, by an amount set by the stretch's size and rate; even the pulse may ease arterial tone."
+  "note": "Imposed sinusoidal stretch (vibration at 1–400 Hz, 1–10% of length) promptly cuts the active force of isolated vascular smooth muscle (rat portal vein, rabbit aorta); the authors suggest that even the pulse may sometimes ease arterial tone."
  },
  {
   "id": "lorenzo2007",
@@ -1296,7 +1354,7 @@
    "breath",
    "vascular"
   ],
-  "note": "The inspiratory gasp reflex reviewed: skin vessels constrict 3.6–3.8 s after a gasp, most deeply at 4.6–5.2 s, and recover over about half a minute."
+  "note": "The inspiratory gasp reflex reviewed: the skin's vessels in the hands and feet constrict 3.6–3.8 s after a gasp, most deeply at 4.6–5.2 s; capillary flow returns to normal some 5–15 s after the gasp, and the review's own trace recovers in about 34 s."
  },
  {
   "id": "mcnulty1994",
@@ -1444,7 +1502,7 @@
    "trigger-points",
    "vascular"
   ],
-  "note": "Microdialysis inside an active trigger point: ischaemic compression brings a transient rise in local blood flow."
+  "note": "Microdialysis inside active trigger points in two people: after ischaemic compression, lactate rose and stayed raised."
  },
  {
   "id": "morris2010",
@@ -1537,6 +1595,21 @@
   "note": "Airway muscle held short for a week shifts its optimal length down by 38%, and the shift no longer fully reverses: after 3 days it still did."
  },
  {
+  "id": "nakajima2004",
+  "authors": "Nakajima H, Imanishi N, Minabe T et al.",
+  "year": 2004,
+  "title": "Anatomical study of subcutaneous adipofascial tissue: a concept of the protective adipofascial system (PAFS) and lubricant adipofascial system (LAFS)",
+  "venue": "Scand J Plast Reconstr Surg Hand Surg 38:261-6",
+  "url": "https://doi.org/10.1080/02844310410029543",
+  "pmid": "15513595",
+  "kind": "paper",
+  "tags": [
+   "fascia",
+   "anatomy"
+  ],
+  "note": "Under the skin lie two adipofascial layers over the whole body: a firm, protective superficial one and a mobile deep one that lets the body's structures glide."
+ },
+ {
   "id": "nakayama2000",
   "authors": "Nakayama Y, Shirai Y, Yoshihara K et al.",
   "year": 2000,
@@ -1580,6 +1653,20 @@
   "note": "Aortic smooth muscle de-stiffens after bouts of high cyclic stretch and re-stiffens slowly; the muscle has to be contracted and stretched for it to happen."
  },
  {
+  "id": "ng1993",
+  "authors": "Ng AV, Callister R, Johnson DG et al.",
+  "year": 1993,
+  "title": "Age and gender influence muscle sympathetic nerve activity at rest in healthy humans",
+  "venue": "Hypertension 21:498-503",
+  "url": "https://doi.org/10.1161/01.hyp.21.4.498",
+  "pmid": "8458648",
+  "kind": "paper",
+  "tags": [
+   "vascular"
+  ],
+  "note": "Resting muscle sympathetic activity rises with age: 16, 30, 40 and 61 bursts per 100 heartbeats in young women, young men, older women and older men."
+ },
+ {
   "id": "nichol1951",
   "authors": "Nichol J, Girling F, Jerrard W et al.",
   "year": 1951,
@@ -1608,6 +1695,20 @@
    "models"
   ],
   "note": "Healthy synovial fluid, far richer in hyaluronan than fascia, has a zero-shear viscosity of 1–175 Pa·s: an upper bound for any hyaluronan collar."
+ },
+ {
+  "id": "ochoa1980",
+  "authors": "Ochoa JL, Torebjörk HE",
+  "year": 1980,
+  "title": "Paraesthesiae from ectopic impulse generation in human sensory nerves",
+  "venue": "Brain 103:835-53",
+  "url": "https://doi.org/10.1093/brain/103.4.835",
+  "pmid": "6254609",
+  "kind": "paper",
+  "tags": [
+   "nerve"
+  ],
+  "note": "The tingle after ischaemia recorded in human nerves: ectopic firing in large sensory fibres begins about half a minute after circulation returns and peaks by the second minute, as the felt paraesthesiae do; hyperventilation increases both."
  },
  {
   "id": "odoherty2009",
@@ -1930,7 +2031,7 @@
   "tags": [
    "vascular"
   ],
-  "note": "A dilation started at one point on an arteriole propagates along its wall, upstream, independently of flow."
+  "note": "A dilation started at one point on a hamster arteriole spreads rapidly both ways along its wall, even with flow stopped: conduction between the vessel's cells."
  },
  {
   "id": "segal1989",
@@ -2245,6 +2346,20 @@
   "note": "A model of small arteries regulated by four adaptive processes (tone, smooth-muscle length adaptation, matrix rearrangement, growth): leave any one out and regulation fails, in some cases with unstable structure."
  },
  {
+  "id": "vionnet2014",
+  "authors": "Vionnet J, Calero-Romero I, Heim A et al.",
+  "year": 2014,
+  "title": "No major impact of skin aging on the response of skin blood flow to a submaximal local thermal stimulus",
+  "venue": "Microcirculation 21:730-7",
+  "url": "https://doi.org/10.1111/micc.12154",
+  "pmid": "24976374",
+  "kind": "paper",
+  "tags": [
+   "vascular"
+  ],
+  "note": "Older skin reaches a lower maximal blood flow when heated, but its relative response to warming is unchanged."
+ },
+ {
   "id": "vissing1997",
   "authors": "Vissing SF",
   "year": 1997,
@@ -2286,7 +2401,7 @@
    "nerve",
    "perforators"
   ],
-  "note": "In cutaneous nerve entrapment of the abdominal wall, the point of maximal pain lies where perforating vessels exit through the rectus fascia."
+  "note": "Perforator-guided injection for cutaneous nerve entrapment of the abdominal wall: beneath the point of maximal pain, the perforating vessels' exit through the rectus fascia is found by colour Doppler and used as the landmark for injection (15 patients, 128 injections)."
  },
  {
   "id": "weum2016b",

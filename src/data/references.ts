@@ -351,6 +351,18 @@ const EXTRA: Reference[] = [
     note: 'The research programme on meditation-related difficulties.',
   },
   {
+    // Religions is not indexed in PubMed: title, authors, venue and DOI from the Crossref record of 10.3390/rel12121042.
+    id: 'cooper2021',
+    authors: 'Cooper DJ, Lindahl JR, Palitsky R, Britton WB',
+    year: 2021,
+    title: '“Like a Vibration Cascading through the Body”: Energy-Like Somatic Experiences Reported by Western Buddhist Meditators',
+    venue: 'Religions 12:1042',
+    url: 'https://doi.org/10.3390/rel12121042',
+    kind: 'paper',
+    tags: ['contemplative', 'safety'],
+    note: 'Energy-like somatic experiences in Western Buddhist meditators: how they are described, how they unfold and affect lives, how practitioners, teachers, doctors and therapists read them, and what helped.',
+  },
+  {
     id: 'cheetah',
     authors: 'Cheetah House',
     year: 2018,
