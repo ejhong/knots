@@ -25,6 +25,8 @@ async function main() {
   for (const [path, out] of DOCS) {
     await page.goto(base + path, { waitUntil: 'networkidle' });
     await page.emulateMedia({ media: 'print' });
+    // The PDF's Title is the document's own, without the site's suffix (indexers read it).
+    await page.evaluate(() => (document.title = document.title.replace(/ · Knots of Existence$/, '')));
     await page.pdf({
       path: out,
       format: 'A4',

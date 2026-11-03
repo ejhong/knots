@@ -1,5 +1,5 @@
 ---
-import Base from './Base.astro';
+import Base, { type Citation } from './Base.astro';
 
 /**
  * Reading pages: one sheet of rice paper, centred, with a quiet index under
@@ -18,10 +18,12 @@ interface Props {
   index?: { id: string; label: string }[];
   wide?: boolean;
   noindex?: boolean;
+  /** Scholarly metadata for a research document (see Base). */
+  citation?: Citation;
 }
-const { title, kicker, lede, current, description, glyph, index = [], wide = false, noindex = false } = Astro.props;
+const { title, kicker, lede, current, description, glyph, index = [], wide = false, noindex = false, citation } = Astro.props;
 ---
-<Base title={title} current={current} description={description} noindex={noindex}>
+<Base title={title} current={current} description={description} noindex={noindex} citation={citation}>
   <div class="doc">
     <article class:list={['sheet', { wide }]}>
       {glyph && <span class="ornament cjk" aria-hidden="true">{glyph}</span>}

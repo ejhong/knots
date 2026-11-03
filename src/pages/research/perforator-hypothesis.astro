@@ -59,12 +59,13 @@ const c = (...ids: string[]) => {
   return '<span class="cite">[' + ns.map(({ id, n }) => `<a href="#ref-${id}">${n}</a>`).join(', ') + ']</span>';
 };
 const short = (u: string) => u.replace('https://', '');
+const doi = '10.5281/zenodo.23901649';
 const OWN: Record<string, string> = {
   knotsrepo: `Knots of Existence: models, parameters and runs (2026). <a href="${repo}">${short(repo)}</a>`,
   knotspreprint: `Jhong E. Knots: seven mechanisms, what each would do, and a recording that would tell them apart. Preprint (2026). <a href="${site}/research/preprint/">${short(site)}/research/preprint/</a>`,
   knotspilot: `Jhong E. A pilot recording at the moment a knot lets go: one-page protocol (2026). <a href="${site}/research/pilot/">${short(site)}/research/pilot/</a>`,
   knotspoints: `Knots of Existence. Are the perforators where the points are? (2026). <a href="${site}/research/#points">${short(site)}/research/#points</a>`,
-  knotsmemories: `Jhong E. Knots as pattern memories: a two-system model of somatic release in perforators and fascial planes. Unpublished manuscript (September 2026), available from the author. An earlier version of the account, with the collar as the hold; superseded by the present paper where they differ.`,
+  knotsmemories: `Jhong E. Knots as pattern memories: a two-system model of somatic release in perforators and fascial planes, with an empirically tractable research program. Preprint, Zenodo (11 September 2026). <a href="https://doi.org/10.5281/zenodo.22709006">doi.org/10.5281/zenodo.22709006</a>. An earlier version of the account, with the collar as the hold; superseded by the present paper where they differ.`,
 };
 
 // ---------- The text, in reading order ----------
@@ -514,10 +515,11 @@ const index = [
   current="research"
   glyph="結"
   index={index}
+  citation={{ authors: ['Jhong, Eugene'], date: '2026/11/02', doi, pdf: '/research/perforator-hypothesis.pdf' }}
   description="A position paper: knots as cutaneous perforators held shut by their own walls. The case from established physiology, the alternatives in their strongest forms, the fascia, the acupuncture points, the dangers, and the measurements that would refute it."
 >
   <div class="paper">
-    <p class="byline">Eugene Jhong · Knots of Existence, independent · <span class="mono">2 November 2026 · draft 1</span></p>
+    <p class="byline">Eugene Jhong · Knots of Existence, independent · <span class="mono">2 November 2026 · draft 1 · <a href={`https://doi.org/${doi}`}>doi.org/{doi}</a></span></p>
     <p class="byline disclose">Written by AI (Claude Opus 5.5, Anthropic) under the author's direction, and refereed by a second model (Claude Fable 5.1). See <a href="#authorship">Authorship and AI use</a>.</p>
     <p class="byline mono">Correspondence and objections: <a href={`${repo}/issues`}>github.com/ejhong/knots/issues</a> · <a href={`${base}/research/perforator-hypothesis.pdf`}>PDF</a> · <a href={`${base}/research/preprint/`}>the companion preprint</a></p>
 
