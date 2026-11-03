@@ -154,10 +154,11 @@ export const CHAPTERS: Chapter[] = [
     n: '09',
     glyph: '中',
     title: 'Moderation',
-    seconds: 28,
+    seconds: 52,
     html: `<p><strong>Extreme practice can cause severe, lasting harm, including suicide.</strong> Adverse effects of meditation are not rare. They include anxiety, depression and suicidal behaviour, sometimes severe and enduring, and sometimes in people with no history of mental illness. People have been harmed by doing too much, too fast: forceful breathing and breath-holding, hard pressure held too long, long retreats with little sleep. Difficulties can last months or years — panic, insomnia, pain, involuntary movements, a disturbed sense of self, energy that will not settle. Never press hard into the neck, where the arteries to the brain lie close beneath the surface.</p>
+<p><strong>Runaway release.</strong> Some who work forcefully at clearing knots describe a rare and arduous process. Past some point, releases come in chains and the process can no longer be set down: it feels unfinished, and stopping is harder to bear than going on. Then come phases felt in the fascia, over days to weeks and recurring over months or years: peeling, hollowness, and a slow re-stitching that in the end brings back a sense of wholeness. The reports are many but informal and the process is little known; we think it is real, and that it can bring a person to the point of suicide, above all someone facing it alone, exhausted, or without the experience, guidance and support to get through it. People do come through it; those who have say it is lived through rather than stopped, which is one more reason not to face it alone.</p>
 <p>Nothing here is a protocol. Go gently: work in moderation, rest often, and stop when something feels wrong. If you are struggling, you are not alone: the <a href="${VCE}">Varieties of Contemplative Experience</a> project at Brown documents these difficulties, and <a href="${CHEETAH}">Cheetah House</a> supports meditators in distress. If you are thinking about suicide, reach out now: in the US, call or text 988; elsewhere, find a line at <a href="${HELPLINE}">findahelpline.com</a>. For anything physical, see a physician.</p>`,
-    refs: ['farias2020', 'lindahl2017', 'britton', 'cheetah'],
+    refs: ['farias2020', 'lindahl2017', 'britton', 'cheetah', 'jhong2026b'],
     scene: { pose: { p: [0, 0.62, 2.6], t: [0, 0.56, 0] }, age: 46, turntable: true },
   },
 ];

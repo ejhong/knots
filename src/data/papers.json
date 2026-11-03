@@ -119,6 +119,21 @@
   "note": "Resistance arteries kept actively constricted for 3 days remodel inward, their relaxed lumen 10-16% smaller; kept narrow without tone, they do not."
  },
  {
+  "id": "bakker2008",
+  "authors": "Bakker EN, Matlung HL, Bonta P et al.",
+  "year": 2008,
+  "title": "Blood flow-dependent arterial remodelling is facilitated by inflammation but directed by vascular tone",
+  "venue": "Cardiovasc Res 78:341-8",
+  "url": "https://doi.org/10.1093/cvr/cvn050",
+  "pmid": "18299286",
+  "kind": "paper",
+  "tags": [
+   "vascular",
+   "animals"
+  ],
+  "note": "Small arteries remodel when their flow changes only with macrophages present, and their tone sets the direction, inward or outward."
+ },
+ {
   "id": "bednarek2011",
   "authors": "Bednarek ML, Speich JE, Miner AS et al.",
   "year": 2011,
@@ -356,6 +371,21 @@
   "note": "Skin blood flow is set by sympathetic nerves and local temperature: from minimal levels under local cooling to 6–8 L/min in heat."
  },
  {
+  "id": "charkoudian2003b",
+  "authors": "Charkoudian N, Halliwill JR, Morgan BJ et al.",
+  "year": 2003,
+  "title": "Influences of hydration on post-exercise cardiovascular control in humans",
+  "venue": "J Physiol 552:635-44",
+  "url": "https://doi.org/10.1113/jphysiol.2003.048629",
+  "pmid": "14561843",
+  "kind": "paper",
+  "tags": [
+   "vascular",
+   "nerve"
+  ],
+  "note": "After exercise that dehydrates, resting blood pressure is lower, and saline by vein lowers the sympathetic drive to muscle."
+ },
+ {
   "id": "chen2001",
   "authors": "Chen JT, Chung KC, Hou CR et al.",
   "year": 2001,
@@ -590,6 +620,21 @@
   "note": "The retinacula cutis: numerous, consistent fibrous attachments from the deep fascia to the dermis, working as tethers, anchors and boundaries."
  },
  {
+  "id": "dumont2007",
+  "authors": "Dumont O, Loufrani L, Henrion D",
+  "year": 2007,
+  "title": "Key role of the NO-pathway and matrix metalloprotease-9 in high blood flow-induced remodeling of rat resistance arteries",
+  "venue": "Arterioscler Thromb Vasc Biol 27:317-24",
+  "url": "https://doi.org/10.1161/01.ATV.0000254684.80662.44",
+  "pmid": "17158349",
+  "kind": "paper",
+  "tags": [
+   "vascular",
+   "animals"
+  ],
+  "note": "Resistance arteries given high flow remodel outward: MMP-9 activity has risen by day 4, and by day 14 they are wider and their walls have grown; the nitric oxide pathway and the MMPs are both needed."
+ },
+ {
   "id": "elassar2022",
   "authors": "El Assar M, García-Rojo E, Sevilleja-Ortiz A et al.",
   "year": 2022,
@@ -721,6 +766,19 @@
    "animals"
   ],
   "note": "Microvascular pressures measured directly: in arterioles of 70 µm and wider, pressure tracks systemic arterial pressure."
+ },
+ {
+  "id": "gardner2002",
+  "authors": "Gardner JW",
+  "year": 2002,
+  "title": "Death by water intoxication",
+  "venue": "Mil Med 167:432-4",
+  "pmid": "12053855",
+  "kind": "paper",
+  "tags": [
+   "safety"
+  ],
+  "note": "Deaths from drinking too much water: more than 5 litres, usually 10 to 20, within a few hours, diluting the blood's sodium and swelling the brain."
  },
  {
   "id": "gatej2005",
@@ -1029,6 +1087,21 @@
   "note": "A proposed loop: metabolites of static contraction drive the gamma system and the muscle spindles, raising stiffness and metabolites again, so muscle tension perpetuates itself and spreads to other muscles."
  },
  {
+  "id": "jordan2000",
+  "authors": "Jordan J, Shannon JR, Black BK et al.",
+  "year": 2000,
+  "title": "The pressor response to water drinking in humans : a sympathetic reflex?",
+  "venue": "Circulation 101:504-9",
+  "url": "https://doi.org/10.1161/01.cir.101.5.504",
+  "pmid": "10662747",
+  "kind": "paper",
+  "tags": [
+   "vascular",
+   "nerve"
+  ],
+  "note": "Drinking water raises blood pressure through the sympathetic nerves: by over 30 mmHg in autonomic failure, by about 11 mmHg in older people, and not in the young."
+ },
+ {
   "id": "kanoi2017",
   "authors": "Kanoi AV, Panchal KB, Sen S et al.",
   "year": 2017,
@@ -1206,6 +1279,20 @@
    "nerve"
   ],
   "note": "The skin's reactive hyperaemia is carried largely by sensory nerves and BKCa channels, not prostanoids."
+ },
+ {
+  "id": "lu2012",
+  "authors": "Lu CC, Li MH, Lin TC et al.",
+  "year": 2012,
+  "title": "Water ingestion reduces skin blood flow through sympathetic vasoconstriction",
+  "venue": "Clin Auton Res 22:63-9",
+  "url": "https://doi.org/10.1007/s10286-011-0142-6",
+  "pmid": "22057730",
+  "kind": "paper",
+  "tags": [
+   "vascular"
+  ],
+  "note": "Half a litre of water, against 50 ml, lowers skin blood flow in the palm by 25 minutes in young healthy men, a sympathetic vasoconstriction, while blood pressure holds."
  },
  {
   "id": "lu2019",
@@ -2018,6 +2105,20 @@
    "imaging"
   ],
   "note": "Laser speckle and laser Doppler reproducibly track the skin's reflex vasoconstriction to cooling; the shallowest sampling sees a smaller response than the deepest."
+ },
+ {
+  "id": "scott2001",
+  "authors": "Scott EM, Greenwood JP, Gilbey SG et al.",
+  "year": 2001,
+  "title": "Water ingestion increases sympathetic vasoconstrictor discharge in normal human subjects",
+  "venue": "Clin Sci (Lond) 100:335-42",
+  "pmid": "11222121",
+  "kind": "paper",
+  "tags": [
+   "vascular",
+   "nerve"
+  ],
+  "note": "Drinking water raises the sympathetic drive in healthy people: nerve traffic to muscle rises, most at 30 minutes, and the calf's vessels narrow, while blood pressure holds."
  },
  {
   "id": "segal1986",

@@ -1,6 +1,7 @@
 ---
 import Doc from '../../layouts/Doc.astro';
 import data from '../../data/sim/vessel.json';
+import adaptData from '../../data/sim/adapt.json';
 import acu from '../../data/sim/acupoints.json';
 import { refById } from '../../data/references';
 import { switchChart, type Switch } from '../../sim/guide/switch';
@@ -21,6 +22,10 @@ const col = data.checks.collar;
 const cool = data.checks.cooling;
 const f2 = (x: number) => x.toFixed(2);
 const pct = (x: number) => `${Math.round(100 * x)}%`;
+// Where a set knot lets go: the tone, as a share of resting tone, below which a fully adapted vessel reopens, for the
+// healthy, hypertensive and remodelled walls of the project's adaptation study.
+const adapted = adaptData as unknown as Record<string, { adapted_aopen_over_rest: number }>;
+const setLets = ['healthy', 'hypertensive', 'remodel'].map((k) => adapted[k].adapted_aopen_over_rest);
 
 // Figure 2: the wall's switch, drawn from the same model and measured parameters as the numbers in Section 3.2. Across,
 // the tone of the wall; up, how far shut the vessel is, from its relaxed radius (0) to shut (1).
@@ -59,7 +64,8 @@ const c = (...ids: string[]) => {
   return '<span class="cite">[' + ns.map(({ id, n }) => `<a href="#ref-${id}">${n}</a>`).join(', ') + ']</span>';
 };
 const short = (u: string) => u.replace('https://', '');
-const doi = '10.5281/zenodo.23901649';
+// The concept DOI: it resolves to the latest version on Zenodo.
+const doi = '10.5281/zenodo.23901648';
 const OWN: Record<string, string> = {
   knotsrepo: `Knots of Existence: models, parameters and runs (2026). <a href="${repo}">${short(repo)}</a>`,
   knotspreprint: `Jhong E. Knots: seven mechanisms, what each would do, and a recording that would tell them apart. Preprint (2026). <a href="${site}/research/preprint/">${short(site)}/research/preprint/</a>`,
@@ -80,8 +86,9 @@ seconds; a squeeze and release widen a small artery; a nerve deprived of blood f
 shut holds shut the branches it feeds. A knot, then, is a memory with an anatomy: written by the sympathetic drive, kept by
 the wall, read by the perforator's own nerve. We argue that it is now the strongest account in a specific sense: it
 explains more of what is reported, with less that is new, than six alternatives in their strongest forms. We state what it
-does not explain, weigh the claim that acupuncture points sit on perforators, consider the slower fascial changes
-reported after intensive practice, and their dangers, and give the measurements that would refute it.`;
+does not explain, weigh the claim that acupuncture points sit on perforators, describe runaway release, a rare and
+dangerous process reported after forceful efforts to clear knots, with the slower changes in the fascia that follow it, and
+give the measurements that would refute it.`;
 
 const intro1 = [
   `Anyone with a foam roller can find them: small, discrete, tender places in the soft tissue, dozens of them, by many
@@ -97,13 +104,17 @@ const intro1 = [
 ];
 
 const box1 = [
-  `They persist. A fresh knot may yield in a session; an old one can take months.`,
+  `They persist until released, for years if left alone, yet any of them can let go quickly. Some are more stubborn than
+  others; freeing those takes more skill, above all with the breath, and the skill takes training. The toughest may take a
+  skilled practitioner a whole session, never months.`,
   `They let go within seconds, not days: under a hand, often as it lifts; under a roller; with the breath, by many accounts
   less with a single deep breath than with a subtle, complex pattern of breathing joined to fine attention to the body.`,
   `Deeper ones let go to focused attention, sometimes without touch.`,
-  `Warmth helps: a hot shower softens many at once.`,
+  `Warmth helps: a hot shower softens many at once. Some find that a drink of water eases releases within about ten
+  minutes, though on the account below it should not (Section 3.5).`,
   `A release can come with a small pop, or a tingle across a patch of skin.`,
-  `They limit movement: a stretch meets a dull block at the knot.`,
+  `They limit movement: a stretch meets a dull block at the knot, unlike the sharper pull of a tight muscle, and ordinary
+  stretching does little to free it.`,
   `They come in families. When one lets go, others nearby may go with it, or another may appear close by; a large one can
   free smaller ones around it, not the reverse.`,
   `They gather where stress is held, and accumulate with age.`,
@@ -202,15 +213,30 @@ const hold = [
   above rest. Thicker walls, as in hypertension ${c('schiffrin1995')}, make it easier.`,
 ];
 
+const gaspNone = rob.share_gasp_shuts_at_rest === 0;
+const forms = `How a knot forms follows from the band. Shutting a vessel takes a surge: in the project's model, with measured
+parameters, the tone that snaps it shut is about ${Math.round(s.Afold / s.urest)} times its resting tone, and a deep breath at
+rest, sized to the fall in fingertip flow it causes (Section 3.4), shuts no vessel in
+${gaspNone ? 'any' : `${pct(1 - rob.share_gasp_shuts_at_rest)}`} of the
+${rob.samples.toLocaleString('en-GB')} plausible parameter sets ${c('knotsrepo')}. A fright, pain, cold or a squeeze can:
+local cooling all but stops the skin's flow ${c('charkoudian2003')}, and pressure from outside lowers the tone it takes
+${c('miller2026')}. Staying shut takes less, but the stress must last: a constriction of five minutes leaves no trace
+${c('hill2003', 'martinezlemus2004')}, while one of hours begins to set. A knot, on this account, is the trace of a coincidence, a surge and a
+stress that outlasted it; a brief stress leaves none. That may be why knots gather where stress is held for long, and why
+children have few.`;
+
 const set = `Smooth muscle adapts to the length at which it is held. Arterioles constricted for five minutes relax fully when
 the drive is removed; after four hours they relax slowly ${c('hill2003')} and incompletely, their cells repositioned to hold
 the smaller diameter ${c('martinezlemus2004')}, though the hold still needs calcium and goes at once without it
 ${c('hill2003')}. Smooth muscle held short regains much of the force it lost there ${c('syyong2008', 'bednarek2011')}, and
 resistance arteries kept constricted for three days remodel inward, their relaxed lumen 10–16% smaller ${c('bakker2002')}. A
 vessel held shut long enough might then hold nearer to rest: the knot would set, and the setting would deepen with time,
-while still answering to whatever lowers the wall's calcium. That fits the difference practitioners describe between fresh
-knots, which yield in a session, and old ones, which take months; and it predicts something an isolated vessel can show
-(Section 7).`;
+while still answering to whatever lowers the wall's calcium. A set knot would be more stubborn: holding at rest, it lets go
+only when the drive falls well below rest, in the model when the wall's tone falls to between ${pct(Math.min(...setLets))} and
+${pct(Math.max(...setLets))} of its resting level ${c('knotsrepo')}, and the slower relaxation of arterioles held for hours
+suggests it may also take longer to go. Practitioners describe knots that differ in how stubborn they are, any of which a
+trained breath can free quickly; on this account, that asks the breath to take the drive, or the wall's calcium, well below
+rest (Section 8). The setting also predicts something an isolated vessel can show (Section 7).`;
 
 const breath = `The skin's small arteries are governed by sympathetic nerves: skin blood flow runs from almost nothing under
 local cooling to several litres a minute in heat ${c('charkoudian2003')}, and about a third of the superficial fascia's
@@ -235,6 +261,17 @@ Heat acts more slowly and more widely. Local warming raises the skin's flow most
 ${c('minson2001')}, but a patch of skin warms with a time constant of about ${Math.round(cool.tau_s_at_max_flow)} s even
 at maximal flow ${c('knotsrepo')}: too slow to free a knot within a breath, fast enough over the minutes of a hot shower,
 and everywhere the water touches.`;
+
+const water = `Some also find that a drink of water eases releases within about ten minutes (Box 1). On this account it
+should not. Drinking water raises the sympathetic drive: in healthy people the nerves to muscle fire more, most at half an
+hour, and the calf's vessels narrow ${c('scott2001')}, and in young men half a litre lowers the skin's flow in the palm at
+twenty-five minutes ${c('lu2012')}. Systolic pressure, which would help a shut vessel open (Section 3.2), rises by about
+11 mmHg in older people and not in the young ${c('jordan2000')}. A narrower vessel in the skin is a harder knot to free, so
+in the young, whose pressure does not rise, the report counts against the hypothesis, unless the drinker was short of
+water: after exercise that dehydrates, resting blood pressure is lower, and fluid given by vein lowers the drive to muscle
+${c('charkoudian2003b')}; whether a drink does the same is not measured. A recording would tell (Section 7). Nor is water
+harmless in quantity: more than five litres drunk within a few hours has diluted the blood's sodium enough to swell the
+brain, and has killed ${c('gardner2002')}.`;
 
 const spark = `While a perforator is shut, the patch it feeds is underfed, and so is the nerve that travels with it.
 Underfed, not starved: a perforator's territory is linked to its neighbours' by anastomoses ${c('taylor2011')}, through
@@ -293,11 +330,12 @@ The slower changes in the fascia (Section 5) are reported over days to weeks. Th
 // Table 1: what the hypothesis accounts for, and on what.
 const T1: [string, string, string, string][] = [
   ['Discrete, tender places in the same regions in everyone', 'Perforator exits: fixed sites, shared clusters; tender because shut', c('taylor1987', 'martin2013', 'weum2016', 'shah2005'), 'Identity untested'],
-  ['They persist for months', 'A wall that holds itself shut; muscle that adapts; an artery that remodels', c('burton1951', 'martinezlemus2004', 'bakker2002'), 'Each measured; together untested'],
+  ['They persist until released; some are stubborn', 'A wall that holds itself shut; muscle that adapts; an artery that remodels', c('burton1951', 'martinezlemus2004', 'bakker2002'), 'Each measured; together untested'],
   ['They let go within seconds', 'A shut vessel reopens as soon as its tone falls below the band', c('burton1951', 'nichol1951', 'miller2026'), 'Established mechanism'],
   ['With the breath', 'A deep breath raises the drive for seconds; slow breathing lowers it', c('mayrovitz2026', 'adler2019'), 'Measured in fingers and in nerves to muscle; in knots, untested'],
   ['As a hand lifts; under a roller', 'A pressed vessel reopens only on release; brief squeezes widen it', c('clifford2006'), 'Measured in feed arteries of rat muscle'],
   ['A hot shower frees many', "Local warming lowers the tone of the skin's vessels", c('minson2001'), 'Established'],
+  ['Water eases releases (some)', "Drinking narrows the skin's vessels; it could help only someone short of water, or whose pressure it raises", c('scott2001', 'lu2012', 'charkoudian2003b'), 'Against, unless short of water'],
   ['A tingle over a patch', 'A nerve that went without blood fires when it returns; reactive hyperaemia', c('ochoa1980', 'lorenzo2007'), 'Established'],
   ['A dull block to stretch', 'A dry sleeve jams in the gliding layer', c('guimberteau2005', 'cowman2015', 'coussot2002'), 'Hypothesis'],
   ['Families; a large one frees small ones', 'Trees: a shut parent holds its children shut', c('taylor1987'), 'Hydraulics; in knots, untested'],
@@ -353,15 +391,33 @@ const altAfter = [
 ];
 
 const fascia = [
-  `The knots are not the end of what is reported. Some who take this work furthest, chiefly in long and intensive
-  contemplative practice, describe a second family of changes that follows them: layers of the fascia beneath the skin felt
-  to peel apart along lines, places left feeling hollow, and then, over days, a filling-in felt as re-stitching. These
-  reports are rarer than knots, come from fewer people and are harder to check. They run on a slower clock, hours to weeks
-  rather than seconds, and in them the order runs one way: the knots first, the layers after. They belong to a wider record
-  of bodily experience in intensive practice, which includes pressure and tension that build and release, currents of energy
-  and involuntary movement ${c('lindahl2017')}, and energy-like somatic experiences whose course, effects and interpretation
-  have been described in their own right ${c('cooper2021')}.`,
-  `The perforator hypothesis bears on this family because perforators are among the things that hold the fascia down. The
+  `The knots are not the end of what is reported. Some who work forcefully at clearing them, in long and intensive
+  contemplative practice or in somatic work, describe a rarer process, which we call runaway release. Past some point,
+  releases come in chains, at times faster than they can be followed, and the process can no longer be set down: it feels
+  unfinished, and stopping is harder to bear than going on. Each stage has to be found a way through, with a skill learned
+  along the way. In the fullest accounts we know, knots go in bursts that spread over a region, or seem to travel before they
+  let go. The layers of fascia then peel apart along winding lines, often with the body turning and twisting; places are
+  left hollow, the hardest part, at times with nausea; and over days to weeks they fill in again, felt as re-stitching,
+  which brings back a sense of wholeness. In any one region the knots go first and the layers after, while across the body
+  the stages interleave. The whole course can run for months or years, and its last filling-in can be slow, uncomfortable
+  rather than painful. People do come through it; those who have say it is lived through rather than stopped. The reports are many but informal; the process is little known, and we know of no study of
+  it as such. It belongs to a wider
+  record of bodily experience in intensive practice, which includes pressure and tension that build and release, currents of
+  energy and involuntary movement ${c('lindahl2017')}, and energy-like somatic experiences whose course, effects and
+  interpretation have been described in their own right ${c('cooper2021')}; we think some of what that record describes is
+  this process.`,
+  `Runaway release is arduous, and it is dangerous. Difficulties of this wider kind have lasted years and have included
+  suicidality and stays in hospital ${c('lindahl2017')} (Section 9). We think runaway release can bring a person to the point
+  of suicide, above all someone facing it alone, exhausted, or without the experience, guidance and support to get through it.
+  We describe it because people are beginning to work forcefully at clearing knots, and a risk that is known can be avoided,
+  recognised and met with help.`,
+  `Why releases would come in chains is clearest in a network. Each knot is a switch that holds until its drive falls
+  below a band, and knots hold one another up: a shut parent holds its branches shut (Section 3.8), and an underfed, tender
+  patch may add to the drive that keeps others shut. Clearing enough of them can lower the drive that holds the rest, so that
+  each release makes the next easier, and past a threshold the network tips: releases run on until few are left. A postural
+  or nervous-system set held up by its own inputs would tip in the same way (Section 4), so the tipping does not decide what
+  a knot is.`,
+  `The perforator hypothesis bears on the slower phase because perforators are among the things that hold the fascia down. The
   superficial fascia runs unbroken over the body and glides over the deep fascia on a plane of loose tissue
   ${c('gray2020', 'guimberteau2005')}; beneath a firm, protective superficial layer lies a mobile one, made for gliding
   ${c('nakajima2004')}. It is held in place by fibrous tethers ${c('dowlatshahi2026')} and by the perforators that pass
@@ -369,11 +425,17 @@ const fascia = [
   layers are pinned. Were many to let go across a region, and the returning flood to wet the gliding plane, the layers could
   part along the lines between the remaining tethers, and close again as the fluid is taken up and the sleeves hold once
   more. This is a hypothesis built on a hypothesis, and it is not yet modelled.`,
+  `The hypothesis offers a second reading of the slower phase, in the vessels themselves. When the flow through small arteries
+  rises and stays up, they remodel outward: in rats, an enzyme that breaks down the wall's matrix is more active by the fourth
+  day, and by the fourteenth the arteries are wider and their walls have grown ${c('dumont2007')}; in mice, the remodelling needs macrophages,
+  and the vessels' tone sets its direction ${c('bakker2008')}. Perforators that had long been shut, opened together, would
+  carry such flow, and a clearing-out and rebuilding of their walls would run on about the clock the reports give for
+  hollowing and re-stitching. This, too, is untested.`,
   `There is a strong alternative. Intensive practice brings long hours of attention to the body, and often overbreathing,
   strain and short sleep, each of which can produce vivid bodily sensation with no change in the tissue; attention to the
   body is not always benign, and past some point its effects can turn negative ${c('britton2019')}. A reading in which these
   experiences are changes in how the body is perceived, the perception account of Section 4, is the natural first reading
-  for a clinician. Practitioners in difficulty found grounding, calming and embodying activities, sleep, diet and exercise
+  for a clinician. Practitioners in difficulty found grounding, calming and embodying activities, sleep and exercise
   helpful; body-based treatments, massage and acupuncture among them, were reported as helpful by some and not by others
   ${c('lindahl2017')}.`,
   `The two readings predict different things, and ultrasound can tell them apart. The glide between fascial layers can be
@@ -420,6 +482,7 @@ const T3: [string, string, string][] = [
   ['Setting', 'Isolated small arteries carried shut for four hours against five minutes, then returned to resting tone', 'Those held for hours reopen at rest as fully as those held for minutes'],
   ['Age', "A census of knots, with the skin's microvascular reactivity at the same sites, across ages", 'No relation; children as knotted as adults'],
   ['The fascia follows the knots', 'Ultrasound of the glide between fascial layers in people who report the slower changes, at the reported sites and matched sites, over days', 'No difference from matched sites'],
+  ['Water does not help', 'Felt releases, laser speckle over knots and blood pressure for half an hour after half a litre of water against a sip, in people not short of water', "Releases come more easily after the larger drink while the skin's flow falls and the pressure holds"],
 ];
 
 const predAfter = `The first is the cheapest and decides the most: an afternoon with a pencil Doppler or a thermal camera, two
@@ -433,18 +496,21 @@ is set out separately ${c('knotspilot')}.`;
 
 const limits = [
   `The identification is untested. No one has yet mapped tender points against perforators blind, or recorded a release.`,
-  `The reports are informal, and partly the author's own.`,
+  `The reports of knots are informal, and partly the author's own.`,
   `Finding tender points by touch is only moderately reliable from one examiner to another ${c('rathbone2017')}, so any map
   of knots must be made blind to the map of vessels (Prediction 1).`,
   `A finger cannot feel a small artery shut beneath the fat. The hypothesis accounts for tenderness and the block, not for a
   firm nodule; where a nodule is found, it belongs to muscle, and that knot is not (only) a perforator.`,
   `The hold is demanding in healthy vessels. That old knots hold at rest leans on adaptation and remodelling measured over
-  hours and days in isolated small arteries, which relax incompletely rather than not at all.`,
+  hours and days in isolated small arteries, which relax incompletely rather than not at all. That a trained breath frees
+  even stubborn knots quickly asks it to take the drive well below rest, or to move the wall, and no one has measured either.`,
+  `Water, which some find eases releases, narrows the skin's vessels in healthy people; on this account it should not help,
+  except someone short of water or whose blood pressure it raises (Section 3.5).`,
   `The evidence on age points both ways. The breath's effects are measured in the skin of the fingers and toes and in the
   nerves to muscle, not at the trunk's perforators, and which of its routes matters is unknown.`,
   `Releases to attention alone are not explained.`,
-  `The account of the slower changes in the fascia (Section 5) is the most speculative part of the paper, and its reports are
-  the hardest to check.`,
+  `Runaway release and the slower changes in the fascia (Section 5) rest on informal reports, the hardest to check, and are
+  the most speculative part of the paper.`,
   `The text was written by AI (below). Every reference was taken from its own record, and the numbers from the cited sources
   and the project's data, but errors of emphasis or reading are possible, and corrections are welcome.`,
 ];
@@ -460,6 +526,13 @@ const safety = [
   their effects on people's lives, and with the many ways practitioners, teachers, doctors and therapists read and managed
   them ${c('cooper2021')}. Attention to the body is not always benign: past some point, its effects can turn negative
   ${c('britton2019')}.`,
+  `Runaway release (Section 5) is a particular danger for anyone who works forcefully at clearing knots, and no one should
+  face it alone. If it begins, easing off the work that set it off, even if the process itself goes on, the grounding, calming, sleep and exercise that
+  practitioners in difficulty have found helpful ${c('lindahl2017')}, and the support of people who know these experiences
+  all belong to getting through it. Any sign of physical illness calls for a physician at once, and drinking large amounts
+  of water is dangerous in itself (Section 3.5). Anyone
+  thinking about suicide should reach out now: in the US, call or text 988; elsewhere, find a line at
+  <a href="https://findahelpline.com">findahelpline.com</a>.`,
   `Nothing in this paper is a practice, a protocol or a recommendation, and nothing in it is a reason to seek these
   experiences: the hypothesis concerns what happens, not what anyone should do. Anyone in difficulty can find support from
   Cheetah House ${c('cheetah')}, whose team includes the researchers of the Varieties of Contemplative Experience project
@@ -483,7 +556,8 @@ const open = [
   layers slide?`,
   `Can a small human artery held shut for hours stay shut at resting tone?`,
   `What carries a release to attention alone?`,
-  `What, if anything, changes in the fascia over the days after many knots let go?`,
+  `What, if anything, changes in the fascia or the vessels over the days after many knots let go, and what carries runaway
+  release?`,
   `Are the classical points on perforators, or only the tender <em>ashi</em> points?`,
 ];
 
@@ -503,7 +577,7 @@ const index = [
   { id: 'hypothesis', label: 'the hypothesis' },
   { id: 'case', label: 'the case' },
   { id: 'alternatives', label: 'alternatives' },
-  { id: 'fascia', label: 'the fascia' },
+  { id: 'fascia', label: 'runaway release' },
   { id: 'points', label: 'acupuncture points' },
   { id: 'predictions', label: 'predictions' },
   { id: 'safety', label: 'safety' },
@@ -515,11 +589,11 @@ const index = [
   current="research"
   glyph="結"
   index={index}
-  citation={{ authors: ['Jhong, Eugene'], date: '2026/11/02', doi, pdf: '/research/perforator-hypothesis.pdf' }}
-  description="A position paper: knots as cutaneous perforators held shut by their own walls. The case from established physiology, the alternatives in their strongest forms, the fascia, the acupuncture points, the dangers, and the measurements that would refute it."
+  citation={{ authors: ['Jhong, Eugene'], date: '2026/11/03', doi, pdf: '/research/perforator-hypothesis.pdf' }}
+  description="A position paper: knots as cutaneous perforators held shut by their own walls. The case from established physiology, the alternatives in their strongest forms, runaway release and the fascia, the acupuncture points, the dangers, and the measurements that would refute it."
 >
   <div class="paper">
-    <p class="byline">Eugene Jhong · Knots of Existence, independent · <span class="mono">2 November 2026 · draft 1 · <a href={`https://doi.org/${doi}`}>doi.org/{doi}</a></span></p>
+    <p class="byline">Eugene Jhong · Knots of Existence, independent · <span class="mono">3 November 2026 · draft 3 · <a href={`https://doi.org/${doi}`}>doi.org/{doi}</a></span></p>
     <p class="byline disclose">Written by AI (Claude Opus 5.5, Anthropic) under the author's direction, and refereed by a second model (Claude Fable 5.1). See <a href="#authorship">Authorship and AI use</a>.</p>
     <p class="byline mono">Correspondence and objections: <a href={`${repo}/issues`}>github.com/ejhong/knots/issues</a> · <a href={`${base}/research/perforator-hypothesis.pdf`}>PDF</a> · <a href={`${base}/research/preprint/`}>the companion preprint</a></p>
 
@@ -529,10 +603,11 @@ const index = [
     </section>
 
     <aside class="caution">
-      <p><strong>A caution.</strong> Experiences like some of those discussed here have for some people been prolonged and
-        disabling (Section 9). This paper describes; it does not prescribe. Nothing in it
-        is a practice or a protocol, and no one should try to bring these experiences on. Anyone in difficulty can find
-        support from <a href="https://www.cheetahhouse.org">Cheetah House</a>.</p>
+      <p><strong>A caution.</strong> One process discussed here, runaway release (Section 5), can be prolonged and dangerous,
+        and we think it can bring a person to the point of suicide (Sections 5 and 9). This paper describes; it does not prescribe.
+        Nothing in it is a practice or a protocol, and no one should try to bring these experiences on. Anyone in difficulty
+        can find support from <a href="https://www.cheetahhouse.org">Cheetah House</a>; anyone thinking about suicide should
+        reach out now: in the US, call or text 988; elsewhere, find a line at <a href="https://findahelpline.com">findahelpline.com</a>.</p>
     </aside>
 
     <section id="introduction">
@@ -580,12 +655,14 @@ const index = [
           far shut the vessel is (up, from relaxed to shut) against the tone of its muscle (across). Over the shaded band, open and shut are both stable.
           Tone rising past the band snaps the vessel shut; once shut, it reopens only when tone falls below the band.</p>
       </div>
-      <h3>3.3 Why old knots persist</h3>
+      <h3>3.3 How knots form, and why old ones persist</h3>
+      <p set:html={forms} />
       <p set:html={set} />
       <h3>3.4 What the breath can reach, and how fast</h3>
       <p set:html={breath} />
       <h3>3.5 Why hands, rollers and warmth</h3>
       <p set:html={hands} />
+      <p set:html={water} />
       <h3>3.6 Why a knot is tender, and why a release tingles</h3>
       <p set:html={spark} />
       <h3>3.7 Why a dull block</h3>
@@ -624,7 +701,7 @@ const index = [
     </section>
 
     <section id="fascia">
-      <h2>5. Beyond the knots: the fascia</h2>
+      <h2>5. Beyond the knots: runaway release and the fascia</h2>
       {fascia.map((t) => <p set:html={t} />)}
     </section>
 
@@ -675,6 +752,12 @@ const index = [
         with acupoints) are read from its data when the page is built.</p>
       <h2>Competing interests and funding</h2>
       <p>None.</p>
+      <h2>Versions</h2>
+      <p>Draft 3 (3 November 2026) corrects Box 1: no knot needs months to free; the stubborn ones need more skill (Section
+        3.3). It adds how a knot forms (Section 3.3); a reported effect of water, which in the young counts against the
+        hypothesis (Section 3.5); runaway release and its dangers (Sections 5 and 9); and a reading of the
+        slower phase in the vessels (Section 5). The additions were written by Claude Opus 5.5 under the author's direction and
+        checked by Claude Fable 5.1 against their sources and for safe messaging.</p>
     </section>
 
     <section class="refs">
@@ -685,7 +768,7 @@ const index = [
           const r = refById(id);
           return r ? (
             <li id={`ref-${id}`}>
-              {r.authors}{r.year > 0 ? ` (${r.year})` : ''}. {r.title}. <em>{r.venue}</em>.{' '}
+              {r.authors}{r.year > 0 ? ` (${r.year})` : ''}. {r.title}{/[?!]$/.test(r.title) ? '' : '.'} <em>{r.venue}</em>.{' '}
               {r.url && <a href={r.url}>{short(r.url)}</a>}
             </li>
           ) : (
@@ -896,7 +979,7 @@ const index = [
   }
   .refs a {
     color: var(--accent-dark);
-    word-break: break-all;
+    overflow-wrap: anywhere;
   }
   @media (max-width: 700px) {
     .sw-wrap {
@@ -946,9 +1029,22 @@ const index = [
     .figcap {
       break-after: avoid;
     }
-    /* Table 2 is too tall to share a page with Table 1; keep the section, its caption and its header together. */
-    #alternatives {
-      break-before: page;
+    /* Table 3 fits on one page: keep it whole, so its caption and header never sit alone at a page's foot. */
+    .t.pred {
+      break-inside: avoid;
+    }
+    .paper p {
+      orphans: 3;
+      widows: 3;
+    }
+    /* A caption stays whole and with its figure; Box 1, which follows the opening, may run on to the next page rather
+       than leave the first page a third empty. */
+    .paper .figcap {
+      break-inside: avoid;
+      break-before: avoid;
+    }
+    .box:not(.open) {
+      break-inside: auto;
     }
   }
 </style>

@@ -62,8 +62,7 @@ export function clocksFigure({ warmFast, warmSlow }: ClockInputs): string {
   const reported: Row[] = [
     { label: 'a knot lets go', from: 2, to: 15, kind: 'knot' },
     { label: 'a hot shower softens many', from: 3 * MIN, to: 15 * MIN, kind: 'knot' },
-    { label: 'a fresh knot yields', from: 10 * MIN, to: HOUR, kind: 'knot' },
-    { label: 'an old knot yields', from: MONTH, to: 6 * MONTH, kind: 'knot' },
+    { label: 'a knot left alone persists for years', from: MONTH, to: YEAR, kind: 'knot' },
     { label: 'slower changes in the fascia', from: DAY, to: 3 * WEEK, kind: 'fascia' },
   ];
 
@@ -123,7 +122,7 @@ export function clocksFigure({ warmFast, warmSlow }: ClockInputs): string {
   const breath = `<rect x="${f(X(3))}" y="${top}" width="${f(X(15) - X(3))}" height="${bottom - top}" fill="${C.vessel}" opacity="0.09"/>
     <text x="${f((X(3) + X(15)) / 2)}" y="${top - 2}" text-anchor="middle" fill="${C.muted}" font-size="6.8" ${MONO}>a breath</text>`;
   const H = bottom + 24;
-  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="How fast knots are reported to change, beside how fast the physiology the hypothesis names is measured to change, from a second to a year: the breath reaches the skin's vessels and a reopened vessel's flow peaks within seconds, as a knot lets go; a patch of skin warms over a minute or more, as a hot shower softens many; an arteriole constricted for five minutes keeps no trace, and one constricted for four hours relaxes incompletely; an artery remodels in days, as old knots persist for months; slower changes in the fascia are reported over days to weeks.">
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="How fast knots are reported to change, beside how fast the physiology the hypothesis names is measured to change, from a second to a year: the breath reaches the skin's vessels and a reopened vessel's flow peaks within seconds, as a knot lets go; a patch of skin warms over a minute or more, as a hot shower softens many; an arteriole constricted for five minutes keeps no trace, and one constricted for four hours relaxes incompletely; an artery remodels in days, and a knot left alone persists for years; slower changes in the fascia are reported over days to weeks.">
     <rect x="0" y="0" width="${W}" height="${H}" rx="8" fill="${C.card}"/>
     ${breath}${grid.join('')}${labels.join('')}${o.join('')}
   </svg>`;

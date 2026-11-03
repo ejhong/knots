@@ -275,6 +275,22 @@ NEW = [
      "The tingle after ischaemia recorded in human nerves: ectopic firing in large sensory fibres begins about half a minute after circulation returns and peaks by the second minute, as the felt paraesthesiae do; hyperventilation increases both."),
     ("17449984", "hsieh2007", ["trigger-points"],
      "Dry needling a key trigger point in infraspinatus raised the pressure-pain threshold of satellite trigger points in its zone of referral, in 14 patients; the authors propose a spinal mechanism."),
+    # the position paper, draft 3: the slower phase after many knots let go, read in the vessels
+    ("17158349", "dumont2007", ["vascular", "animals"],
+     "Resistance arteries given high flow remodel outward: MMP-9 activity has risen by day 4, and by day 14 they are wider and their walls have grown; the nitric oxide pathway and the MMPs are both needed."),
+    ("18299286", "bakker2008", ["vascular", "animals"],
+     "Small arteries remodel when their flow changes only with macrophages present, and their tone sets the direction, inward or outward."),
+    # the position paper, draft 3: a drink of water, which some say eases releases, read against the skin's vessels
+    ("11222121", "scott2001", ["vascular", "nerve"],
+     "Drinking water raises the sympathetic drive in healthy people: nerve traffic to muscle rises, most at 30 minutes, and the calf's vessels narrow, while blood pressure holds."),
+    ("22057730", "lu2012", ["vascular"],
+     "Half a litre of water, against 50 ml, lowers skin blood flow in the palm by 25 minutes in young healthy men, a sympathetic vasoconstriction, while blood pressure holds."),
+    ("10662747", "jordan2000", ["vascular", "nerve"],
+     "Drinking water raises blood pressure through the sympathetic nerves: by over 30 mmHg in autonomic failure, by about 11 mmHg in older people, and not in the young."),
+    ("14561843", "charkoudian2003b", ["vascular", "nerve"],
+     "After exercise that dehydrates, resting blood pressure is lower, and saline by vein lowers the sympathetic drive to muscle."),
+    ("12053855", "gardner2002", ["safety"],
+     "Deaths from drinking too much water: more than 5 litres, usually 10 to 20, within a few hours, diluting the blood's sodium and swelling the brain."),
 ]
 
 # Existing entries that the simulation also leans on gain the models tag.
