@@ -142,9 +142,9 @@ export const CHAPTERS: Chapter[] = [
     id: 'theories',
     n: '08',
     glyph: '説',
-    title: 'Alternate theories',
+    title: 'Other theories',
     seconds: 22,
-    html: `<p>Perforators are one answer. Michael Johnson’s <em>vasocomputation</em> places held tension in latched vascular smooth muscle — predictions held as vascular clamps. It may describe a system of its own, closer to the clinging of the mind than to the knots a roller finds; or the two may prove to be views of the same knots.</p>
+    html: `<p>Perforators are one answer, and they grew from another: Michael Johnson’s <em>vasocomputation</em>, which places held tension in latched vascular smooth muscle — predictions held as vascular clamps. A knot on the perforator view is a case of its idea, a held contraction as a stored state: the same muscle, held by the vessel’s wall rather than by the latch. The latch may also describe a system of its own, closer to the clinging of the mind than to the knots a roller finds; or the two may prove to be views of the same knots.</p>
 <p>The trigger-point hypothesis finds contraction knots at overactive motor endplates inside muscle. Fascial densification places knots in thickened hyaluronan between the layers. A nerve view finds sensitised nerves where they pierce the fascia. And the physician’s first answer places knots in perception: the spinal cord and brain turn ordinary signals into tender spots, overbreathing makes the sparks, and attention makes the map. Each has now been run as a model from its own physiology, and at the moment a knot lets go each would leave a different trace: skin flow flooding in, flow rising slowly, stiffness falling in the muscle, the layers sliding again, a nerve’s firing falling, a motor unit falling silent, or nothing in the tissue at all. One recording at a release would tell them apart. See <a href="HYP">Hypotheses</a>. Each can also be drawn on the same body: here they are in turn, beginning with Johnson’s latches — the same knot, in each theory’s place; or choose one in the <a href="ATLAS">Atlas</a>.</p>`,
     refs: ['johnson2023', 'gerwin2004', 'stecco2011', 'quintner1994', 'woolf2011'],
     scene: { pose: { p: [-1.4, 0.7, -1.2], t: [0, 0.55, 0] }, age: 46, turntable: true, demo: 'theories' },

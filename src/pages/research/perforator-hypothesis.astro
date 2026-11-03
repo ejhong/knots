@@ -83,8 +83,9 @@ its veins and a nerve through an opening in the fascia, held shut by the smooth 
 measured physiology. A toned small artery can snap shut and stay shut until its tone falls well below the level that shut
 it; held shut for hours, it relaxes only slowly and incompletely; the breath moves the skin's sympathetic drive within
 seconds; a squeeze and release widen a small artery; a nerve deprived of blood fires when blood returns; and a vessel held
-shut holds shut the branches it feeds. A knot, then, is a memory with an anatomy: written by the sympathetic drive, kept by
-the wall, read by the perforator's own nerve. We argue that it is now the strongest account in a specific sense: it
+shut holds shut the branches it feeds. A knot, then, is a memory with an anatomy: the held vascular contraction of Johnson's
+vasocomputation, placed in one class of vessel, written by the sympathetic drive, kept by the wall rather than by the
+latch of his account, and read by the perforator's own nerve. We argue that it is now the strongest account in a specific sense: it
 explains more of what is reported, with less that is new, than six alternatives in their strongest forms. We state what it
 does not explain, weigh the claim that acupuncture points sit on perforators, describe runaway release, a rare and
 dangerous process reported after forceful efforts to clear knots, with the slower changes in the fascia that follow it, and
@@ -137,8 +138,14 @@ held it; a longer preprint of the same month set out that version at length ${c(
 the collar failed. At its most viscous, hyaluronan around a vessel pushes back about ${Math.round(col.pressure_over_drag)}
 times more weakly than the blood pressure holding the vessel open ${c('nicholls2018', 'fede2018', 'knotsrepo')}, and on its
 own, in physiological conditions, it stays a liquid rather than gelling ${c('krause2001')}. If anything holds a perforator shut, it
-is the wall. That is the form argued here; where the earlier versions differ, this one replaces them. A companion preprint
-runs seven candidate mechanisms evenly, as models ${c('knotspreprint')}; this paper argues for one.`;
+is the wall. That is the form argued here; where the earlier versions differ, this one replaces them. It remains a case of
+vasocomputation's idea, not a rival to it. Johnson proposes that a held vascular contraction stores a state, that the state
+is a prediction, and that the contraction clamps the neural circuit around it. The hypothesis takes the first proposal and
+places it in one class of vessel; it needs neither of the others, and contradicts neither. Where it departs from Johnson is
+in what makes the state last: in his account the latch, holding a contraction cheaply for as long as its prediction stands;
+here the wall's own mechanics, which keep a vessel shut after the drive that shut it has eased and, once it has set, at rest
+(Sections 3.2, 3.3 and 4). A companion preprint runs seven candidate mechanisms evenly, as models ${c('knotspreprint')};
+this paper argues for one.`;
 
 const statement = `A knot is a cutaneous perforator, a small artery travelling with its veins, a nerve and a lymphatic through
 an opening in a fascia, held shut by the smooth muscle of its own wall. It lets go when the wall's tone falls, or the wall is
@@ -170,9 +177,11 @@ the band; only adaptation and remodelling let it hold at rest. The writing is lo
 their walls, the pressure that feeds them and the load at their openings, so a rising drive carries a few of them across
 the band at a time, not all at once. The wall keeps: its switch holds
 the state, and adaptation and remodelling make it durable. The perforator's own nerve reads: as tenderness while the vessel
-holds, and as a tingle when it lets go. Each perforator is a site that can be set or cleared, and a body has hundreds of
+holds, and as a tingle when it lets go. It reads through the blood the vessel withholds and returns, one of the ways Johnson
+expects a contraction to act on the neurons nearby ${c('johnson2023')}. Each perforator is a site that can be set or cleared, and a body has hundreds of
 large ones and many more small ones ${c('taylor1987')}: a map of held states that a hand can find, the breath can reach and
-an instrument could read.`;
+an instrument could read. In this sense the hypothesis gives one of vasocomputation's memories an address; whether what it
+stores is also a prediction, as Johnson proposes, it leaves open.`;
 
 const caseIntro = `No single observation below proves the hypothesis. The argument is that one anatomical object, behaving as
 measured physiology says it behaves, accounts for nearly every feature in Box 1, where each alternative accounts for some.`;
@@ -234,7 +243,9 @@ vessel held shut long enough might then hold nearer to rest: the knot would set,
 while still answering to whatever lowers the wall's calcium. A set knot would be more stubborn: holding at rest, it lets go
 only when the drive falls well below rest, in the model when the wall's tone falls to between ${pct(Math.min(...setLets))} and
 ${pct(Math.max(...setLets))} of its resting level ${c('knotsrepo')}, and the slower relaxation of arterioles held for hours
-suggests it may also take longer to go. Practitioners describe knots that differ in how stubborn they are, any of which a
+suggests it may also take longer to go. The latch, by which smooth muscle holds force at less cost ${c('murphy2005')}, may be
+at work in the wall as well, but it would make the hold cheaper, not longer: relaxation is paced by the fall of calcium, not
+by the latch ${c('rembold1991')}. Practitioners describe knots that differ in how stubborn they are, any of which a
 trained breath can free quickly; on this account, that asks the breath to take the drive, or the wall's calcium, well below
 rest (Section 8). The setting also predicts something an isolated vessel can show (Section 7).`;
 
@@ -344,7 +355,10 @@ const T1: [string, string, string, string][] = [
 ];
 
 const altIntro = `Six other mechanisms have been proposed or can be assembled from established physiology (Table 2). Each
-has a strongest form, and most have evidence the perforator hypothesis lacks.`;
+has a strongest form, and most have evidence the perforator hypothesis lacks. The closest is the vascular latch:
+Johnson's account of how a held state lasts, and the form from which this hypothesis grew. It is the same muscle, held by a
+prediction and its latch rather than by the wall's mechanics; the two part in what lets a knot go and in what its release
+would show.`;
 
 // Table 2: the alternatives, each in its strongest form.
 const T2: [string, string, string, string, string][] = [
@@ -380,7 +394,8 @@ const altAfter = [
   at it, would.`,
   `Second, the perforator hypothesis has no direct route for knots that let go to attention alone, without touch. The latch
   or the motor switch would; so would a perforator whose tone is held in its band by a held prediction, the latch's command
-  acting on the perforator's wall.`,
+  acting on the perforator's wall. That would join the two accounts: a held prediction keeps up the drive, the
+  wall keeps the vessel shut, and the knot lets go when attention lets the prediction update.`,
   `Third, the alternatives need not all be rivals. Knots may be more than one
   thing, and densification, which struggles with release in seconds, may describe the slower changes of Section 5. A
   recording should classify each release rather than crown one theory.`,
@@ -671,8 +686,6 @@ const index = [
       <p set:html={trees} />
       <h3>3.9 Why more with age</h3>
       <p set:html={age} />
-      <figure class="fig clocks" set:html={clocksFigure({ warmFast: cool.tau_s_at_max_flow, warmSlow: cool.tau_s_at_tenth_flow })} />
-      <p class="figcap" set:html={clocksCap} />
       <table class="t">
         <caption>Table 1. What the hypothesis accounts for, what it rests on, and how firmly.</caption>
         <thead><tr><th>Reported</th><th>The perforator account</th><th>Rests on</th><th>Status</th></tr></thead>
@@ -682,6 +695,8 @@ const index = [
           ))}
         </tbody>
       </table>
+      <figure class="fig clocks" set:html={clocksFigure({ warmFast: cool.tau_s_at_max_flow, warmSlow: cool.tau_s_at_tenth_flow })} />
+      <p class="figcap" set:html={clocksCap} />
     </section>
 
     <section id="alternatives">
@@ -755,8 +770,9 @@ const index = [
       <h2>Versions</h2>
       <p>Draft 3 (3 November 2026) corrects Box 1: no knot needs months to free; the stubborn ones need more skill (Section
         3.3). It adds how a knot forms (Section 3.3); a reported effect of water, which in the young counts against the
-        hypothesis (Section 3.5); runaway release and its dangers (Sections 5 and 9); and a reading of the
-        slower phase in the vessels (Section 5). The additions were written by Claude Opus 5.5 under the author's direction and
+        hypothesis (Section 3.5); runaway release and its dangers (Sections 5 and 9); a reading of the
+        slower phase in the vessels (Section 5); and how the hypothesis stands to vasocomputation, as a case of its idea rather than a rival
+        (the abstract and Sections 1.3, 2, 3.3 and 4). The additions were written by Claude Opus 5.5 under the author's direction and
         checked by Claude Fable 5.1 against their sources and for safe messaging.</p>
     </section>
 
