@@ -211,6 +211,10 @@ const index = [
     border-bottom: 1px solid var(--border);
     scroll-margin-top: 110px;
   }
+  /* The grid above would otherwise override [hidden], and search and the theme filters would hide nothing. */
+  .entries li[hidden] {
+    display: none;
+  }
   .entries li:target {
     background: linear-gradient(90deg, rgba(200, 120, 104, 0.1), transparent 70%);
   }
