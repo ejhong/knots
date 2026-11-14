@@ -5,7 +5,7 @@ G3's main part is done: the engine (`knots_sim/guide/`) runs all seven theories 
 in their trees, the vascular latch, trigger points, densification, nerves, the motor switch and perception) through
 ten scenes in 32 settings each, and the Hypotheses page shows each theory's account beside what its model shows, with
 the instrument at the top (`/simulation/` redirects there); each theory's portrait is generated from the runs
-(`findings/guide.md`); G2 is done: the Research page leads with where the seven part, generated from the guide. Next: the rest of G3, then G4. The first version of this phase,
+(`findings/guide.md`); G2 was done (the Research page led with where the seven part); since 14 Nov the Research page is the experiments alone, and the comparison is the Hypotheses page's. Next: the rest of G3, then G4. The first version of this phase,
 an exam that scored the theories against the author's reports, is in [archive/](archive/2026-09-28-exam-plan.md); what
 it built is kept (§9). The planning brief it started from is [BRIEF.md](BRIEF.md).*
 
@@ -57,8 +57,11 @@ own words on the site: they were answers to questions, not written for presentat
   responds, lets go and moves, what it does with time, what an instrument would see, and what would rule the theory out.
   Each trait is marked: in every plausible setting; in some, and what that depends on; in none; silent; or not modelled.
 
-**Research**, for researchers: what physics allows and rules out; where the theories part (the tells, generated); the
-measurement ladder, cheapest first (§11); what is needed; the method, parameters and sources.
+**Research**, for researchers: experiments that might help, on what a knot is and what runaway release is; the position
+paper; who could help. Since 14 Nov it carries nothing from the models: what physics allows is on Hypotheses (`#physics`),
+how a knot sets and the tree on the vessel page, perforators and acupoints on `/research/points/`; the tells, the
+measurement ladder (§11), what is needed and the method left the site (How they differ and each theory's test cover the
+first two).
 
 **Hypotheses**: each card links to its theory in the field guide. **Atlas** (G4): the whole body driven by the models,
 theory by theory, in place of today's illustration.

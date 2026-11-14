@@ -23,9 +23,8 @@ A position paper, *The perforator hypothesis: knots as small arteries held shut 
 https://doi.org/10.5281/zenodo.23901648), argues from established physiology that a knot is a cutaneous perforator, a
 small artery held shut by its own wall where it pierces the fascia. It sets out six alternatives in their strongest forms
 (smooth muscle in the latch state, a myofascial trigger point, densified hyaluronan, a sensitised nerve, motor units that
-latch on, and perception) and the measurements that would refute it. The project's site runs all seven as models from
-their own physiology and shows where they part: https://ejhong.github.io/knots/ (code and data:
-https://github.com/ejhong/knots).
+latch on, and perception) and the measurements that would refute it. The project's site sets out all seven, each at its
+strongest: https://ejhong.github.io/knots/hypotheses/ (code and data: https://github.com/ejhong/knots).
 
 The paper was written by AI under its author's direction and has not been peer-reviewed, and its author will not take it
 to a journal. If, having weighed the alternatives, you think the perforator hypothesis is the best fit, take it up: test
@@ -42,7 +41,7 @@ of the wider kind it belongs to have lasted years, and in a study that recruited
 describe difficult experiences, about one in six reported suicidality (Lindahl et al. 2017).
 
 So this call has two prongs: **what a knot is**, and **what runaway release is**. Ten experiments that might help with
-one or the other follow, numbered for reference and in no order of importance; what each theory predicts is on the site:
+one or the other follow, numbered for reference and in no order of importance; they are also on the site:
 https://ejhong.github.io/knots/research/#experiments.
 
 Finding a knot may itself be a skill. Informal reports suggest that some who foam-roll cannot isolate single knots at all,
@@ -69,8 +68,9 @@ People who can release knots at will (bodyworkers, practitioners skilled with a 
 release them in a laboratory while instruments watch the tissue: skin flow by laser speckle or a thermal camera,
 ultrasound with colour Doppler and the layers' sliding, surface EMG resolved to single motor units. A button could mark
 each felt release, with a spot pressed alike, without a knot, as the sham.
-*What it might show.* Each of the seven mechanisms, as modelled, would leave a different trace at release, from a flood
-of flow to the skin to nothing in the tissue at all; a careful recording might begin to sort releases by kind.
+*What it might show.* Each of the seven proposed mechanisms would, on its own account, leave a different trace at
+release, from a flood of flow to the skin to nothing in the tissue at all; a careful recording might begin to sort
+releases by kind.
 *Likely needs:* a laboratory with ultrasound and EMG or skin-flow imaging · a few skilled practitioners (experiment 1
 might find them) · ethics review
 

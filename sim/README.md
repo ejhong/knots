@@ -70,5 +70,5 @@ results/<run>/           run manifests (committed); raw/ is not
 private/                 papers for reading (ignored by git: never commit PDFs)
 ```
 
-Still to come (PLAN.md §10): the Research page rebuilt from the guide's tells (G2); the motor switch with the vessel it
+Still to come (PLAN.md §10): the motor switch with the vessel it
 squeezes; the latch's own rate constants; the atlas driven by the models (G4).

@@ -3,8 +3,9 @@
 *The site's side of the field guide. The research plan is `sim/PLAN.md`; the look is `docs/DESIGN.md`. The field guide
 lives in the Hypotheses page (`/hypotheses/`): each theory's account and what its model shows, side by side, with the
 instrument at the top; `/simulation/` redirects there, and `/simulation/vessel/` is one perforator up close. Research
-(`/research/`) is the case for researchers: what physics allows, where the theories part, and the measurement that would
-decide. The exam-era design is in `sim/archive/`.*
+(`/research/`) is for researchers: experiments that might help, the position paper and who could help, with nothing from
+the models; what physics allows is on the Hypotheses page (`#physics`), and how a knot sets and the tree of vessels on
+`/simulation/vessel/`. The exam-era design is in `sim/archive/`.*
 
 The atlas shows what each theory says a knot *is*. The field guide shows how its knots would *behave*: each theory, run
 from its own physiology, grows its knots in the same patch of body and meets the same scenes; it shows how they would feel

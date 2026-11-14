@@ -1,5 +1,6 @@
 /**
- * Figures for the research page, as SVG strings drawn at build time from the exported runs (src/data/sim/vessel.json).
+ * Figures for the vessel page (how a knot sets, the tree), as SVG strings drawn at build time from the exported runs
+ * (src/data/sim/vessel.json, adapt.json).
  *
  * Colour follows docs/DESIGN.md and ./draw.ts: terracotta is a held knot and nothing else; jade is release; the hand's
  * events are bronze; structure is ink and stone. On paper the knot/release pair is #c4452f / #3f8f73; on ink,

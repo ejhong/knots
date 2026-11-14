@@ -4,6 +4,7 @@ import { HYPOTHESES } from '../data/hypotheses';
 import { refById } from '../data/references';
 import { crossSectionSVG } from '../lib/crossSection';
 import guide from '../data/sim/guide.json';
+import vessel from '../data/sim/vessel.json';
 import type { GuideIndex, ReportCell, Trait } from '../sim/guide/data';
 import { envelopeChart } from '../sim/guide/envelope';
 import { switchChart, type Switch } from '../sim/guide/switch';
@@ -92,11 +93,27 @@ const pie = (c: ReportCell | undefined) => {
 const traitOf = (id: string, key: string): Trait | undefined => g.theories.find((t) => t.id === id)?.traits.find((x) => x.id === key);
 const mins = (s: number) => (s >= 120 ? `${Math.round(s / 60)} min` : `${Math.round(s)} s`);
 const cap = (w: string) => w[0].toUpperCase() + w.slice(1);
+const cite = (id: string) => {
+  const ref = refById(id);
+  if (!ref) return id;
+  const parts = ref.authors.split(',')[0].split(' et al')[0].trim().split(' ');
+  const last = parts[parts.length - 1];
+  const who = /^\p{Lu}{1,3}$/u.test(last) ? parts.slice(0, -1).join(' ') : last; // "Burton AC" or "Michael Edward Johnson"
+  return `<a class="cite" href="${base}/library/#${id}">${who} ${ref.year}</a>`;
+};
+// What physics allows: numbers from the vessel model's checks and scenarios (sim/knots_sim/export.py → vessel.json).
+const col = vessel.checks.collar;
+const cool = vessel.checks.cooling;
+const vsc = vessel.scenarios as Record<string, { summary: { events: { t: number; to: string }[]; flow_after_open: number | null } }>;
+const pressed = (vsc.press_and_release.summary.events.find((e) => e.to === 'open')?.t ?? NaN) - 150;
+const afterPress = vsc.press_and_release.summary.flow_after_open ?? 0;
+const afterEase = vsc.stress_eases.summary.flow_after_open ?? 0;
 const index = [
   { id: 'watch', label: 'watch them' },
   { id: 'reports', label: 'the reports and the models' },
   ...HYPOTHESES.map((h, i) => ({ id: h.id, label: `${String(i + 1).padStart(2, '0')} ${h.label}` })),
   { id: 'differ', label: 'how they differ' },
+  { id: 'physics', label: 'what physics allows' },
   { id: 'made', label: 'how it is made' },
 ];
 ---
@@ -201,8 +218,8 @@ const index = [
         <p class="caption">No model yet reaches the last four: mirroring, water, the well-being after a release, and the layers that peel and fill.
           The reports are rough impressions, not measurements, and the perforator model is the most detailed of the seven (the site's own
           proposal): a model with more parts can reach more reports, and the others, built out, may reach further. Where a model and a
-          report agree it is a hint, not a proof; the measurements that might decide are on the{' '}
-          <a href={`${base}/research/#measurement`}>Research</a> page.</p>
+          report agree it is a hint, not a proof; experiments that might help decide are on the{' '}
+          <a href={`${base}/research/#experiments`}>Research</a> page.</p>
       </section>
     )}
 
@@ -243,7 +260,7 @@ const index = [
                 <figure class="section" set:html={crossSectionSVG({ dSup: 0.0042, dDeep: 0.01, hypothesis: h.id, region: 'upper back', tone: 'light', width: 330 })} />
                 <div class="prose">
                   {h.body.map((p) => (
-                    <p set:html={p.replaceAll('href="SIM"', `href="${base}/research/#physics"`)} />
+                    <p set:html={p.replaceAll('href="SIM"', 'href="#physics"')} />
                   ))}
                 </div>
                 <dl class="kv">
@@ -334,7 +351,7 @@ const index = [
     <section id="differ" class="sec full" data-glyph="別">
       <h2>How they differ</h2>
       <p class="sub">The same scenes, the modelled answers side by side. Where two columns part on something a hand or an instrument can
-        tell, that is a test (see{' '}<a href={`${base}/research/#measurement`}>the measurements</a>).</p>
+        tell, that is a test (see{' '}<a href={`${base}/research/#experiments`}>experiments that might help</a>).</p>
       <div class="table-wrap">
         <table class="differ">
           <thead>
@@ -360,6 +377,56 @@ const index = [
         {' '}{g.run.settings} settings; the grey bars are what a breath does. Perception has no drive of its own at a place, so its calming
         is of arousal, everywhere.</p>
       <figure class="env" set:html={envelopeChart(g.theories)} />
+    </section>
+
+    <section id="physics" class="sec full" data-glyph="理">
+      <h2>What physics allows</h2>
+      <p class="sub">
+        Questions that numbers settle before any model runs: what a mechanism cannot do, whatever its settings.
+      </p>
+      <div class="checks">
+        <article class="check">
+          <p class="q">Can hyaluronan hold a vessel shut?</p>
+          <p class="a">No.</p>
+          <p set:html={`A liquid resists motion, not position. At its most viscous (healthy synovial fluid; ${cite('nicholls2018')}), in a collar 20 µm thin, its drag is ${Math.round(col.pressure_over_drag)} times weaker than the pressure holding the vessel open, and fascia holds tens to hundreds of times less hyaluronan (${cite('fede2018')}).`} />
+        </article>
+        <article class="check">
+          <p class="q">Can acidity thicken hyaluronan?</p>
+          <p class="a">Not in the body's range.</p>
+          <p set:html={`Its flow hardly changes with pH, except near pH 2.5, where it turns gel-like, and above 12 (${cite('gatej2005')}); alone it does not gel (${cite('krause2001')}). A layer that jams is more than hyaluronan: crowded with immobility, or bound to proteins in inflammation (${cite('cowman2015')}).`} />
+        </article>
+        <article class="check">
+          <p class="q">Can warmth free a densified layer?</p>
+          <p class="a">Barely.</p>
+          <p set:html={`Hyaluronan thins gradually with warmth, two- to threefold from 25 to 65 °C (${cite('cowman2015')}): about 2% a degree. A resting hand warms the layer beneath the fat by a fraction of that range; it would have to slide the layer instead.`} />
+        </article>
+        <article class="check">
+          <p class="q">Can warming release a vessel within a breath?</p>
+          <p class="a">No.</p>
+          <p>A patch of skin warms with a time constant of at least {Math.round(cool.tau_s_at_max_flow)} s even at maximal skin blood flow. Release within a breath needs something faster than heat.</p>
+        </article>
+        <article class="check">
+          <p class="q">Does the latch remember?</p>
+          <p class="a">It economises.</p>
+          <p set:html={`Relaxation follows the fall of calcium, not latch-bridge detachment (${cite('rembold1991')}): a latch holds cheaply while the drive lasts. In Johnson's account the memory lies elsewhere, in the held prediction that the clamp keeps from updating: the field guide runs that loop as <a href="#latch">the vascular latch</a>.`} />
+        </article>
+        <article class="check">
+          <p class="q">Can a pressed vessel let go under the hand?</p>
+          <p class="a">Not until it lifts.</p>
+          <p>Pressure outside a shut vessel only helps keep it shut. After 40 s of pressure the vessel reopens {pressed.toFixed(1)} s after the pressure lifts, and flow returns from near nothing to {afterPress.toFixed(2)} of resting flow while drive stays raised ({afterEase.toFixed(2)} when stress eases instead).</p>
+        </article>
+        <article class="check">
+          <p class="q">Can calm quiet a sensitised nerve within a breath?</p>
+          <p class="a">Not through the sympathetic drive.</p>
+          <p set:html={`In injured nerves, sympathetic activity changes ectopic firing only after about 14 s, and over tens of seconds (${cite('devor1994')}). A single breath is over before it arrives.`} />
+        </article>
+        <article class="check">
+          <p class="q">Can pressing free a nerve's knot?</p>
+          <p class="a">No: it excites it.</p>
+          <p set:html={`An inflamed nerve's fibres fire when the site is pressed (${cite('dilley2005')}), and a hand's 20–80 mmHg is more than slows the blood leaving a nerve, 20–30 mmHg (${cite('rydevik1981')}).`} />
+        </article>
+      </div>
+      <p class="caption">The perforator's own checks, with their figures, are on <a href={`${base}/simulation/vessel/#checks`}>one perforator up close</a>.</p>
     </section>
 
     <section id="made" class="sec full" data-glyph="法">
@@ -977,9 +1044,51 @@ const index = [
     font-size: 9.5px;
     color: var(--muted);
   }
+  /* What physics allows. */
+  .checks {
+    display: grid;
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: 14px;
+  }
+  .check {
+    background: var(--frame-bg);
+    border-radius: 8px;
+    padding: 12px 14px 10px;
+    font-family: var(--font-serif);
+    font-size: 12px;
+    line-height: 1.55;
+  }
+  .check p {
+    margin: 0 0 6px;
+  }
+  .check .q {
+    font-family: var(--font-sans);
+    font-weight: 700;
+    font-size: 12.5px;
+  }
+  .check .a {
+    font-style: italic;
+    font-size: 14px;
+    color: var(--accent-dark);
+  }
+  .check :global(.cite) {
+    color: var(--accent-dark);
+    text-decoration-color: var(--frame-border);
+    white-space: nowrap;
+  }
   @media (max-width: 1150px) {
     .patches {
       grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 1000px) {
+    .checks {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+  }
+  @media (max-width: 700px) {
+    .checks {
+      grid-template-columns: minmax(0, 1fr);
     }
   }
   @media (max-width: 900px) {
