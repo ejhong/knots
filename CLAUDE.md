@@ -47,7 +47,7 @@ the author's reports, is retired: `sim/archive/`.)
   - `data/` roots, knot zones, perforator density (anatomical data used by the viewer)
 - `src/data/` — site-wide registries: hypotheses, references (+ `papers.json`), timeline, map index
 - `src/pages/` — introduction, atlas, hypotheses (each theory's account beside its model, with the field guide's instrument),
-  traditions (with perforators and acupoints, `#points`), research (the experiments that might help and the position paper), library, about (`lab` is a dev bench);
+  traditions (with perforators and acupoints, `#points`), research (the studies that might help and the position paper), library, about (`lab` is a dev bench);
   `simulation/` redirects to `hypotheses/#watch`, and `simulation/vessel/` is one perforator up close
 - `src/sim/` — the simulation in the browser: `guide/` (the field guide: player, patches, plates, instruments, character),
   `models/*.ts` (generated from Python; never edit), `vessel.ts` and `bench.ts` (the live vessel bench), `draw.ts` and
@@ -79,7 +79,7 @@ the author's reports, is retired: `sim/archive/`.)
   `uv run python -m knots_sim.params --verify` checks every quote against its source; `uv run python -m knots_sim.pubmed
   search "…"` finds papers, and `knots_sim.library` adds them to `papers.json` from PubMed's own records.
 - Research: the position paper (`src/pages/research/perforator-hypothesis.astro`) and, on the Research page, the
-  experiments that might help (`#experiments`, from the `EXPERIMENTS` and `STAGES` lists: on knots and on runaway release,
+  studies that might help (`#studies`, from the `STUDIES` and `STAGES` lists: on knots and on runaway release,
   grouped by what each needs and listed in the order they build on one another, not by importance, each with the kind of
   study it would be), after two open questions and what would help most (the lowest-hanging fruit, what to address first,
   what a researcher could do). The Research page carries nothing from the models: the theories, their models and what physics allows are on

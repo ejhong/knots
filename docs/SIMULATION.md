@@ -3,7 +3,7 @@
 *The site's side of the field guide. The research plan is `sim/PLAN.md`; the look is `docs/DESIGN.md`. The field guide
 lives in the Hypotheses page (`/hypotheses/`): each theory's account and what its model shows, side by side, with the
 instrument at the top; `/simulation/` redirects there, and `/simulation/vessel/` is one perforator up close. Research
-(`/research/`) is for researchers: experiments that might help and the position paper, with nothing from
+(`/research/`) is for researchers: studies that might help and the position paper, with nothing from
 the models; what physics allows is on the Hypotheses page (`#physics`), and how a knot sets and the tree of vessels on
 `/simulation/vessel/`. The exam-era design is in `sim/archive/`.*
 

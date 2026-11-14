@@ -12,13 +12,14 @@ const cite = (id: string) => {
   const who = /^\p{Lu}{1,3}$/u.test(last) ? parts.slice(0, -1).join(' ') : last; // "Burton AC" or "Michael Edward Johnson"
   return `<a class="cite" href="${base}/library/#${id}">${who} ${ref.year}</a>`;
 };
-// Older anchors that land on an experiment: the position paper cites research/#points (perforators and acupoints).
+// Older anchors: the position paper cites research/#points (perforators and acupoints), and until 14 Nov the list was
+// #experiments and its cards #experiment-N.
 const ALIAS: Record<string, string> = { 'Acupoints on perforators': 'points' };
 
-// Experiments that might help, on the two open questions: what a knot is, and what runaway release is. Grouped by what each
+// Studies that might help, on the two open questions: what a knot is, and what runaway release is. Grouped by what each
 // needs (STAGES) and listed in the order they build on one another, not by importance, each with the kind of study it would
 // be. docs/RESEARCHHUB.md (the draft call on ResearchHub) repeats the groups and the text: keep the two in step.
-const EXPERIMENTS: { stage: string; prong: string; title: string; design: string; what: string; show: string; needs: string }[] = [
+const STUDIES: { stage: string; prong: string; title: string; design: string; what: string; show: string; needs: string }[] = [
   {
     stage: 'finding-knots',
     prong: 'knots',
@@ -41,10 +42,10 @@ const EXPERIMENTS: { stage: string; prong: string; title: string; design: string
     prong: 'knots',
     title: 'How best to detect a knot',
     design: `Blinded diagnostic-accuracy study, with marked knots as the reference standard`,
-    what: `At knots marked by their owners or by examiners (experiment 1), and at matched spots nearby, instruments might
-      be compared, each blind to the marks: a pencil Doppler listening for a perforator and its flow; ultrasound
-      looking for a bump, a vessel beneath and the layers' glide, with colour Doppler and elastography; and a thermal
-      camera watching the skin rewarm after a mild cold (${cite('weum2016b')}).`,
+    what: `At knots marked by their owners or by examiners (study 1), and at matched spots nearby, instruments might be
+      compared, each blind to the marks: a pencil Doppler listening for a perforator and its flow; ultrasound looking
+      for a bump, a vessel beneath and the layers' glide, with colour Doppler and elastography; and a thermal camera
+      watching the skin rewarm after a mild cold (${cite('weum2016b')}).`,
     show: `Whether an instrument can find a knot without a skilled hand, which would free other studies from depending on
       who can feel one. If knots are perforators held shut, a pencil Doppler, cheap and quick, might find a perforator
       beneath each knot, faint or silent while it holds and sounding once it lets go; ultrasound might instead place a
@@ -64,7 +65,7 @@ const EXPERIMENTS: { stage: string; prong: string; title: string; design: string
     show: `Each of the seven proposed mechanisms would, on its own account, leave a different trace at release, from a
       flood of flow to the skin to nothing in the tissue at all; a careful recording might begin to sort releases by
       kind.`,
-    needs: `a laboratory with ultrasound and EMG or skin-flow imaging · a few skilled practitioners (experiment 1 might find
+    needs: `a laboratory with ultrasound and EMG or skin-flow imaging · a few skilled practitioners (study 1 might find
       them) · ethics review`,
   },
   {
@@ -72,8 +73,8 @@ const EXPERIMENTS: { stage: string; prong: string; title: string; design: string
     prong: 'knots',
     title: 'Where knots sit',
     design: `Blinded mapping, with spatial statistics against chance`,
-    what: `Knots might be marked over a region of the body in two ways, or both (experiment 1): by two examiners who can
-      feel knots in others, blind to each other, or by people who can isolate their own. A third person, blind to the
+    what: `Knots might be marked over a region of the body in two ways, or both (study 1): by two examiners who can feel
+      knots in others, blind to each other, or by people who can isolate their own. A third person, blind to the
       marks, might map the perforators with a pencil Doppler, or with a thermal camera as the skin rewarms after a
       mild cold (${cite('weum2016b')}). The marks could then be set against the vessels at several distances, and
       against random and shifted maps.`,
@@ -90,7 +91,7 @@ const EXPERIMENTS: { stage: string; prong: string; title: string; design: string
     design: `Longitudinal: blinded mapping repeated over weeks and months`,
     what: `The same people's knots might be mapped again over weeks and months, against their own map of perforators: by
       two examiners who can feel knots in others, blind to each other and to earlier maps, or by the people
-      themselves, if they can isolate their own (experiment 1), blind to their earlier marks.`,
+      themselves, if they can isolate their own (study 1), blind to their earlier marks.`,
     show: `Whether the same knots are found again at all, which may depend on the skill of whoever marks them, and whether
       a person's knots return to fixed places (as the perforator and nerve views expect) or arise anywhere and drift.
       Much else may rest on the answer.`,
@@ -103,23 +104,23 @@ const EXPERIMENTS: { stage: string; prong: string; title: string; design: string
     title: 'Whether knots grow with age',
     design: `Epidemiology: cross-sectional across ages, then a cohort followed over years`,
     what: `Knots might be counted and sized in people of all ages, from childhood to old age, and in the same people over
-      years: by their own marks and by examiners (experiment 1), and by whichever instrument proves best (experiment
-      2). People might also be asked when their knots first appeared and how they have changed.`,
+      years: by their own marks and by examiners (study 1), and by whichever instrument proves best (study 2). People
+      might also be asked when their knots first appeared and how they have changed.`,
     show: `Whether knots grow larger and more numerous with age, and whether children are nearly free of them. The accounts
       part here: perforators, densification and nerves expect knots to rise with age (the first, in number and size);
       latches accumulate from early childhood; trigger points follow overload and injury; the motor switch remembers
       nothing by itself; perception follows history more than age.`,
-    needs: `examiners or an instrument (experiments 1 and 2) · people of all ages · a statistician`,
+    needs: `examiners or an instrument (studies 1 and 2) · people of all ages · a statistician`,
   },
   {
     stage: 'with-knots-found',
     prong: 'knots',
     title: 'What remains after death',
     design: `Post-mortem histology: knot sites against matched control sites`,
-    what: `People whose knots were mapped in life (experiment 1), and who give their bodies to science, might be examined
-      after death where the knots were and at matched places: the perforators' walls and lumens, the fascial layers,
-      the muscle and the nerves, under the microscope. Or tissue from ordinary post-mortem examinations, taken where
-      knots are often reported, such as the upper back, might be compared with tissue from elsewhere.`,
+    what: `People whose knots were mapped in life (study 1), and who give their bodies to science, might be examined after
+      death where the knots were and at matched places: the perforators' walls and lumens, the fascial layers, the
+      muscle and the nerves, under the microscope. Or tissue from ordinary post-mortem examinations, taken where knots
+      are often reported, such as the upper back, might be compared with tissue from elsewhere.`,
     show: `Whether anything structural remains where a knot was. Holds kept only by the nervous system (the motor switch,
       perception) would likely leave nothing; a vessel narrowed by long holding, a densified layer, an entrapped nerve
       or changed muscle might remain, and would point to the accounts that expect them.`,
@@ -131,9 +132,9 @@ const EXPERIMENTS: { stage: string; prong: string; title: string; design: string
     title: 'Whether animals have knots',
     design: `Comparative (veterinary): a survey, examination by instrument, and opportunistic necropsy`,
     what: `Veterinarians and animal bodyworkers might be asked whether they find knots in horses, dogs or other animals,
-      and where; with their owners' consent, the spots might be examined with the instruments of experiment 2. Where
-      an animal that had them dies or is put down for other reasons, the tissue beneath might be examined too
-      (experiment 7). No animal would be harmed for the study.`,
+      and where; with their owners' consent, the spots might be examined with the instruments of study 2. Where an
+      animal that had them dies or is put down for other reasons, the tissue beneath might be examined too (study 7).
+      No animal would be harmed for the study.`,
     show: `Whether knots are something mammals share, as most of the accounts would expect, since animals have the same
       vessels, fascia, muscle and nerves; and a route to the tissue beneath a knot that was felt in life.`,
     needs: `veterinarians or animal bodyworkers · a pencil Doppler or ultrasound · ethics review`,
@@ -148,7 +149,7 @@ const EXPERIMENTS: { stage: string; prong: string; title: string; design: string
       or are in it now, interviewed with one set of questions: how it began and ran, its stages and regions, how long
       each took, what helped and what made it worse.`,
     show: `No study of it as such is known. A careful description might show whether it is one thing or several, how common
-      it is, who is at risk and what helps, and might find the participants for experiment 10.`,
+      it is, who is at risk and what helps, and might find the participants for study 10.`,
     needs: `a qualitative or clinical researcher, best with experience of meditation-related difficulty
       (${cite('lindahl2017')}; ${cite('cooper2021')}) · ethics review · support at hand for participants`,
   },
@@ -248,7 +249,7 @@ const STAGES: { id: string; title: string; intro: string }[] = [
 const index = [
   { id: 'questions', label: 'two open questions' },
   { id: 'help', label: 'what would help most' },
-  { id: 'experiments', label: 'experiments that might help' },
+  { id: 'studies', label: 'studies that might help' },
   { id: 'further', label: 'the position paper' },
 ];
 ---
@@ -256,8 +257,8 @@ const index = [
   title="Knots: an open problem, and ways to find out"
   kicker="For researchers"
   current="research"
-  lede="People who work with the body find places that hold for years and let go in a breath. Here are ideas for experiments that might help find out what these knots are, and what runaway release is, set out for those who know the methods to judge."
-  description="An open problem in physiology: what a knot is, and what runaway release is. Fourteen ideas for experiments that might help, which come first, and the position paper."
+  lede="People who work with the body find places that hold for years and let go in a breath. Here are ideas for studies that might help find out what these knots are, and what runaway release is, set out for those who know the methods to judge."
+  description="An open problem in physiology: what a knot is, and what runaway release is. Fourteen ideas for studies that might help, which come first, and the position paper."
   glyph="究"
   index={index}
   wide
@@ -289,7 +290,7 @@ const index = [
   <section id="help" class="sec full" data-glyph="助">
     <h2>What would help most</h2>
     <p class="sub">
-      The experiments below are ideas from a non-expert working with AI, meant to show the kind of thing that might help.
+      The studies below are ideas from a non-expert working with AI, meant to show the kind of thing that might help.
       Those who know the methods are better placed to judge them, and three judgements would help more than any one idea
       here:
     </p>
@@ -301,14 +302,15 @@ const index = [
         data you have, alone or with others?</li>
     </ul>
     <p class="sub">
-      Or propose something better: an experiment that would decide a question matters more than any listed here. A reading
+      Or propose something better: a study that would decide a question matters more than any listed here. A reading
       of the list helps even without an offer to take any of it on. To answer, or to object, open an{' '}
       <a href="https://github.com/ejhong/knots/issues">issue</a> on the project's repository.
     </p>
   </section>
 
-  <section id="experiments" class="sec full" data-glyph="試">
-    <h2>Experiments that might help</h2>
+  <section id="studies" class="sec full" data-glyph="試">
+    <span class="alias" id="experiments" />
+    <h2>Studies that might help</h2>
     <p class="sub">
       Fourteen ideas, grouped by what each needs and listed in the order they build on one another, not by importance. Some
       are laboratory experiments; others are surveys, interviews, or new readings of tissue and records. Under each title is
@@ -319,8 +321,9 @@ const index = [
         <h3 class="stage-h">{st.title}</h3>
         <p class="sub" set:html={st.intro} />
         <div class="exps">
-          {EXPERIMENTS.map((x, i) => x.stage === st.id && (
-            <div class="exp" id={`experiment-${i + 1}`}>
+          {STUDIES.map((x, i) => x.stage === st.id && (
+            <div class="exp" id={`study-${i + 1}`}>
+              <span class="alias" id={`experiment-${i + 1}`} />
               {ALIAS[x.title] && <span class="alias" id={ALIAS[x.title]} />}
               <span class="dk mono">{i + 1} · {x.prong}</span>
               <p class="dt">{x.title}</p>

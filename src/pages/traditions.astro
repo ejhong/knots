@@ -13,7 +13,7 @@ const cite = (id: string) => {
   return `<a href="${base}/library/#${id}">${who}, ${ref.year}</a>`;
 };
 // Are the perforators where the points are? (sim/exploratory/2026-11-02-acupoints-perforators.py → acupoints.json). The
-// position paper cites it as research/#points: that anchor sits on the Research page's experiment on acupoints, which links here.
+// position paper cites it as research/#points: that anchor sits on the Research page's study on acupoints, which links here.
 const ACU_LINES: Record<string, { where: string; with: string; ends: boolean }> = {
   anterior: { where: 'Front of the lower leg', with: 'anterior tibial perforators · ST36–40, GB36–39', ends: true },
   lateral: { where: 'Behind the fibula', with: 'peroneal perforators · GB35, BL58, BL59', ends: true },
@@ -319,9 +319,9 @@ const index = [
         points by the WHO's proportional rules, out of the reader's sight; the share of points with a perforator within 0.5, 1, 2
         and 3 cm set against random and shifted maps, with the vessels that count fixed before looking. Or, from records: the
         channels laid over the CT angiograms taken before abdominal flap surgery, which record perforators by the thousand. It is{' '}
-        <a href={`${base}/research/#experiment-14`}>experiment 14</a> on the Research page. A match could not tell perforators from
+        <a href={`${base}/research/#study-14`}>study 14</a> on the Research page. A match could not tell perforators from
         the cutaneous nerves that come through the same openings; a recording at a release might{' '}
-        (<a href={`${base}/research/#experiment-3`}>experiment 3</a>).</p>
+        (<a href={`${base}/research/#study-3`}>study 3</a>).</p>
     </div>
     <p class="fine prose">
       The test's code is in the repository (<a href={`${repo}/sim/exploratory/2026-11-02-acupoints-perforators.py`}>acupoints-perforators.py</a>),
