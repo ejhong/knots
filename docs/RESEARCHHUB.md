@@ -22,11 +22,12 @@ known, nothing has been recorded at the moment one lets go.
 A position paper, *The perforator hypothesis: knots as small arteries held shut where they pierce the fascia* (Zenodo,
 https://doi.org/10.5281/zenodo.23901648), argues from established physiology that a knot is a cutaneous perforator, a
 small artery held shut by its own wall where it pierces the fascia. The idea grew from vasocomputation, the proposal
-that held predictions are held vascular tension (Johnson 2023), and keeps its first step: a held contraction as a stored
-state. It sets out six alternatives in their strongest forms (smooth muscle in the latch state, a myofascial trigger
-point, densified hyaluronan, a sensitised nerve, motor units that latch on, and perception) and the measurements that
-would refute it. The project's site sets out all seven, each at its strongest:
-https://ejhong.github.io/knots/hypotheses/ (code and data: https://github.com/ejhong/knots).
+that held predictions are held vascular tension (Johnson 2023), whose first step it keeps, a held contraction as a
+stored state; and from the phenomenology of runaway release, described below. It sets out six alternatives in their
+strongest forms (smooth muscle in the latch state, a myofascial trigger point, densified hyaluronan, a sensitised nerve,
+motor units that latch on, and perception) and the measurements that would refute it. The project's site sets out all
+seven, each at its strongest: https://ejhong.github.io/knots/hypotheses/ (code and data:
+https://github.com/ejhong/knots).
 
 The paper was written by AI under its author's direction and has not been peer-reviewed, and its author will not take it
 to a journal. If, having weighed the alternatives, you think the perforator hypothesis is the best fit, take it up: test
