@@ -12,30 +12,8 @@ const cite = (id: string) => {
   const who = /^\p{Lu}{1,3}$/u.test(last) ? parts.slice(0, -1).join(' ') : last; // "Burton AC" or "Michael Edward Johnson"
   return `<a class="cite" href="${base}/library/#${id}">${who} ${ref.year}</a>`;
 };
-// Who could help: named from their published work, affiliations as their latest PubMed records give them (checked
-// 28 Sep 2026). None is involved in, or has endorsed, this project.
-const PEOPLE: { group: string; people: { who: string; where: string; what: string; refs: string[] }[] }[] = [
-  {
-    group: 'For the experiments on knots',
-    people: [
-      { who: 'Deborah Falla', where: 'University of Birmingham, Centre of Precision Rehabilitation for Spinal Pain', what: 'high-density EMG of the neck and shoulder in pain, down to single motor units of the upper trapezius', refs: ['dideriksen2016'] },
-      { who: 'Dario Farina · Francesco Negro · Aleš Holobar', where: 'Imperial College London · University of Brescia · University of Maribor', what: 'decomposing surface EMG into single motor units: whether one falls silent at a release', refs: ['negro2016'] },
-      { who: 'Matthieu Roustit', where: 'Université Grenoble Alpes, Inserm HP2', what: 'laser speckle imaging of skin blood flow, and how reproducible it is', refs: ['roustit2010'] },
-      { who: 'Christopher Minson', where: 'University of Oregon', what: 'how skin blood flow is controlled, by heat and by nerves', refs: ['minson2001'] },
-      { who: 'Harvey Mayrovitz', where: 'Nova Southeastern University', what: 'skin blood flow and the breath: the inspiratory gasp reflex', refs: ['mayrovitz2026'] },
-      { who: 'Siddhartha Sikdar · Jay Shah', where: 'George Mason University · NIH Clinical Center', what: 'ultrasound, elastography and microdialysis of trigger points', refs: ['sikdar2009', 'shah2005'] },
-      { who: 'Helene Langevin', where: 'NCCIH, National Institutes of Health (on her 2021 paper)', what: 'ultrasound of the fascial layers sliding: the measure for densification and the sleeve', refs: ['langevin2011'] },
-      { who: 'Robert Schleip · Andreas Brandl', where: 'Technical University of Munich', what: "ultrasound and elastography of the back's fascia; fascia's water and stiffness", refs: ['schleip2012b'] },
-      { who: 'Carla Stecco · Antonio Stecco', where: 'University of Padova · NYU Grossman School of Medicine', what: "the fascia's anatomy, its hyaluronan and the loose layer's ultrasound", refs: ['stecco2014', 'fede2018'] },
-    ],
-  },
-  {
-    group: 'For safety',
-    people: [
-      { who: 'Willoughby Britton · Jared Lindahl', where: 'Brown University', what: 'the Varieties of Contemplative Experience: the difficulties deep practice can bring', refs: ['lindahl2017'] },
-    ],
-  },
-];
+// Older anchors that land on an experiment: the position paper cites research/#points (perforators and acupoints).
+const ALIAS: Record<string, string> = { 'Acupoints on perforators': 'points' };
 
 // Experiments that might help, on the two open questions: what a knot is, and what runaway release is. Equally weighted, in
 // the order the page shows them. docs/RESEARCHHUB.md (the draft call on ResearchHub) repeats their text: keep the two in step.
@@ -149,14 +127,14 @@ const EXPERIMENTS: { prong: string; title: string; what: string; show: string; n
       record perforators by the thousand.`,
     show: `Whether the points sit on perforators more than chance would put them. On the five lines where both are measured
       they sit only a little nearer than random points: not shown, not excluded (<a
-      href="${base}/research/points/">the evidence so far</a>).`,
+      href="${base}/traditions/#points">the evidence so far</a>).`,
     needs: `a thermal camera and Doppler · practitioners and a reader, blind to each other · a statistician`,
   },
 ];
 
 const index = [
   { id: 'experiments', label: 'experiments that might help' },
-  { id: 'further', label: 'the paper, who could help' },
+  { id: 'further', label: 'the position paper' },
 ];
 ---
 <Doc
@@ -164,7 +142,7 @@ const index = [
   kicker="For researchers"
   current="research"
   lede="People who work with the body find places that hold for years and let go in a breath. Here are ideas for experiments that might help find out what these knots are, and what runaway release is."
-  description="An open problem in physiology: what a knot is, and what runaway release is. Ten ideas for experiments that might help, the position paper, and who could help."
+  description="An open problem in physiology: what a knot is, and what runaway release is. Ten ideas for experiments that might help, and the position paper."
   glyph="究"
   index={index}
   wide
@@ -190,6 +168,7 @@ const index = [
     <div class="exps">
       {EXPERIMENTS.map((x, i) => (
         <div class="exp" id={`experiment-${i + 1}`}>
+          {ALIAS[x.title] && <span class="alias" id={ALIAS[x.title]} />}
           <span class="dk mono">{i + 1} · {x.prong}</span>
           <p class="dt">{x.title}</p>
           <p set:html={x.what} />
@@ -214,19 +193,13 @@ const index = [
   </section>
 
   <section id="further" class="sec full" data-glyph="繋">
-    <h2>The position paper, and who could help</h2>
+    <h2>The position paper</h2>
     <div class="docs">
-      <a class="doc-card" href={`${base}/research/perforator-hypothesis/`}>
+      <a class="doc-card wide" href={`${base}/research/perforator-hypothesis/`}>
         <span class="dk mono">position paper · Zenodo preprint</span>
         <span class="dt">The perforator hypothesis: knots as small arteries held shut where they pierce the fascia</span>
         <span class="dd">The case for one mechanism, from established physiology: what it explains and what it does not, the
           alternatives in their strongest forms, the fascia, the acupuncture points, the dangers, and what would refute it.</span>
-      </a>
-      <a class="doc-card" id="points" href={`${base}/research/points/`}>
-        <span class="dk mono">a note · perforators and acupoints</span>
-        <span class="dt">Are the perforators where the points are?</span>
-        <span class="dd">Whether the major perforators come through the fascia in the same places in everyone, and whether the
-          acupoints of Chinese medicine sit on them: the evidence, a test against chance, and a study that might decide it.</span>
       </a>
     </div>
     <p class="sub">
@@ -236,25 +209,8 @@ const index = [
       code are open to you too.
     </p>
     <p class="links mono"><a href={`${base}/research/perforator-hypothesis.pdf`}>position paper (PDF)</a><a href="https://doi.org/10.5281/zenodo.23901648">position paper (DOI)</a></p>
-    <h3 class="h3">Who could help</h3>
-    <p class="sub">Groups whose published methods bear directly on these experiments, named from their published work, with
-      the places their latest PubMed records give. None has endorsed this project; they are where a laboratory or a co-author
-      might most naturally come from.</p>
-    {PEOPLE.map(({ group, people }) => (
-      <div class="people">
-        <p class="pg mono">{group}</p>
-        <ul>
-          {people.map((pp) => (
-            <li>
-              <span class="pw">{pp.who}</span> <span class="pl">{pp.where}</span>
-              <span class="pd">{pp.what} <Fragment set:html={pp.refs.map((r) => cite(r)).join(' · ')} /></span>
-            </li>
-          ))}
-        </ul>
-      </div>
-    ))}
-    <p class="contact">To take part, object, or point to someone missing: <a href="https://github.com/ejhong/knots/issues">issues</a>{' '}
-      on the project's repository.</p>
+    <p class="contact">To take part, or to object: <a href="https://github.com/ejhong/knots/issues">issues</a> on the project's
+      repository.</p>
   </section>
 </Doc>
 
@@ -273,13 +229,6 @@ const index = [
     color: var(--accent-dark);
     text-decoration-color: var(--frame-border);
     white-space: nowrap;
-  }
-  .h3 {
-    font-family: var(--font-sans);
-    font-size: 14px;
-    font-weight: 700;
-    margin: 26px 0 4px;
-    scroll-margin-top: calc(var(--topbar-h) + 12px);
   }
   .docs {
     display: grid;
@@ -302,6 +251,9 @@ const index = [
   }
   .doc-card:hover {
     border-color: var(--frame-border);
+  }
+  .doc-card.wide {
+    grid-column: 1 / -1;
   }
   .dk {
     font-size: 9.5px;
@@ -328,6 +280,7 @@ const index = [
     margin: 6px 0 10px;
   }
   .exp {
+    position: relative;
     display: flex;
     flex-direction: column;
     gap: 6px;
@@ -335,6 +288,11 @@ const index = [
     background: var(--frame-bg);
     border: 1px solid var(--border);
     border-radius: 10px;
+    scroll-margin-top: calc(var(--topbar-h) + 12px);
+  }
+  .alias {
+    position: absolute;
+    top: 0;
     scroll-margin-top: calc(var(--topbar-h) + 12px);
   }
   .exp p {
@@ -373,44 +331,6 @@ const index = [
     color: var(--muted);
     max-width: 760px;
     margin: 6px 0 14px;
-  }
-  .people {
-    max-width: 900px;
-    margin: 10px 0 4px;
-  }
-  .pg {
-    font-size: 9.5px;
-    color: var(--muted);
-    text-transform: uppercase;
-    letter-spacing: 0.5px;
-    margin: 0 0 4px;
-  }
-  .people ul {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: grid;
-    gap: 6px;
-  }
-  .people li {
-    font-family: var(--font-serif);
-    font-size: 12.5px;
-    line-height: 1.5;
-    padding-bottom: 6px;
-    border-bottom: 1px solid var(--border);
-  }
-  .pw {
-    font-family: var(--font-sans);
-    font-weight: 700;
-    font-size: 12.5px;
-  }
-  .pl {
-    font-family: var(--font-mono);
-    font-size: 9.5px;
-    color: var(--muted);
-  }
-  .pd {
-    display: block;
   }
   .contact {
     font-family: var(--font-serif);

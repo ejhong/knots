@@ -47,7 +47,7 @@ the author's reports, is retired: `sim/archive/`.)
   - `data/` roots, knot zones, perforator density (anatomical data used by the viewer)
 - `src/data/` — site-wide registries: hypotheses, references (+ `papers.json`), timeline, map index
 - `src/pages/` — introduction, atlas, hypotheses (each theory's account beside its model, with the field guide's instrument),
-  research (the experiments that might help, the position paper, who could help; `research/points/` is perforators and acupoints), traditions, library, about (`lab` is a dev bench);
+  traditions (with perforators and acupoints, `#points`), research (the experiments that might help and the position paper), library, about (`lab` is a dev bench);
   `simulation/` redirects to `hypotheses/#watch`, and `simulation/vessel/` is one perforator up close
 - `src/sim/` — the simulation in the browser: `guide/` (the field guide: player, patches, plates, instruments, character),
   `models/*.ts` (generated from Python; never edit), `vessel.ts` and `bench.ts` (the live vessel bench), `draw.ts` and

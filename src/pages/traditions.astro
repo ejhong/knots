@@ -1,8 +1,34 @@
 ---
 import Doc from '../layouts/Doc.astro';
+import { refById } from '../data/references';
+import acu from '../data/sim/acupoints.json';
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const repo = 'https://github.com/ejhong/knots/blob/main';
+const cite = (id: string) => {
+  const ref = refById(id);
+  if (!ref) return id;
+  const parts = ref.authors.split(',')[0].split(' et al')[0].trim().split(' ');
+  const last = parts[parts.length - 1];
+  const who = /^\p{Lu}{1,3}$/u.test(last) ? parts.slice(0, -1).join(' ') : last;
+  return `<a href="${base}/library/#${id}">${who}, ${ref.year}</a>`;
+};
+// Are the perforators where the points are? (sim/exploratory/2026-11-02-acupoints-perforators.py → acupoints.json). The
+// position paper cites it as research/#points: that anchor sits on experiment 10 of the Research page, which links here.
+const ACU_LINES: Record<string, { where: string; with: string; ends: boolean }> = {
+  anterior: { where: 'Front of the lower leg', with: 'anterior tibial perforators · ST36–40, GB36–39', ends: true },
+  lateral: { where: 'Behind the fibula', with: 'peroneal perforators · GB35, BL58, BL59', ends: true },
+  front: { where: 'Front of the thigh', with: 'the thigh perforator on the hip-to-kneecap line · ST32–34', ends: true },
+  forearm: { where: 'Forearm', with: 'radial artery perforators · LU6–8', ends: false },
+  back: { where: 'Back of the calf', with: 'medial sural perforators · BL55–57', ends: false },
+};
+const acuLines = acu.lines.map((l) => ({ ...l, ...ACU_LINES[l.name.split(' ')[0]] }));
+const pct = (x: number) => `${Math.round(100 * x)}%`;
+const x2 = (v: number) => `${v.toFixed(2)}×`;
+const p2 = (v: number) => v.toFixed(2);
+const baseRate = (r: string) => `${pct(acu.base_rate[r as '1'].lo)}–${pct(acu.base_rate[r as '1'].hi)}`;
+const ptScore = (name: string, code: string) => (acu.lines.find((l) => l.name.startsWith(name))!.points as unknown as Record<string, number>)[code];
 const CORRESPONDENCES = [
-  ['Ashi points, acupoints', 'China', 'Perforators, held', 'Reported at 80–100% of points, one small study with controls; vessel–nerve bundles at 2 of 100 in another dissection. Against measured clusters, points only a little nearer than random (see Research)'],
+  ['Ashi points, acupoints', 'China', 'Perforators, held', 'Reported at 80–100% of points, one small study with controls; vessel–nerve bundles at 2 of 100 in another dissection. Against measured clusters, points only a little nearer than random (see below)'],
   ['Sinew channels and their knots (結)', 'China', 'Lines where the fascia is anchored to bone', 'Proposed; untested'],
   ['Cou li — the texture between skin and flesh', 'China', 'The superficial fascial plane', 'Proposed'],
   ['Propagated sensation along the channel', 'China', 'Conducted vasodilation along a perforator tree', 'Speeds overlap (cm/s); untested together'],
@@ -22,6 +48,7 @@ const index = [
   { id: 'buddhist', label: 'Buddhist' },
   { id: 'japan', label: 'Japan' },
   { id: 'table', label: 'correspondences' },
+  { id: 'points', label: 'points and perforators' },
 ];
 ---
 <Doc
@@ -74,7 +101,7 @@ const index = [
         what early anatomists saw in dissection (<a href={`${base}/library/#shaw2016`}>Shaw, 2016</a>). But the perforators' clusters vary by centimetres between people,
         practitioners' marks for one point spread as widely, and only one small study has set the points against control points:
         none has asked how often a point placed at random would land as near a vessel. Set against measured perforator clusters, the points sit only a little nearer than chance:{' '}
-        <a href={`${base}/research/points/`}>the evidence, a test against chance, and a study that might decide it</a>.
+        <a href="#points">the evidence, a test against chance, and a study that might decide it</a>.
       </p>
     </div>
     <p class="in-atlas"><a class="btn" href={`${base}/atlas/?map=meridians`}>channels and points in the atlas →</a> <a class="btn" href={`${base}/atlas/?map=sinew`}>sinew channels →</a></p>
@@ -182,8 +209,124 @@ const index = [
       </table>
     </div>
     <p class="fine prose">
-      Each could be checked blind. Are the classical points perforators (<a href={`${base}/research/points/#test`}>a first test</a>)? Are the knots of the sinew channels the lines where the fascia is
+      Each could be checked blind. Are the classical points perforators (<a href="#points">a first test</a>, below)? Are the knots of the sinew channels the lines where the fascia is
       anchored? Are the channels the trees and planes between them?
+    </p>
+  </section>
+
+  <section id="points" class="sec" data-glyph="穴">
+    <h2>Are the perforators where the points are?</h2>
+    <p class="label">The points beside the anatomy, and a test against chance</p>
+    <div class="prose">
+      <p>
+        Two questions: do the major perforators come through the fascia in the same places in everyone, and do the acupoints sit
+        on them? The zones are shared; the vessels are not. The points sit a little nearer the perforators than chance would put
+        them, too little to tell from chance with the evidence there is.
+      </p>
+      <p><strong>The zones, yes.</strong> About forty source arteries, and on average 374 major perforators in each
+        body, follow the connective-tissue framework <Fragment set:html={`(${cite('taylor1987')})`} />: the arteries are constant and
+        the single vessels variable <Fragment set:html={`(${cite('morris2010')})`} />. Some places almost always have one. Perforators
+        gather at the middle of the line from the hip bone to the kneecap (74.6% in its middle three tenths; none at all in 6.6% of
+        thighs) <Fragment set:html={`(${cite('ulatowski2012')})`} />. An internal mammary perforator was present on both sides in
+        every case, about 1.8 cm from the edge of the breastbone <Fragment set:html={`(${cite('kanoi2017')})`} />, the largest in the
+        first or second rib space in three cases of four <Fragment set:html={`(${cite('okumura2016')})`} />. The lowest
+        posterior tibial perforator lay 3.5–8.2 cm above the inner ankle in all thirty legs <Fragment set:html={`(${cite('bulla2015')})`} />.</p>
+      <p><strong>The vessels, no.</strong> Each cluster spreads over two to four centimetres between people, an SD of 6–11% of the
+        shin's length on CT angiography <Fragment set:html={`(${cite('martin2013')})`} />, and the two sides of one body differ. On the
+        thighs the average place agrees within 3% of thigh length but the number of perforators does not{' '}
+        <Fragment set:html={`(${cite('lu2019')})`} />; the largest internal mammary perforator is in the same rib space on both sides
+        in only 49% <Fragment set:html={`(${cite('okumura2016')})`} />; the abdomen's perforators do not correspond between sides{' '}
+        <Fragment set:html={`(${cite('rozen2010b')})`} />, nor does the branching of their source artery{' '}
+        <Fragment set:html={`(${cite('rozen2010')})`} />. Surgeons map each side before they cut.</p>
+      <p><strong>Points are proportional too.</strong> Acupoints are placed by proportional inches (cun) between landmarks, and
+        surgeons place perforators the same way, as fractions of a segment. That is the frame to compare them in, but the spread
+        that remains after scaling is still centimetres on both sides: 95% of 71 doctors' marks for one point fell within 2.7 cm²
+        (PC6) to 41.4 cm² (ST38), a circle of 1 to 3.6 cm radius <Fragment set:html={`(${cite('molsberger2012')})`} />. A fixed map of
+        points could only ever match the zones.</p>
+      <p><strong>What it means for knots.</strong> No map of knots can hold across people, only a map of the zones where
+        perforators crowd: the atlas's perforators are placed that way, by density, and are representative. Within one person the
+        perforators do not move. So if knots sit at perforators, or at the nerves that pass beside them, one person's knots should
+        come and go among a fixed set of places, their own map, and a knot that seems to move should be one place letting go and
+        another taking up. A theory that puts a knot wherever stress is held needs no such stations.</p>
+      <p><strong>What has been claimed.</strong> Heine reported that about 80% of acupoints lie where a vessel–nerve bundle
+        perforates the fascia <Fragment set:html={`(${cite('heine1988')})`} />; the figure is widely repeated, and its method cannot be
+        checked from the record. Earlier, dissection beneath 201 points found a nerve at 29%, a vessel at 34% and both at 37%: no one
+        structure common to all <Fragment set:html={`(${cite('bossy1975')})`} />. A multicentre dissection of 100 lower-leg points found
+        vessel–nerve bundles at two <Fragment set:html={`(${cite('maurer2019')})`} />. The two may not have looked at the same layer of
+        fascia, which is worth settling against Heine's original. Most points do lie on the connective-tissue planes between
+        muscles <Fragment set:html={`(${cite('langevin2002')})`} />, which are where many perforators run, but planes are not
+        perforators. One study used controls: thermography found a perforator at 87.5% of 144 thigh points and at 18.1% of control
+        points 4 cm along the same channel, in six people, unblinded <Fragment set:html={`(${cite('alvarezprats2019')})`} />. A
+        dissection of two arms found a perforating vessel at all 30 points studied <Fragment set:html={`(${cite('meng2024')})`} />; a
+        Doppler study found “a certain correspondence”, with physicians' marks for one point up to 16.6 mm apart{' '}
+        <Fragment set:html={`(${cite('guo2024')})`} />. None compared the points with points placed at random.</p>
+      <p><strong>Why chance matters.</strong> If the 374 major perforators were scattered evenly over an adult's skin (1.6–2 m²),
+        a spot chosen at random would lie within 1 cm of one {baseRate('1')} of the time, within 2 cm {baseRate('2')}, within 3 cm{' '}
+        {baseRate('3')}. Points are found only to within one to three centimetres{' '}
+        <Fragment set:html={`(${cite('molsberger2012')}; ${cite('aird2002')})`} />, and smaller perforators are far denser, so “a
+        perforator near the point” is common by chance. The comparison of trigger points with acupoints fell into the same trap: a
+        71% correspondence <Fragment set:html={`(${cite('melzack1977')})`} />, later put nearer 18–19%{' '}
+        <Fragment set:html={`(${cite('birch2003')})`} />. A coincidence rate means nothing without the rate for points that are not
+        points, and without saying which vessels count.</p>
+      <p><strong>A test against chance.</strong> On five lines of the limbs, a measured perforator cluster and a run of WHO points
+        lie along the same septum. Both are written as a fraction of the segment, the perforators with their spread between people,
+        the points by their cun, and the perforator density at the points is compared with the density at points placed at random
+        on the same line, in {acu.variants} variants: the papers that give a percentage without saying from which end were run both
+        ways, and the location error and the cun conversion were varied. At the {acu.points} points the density is{' '}
+        {x2(acu.ratio.median)} that at random points (the median of the variants; p {p2(acu.p.min)}–{p2(acu.p.max)}, below 0.05 in{' '}
+        {pct(acu.p.share_below_05)} of them). A map whose points sat on the clusters would score{' '}
+        {x2(acu.perfect.min)}–{x2(acu.perfect.max)}, p &lt; 0.0001: the test could see it.</p>
+    </div>
+    <div class="table-wrap">
+      <table class="pt">
+        <thead><tr><th>Line</th><th>Perforators · points</th><th>Density at the points, against random</th><th>p</th></tr></thead>
+        <tbody>
+          {acuLines.map((l) => (
+            <tr>
+              <td>{l.where}</td>
+              <td>{l.with}</td>
+              <td>{l.ratio.min.toFixed(1)}–{x2(l.ratio.max)}{l.ends ? ' *' : ''}</td>
+              <td class="nw">{p2(l.p.min)}–{p2(l.p.max)}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <p class="fine prose">* The paper gives a percentage without saying which end it is measured from; the range spans both readings.</p>
+    <div class="prose">
+      <p><strong>Some points sit on a cluster.</strong> SP6, three cun above the inner ankle, is about{' '}
+        {acu.medial.points.SP6.toFixed(1)} cm up on a {Math.round(acu.medial.leg_cm)} cm shin; the lowest posterior tibial perforator
+        lies at a median 6.75 cm <Fragment set:html={`(${cite('bulla2015')})`} />. LU6 and LU7 sit at 58% and 12.5% of the forearm; the
+        radial artery's two clusters at 61.7% and 17.6% <Fragment set:html={`(${cite('saintcyr2010')})`} /> (density {x2(ptScore('forearm', 'LU6'))}{' '}
+        and {x2(ptScore('forearm', 'LU7'))} the line's average). BL56 is about 12.5 cm below the knee crease; the medial sural
+        perforators 11.4 ± 2.7 cm <Fragment set:html={`(${cite('kao2010')})`} /> ({x2(ptScore('back', 'BL56'))}). ST32 lies on the
+        very line surgeons draw to find the thigh's perforator.</p>
+      <p><strong>Others do not.</strong> ST33, ST34, BL55 and BL57 lie between clusters. The abdomen's dominant
+        perforator lies at a median 3.3 cm out and 0.9 cm below the navel <Fragment set:html={`(${cite('saad2014')})`} />,
+        between the Kidney line (half a cun out) and the Stomach line (two cun). The dominant lumbar perforator reaches the fat
+        69.5 mm from the midline, mostly at the third lumbar level <Fragment set:html={`(${cite('hamdi2016')})`} />: on the course
+        of the outer Bladder line, where the WHO places no point.</p>
+      <p><strong>Across the limb, they agree; that is partly built in.</strong> Many channels run along the septa that
+        perforators leave by: the points “behind the edge of the shinbone” are on the posterior tibial perforators' septum, the
+        Lung points at the wrist over the radial artery. But points and septa are both defined by the same muscles and bones, so
+        that agreement is not independent evidence. Along the line, where it would be, the points do slightly better than
+        random and much worse than a map placed on the clusters.</p>
+      <p><strong>Its limits.</strong> The perforator positions are averages from different bodies, five to sixty
+        limbs a study; there are {acu.points} points on five lines; the shin's cun and the anatomists' tibial height are not quite
+        the same length. It is a map from averages, not a measurement. Not shown, not excluded.</p>
+      <p><strong>A study that might decide it.</strong> In the same people, perforators mapped by thermal camera as the skin
+        rewarms after a mild cold <Fragment set:html={`(${cite('weum2016b')})`} /> and checked by Doppler, while practitioners mark the
+        points by the WHO's proportional rules, out of the reader's sight; the share of points with a perforator within 0.5, 1, 2
+        and 3 cm set against random and shifted maps, with the vessels that count fixed before looking. Or, from records: the
+        channels laid over the CT angiograms taken before abdominal flap surgery, which record perforators by the thousand. It is{' '}
+        <a href={`${base}/research/#experiment-10`}>experiment 10</a> on the Research page. A match could not tell perforators from
+        the cutaneous nerves that come through the same openings; a recording at a release might{' '}
+        (<a href={`${base}/research/#experiment-2`}>experiment 2</a>).</p>
+    </div>
+    <p class="fine prose">
+      The test's code is in the repository (<a href={`${repo}/sim/exploratory/2026-11-02-acupoints-perforators.py`}>acupoints-perforators.py</a>),
+      every number with its source. Any measurement with people belongs under the site's moderation guidance (see{' '}
+      <a href={`${base}/about/#moderation`}>About</a>).
     </p>
   </section>
 </Doc>
@@ -239,5 +382,17 @@ const index = [
     margin-top: 12px;
     font-size: 12px;
     color: var(--muted);
+  }
+  table.pt {
+    min-width: 560px;
+  }
+  .nw {
+    white-space: nowrap;
+  }
+  #points .table-wrap {
+    margin: 4px 0 0;
+  }
+  #points .fine {
+    margin: 8px 0 16px;
   }
 </style>

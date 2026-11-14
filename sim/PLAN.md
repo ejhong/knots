@@ -58,8 +58,8 @@ own words on the site: they were answers to questions, not written for presentat
   Each trait is marked: in every plausible setting; in some, and what that depends on; in none; silent; or not modelled.
 
 **Research**, for researchers: experiments that might help, on what a knot is and what runaway release is; the position
-paper; who could help. Since 14 Nov it carries nothing from the models: what physics allows is on Hypotheses (`#physics`),
-how a knot sets and the tree on the vessel page, perforators and acupoints on `/research/points/`; the tells, the
+paper. Since 14 Nov it carries nothing from the models: what physics allows is on Hypotheses (`#physics`),
+how a knot sets and the tree on the vessel page, perforators and acupoints on Traditions (`#points`); the tells, the
 measurement ladder (§11), what is needed and the method left the site (How they differ and each theory's test cover the
 first two).
 
@@ -204,7 +204,7 @@ which.
 cannot say. A recognition aid, not a score; nothing is fitted to it. A scene with slow breaths is scored by what it adds to the same breaths alone.
 
 **The research documents** (28 Sep, `src/pages/research/`): a preprint and a one-page pilot protocol, every number generated from
-the runs; and, on the Research page, the groups whose published work fits the measurement, verified from PubMed records.
+the runs; and, on the Research page, the groups whose published work fits the measurement, verified from PubMed records (taken down on 14 Nov, for now).
 Both were retired on 14 Nov for a list of experiments on the Research page (`#experiments`), sketches for researchers to
 improve on and propose through a call on ResearchHub (`docs/RESEARCHHUB.md`); their addresses redirect, as the position
 paper cites them.
