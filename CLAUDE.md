@@ -47,8 +47,8 @@ the author's reports, is retired: `sim/archive/`.)
   - `data/` roots, knot zones, perforator density (anatomical data used by the viewer)
 - `src/data/` — site-wide registries: hypotheses, references (+ `papers.json`), timeline, map index
 - `src/pages/` — introduction, atlas, hypotheses (each theory's account beside its model, with the field guide's instrument),
-  research (the case for researchers), traditions, library, about (`lab` is a dev bench); `simulation/` redirects to
-  `hypotheses/#watch`, and `simulation/vessel/` is one perforator up close
+  research (the case for researchers, and the call for experiments), traditions, library, about (`lab` is a dev bench);
+  `simulation/` redirects to `hypotheses/#watch`, and `simulation/vessel/` is one perforator up close
 - `src/sim/` — the simulation in the browser: `guide/` (the field guide: player, patches, plates, instruments, character),
   `models/*.ts` (generated from Python; never edit), `vessel.ts` and `bench.ts` (the live vessel bench), `draw.ts` and
   `figures.ts` (figures as SVG strings); `src/data/sim/` and `public/sim/` (generated)
@@ -57,7 +57,8 @@ the author's reports, is retired: `sim/archive/`.)
 - `sim/` — the simulation (Python, uv; `sim/README.md` has the layout): `PLAN.md`; `knots_sim/guide/` the field guide's engine
   (patch, scenes, senses, one runner per theory, traits, export); `knots_sim/models/` the theories' models; `params/` every
   number with its source; `archive/` the exam phase
-- `docs/` — `DESIGN.md` (look), `ARCHITECTURE.md`, `DATA.md` (formats), `SIMULATION.md` (the simulation section), `ROADMAP.md`
+- `docs/` — `DESIGN.md` (look), `ARCHITECTURE.md`, `DATA.md` (formats), `SIMULATION.md` (the simulation section), `ROADMAP.md`,
+  `RESEARCHHUB.md` (the draft call on ResearchHub)
 
 ## Conventions
 
@@ -77,8 +78,12 @@ the author's reports, is retired: `sim/archive/`.)
   the field guide's data; `uv run python -m knots_sim.export` regenerates the vessel bench's data and the TypeScript models;
   `uv run python -m knots_sim.params --verify` checks every quote against its source; `uv run python -m knots_sim.pubmed
   search "…"` finds papers, and `knots_sim.library` adds them to `papers.json` from PubMed's own records.
-- Research documents: `src/pages/research/preprint.astro` and `pilot.astro` read their numbers from `src/data/sim/`; after
-  the guide's data changes, reprint their PDFs with `npx tsx scripts/pdf.ts` (a running dev server) into `public/research/`.
+- Research: the position paper (`src/pages/research/perforator-hypothesis.astro`) and, on the Research page, the
+  experiments that would help (`#experiments`, from the `EXPERIMENTS` list: equally weighted, on knots and on runaway
+  release). `docs/RESEARCHHUB.md`, the draft call on ResearchHub, repeats them: keep the two in step. The site says nothing
+  of ResearchHub, letters of intent or cost. The September preprint and pilot are retired (`research/preprint/` and
+  `pilot/` redirect, as the paper cites them). The paper's PDF is its Zenodo file: reprint with `npx tsx scripts/pdf.ts`
+  (a running dev server) only for a new Zenodo version.
 - Deploy: push to `main` (GitHub Actions → Pages at https://ejhong.github.io/knots/). Every push also runs `ci.yml`: the sim
   tests, plus the site checks on branches other than `main`.
 - Roadmap and open questions: `docs/ROADMAP.md`; the simulation's stages: `sim/PLAN.md` §10.

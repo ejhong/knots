@@ -201,8 +201,10 @@ which.
 cannot say. A recognition aid, not a score; nothing is fitted to it. A scene with slow breaths is scored by what it adds to the same breaths alone.
 
 **The research documents** (28 Sep, `src/pages/research/`): a preprint and a one-page pilot protocol, every number generated from
-the runs, printed to PDF by `scripts/pdf.ts`; and, on the Research page, the groups whose published work fits the
-measurement, verified from PubMed records (none approached).
+the runs; and, on the Research page, the groups whose published work fits the measurement, verified from PubMed records.
+Both were retired on 14 Nov for a list of experiments on the Research page (`#experiments`), sketches for researchers to
+improve on and propose through a call on ResearchHub (`docs/RESEARCHHUB.md`); their addresses redirect, as the position
+paper cites them.
 
 ## 8. Rules
 
