@@ -16,8 +16,11 @@ published sources, never how it is set off, and always with where to find help.
 
 Bodyworkers, people who foam-roll and contemplative practitioners all describe knots: discrete places in the body that
 hold, sometimes for years, and let go within seconds, under a hand, with the breath or to attention, often with a tingle
-over the spot. They are among the commonest things a hand finds in a body and among the least explained. As far as is
-known, nothing has been recorded at the moment one lets go.
+over the spot. A knot is felt as a bump, from very small to about the size of a penny; it seldom hurts unless pressed
+hard, as under a foam roller, so tenderness does not define it. The breath that releases knots is described as a trained
+one, a subtle weave of small in- and out-breaths rather than a slow breath in or out, and it may help to find them as
+well. They are among the commonest things a hand finds in a body and among the least explained. As far as is known,
+nothing has been recorded at the moment one lets go.
 
 A position paper, *The perforator hypothesis: knots as small arteries held shut where they pierce the fascia* (Zenodo,
 https://doi.org/10.5281/zenodo.23901648), argues from established physiology that a knot is a cutaneous perforator, a
@@ -67,19 +70,19 @@ here.
 
 Feeling a knot may itself be a skill, and a knot that its owner feels may or may not be one that others can feel.
 Informal reports suggest that some who foam-roll can isolate a single knot, felt as a distinct bump, and release it
-readily, perhaps through the breath, while others never feel single knots at all, only broad, dull masses. If so,
-studies that locate or release knots cannot assume that anyone can find one, in themselves or in others. So these two
-come first: who can feel a knot, and whether an instrument can find one.
+readily, perhaps through a trained breath that may also help to find it, while others never feel single knots at all,
+only broad, dull masses. If so, studies that locate or release knots cannot assume that anyone can find one, in
+themselves or in others. So these two come first: who can feel a knot, and whether an instrument can find one.
 
 **1. Who can feel a knot: its owner, others, or both** (knots)
 *Design:* Survey and phenomenological interviews, then a blinded reliability study (test–retest and inter-rater)
 Two questions, which may have different answers: can people feel their own knots, and can others feel them too? A knot
 might be felt only by its owner, or by a hand from outside as well. Many who foam-roll or work on their own knots might
 be surveyed and interviewed: whether they can isolate a single knot, felt as a distinct bump, or feel only broad, dull
-masses; whether they can release them; how they learned; and what part the breath plays. Bodyworkers might be asked the
-same about the knots they feel in others. Then, in the same people, each might mark the knots they feel, blind to the
-other marks: the person their own, twice, an hour apart, and two examiners by touch. Which knots does each find, and do
-they agree?
+masses; how firmly they must press to find one; whether they can release them; how they learned; and what part the
+breath plays, in finding knots as well as in releasing them. Bodyworkers might be asked the same about the knots they
+feel in others. Then, in the same people, each might mark the knots they feel, blind to the other marks: the person
+their own, twice, an hour apart, and two examiners by touch. Which knots does each find, and do they agree?
 *What it might show.* Whether feeling knots is itself a skill, perhaps tied to the breath as releasing them seems to be,
 held by some and not by others; and whether the knots a person feels in themselves can be felt by others too, or only
 from inside. If so, studies that locate or release knots would need to recruit those who have the skill they rely on.
@@ -104,15 +107,16 @@ Each of these needs knots found, by hand or by instrument, and so builds on the 
 
 **3. Catch a knot as it lets go** (knots)
 *Design:* Sham-controlled laboratory physiology, with felt releases marked as they happen
-People who can release knots at will (bodyworkers, practitioners skilled with a foam roller, a ball, the breath or
+People who can release knots at will (bodyworkers, practitioners skilled with a foam roller, a ball, a trained breath or
 attention) might release them in a laboratory while instruments watch the tissue: skin flow by laser speckle or a
-thermal camera, ultrasound with colour Doppler and the layers' sliding, surface EMG resolved to single motor units. A
-button could mark each felt release, with a spot pressed alike, without a knot, as the sham.
+thermal camera, ultrasound with colour Doppler and the layers' sliding, surface EMG resolved to single motor units. The
+breath might be recorded too, with its carbon dioxide, since a run of quick out-breaths lowers it and can cause tingling
+by itself. A button could mark each felt release, with a spot pressed alike, without a knot, as the sham.
 *What it might show.* Each of the seven proposed mechanisms would, on its own account, leave a different trace at
-release, from a flood of flow to the skin to nothing in the tissue at all; a careful recording might begin to sort
-releases by kind.
-*Likely needs:* a laboratory with ultrasound and EMG or skin-flow imaging · a few skilled practitioners (study 1 might
-find them) · ethics review
+release, from a flood of flow to the skin to nothing in the tissue at all, only changes that follow the breath; a
+careful recording might begin to sort releases by kind.
+*Likely needs:* a laboratory with ultrasound and EMG or skin-flow imaging, and a capnograph · a few skilled
+practitioners (study 1 might find them) · ethics review
 
 **4. Where knots sit** (knots)
 *Design:* Blinded mapping, with spatial statistics against chance
@@ -202,11 +206,13 @@ These need nothing from the others and could begin now, alongside the first two.
 
 **11. What is already recorded** (knots)
 *Design:* Secondary analysis of existing recordings
-Laboratories that study trigger points hold ultrasound, colour Doppler and elastography of tender spots, recorded for
-other questions (Sikdar et al. 2009). Read again with the perforators in mind, these might say whether one runs beneath
-the spot, in which layer any bump lies, and whether the layers glide over it.
+Laboratories that study trigger points hold ultrasound, colour Doppler and elastography of the spots they examine,
+recorded for other questions (Sikdar et al. 2009). Read again with the perforators in mind, these might say whether one
+runs beneath the spot, in which layer any bump lies, and whether the layers glide over it.
 *What it might show.* A first look, for the cost of the analysis: a bump in muscle would point toward a trigger point or
 the motor switch, a perforator beneath toward perforators or nerves, and layers that do not glide toward densification.
+But trigger points are found by tenderness in a taut band, and knots seldom hurt unless pressed hard, so the recordings
+may show other things than knots; latent trigger points, painless until pressed, may be the nearest.
 *Likely needs:* access to existing recordings · someone who reads musculoskeletal ultrasound
 
 **12. A small artery held shut for hours** (knots)
@@ -222,13 +228,16 @@ vasocomputation proposes.
 *Likely needs:* a laboratory with a pressure myograph · small arteries · a day's work, and more for the phosphorylation
 
 **13. The breath and the skin of the trunk** (knots)
-*Design:* Human microvascular physiology: skin blood flow over the trunk by laser speckle
+*Design:* Human microvascular physiology: skin blood flow over the trunk by laser speckle, through ordinary and trained
+breaths
 The breath's effects on skin flow, such as the brief narrowing of skin vessels with a deep breath, are measured mostly
-in the fingers. They could be measured over the back and neck, where knots are reported, with laser speckle: how far the
-vessels there narrow, and how fast they relax once the sympathetic drive falls.
-*What it might show.* Whether a vessel over the trunk could let go within one breath or would need many: timing that the
-vascular accounts, the perforators and the latch, depend on.
-*Likely needs:* laser speckle or laser Doppler · a physiology laboratory
+in the fingers, and for ordinary breaths. They could be measured over the back and neck, where knots are reported, with
+laser speckle: through ordinary breathing, a deep breath, and the trained breath said to release knots, a subtle weave
+of small in- and out-breaths, in people practised in it.
+*What it might show.* Whether vessels over the trunk can follow so fine a breath, and let go within the seconds a
+release is said to take, or respond only over many breaths: timing that the vascular accounts, the perforators and the
+latch, depend on.
+*Likely needs:* laser speckle or laser Doppler · a physiology laboratory · a few people practised in such breathing
 
 **14. Acupoints on perforators** (knots)
 *Design:* Blinded mapping against chance, or a retrospective study of CT angiograms
