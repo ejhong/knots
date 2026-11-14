@@ -20,14 +20,16 @@ const ALIAS: Record<string, string> = { 'Acupoints on perforators': 'points' };
 const EXPERIMENTS: { prong: string; title: string; what: string; show: string; needs: string }[] = [
   {
     prong: 'knots',
-    title: 'Who can feel a knot',
-    what: `Many people who foam-roll or do bodywork might be surveyed and interviewed: whether they can isolate single
-      knots and feel them clearly, whether they can release them, how they learned, and what part the breath plays.
-      Those who say they can might then be tested blind: do two of them find the same knots on the same back?`,
-    show: `Whether finding and feeling knots is itself a skill, perhaps tied to the breath as releasing them seems to be,
-      held by some and not by others. If so, the studies that locate or release knots would need to recruit those who
-      have it.`,
-    needs: `a survey and interview researcher · many people who foam-roll or do bodywork · a simple blind test`,
+    title: 'Who can feel their own knots',
+    what: `Many people who foam-roll, or work on their own knots in other ways, might be surveyed and interviewed about
+      what they feel in their own bodies: whether they can isolate a single knot, felt as a distinct bump, or never
+      feel single knots, only broad, dull masses; whether they can release them; how they learned; and what part the
+      breath plays. Those who say they can isolate knots might then mark their own twice, an hour apart and blind to
+      the first marks: do they find the same ones?`,
+    show: `Whether feeling one's own knots as single, distinct bumps is itself a skill, perhaps tied to the breath as
+      releasing them seems to be, held by some and not by others. If so, studies that rely on people to find or
+      release their own knots would need to recruit those who have it.`,
+    needs: `a survey and interview researcher · many people who foam-roll or work on their own knots · a simple repeat test`,
   },
   {
     prong: 'knots',
@@ -44,6 +46,18 @@ const EXPERIMENTS: { prong: string; title: string; what: string; show: string; n
   },
   {
     prong: 'runaway release',
+    title: 'Characterise runaway release',
+    what: `The case histories that fit its profile could be gathered, from published case reports, the record of
+      meditation-related difficulty, teachers, clinicians and support services, and people who have been through it,
+      or are in it now, interviewed with one set of questions: how it began and ran, its stages and regions, how long
+      each took, what helped and what made it worse.`,
+    show: `No study of it as such is known. A careful description might show whether it is one thing or several, how common
+      it is, who is at risk and what helps, and might find the participants for experiment 4.`,
+    needs: `a qualitative or clinical researcher, best with experience of meditation-related difficulty
+      (${cite('lindahl2017')}; ${cite('cooper2021')}) · ethics review · support at hand for participants`,
+  },
+  {
+    prong: 'runaway release',
     title: 'Examine someone in runaway release',
     what: `People already in runaway release might be examined while it runs and again as it settles: ultrasound of the
       fascial layers and their glide where change is felt and at matched places, colour Doppler of the perforators,
@@ -55,24 +69,12 @@ const EXPERIMENTS: { prong: string; title: string; what: string; show: string; n
       for referral · ethics review`,
   },
   {
-    prong: 'runaway release',
-    title: 'Characterise runaway release',
-    what: `The case histories that fit its profile could be gathered, from published case reports, the record of
-      meditation-related difficulty, teachers, clinicians and support services, and people who have been through it,
-      or are in it now, interviewed with one set of questions: how it began and ran, its stages and regions, how long
-      each took, what helped and what made it worse.`,
-    show: `No study of it as such is known. A careful description might show whether it is one thing or several, how common
-      it is, who is at risk and what helps, and might find the participants for experiment 3.`,
-    needs: `a qualitative or clinical researcher, best with experience of meditation-related difficulty
-      (${cite('lindahl2017')}; ${cite('cooper2021')}) · ethics review · support at hand for participants`,
-  },
-  {
     prong: 'knots',
     title: 'Where knots sit',
-    what: `Two examiners who can isolate knots (experiment 1), blind to each other, might mark them over a region of the
-      back, and a third, blind to the marks, map the perforators with a pencil Doppler, or with a thermal camera as
-      the skin rewarms after a mild cold (${cite('weum2016b')}). The marks could then be set against the vessels at
-      several distances, and against random and shifted maps.`,
+    what: `Two examiners who can isolate knots, blind to each other, might mark them over a region of the back, and a
+      third, blind to the marks, map the perforators with a pencil Doppler, or with a thermal camera as the skin
+      rewarms after a mild cold (${cite('weum2016b')}). The marks could then be set against the vessels at several
+      distances, and against random and shifted maps.`,
     show: `Whether knots sit on perforators (as the perforator and nerve views expect), where a muscle's nerve enters
       (trigger points), or wherever stress is held (the other four). Perhaps the cheapest test of the perforator view:
       an afternoon's work.`,
@@ -83,9 +85,9 @@ const EXPERIMENTS: { prong: string; title: string; what: string; show: string; n
     title: 'Whether a knot is a stable thing',
     what: `Two examiners who can isolate knots might map the same people's knots, blind to each other and to earlier maps,
       with each person mapped again over weeks and months against their own map of perforators.`,
-    show: `Whether examiners find the same knots at all, which may depend on their skill (experiment 1), and whether a
-      person's knots return to fixed places (as the perforator and nerve views expect) or arise anywhere and drift.
-      Much else may rest on the answer.`,
+    show: `Whether examiners find the same knots at all, which may depend on their skill, and whether a person's knots
+      return to fixed places (as the perforator and nerve views expect) or arise anywhere and drift. Much else may
+      rest on the answer.`,
     needs: `two examiners who can isolate knots · a few people, each seen several times · a Doppler or thermal map`,
   },
   {
@@ -161,9 +163,10 @@ const index = [
       something better.
     </p>
     <p class="sub">
-      Finding a knot may itself be a skill. Informal reports suggest that some who foam-roll cannot isolate single knots at
-      all, while others feel and release them readily, perhaps through the breath. If so, studies that locate knots cannot
-      assume that anyone can find one, which is why the first experiment asks who can.
+      Feeling one's own knots may itself be a skill. Informal reports suggest that some who foam-roll can isolate a
+      single knot, felt as a distinct bump, and release it readily, perhaps through the breath, while others never feel
+      single knots at all, only broad, dull masses. If so, studies that rely on people to find or release their own
+      knots cannot assume that anyone can, which is why the first experiment asks who can.
     </p>
     <div class="exps">
       {EXPERIMENTS.map((x, i) => (

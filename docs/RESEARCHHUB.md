@@ -44,9 +44,10 @@ So this call has two prongs: **what a knot is**, and **what runaway release is**
 one or the other follow, numbered for reference and in no order of importance; they are also on the site:
 https://ejhong.github.io/knots/research/#experiments.
 
-Finding a knot may itself be a skill. Informal reports suggest that some who foam-roll cannot isolate single knots at all,
-while others feel and release them readily, perhaps through the breath. If so, studies that locate knots cannot assume
-that anyone can find one, which is why the first experiment asks who can.
+Feeling one's own knots may itself be a skill. Informal reports suggest that some who foam-roll can isolate a single
+knot, felt as a distinct bump, and release it readily, perhaps through the breath, while others never feel single knots
+at all, only broad, dull masses. If so, studies that rely on people to find or release their own knots cannot assume
+that anyone can, which is why the first experiment asks who can.
 
 **You are the experts.** These experiments are ideas from a non-expert working with AI, meant to show the kind of thing
 that might help. You know the methods, the pitfalls and what is feasible: judge them, rework them, combine them, or
@@ -54,14 +55,17 @@ propose something better. The experiment you think would actually decide the que
 
 ### The experiments
 
-**1. Who can feel a knot** (knots)
-Many people who foam-roll or do bodywork might be surveyed and interviewed: whether they can isolate single knots and
-feel them clearly, whether they can release them, how they learned, and what part the breath plays. Those who say they
-can might then be tested blind: do two of them find the same knots on the same back?
-*What it might show.* Whether finding and feeling knots is itself a skill, perhaps tied to the breath as releasing them
-seems to be, held by some and not by others. If so, the studies that locate or release knots would need to recruit those
-who have it.
-*Likely needs:* a survey and interview researcher · many people who foam-roll or do bodywork · a simple blind test
+**1. Who can feel their own knots** (knots)
+Many people who foam-roll, or work on their own knots in other ways, might be surveyed and interviewed about what they
+feel in their own bodies: whether they can isolate a single knot, felt as a distinct bump, or never feel single knots,
+only broad, dull masses; whether they can release them; how they learned; and what part the breath plays. Those who say
+they can isolate knots might then mark their own twice, an hour apart and blind to the first marks: do they find the
+same ones?
+*What it might show.* Whether feeling one's own knots as single, distinct bumps is itself a skill, perhaps tied to the
+breath as releasing them seems to be, held by some and not by others. If so, studies that rely on people to find or
+release their own knots would need to recruit those who have it.
+*Likely needs:* a survey and interview researcher · many people who foam-roll or work on their own knots · a simple
+repeat test
 
 **2. Catch a knot as it lets go** (knots)
 People who can release knots at will (bodyworkers, practitioners skilled with a foam roller, a ball or the breath) might
@@ -74,7 +78,17 @@ releases by kind.
 *Likely needs:* a laboratory with ultrasound and EMG or skin-flow imaging · a few skilled practitioners (experiment 1
 might find them) · ethics review
 
-**3. Examine someone in runaway release** (runaway release)
+**3. Characterise runaway release** (runaway release)
+The case histories that fit its profile could be gathered, from published case reports, the record of meditation-related
+difficulty, teachers, clinicians and support services, and people who have been through it, or are in it now,
+interviewed with one set of questions: how it began and ran, its stages and regions, how long each took, what helped and
+what made it worse.
+*What it might show.* No study of it as such is known. A careful description might show whether it is one thing or
+several, how common it is, who is at risk and what helps, and might find the participants for experiment 4.
+*Likely needs:* a qualitative or clinical researcher, best with experience of meditation-related difficulty (Lindahl et
+al. 2017; Cooper et al. 2021) · ethics review · support at hand for participants
+
+**4. Examine someone in runaway release** (runaway release)
 People already in runaway release might be examined while it runs and again as it settles: ultrasound of the fascial
 layers and their glide where change is felt and at matched places, colour Doppler of the perforators, skin-flow imaging,
 and the blood tests a physician would order. No one would be asked to begin or seek it, and their care would come first.
@@ -83,21 +97,11 @@ the reports give; if only perception is changing, the tissue would likely look a
 *Likely needs:* a clinician-researcher with imaging who knows meditation-related difficulty · a route to participants ·
 a plan for referral · ethics review
 
-**4. Characterise runaway release** (runaway release)
-The case histories that fit its profile could be gathered, from published case reports, the record of meditation-related
-difficulty, teachers, clinicians and support services, and people who have been through it, or are in it now,
-interviewed with one set of questions: how it began and ran, its stages and regions, how long each took, what helped and
-what made it worse.
-*What it might show.* No study of it as such is known. A careful description might show whether it is one thing or
-several, how common it is, who is at risk and what helps, and might find the participants for experiment 3.
-*Likely needs:* a qualitative or clinical researcher, best with experience of meditation-related difficulty (Lindahl et
-al. 2017; Cooper et al. 2021) · ethics review · support at hand for participants
-
 **5. Where knots sit** (knots)
-Two examiners who can isolate knots (experiment 1), blind to each other, might mark them over a region of the back, and
-a third, blind to the marks, map the perforators with a pencil Doppler, or with a thermal camera as the skin rewarms
-after a mild cold (Weum et al. 2016). The marks could then be set against the vessels at several distances, and against
-random and shifted maps.
+Two examiners who can isolate knots, blind to each other, might mark them over a region of the back, and a third, blind
+to the marks, map the perforators with a pencil Doppler, or with a thermal camera as the skin rewarms after a mild cold
+(Weum et al. 2016). The marks could then be set against the vessels at several distances, and against random and shifted
+maps.
 *What it might show.* Whether knots sit on perforators (as the perforator and nerve views expect), where a muscle's
 nerve enters (trigger points), or wherever stress is held (the other four). Perhaps the cheapest test of the perforator
 view: an afternoon's work.
@@ -106,9 +110,9 @@ view: an afternoon's work.
 **6. Whether a knot is a stable thing** (knots)
 Two examiners who can isolate knots might map the same people's knots, blind to each other and to earlier maps, with
 each person mapped again over weeks and months against their own map of perforators.
-*What it might show.* Whether examiners find the same knots at all, which may depend on their skill (experiment 1), and
-whether a person's knots return to fixed places (as the perforator and nerve views expect) or arise anywhere and drift.
-Much else may rest on the answer.
+*What it might show.* Whether examiners find the same knots at all, which may depend on their skill, and whether a
+person's knots return to fixed places (as the perforator and nerve views expect) or arise anywhere and drift. Much else
+may rest on the answer.
 *Likely needs:* two examiners who can isolate knots · a few people, each seen several times · a Doppler or thermal map
 
 **7. What is already recorded** (knots)
