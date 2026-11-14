@@ -18,8 +18,9 @@ Bodyworkers, people who foam-roll and contemplative practitioners all describe k
 hold, sometimes for years, and let go within seconds, under a hand, with the breath or to attention, often with a tingle
 over the spot. A knot is felt as a bump, from very small to about the size of a penny; it seldom hurts unless pressed
 hard, as under a foam roller, so tenderness does not define it. The breath that releases knots is described as a trained
-one, a subtle weave of small in- and out-breaths rather than a slow breath in or out, and it may help to find them as
-well. They are among the commonest things a hand finds in a body and among the least explained. As far as is known,
+one: a subtle weave of small in- and out-breaths, perhaps beginning with a small in-breath, builds the release, which is
+probably carried out on an out-breath that can be fairly strong, as an athlete's is. Such breaths may help to find knots
+as well. They are among the commonest things a hand finds in a body and among the least explained. As far as is known,
 nothing has been recorded at the moment one lets go.
 
 A position paper, *The perforator hypothesis: knots as small arteries held shut where they pierce the fascia* (Zenodo,
@@ -110,8 +111,8 @@ Each of these needs knots found, by hand or by instrument, and so builds on the 
 People who can release knots at will (bodyworkers, practitioners skilled with a foam roller, a ball, a trained breath or
 attention) might release them in a laboratory while instruments watch the tissue: skin flow by laser speckle or a
 thermal camera, ultrasound with colour Doppler and the layers' sliding, surface EMG resolved to single motor units. The
-breath might be recorded too, with its carbon dioxide, since a run of quick out-breaths lowers it and can cause tingling
-by itself. A button could mark each felt release, with a spot pressed alike, without a knot, as the sham.
+breath might be recorded too, with its carbon dioxide, since a run of strong or quick out-breaths lowers it and can
+cause tingling by itself. A button could mark each felt release, with a spot pressed alike, without a knot, as the sham.
 *What it might show.* Each of the seven proposed mechanisms would, on its own account, leave a different trace at
 release, from a flood of flow to the skin to nothing in the tissue at all, only changes that follow the breath; a
 careful recording might begin to sort releases by kind.
@@ -233,10 +234,10 @@ breaths
 The breath's effects on skin flow, such as the brief narrowing of skin vessels with a deep breath, are measured mostly
 in the fingers, and for ordinary breaths. They could be measured over the back and neck, where knots are reported, with
 laser speckle: through ordinary breathing, a deep breath, and the trained breath said to release knots, a subtle weave
-of small in- and out-breaths, in people practised in it.
-*What it might show.* Whether vessels over the trunk can follow so fine a breath, and let go within the seconds a
-release is said to take, or respond only over many breaths: timing that the vascular accounts, the perforators and the
-latch, depend on.
+of small in- and out-breaths and the out-breath that carries it out, in people practised in it.
+*What it might show.* Which part of the breath the vessels over the trunk follow, the subtle weave, the out-breath that
+carries it out, or only the sum of many breaths; and whether they could let go within the seconds a release is said to
+take: timing that the vascular accounts, the perforators and the latch, depend on.
 *Likely needs:* laser speckle or laser Doppler · a physiology laboratory · a few people practised in such breathing
 
 **14. Acupoints on perforators** (knots)

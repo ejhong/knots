@@ -209,7 +209,7 @@ export const HYPOTHESES: Hypothesis[] = [
     holds: 'Central plasticity, kept up by threat, attention and poor sleep.',
     releases: 'Safety, sleep, movement, a change of attention, ordinary breathing — global rather than local.',
     timescale: 'Instantaneous for percepts; days to months for sensitisation.',
-    breath: 'Overbreathing, even a run of quick out-breaths, lowers carbon dioxide and causes tingling and sparks anywhere; slow breathing calms arousal and threat.',
+    breath: 'Overbreathing, even a run of strong or quick out-breaths, lowers carbon dioxide and causes tingling and sparks anywhere; slow breathing calms arousal and threat.',
     travel: 'A percept can move anywhere in an instant; sensitisation spreads by spinal segment.',
     age: 'Tied less to age than to history: injury, stress and sleep.',
     count: 'No fixed number: as many places as sensitisation and attention make, and they can move.',
