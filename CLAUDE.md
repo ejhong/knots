@@ -80,7 +80,7 @@ the author's reports, is retired: `sim/archive/`.)
   search "…"` finds papers, and `knots_sim.library` adds them to `papers.json` from PubMed's own records.
 - Research: the position paper (`src/pages/research/perforator-hypothesis.astro`) and, on the Research page, the
   experiments that might help (`#experiments`, from the `EXPERIMENTS` list: equally weighted, on knots and on runaway
-  release). The Research page carries nothing from the models: the theories, their models and what physics allows are on
+  release, listed in the order they build on one another). The Research page carries nothing from the models: the theories, their models and what physics allows are on
   Hypotheses. `docs/RESEARCHHUB.md`, the draft call on ResearchHub, repeats them: keep the two in step. The site says nothing
   of ResearchHub, letters of intent or cost. The September preprint and pilot are retired (`research/preprint/` and
   `pilot/` redirect, as the paper cites them). The paper's PDF is its Zenodo file: reprint with `npx tsx scripts/pdf.ts`

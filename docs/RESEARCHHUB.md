@@ -40,15 +40,17 @@ the end brings back a sense of wholeness. The reports are many but informal, and
 of the wider kind it belongs to have lasted years, and in a study that recruited Western Buddhist meditators who could
 describe difficult experiences, about one in six reported suicidality (Lindahl et al. 2017).
 
-So this call has two prongs: **what a knot is**, and **what runaway release is**. Fourteen experiments that might help with
-one or the other follow, numbered for reference and in no order of importance; they are also on the site:
-https://ejhong.github.io/knots/research/#experiments.
+So this call has two prongs: **what a knot is**, and **what runaway release is**. Fourteen experiments that might help
+with one or the other follow, numbered for reference and listed in the order they build on one another rather than by
+importance; they are also on the site: https://ejhong.github.io/knots/research/#experiments.
 
 Feeling a knot may itself be a skill, and a knot that its owner feels may or may not be one that others can feel.
 Informal reports suggest that some who foam-roll can isolate a single knot, felt as a distinct bump, and release it
 readily, perhaps through the breath, while others never feel single knots at all, only broad, dull masses. If so,
 studies that locate or release knots cannot assume that anyone can find one, in themselves or in others, which is why
-the first experiment asks who can, and the second whether an instrument can.
+the first experiment asks who can, and the second whether an instrument can. The six after them need knots found, by
+hand or by instrument; the two on runaway release follow, the first finding the participants for the second; and the
+last four stand alone and could begin at any time.
 
 **You are the experts.** These experiments are ideas from a non-expert working with AI, meant to show the kind of thing
 that might help. You know the methods, the pitfalls and what is feasible: judge them, rework them, combine them, or
@@ -92,26 +94,7 @@ releases by kind.
 *Likely needs:* a laboratory with ultrasound and EMG or skin-flow imaging · a few skilled practitioners (experiment 1
 might find them) · ethics review
 
-**4. Characterise runaway release** (runaway release)
-The case histories that fit its profile could be gathered, from published case reports, the record of meditation-related
-difficulty, teachers, clinicians and support services, and people who have been through it, or are in it now,
-interviewed with one set of questions: how it began and ran, its stages and regions, how long each took, what helped and
-what made it worse.
-*What it might show.* No study of it as such is known. A careful description might show whether it is one thing or
-several, how common it is, who is at risk and what helps, and might find the participants for experiment 5.
-*Likely needs:* a qualitative or clinical researcher, best with experience of meditation-related difficulty (Lindahl et
-al. 2017; Cooper et al. 2021) · ethics review · support at hand for participants
-
-**5. Examine someone in runaway release** (runaway release)
-People already in runaway release might be examined while it runs and again as it settles: ultrasound of the fascial
-layers and their glide where change is felt and at matched places, colour Doppler of the perforators, skin-flow imaging,
-and the blood tests a physician would order. No one would be asked to begin or seek it, and their care would come first.
-*What it might show.* If the tissue is changing, the glide might differ at the reported places and settle on the clock
-the reports give; if only perception is changing, the tissue would likely look as it did.
-*Likely needs:* a clinician-researcher with imaging who knows meditation-related difficulty · a route to participants ·
-a plan for referral · ethics review
-
-**6. Where knots sit** (knots)
+**4. Where knots sit** (knots)
 Knots might be marked over a region of the body in two ways, or both (experiment 1): by two examiners who can feel knots
 in others, blind to each other, or by people who can isolate their own. A third person, blind to the marks, might map
 the perforators with a pencil Doppler, or with a thermal camera as the skin rewarms after a mild cold (Weum et al.
@@ -122,7 +105,7 @@ marks and an examiner's agree. Perhaps the cheapest test of the perforator view:
 *Likely needs:* examiners who can feel knots in others, or people who can isolate their own · a pencil Doppler or
 thermal camera · a statistician
 
-**7. Whether a knot is a stable thing** (knots)
+**5. Whether a knot is a stable thing** (knots)
 The same people's knots might be mapped again over weeks and months, against their own map of perforators: by two
 examiners who can feel knots in others, blind to each other and to earlier maps, or by the people themselves, if they
 can isolate their own (experiment 1), blind to their earlier marks.
@@ -132,7 +115,7 @@ and drift. Much else may rest on the answer.
 *Likely needs:* examiners, or people who can isolate their own knots · a few people, each seen several times · a Doppler
 or thermal map
 
-**8. Whether knots grow with age** (knots)
+**6. Whether knots grow with age** (knots)
 Knots might be counted and sized in people of all ages, from childhood to old age, and in the same people over years: by
 their own marks and by examiners (experiment 1), and by whichever instrument proves best (experiment 2). People might
 also be asked when their knots first appeared and how they have changed.
@@ -142,15 +125,7 @@ and size); latches accumulate from early childhood; trigger points follow overlo
 remembers nothing by itself; perception follows history more than age.
 *Likely needs:* examiners or an instrument (experiments 1 and 2) · people of all ages · a statistician
 
-**9. What is already recorded** (knots)
-Laboratories that study trigger points hold ultrasound, colour Doppler and elastography of tender spots, recorded for
-other questions (Sikdar et al. 2009). Read again with the perforators in mind, these might say whether one runs beneath
-the spot, in which layer any bump lies, and whether the layers glide over it.
-*What it might show.* A first look, for the cost of the analysis: a bump in muscle would point toward a trigger point or
-the motor switch, a perforator beneath toward perforators or nerves, and layers that do not glide toward densification.
-*Likely needs:* access to existing recordings · someone who reads musculoskeletal ultrasound
-
-**10. What remains after death** (knots)
+**7. What remains after death** (knots)
 People whose knots were mapped in life (experiment 1), and who give their bodies to science, might be examined after
 death where the knots were and at matched places: the perforators' walls and lumens, the fascial layers, the muscle and
 the nerves, under the microscope. Or tissue from ordinary post-mortem examinations, taken where knots are often
@@ -160,14 +135,41 @@ motor switch, perception) would likely leave nothing; a vessel narrowed by long 
 nerve or changed muscle might remain, and would point to the accounts that expect them.
 *Likely needs:* an anatomist or pathologist · a body donation programme, or post-mortem tissue · ethics review
 
-**11. Whether animals have knots** (knots)
+**8. Whether animals have knots** (knots)
 Veterinarians and animal bodyworkers might be asked whether they find knots in horses, dogs or other animals, and where;
 with their owners' consent, the spots might be examined with the instruments of experiment 2. Where an animal that had
-them dies or is put down for other reasons, the tissue beneath might be examined too (experiment 10). No animal would be
+them dies or is put down for other reasons, the tissue beneath might be examined too (experiment 7). No animal would be
 harmed for the study.
 *What it might show.* Whether knots are something mammals share, as most of the accounts would expect, since animals
 have the same vessels, fascia, muscle and nerves; and a route to the tissue beneath a knot that was felt in life.
 *Likely needs:* veterinarians or animal bodyworkers · a pencil Doppler or ultrasound · ethics review
+
+**9. Characterise runaway release** (runaway release)
+The case histories that fit its profile could be gathered, from published case reports, the record of meditation-related
+difficulty, teachers, clinicians and support services, and people who have been through it, or are in it now,
+interviewed with one set of questions: how it began and ran, its stages and regions, how long each took, what helped and
+what made it worse.
+*What it might show.* No study of it as such is known. A careful description might show whether it is one thing or
+several, how common it is, who is at risk and what helps, and might find the participants for experiment 10.
+*Likely needs:* a qualitative or clinical researcher, best with experience of meditation-related difficulty (Lindahl et
+al. 2017; Cooper et al. 2021) · ethics review · support at hand for participants
+
+**10. Examine someone in runaway release** (runaway release)
+People already in runaway release might be examined while it runs and again as it settles: ultrasound of the fascial
+layers and their glide where change is felt and at matched places, colour Doppler of the perforators, skin-flow imaging,
+and the blood tests a physician would order. No one would be asked to begin or seek it, and their care would come first.
+*What it might show.* If the tissue is changing, the glide might differ at the reported places and settle on the clock
+the reports give; if only perception is changing, the tissue would likely look as it did.
+*Likely needs:* a clinician-researcher with imaging who knows meditation-related difficulty · a route to participants ·
+a plan for referral · ethics review
+
+**11. What is already recorded** (knots)
+Laboratories that study trigger points hold ultrasound, colour Doppler and elastography of tender spots, recorded for
+other questions (Sikdar et al. 2009). Read again with the perforators in mind, these might say whether one runs beneath
+the spot, in which layer any bump lies, and whether the layers glide over it.
+*What it might show.* A first look, for the cost of the analysis: a bump in muscle would point toward a trigger point or
+the motor switch, a perforator beneath toward perforators or nerves, and layers that do not glide toward densification.
+*Likely needs:* access to existing recordings · someone who reads musculoskeletal ultrasound
 
 **12. A small artery held shut for hours** (knots)
 In a pressure myograph, a small artery, human if possible, might be shut with an agonist for five minutes or for four
