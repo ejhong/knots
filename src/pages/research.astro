@@ -180,7 +180,7 @@ const EXPERIMENTS: { prong: string; title: string; what: string; decide: string;
       difficulty, teachers, clinicians and support services, and interview people who have been through it or are in it now,
       with one set of questions: how it began and ran, its stages and regions, how long each took, what helped and what made
       it worse.`,
-    decide: `We know of no study of it as such. A careful description would show whether it is one thing or several, how
+    decide: `No study of it as such is known. A careful description would show whether it is one thing or several, how
       common it is, who is at risk and what helps, and would find the participants for experiment 2.`,
     needs: `a qualitative or clinical researcher, best with experience of meditation-related difficulty (${cite('lindahl2017')}; ${cite('cooper2021')}) · ethics review · support at hand for participants`,
   },
@@ -250,7 +250,7 @@ const index = [
   { id: 'experiments', label: 'experiments that would help' },
   { id: 'part', label: 'where the theories part' },
   { id: 'suggest', label: 'what the models suggest' },
-  { id: 'measurement', label: 'the measurement' },
+  { id: 'measurement', label: 'measurements' },
   { id: 'physics', label: 'what physics allows' },
   { id: 'perforators', label: 'the perforators, up close' },
   { id: 'points', label: 'perforators and acupoints' },
@@ -260,7 +260,7 @@ const index = [
 ];
 ---
 <Doc
-  title="Knots: an open problem, and the measurement that would settle it"
+  title="Knots: an open problem, and ways to find out"
   kicker="For researchers"
   current="research"
   lede="People who work with the body find places that hold for years and let go in a breath. Seven mechanisms could explain them. Each is run as a model from its own physiology, to show how its knots would behave; and at the moment one lets go, each would leave a different trace."
@@ -309,7 +309,7 @@ const index = [
         fourteen seconds.
       </p>
       <p>
-        <strong>What would settle it.</strong> One recording at the moment a knot lets go, with the few instruments that
+        <strong>What might settle it.</strong> A recording at the moment a knot lets go, with the few instruments that
         tell those traces apart, after cheaper questions a hand can ask (<a href="#measurement">the ladder below</a>).
       </p>
       <p>
@@ -320,7 +320,8 @@ const index = [
         <strong>The case for perforators.</strong> A{' '}
         <a href={`${base}/research/perforator-hypothesis/`}>position paper</a> argues for one mechanism from established
         physiology alone: what it explains and what it does not, the alternatives in their strongest forms, the fascia, the
-        acupuncture points, the dangers, and the measurements that would refute it.
+        acupuncture points, the dangers, and the measurements that would refute it. It is a preprint, open for anyone to take
+        further (<a href="#further">below</a>).
       </p>
       <p>
         <strong>Perforators and acupoints.</strong> The perforators' source arteries and clusters are the same in everyone; the
@@ -340,8 +341,8 @@ const index = [
       described by some who work forcefully and for long at clearing knots. Releases come in chains that cannot be set down;
       then the fascia is felt to peel, hollow and fill in again, in phases over days to weeks that recur over months or years
       (<a href={`${base}/research/perforator-hypothesis/#fascia`}>the position paper, Section 5</a>). Each experiment below
-      would help with one or the other. They are sketches, in no order of importance, to be improved on by those who would
-      run them.
+      might help with one or the other. They are ideas from a non-expert working with AI, in no order of importance. Those
+      who know the methods should judge them and lead: change them, combine them, or set them aside for something better.
     </p>
     <div class="exps">
       {EXPERIMENTS.map((x, i) => (
@@ -355,7 +356,7 @@ const index = [
       ))}
     </div>
     <p class="sub">
-      Or one we have not thought of: anything that would help tell what a knot is, or what runaway release is. The traces
+      Or one not listed here: anything that might help tell what a knot is, or what runaway release is. The traces
       each theory predicts are <a href="#part">below</a>, and the numbers the models most need under{' '}
       <a href="#asks">what we need</a>.
     </p>
@@ -435,7 +436,7 @@ const index = [
   </section>
 
   <section id="measurement" class="sec full" data-glyph="験">
-    <h2>The measurement that would settle it</h2>
+    <h2>Measurements that might tell the theories apart</h2>
     <p class="sub">
       Cheapest first. Each observes what already happens, at the usual pace; each step names the theories it would tell
       apart.
@@ -864,6 +865,12 @@ const index = [
           alternatives in their strongest forms, the fascia, the acupuncture points, the dangers, and what would refute it.</span>
       </a>
     </div>
+    <p class="sub">
+      The paper is a preprint, written by AI under the author's direction and not peer-reviewed, and the author will not take
+      it to a journal. If, having weighed the alternatives, you think the perforator hypothesis is the best fit, take it up:
+      test it, rework it, publish it (the paper is CC BY 4.0). If you think a rival theory fits better, the models, data and
+      code are open to you too.
+    </p>
     <p class="links mono"><a href={`${base}/research/perforator-hypothesis.pdf`}>position paper (PDF)</a><a href="https://doi.org/10.5281/zenodo.23901648">position paper (DOI)</a></p>
     <h3 class="h3">Who could help</h3>
     <p class="sub">Groups whose published methods or theories bear directly on this, named from their published work, with the

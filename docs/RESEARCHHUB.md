@@ -1,9 +1,10 @@
 # The ResearchHub call (draft)
 
-The text for the call on ResearchHub, drafted 14 November 2026. Everything below the line is the post. The experiments
-repeat the Research page's word for word (`src/pages/research.astro`, the `EXPERIMENTS` list, shown at
-https://ejhong.github.io/knots/research/#experiments; each card has its own anchor, `#experiment-1` to `#experiment-9`):
-change one, change the other. The site itself says nothing of ResearchHub, letters of intent or cost.
+The text for the call on ResearchHub, drafted 14 November 2026. Everything below the line is the post; it is written
+without "I" or "we". The experiments repeat the Research page's word for word (`src/pages/research.astro`, the
+`EXPERIMENTS` list, shown at https://ejhong.github.io/knots/research/#experiments; each card has its own anchor,
+`#experiment-1` to `#experiment-9`): change one, change the other. The site itself says nothing of ResearchHub, letters of
+intent or cost.
 
 Passages in [brackets] are choices still open. The references are from the project's verified records
 (`src/data/papers.json`, `src/data/references.ts`). Runaway release follows the site's rules: stated as a danger, from
@@ -18,7 +19,7 @@ hold, sometimes for years, and let go within seconds, under a hand, with the bre
 over the spot. They are among the commonest things a hand finds in a body and among the least explained. Nothing has ever
 been recorded at the moment one lets go.
 
-My position paper, *The perforator hypothesis: knots as small arteries held shut where they pierce the fascia* (Zenodo,
+A position paper, *The perforator hypothesis: knots as small arteries held shut where they pierce the fascia* (Zenodo,
 https://doi.org/10.5281/zenodo.23901648), argues from established physiology that a knot is a cutaneous perforator, a
 small artery held shut by its own wall where it pierces the fascia. It sets out six alternatives in their strongest forms
 (smooth muscle in the latch state, a myofascial trigger point, densified hyaluronan, a sensitised nerve, motor units that
@@ -26,19 +27,27 @@ latch on, and perception) and the measurements that would refute it. The project
 their own physiology and shows where they part: https://ejhong.github.io/knots/ (code and data:
 https://github.com/ejhong/knots).
 
+The paper was written by AI under its author's direction and has not been peer-reviewed, and its author will not take it
+to a journal. If, having weighed the alternatives, you think the perforator hypothesis is the best fit, take it up: test
+it, rework it, publish it (the paper is CC BY 4.0). A letter can propose that write-up, and it can be funded. If you think
+a rival theory fits better, the models, data and code are open to you too.
+
 **Runaway release.** Some who work forcefully and for long at clearing knots, in contemplative practice or in somatic
 work, describe a rarer process. Past some point, releases come in chains and the process can no longer be set down: it
 feels unfinished, and stopping is harder to bear than going on. Then come phases felt in the fascia, over days to weeks
 and recurring over months or years: the layers peel apart along lines, places are left hollow, and a slow re-stitching in
-the end brings back a sense of wholeness. The reports are many but informal, and I know of no study of the process as
-such (the position paper, Section 5). It is arduous and can be dangerous, above all for someone facing it alone:
-difficulties of the wider kind it belongs to have lasted years, and in a study that recruited Western Buddhist meditators
-who could describe difficult experiences, about one in six reported suicidality (Lindahl et al. 2017).
+the end brings back a sense of wholeness. The reports are many but informal, and no study of the process as such is known
+(the position paper, Section 5). It is arduous and can be dangerous, above all for someone facing it alone: difficulties
+of the wider kind it belongs to have lasted years, and in a study that recruited Western Buddhist meditators who could
+describe difficult experiences, about one in six reported suicidality (Lindahl et al. 2017).
 
-So this call has two prongs: **what a knot is**, and **what runaway release is**. Below are nine experiments that would
-help with one or the other, numbered for reference and in no order of importance. They are sketches, to be improved on by
-those who would run them; fuller notes, and what each theory predicts, are on the site:
-https://ejhong.github.io/knots/research/#experiments. An experiment I haven't thought of is just as welcome.
+So this call has two prongs: **what a knot is**, and **what runaway release is**. Nine experiments that might help with
+one or the other follow, numbered for reference and in no order of importance; what each theory predicts is on the site:
+https://ejhong.github.io/knots/research/#experiments.
+
+**You are the experts.** These experiments are ideas from a non-expert working with AI, meant to show the kind of thing
+that might help. You know the methods, the pitfalls and what is feasible: judge them, rework them, combine them, or
+propose something better. The experiment you think would actually decide the question matters more than any listed here.
 
 ### The experiments
 
@@ -64,7 +73,7 @@ for referral · ethics review
 Gather the case histories that fit its profile, from published case reports, the record of meditation-related difficulty,
 teachers, clinicians and support services, and interview people who have been through it or are in it now, with one set
 of questions: how it began and ran, its stages and regions, how long each took, what helped and what made it worse.
-*What it would decide.* We know of no study of it as such. A careful description would show whether it is one thing or
+*What it would decide.* No study of it as such is known. A careful description would show whether it is one thing or
 several, how common it is, who is at risk and what helps, and would find the participants for experiment 2.
 *Needs:* a qualitative or clinical researcher, best with experience of meditation-related difficulty (Lindahl et al.
 2017; Cooper et al. 2021) · ethics review · support at hand for participants
@@ -132,8 +141,8 @@ open until filled.]
 
 ### What happens next
 
-I'll read every letter and follow up on the promising ones, with questions or an invitation to a full proposal[, and I'll
-pay for the time a full proposal takes]. Funded work shares its data and code, and keeps a simple public log of updates:
+Every letter will be read, and promising ones followed up with questions or an invitation to a full proposal[, with the
+time a full proposal takes paid for]. Funded work shares its data and code, and keeps a simple public log of updates:
 frequent one-liners are ideal ("first three participants recorded", "switched from thermal imaging to laser speckle").
 
 ### Care

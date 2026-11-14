@@ -13,7 +13,7 @@ from Eugene Jhong’s essays, which head the Library.
 - **Traditions** — Chinese medicine, Daoist alchemy, yoga and tantra, Tibetan tsa lung and Dzogchen, Buddhist practice.
 - **Library** — verified references and a short history of knots.
 - **Research** — the case for researchers: what people report, the theories, what the models show with measured numbers,
-  what each theory predicts a recording at release would show, and the experiment that would settle it.
+  what each theory predicts a recording at release would show, and experiments that might find out.
 - **Simulation** (`/simulation/`) — the bench: one perforator's small artery as a switch, running live, with every number
   traced to its source.
 
