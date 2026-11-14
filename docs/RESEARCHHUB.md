@@ -1,10 +1,10 @@
 # The ResearchHub call (draft)
 
 The text for the call on ResearchHub, drafted 14 November 2026. Everything below the line is the post; it is written
-without "I" or "we". The studies, with their groups and the kind of study each would be, repeat the Research page's
-word for word (`src/pages/research.astro`, the `STUDIES` and `STAGES` lists, shown at
-https://ejhong.github.io/knots/research/#studies; each card has its own anchor, `#study-1` to
-`#study-14`): change one, change the other. The site itself says nothing of ResearchHub, letters of intent or cost.
+without "I" or "we". The studies, with their groups and the kind of study each would be, repeat the Research page's word
+for word (`src/pages/research.astro`, the `STUDIES` and `STAGES` lists, shown at
+https://ejhong.github.io/knots/research/#studies; each card has its own anchor, `#study-1` to `#study-15`): change one,
+change the other. The site itself says nothing of ResearchHub, letters of intent or cost.
 
 Passages in [brackets] are choices still open. The references are from the project's verified records
 (`src/data/papers.json`, `src/data/references.ts`). Runaway release follows the site's rules: stated as a danger, from
@@ -21,10 +21,12 @@ known, nothing has been recorded at the moment one lets go.
 
 A position paper, *The perforator hypothesis: knots as small arteries held shut where they pierce the fascia* (Zenodo,
 https://doi.org/10.5281/zenodo.23901648), argues from established physiology that a knot is a cutaneous perforator, a
-small artery held shut by its own wall where it pierces the fascia. It sets out six alternatives in their strongest forms
-(smooth muscle in the latch state, a myofascial trigger point, densified hyaluronan, a sensitised nerve, motor units that
-latch on, and perception) and the measurements that would refute it. The project's site sets out all seven, each at its
-strongest: https://ejhong.github.io/knots/hypotheses/ (code and data: https://github.com/ejhong/knots).
+small artery held shut by its own wall where it pierces the fascia. The idea grew from vasocomputation, the proposal
+that held predictions are held vascular tension (Johnson 2023), and keeps its first step: a held contraction as a stored
+state. It sets out six alternatives in their strongest forms (smooth muscle in the latch state, a myofascial trigger
+point, densified hyaluronan, a sensitised nerve, motor units that latch on, and perception) and the measurements that
+would refute it. The project's site sets out all seven, each at its strongest:
+https://ejhong.github.io/knots/hypotheses/ (code and data: https://github.com/ejhong/knots).
 
 The paper was written by AI under its author's direction and has not been peer-reviewed, and its author will not take it
 to a journal. If, having weighed the alternatives, you think the perforator hypothesis is the best fit, take it up: test
@@ -40,7 +42,7 @@ the end brings back a sense of wholeness. The reports are many but informal, and
 of the wider kind it belongs to have lasted years, and in a study that recruited Western Buddhist meditators who could
 describe difficult experiences, about one in six reported suicidality (Lindahl et al. 2017).
 
-So this call has two prongs: **what a knot is**, and **what runaway release is**. Fourteen studies that might help
+So this call has two prongs: **what a knot is**, and **what runaway release is**. Fifteen studies that might help
 with one or the other follow, numbered for reference, grouped by what each needs and listed in the order they build on
 one another rather than by importance; under each title is the kind of study it would be. They are also on the site:
 https://ejhong.github.io/knots/research/#studies.
@@ -101,10 +103,10 @@ Each of these needs knots found, by hand or by instrument, and so builds on the 
 
 **3. Catch a knot as it lets go** (knots)
 *Design:* Sham-controlled laboratory physiology, with felt releases marked as they happen
-People who can release knots at will (bodyworkers, practitioners skilled with a foam roller, a ball or the breath) might
-release them in a laboratory while instruments watch the tissue: skin flow by laser speckle or a thermal camera,
-ultrasound with colour Doppler and the layers' sliding, surface EMG resolved to single motor units. A button could mark
-each felt release, with a spot pressed alike, without a knot, as the sham.
+People who can release knots at will (bodyworkers, practitioners skilled with a foam roller, a ball, the breath or
+attention) might release them in a laboratory while instruments watch the tissue: skin flow by laser speckle or a
+thermal camera, ultrasound with colour Doppler and the layers' sliding, surface EMG resolved to single motor units. A
+button could mark each felt release, with a spot pressed alike, without a knot, as the sham.
 *What it might show.* Each of the seven proposed mechanisms would, on its own account, leave a different trace at
 release, from a flood of flow to the skin to nothing in the tissue at all; a careful recording might begin to sort
 releases by kind.
@@ -177,8 +179,9 @@ The case histories that fit its profile could be gathered, from published case r
 difficulty, teachers, clinicians and support services, and people who have been through it, or are in it now,
 interviewed with one set of questions: how it began and ran, its stages and regions, how long each took, what helped and
 what made it worse.
-*What it might show.* No study of it as such is known. A careful description might show whether it is one thing or
-several, how common it is, who is at risk and what helps, and might find the participants for study 10.
+*What it might show.* No study of it as such is known. A careful description might show whether it is a syndrome, one
+recognisable pattern that a case definition could capture, or several things; how common it is, who is at risk and what
+helps; and it might find the participants for study 10.
 *Likely needs:* a qualitative or clinical researcher, best with experience of meditation-related difficulty (Lindahl et
 al. 2017; Cooper et al. 2021) · ethics review · support at hand for participants
 
@@ -206,13 +209,16 @@ the motor switch, a perforator beneath toward perforators or nerves, and layers 
 *Likely needs:* access to existing recordings · someone who reads musculoskeletal ultrasound
 
 **12. A small artery held shut for hours** (knots)
-*Design:* Ex vivo physiology: pressure myography of isolated small arteries
+*Design:* Ex vivo physiology: pressure myography of isolated small arteries, with their myosin phosphorylation
 In a pressure myograph, a small artery, human if possible, might be shut with an agonist for five minutes or for four
-hours, and the agonist then lowered to a resting level.
-*What it might show.* Whether a vessel can remember. If knots are vessels that set, the first might reopen and the
-second stay shut, opening past its resting diameter when finally released; if the second reopens as fully as the first,
-that would count against vessels setting.
-*Likely needs:* a laboratory with a pressure myograph · small arteries · a day's work
+hours, and the agonist then lowered to a resting level, with the muscle's myosin phosphorylation measured through the
+hold.
+*What it might show.* Whether a vessel can remember, as vasocomputation proposes a held contraction does (Johnson 2023),
+and how. If knots are vessels that set, the first might reopen and the second stay shut, opening past its resting
+diameter when finally released; if the second reopens as fully as the first, that would count against vessels setting.
+Tension kept while the phosphorylation falls would show the latch state (Hai and Murphy 1988), the cheap hold
+vasocomputation proposes.
+*Likely needs:* a laboratory with a pressure myograph · small arteries · a day's work, and more for the phosphorylation
 
 **13. The breath and the skin of the trunk** (knots)
 *Design:* Human microvascular physiology: skin blood flow over the trunk by laser speckle
@@ -232,6 +238,18 @@ thousand.
 *What it might show.* Whether the points sit on perforators more than chance would put them. On the five lines where
 both are measured they sit only a little nearer than random points: not shown, not excluded.
 *Likely needs:* a thermal camera and Doppler · practitioners and a reader, blind to each other · a statistician
+
+**15. Whether vasomotion stops in deep meditation** (knots)
+*Design:* Laboratory physiology with first-person event marking: fNIRS or fMRI, and laser Doppler flowmetry
+Vasocomputation proposes that held predictions are held vascular tension: a contraction of the smooth muscle around a
+vessel stores a prediction and, held long enough, latches (Johnson 2023). It predicts that vasomotion, the slow rhythm
+of the vessels' tone, nearly stops in deep meditative cessations. In meditators who report cessations, moments in which
+experience is said to stop, vasomotion might be recorded as they sit as usual: in the brain by fNIRS or fMRI, and in the
+skin over a knot and at a matched spot by laser Doppler, with each cessation marked as it is reported.
+*What it might show.* Whether the vessels follow the deepest meditative states, as the account predicts; a rhythm
+unchanged through cessations would count against it. Recorded over a knot too, it might show whether the vessels there
+take part.
+*Likely needs:* a meditation research laboratory · meditators who report cessations · fNIRS or fMRI, and laser Doppler
 
 ### What to send: a letter of intent
 
@@ -269,6 +287,11 @@ line at https://findahelpline.com.
   (2026). https://doi.org/10.5281/zenodo.23901648
 - Cooper DJ, Lindahl JR, Palitsky R, Britton WB. “Like a vibration cascading through the body”: energy-like somatic
   experiences reported by Western Buddhist meditators. Religions 12:1042 (2021). https://doi.org/10.3390/rel12121042
+- Hai CM, Murphy RA. Cross-bridge phosphorylation and regulation of latch state in smooth muscle. Am J Physiol
+  254:C99–106 (1988). https://doi.org/10.1152/ajpcell.1988.254.1.C99
+- Johnson ME. Principles of Vasocomputation: A Unification of Buddhist Phenomenology, Active Inference, and Physical
+  Reflex (Part I). opentheory.net (2023).
+  https://opentheory.net/2023/07/principles-of-vasocomputation-a-unification-of-buddhist-phenomenology-active-inference-and-physical-reflex-part-i/
 - Lindahl JR, Fisher NE, Cooper DJ et al. The varieties of contemplative experience: a mixed-methods study of
   meditation-related challenges in Western Buddhists. PLoS One 12:e0176239 (2017).
   https://doi.org/10.1371/journal.pone.0176239
