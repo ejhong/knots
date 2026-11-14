@@ -44,10 +44,11 @@ So this call has two prongs: **what a knot is**, and **what runaway release is**
 one or the other follow, numbered for reference and in no order of importance; they are also on the site:
 https://ejhong.github.io/knots/research/#experiments.
 
-Feeling one's own knots may itself be a skill. Informal reports suggest that some who foam-roll can isolate a single
-knot, felt as a distinct bump, and release it readily, perhaps through the breath, while others never feel single knots
-at all, only broad, dull masses. If so, studies that rely on people to find or release their own knots cannot assume
-that anyone can, which is why the first experiment asks who can.
+Feeling a knot may itself be a skill, and a knot that its owner feels may or may not be one that others can feel.
+Informal reports suggest that some who foam-roll can isolate a single knot, felt as a distinct bump, and release it
+readily, perhaps through the breath, while others never feel single knots at all, only broad, dull masses. If so,
+studies that locate or release knots cannot assume that anyone can find one, in themselves or in others, which is why
+the first experiment asks who can.
 
 **You are the experts.** These experiments are ideas from a non-expert working with AI, meant to show the kind of thing
 that might help. You know the methods, the pitfalls and what is feasible: judge them, rework them, combine them, or
@@ -55,17 +56,18 @@ propose something better. The experiment you think would actually decide the que
 
 ### The experiments
 
-**1. Who can feel their own knots** (knots)
-Many people who foam-roll, or work on their own knots in other ways, might be surveyed and interviewed about what they
-feel in their own bodies: whether they can isolate a single knot, felt as a distinct bump, or never feel single knots,
-only broad, dull masses; whether they can release them; how they learned; and what part the breath plays. Those who say
-they can isolate knots might then mark their own twice, an hour apart and blind to the first marks: do they find the
-same ones?
-*What it might show.* Whether feeling one's own knots as single, distinct bumps is itself a skill, perhaps tied to the
-breath as releasing them seems to be, held by some and not by others. If so, studies that rely on people to find or
-release their own knots would need to recruit those who have it.
-*Likely needs:* a survey and interview researcher · many people who foam-roll or work on their own knots · a simple
-repeat test
+**1. Who can feel a knot: its owner, others, or both** (knots)
+Two questions, which may have different answers: can people feel their own knots, and can others feel them too? A knot
+might be felt only by its owner, or by a hand from outside as well. Many who foam-roll or work on their own knots might
+be surveyed and interviewed: whether they can isolate a single knot, felt as a distinct bump, or feel only broad, dull
+masses; whether they can release them; how they learned; and what part the breath plays. Bodyworkers might be asked the
+same about the knots they feel in others. Then, in the same people, each might mark the knots they feel, blind to the
+other marks: the person their own, twice, an hour apart, and two examiners by touch. Which knots does each find, and do
+they agree?
+*What it might show.* Whether feeling knots is itself a skill, perhaps tied to the breath as releasing them seems to be,
+held by some and not by others; and whether the knots a person feels in themselves can be felt by others too, or only
+from inside. If so, studies that locate or release knots would need to recruit those who have the skill they rely on.
+*Likely needs:* a survey and interview researcher · many people who foam-roll, and bodyworkers · simple blind tests
 
 **2. Catch a knot as it lets go** (knots)
 People who can release knots at will (bodyworkers, practitioners skilled with a foam roller, a ball or the breath) might
@@ -98,22 +100,25 @@ the reports give; if only perception is changing, the tissue would likely look a
 a plan for referral · ethics review
 
 **5. Where knots sit** (knots)
-Two examiners who can isolate knots, blind to each other, might mark them over a region of the back, and a third, blind
-to the marks, map the perforators with a pencil Doppler, or with a thermal camera as the skin rewarms after a mild cold
-(Weum et al. 2016). The marks could then be set against the vessels at several distances, and against random and shifted
-maps.
+Knots might be marked over a region of the body in two ways, or both (experiment 1): by two examiners who can feel knots
+in others, blind to each other, or by people who can isolate their own. A third person, blind to the marks, might map
+the perforators with a pencil Doppler, or with a thermal camera as the skin rewarms after a mild cold (Weum et al.
+2016). The marks could then be set against the vessels at several distances, and against random and shifted maps.
 *What it might show.* Whether knots sit on perforators (as the perforator and nerve views expect), where a muscle's
-nerve enters (trigger points), or wherever stress is held (the other four). Perhaps the cheapest test of the perforator
-view: an afternoon's work.
-*Likely needs:* two examiners who can isolate knots · a pencil Doppler or thermal camera · a statistician
+nerve enters (trigger points), or wherever stress is held (the other four); and, marked both ways, whether people's own
+marks and an examiner's agree. Perhaps the cheapest test of the perforator view: an afternoon's work.
+*Likely needs:* examiners who can feel knots in others, or people who can isolate their own · a pencil Doppler or
+thermal camera · a statistician
 
 **6. Whether a knot is a stable thing** (knots)
-Two examiners who can isolate knots might map the same people's knots, blind to each other and to earlier maps, with
-each person mapped again over weeks and months against their own map of perforators.
-*What it might show.* Whether examiners find the same knots at all, which may depend on their skill, and whether a
-person's knots return to fixed places (as the perforator and nerve views expect) or arise anywhere and drift. Much else
-may rest on the answer.
-*Likely needs:* two examiners who can isolate knots · a few people, each seen several times · a Doppler or thermal map
+The same people's knots might be mapped again over weeks and months, against their own map of perforators: by two
+examiners who can feel knots in others, blind to each other and to earlier maps, or by the people themselves, if they
+can isolate their own (experiment 1), blind to their earlier marks.
+*What it might show.* Whether the same knots are found again at all, which may depend on the skill of whoever marks
+them, and whether a person's knots return to fixed places (as the perforator and nerve views expect) or arise anywhere
+and drift. Much else may rest on the answer.
+*Likely needs:* examiners, or people who can isolate their own knots · a few people, each seen several times · a Doppler
+or thermal map
 
 **7. What is already recorded** (knots)
 Laboratories that study trigger points hold ultrasound, colour Doppler and elastography of tender spots, recorded for
