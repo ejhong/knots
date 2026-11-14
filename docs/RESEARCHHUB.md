@@ -1,10 +1,10 @@
 # The ResearchHub call (draft)
 
 The text for the call on ResearchHub, drafted 14 November 2026. Everything below the line is the post; it is written
-without "I" or "we". The experiments repeat the Research page's word for word (`src/pages/research.astro`, the
-`EXPERIMENTS` list, shown at https://ejhong.github.io/knots/research/#experiments; each card has its own anchor,
-`#experiment-1` to `#experiment-14`): change one, change the other. The site itself says nothing of ResearchHub, letters of
-intent or cost.
+without "I" or "we". The experiments, with their groups and the kind of study each would be, repeat the Research page's
+word for word (`src/pages/research.astro`, the `EXPERIMENTS` and `STAGES` lists, shown at
+https://ejhong.github.io/knots/research/#experiments; each card has its own anchor, `#experiment-1` to
+`#experiment-14`): change one, change the other. The site itself says nothing of ResearchHub, letters of intent or cost.
 
 Passages in [brackets] are choices still open. The references are from the project's verified records
 (`src/data/papers.json`, `src/data/references.ts`). Runaway release follows the site's rules: stated as a danger, from
@@ -41,24 +41,35 @@ of the wider kind it belongs to have lasted years, and in a study that recruited
 describe difficult experiences, about one in six reported suicidality (Lindahl et al. 2017).
 
 So this call has two prongs: **what a knot is**, and **what runaway release is**. Fourteen experiments that might help
-with one or the other follow, numbered for reference and listed in the order they build on one another rather than by
-importance; they are also on the site: https://ejhong.github.io/knots/research/#experiments.
+with one or the other follow, numbered for reference, grouped by what each needs and listed in the order they build on
+one another rather than by importance; under each title is the kind of study it would be. They are also on the site:
+https://ejhong.github.io/knots/research/#experiments.
+
+**You are the experts.** These experiments are ideas from a non-expert working with AI, meant to show the kind of thing
+that might help. You know the methods, the pitfalls and what is feasible, and three judgements would help more than any
+one idea here:
+
+- **The lowest-hanging fruit.** Which could be done soon and cheaply, and still tell something?
+- **What to address first.** The list starts with finding knots and with characterising runaway release, since much of the
+  rest builds on them. Is that where to begin, and what should be taken up now?
+- **What you could do.** Which could you take on, with the skills, instruments, laboratory, patients or data you have,
+  alone or with others?
+
+Or propose something better: the experiment you think would actually decide the question matters more than any listed
+here.
+
+### The experiments
+
+#### First: finding knots
 
 Feeling a knot may itself be a skill, and a knot that its owner feels may or may not be one that others can feel.
 Informal reports suggest that some who foam-roll can isolate a single knot, felt as a distinct bump, and release it
 readily, perhaps through the breath, while others never feel single knots at all, only broad, dull masses. If so,
-studies that locate or release knots cannot assume that anyone can find one, in themselves or in others, which is why
-the first experiment asks who can, and the second whether an instrument can. The six after them need knots found, by
-hand or by instrument; the two on runaway release follow, the first finding the participants for the second; and the
-last four stand alone and could begin at any time.
-
-**You are the experts.** These experiments are ideas from a non-expert working with AI, meant to show the kind of thing
-that might help. You know the methods, the pitfalls and what is feasible: judge them, rework them, combine them, or
-propose something better. The experiment you think would actually decide the question matters more than any listed here.
-
-### The experiments
+studies that locate or release knots cannot assume that anyone can find one, in themselves or in others. So these two
+come first: who can feel a knot, and whether an instrument can find one.
 
 **1. Who can feel a knot: its owner, others, or both** (knots)
+*Design:* Survey and phenomenological interviews, then a blinded reliability study (test–retest and inter-rater)
 Two questions, which may have different answers: can people feel their own knots, and can others feel them too? A knot
 might be felt only by its owner, or by a hand from outside as well. Many who foam-roll or work on their own knots might
 be surveyed and interviewed: whether they can isolate a single knot, felt as a distinct bump, or feel only broad, dull
@@ -72,18 +83,24 @@ from inside. If so, studies that locate or release knots would need to recruit t
 *Likely needs:* a survey and interview researcher · many people who foam-roll, and bodyworkers · simple blind tests
 
 **2. How best to detect a knot** (knots)
+*Design:* Blinded diagnostic-accuracy study, with marked knots as the reference standard
 At knots marked by their owners or by examiners (experiment 1), and at matched spots nearby, instruments might be
 compared, each blind to the marks: a pencil Doppler listening for a perforator and its flow; ultrasound looking for a
 bump, a vessel beneath and the layers' glide, with colour Doppler and elastography; and a thermal camera watching the
 skin rewarm after a mild cold (Weum et al. 2016).
 *What it might show.* Whether an instrument can find a knot without a skilled hand, which would free other studies from
 depending on who can feel one. If knots are perforators held shut, a pencil Doppler, cheap and quick, might find a
-perforator at the knot, silent while it holds and sounding once it lets go; ultrasound might instead place a bump in
-muscle (trigger points, the motor switch) or show layers that do not glide (densification).
+perforator beneath each knot, faint or silent while it holds and sounding once it lets go; ultrasound might instead
+place a bump in muscle (trigger points, the motor switch) or show layers that do not glide (densification).
 *Likely needs:* a pencil Doppler · ultrasound with colour Doppler and elastography · a thermal camera · people whose
 knots have been marked
 
+#### Then: with knots found
+
+Each of these needs knots found, by hand or by instrument, and so builds on the first two.
+
 **3. Catch a knot as it lets go** (knots)
+*Design:* Sham-controlled laboratory physiology, with felt releases marked as they happen
 People who can release knots at will (bodyworkers, practitioners skilled with a foam roller, a ball or the breath) might
 release them in a laboratory while instruments watch the tissue: skin flow by laser speckle or a thermal camera,
 ultrasound with colour Doppler and the layers' sliding, surface EMG resolved to single motor units. A button could mark
@@ -95,6 +112,7 @@ releases by kind.
 might find them) · ethics review
 
 **4. Where knots sit** (knots)
+*Design:* Blinded mapping, with spatial statistics against chance
 Knots might be marked over a region of the body in two ways, or both (experiment 1): by two examiners who can feel knots
 in others, blind to each other, or by people who can isolate their own. A third person, blind to the marks, might map
 the perforators with a pencil Doppler, or with a thermal camera as the skin rewarms after a mild cold (Weum et al.
@@ -106,6 +124,7 @@ marks and an examiner's agree. Perhaps the cheapest test of the perforator view:
 thermal camera · a statistician
 
 **5. Whether a knot is a stable thing** (knots)
+*Design:* Longitudinal: blinded mapping repeated over weeks and months
 The same people's knots might be mapped again over weeks and months, against their own map of perforators: by two
 examiners who can feel knots in others, blind to each other and to earlier maps, or by the people themselves, if they
 can isolate their own (experiment 1), blind to their earlier marks.
@@ -116,6 +135,7 @@ and drift. Much else may rest on the answer.
 or thermal map
 
 **6. Whether knots grow with age** (knots)
+*Design:* Epidemiology: cross-sectional across ages, then a cohort followed over years
 Knots might be counted and sized in people of all ages, from childhood to old age, and in the same people over years: by
 their own marks and by examiners (experiment 1), and by whichever instrument proves best (experiment 2). People might
 also be asked when their knots first appeared and how they have changed.
@@ -126,6 +146,7 @@ remembers nothing by itself; perception follows history more than age.
 *Likely needs:* examiners or an instrument (experiments 1 and 2) · people of all ages · a statistician
 
 **7. What remains after death** (knots)
+*Design:* Post-mortem histology: knot sites against matched control sites
 People whose knots were mapped in life (experiment 1), and who give their bodies to science, might be examined after
 death where the knots were and at matched places: the perforators' walls and lumens, the fascial layers, the muscle and
 the nerves, under the microscope. Or tissue from ordinary post-mortem examinations, taken where knots are often
@@ -136,6 +157,7 @@ nerve or changed muscle might remain, and would point to the accounts that expec
 *Likely needs:* an anatomist or pathologist · a body donation programme, or post-mortem tissue · ethics review
 
 **8. Whether animals have knots** (knots)
+*Design:* Comparative (veterinary): a survey, examination by instrument, and opportunistic necropsy
 Veterinarians and animal bodyworkers might be asked whether they find knots in horses, dogs or other animals, and where;
 with their owners' consent, the spots might be examined with the instruments of experiment 2. Where an animal that had
 them dies or is put down for other reasons, the tissue beneath might be examined too (experiment 7). No animal would be
@@ -144,7 +166,13 @@ harmed for the study.
 have the same vessels, fascia, muscle and nerves; and a route to the tissue beneath a knot that was felt in life.
 *Likely needs:* veterinarians or animal bodyworkers · a pencil Doppler or ultrasound · ethics review
 
+#### Runaway release
+
+Characterising it comes first: no study of it as such is known, and that study might find the participants for the
+second.
+
 **9. Characterise runaway release** (runaway release)
+*Design:* Phenomenology and natural history: semi-structured interviews and a case series
 The case histories that fit its profile could be gathered, from published case reports, the record of meditation-related
 difficulty, teachers, clinicians and support services, and people who have been through it, or are in it now,
 interviewed with one set of questions: how it began and ran, its stages and regions, how long each took, what helped and
@@ -155,6 +183,7 @@ several, how common it is, who is at risk and what helps, and might find the par
 al. 2017; Cooper et al. 2021) · ethics review · support at hand for participants
 
 **10. Examine someone in runaway release** (runaway release)
+*Design:* Observational: a prospective case series with repeated imaging
 People already in runaway release might be examined while it runs and again as it settles: ultrasound of the fascial
 layers and their glide where change is felt and at matched places, colour Doppler of the perforators, skin-flow imaging,
 and the blood tests a physician would order. No one would be asked to begin or seek it, and their care would come first.
@@ -163,7 +192,12 @@ the reports give; if only perception is changing, the tissue would likely look a
 *Likely needs:* a clinician-researcher with imaging who knows meditation-related difficulty · a route to participants ·
 a plan for referral · ethics review
 
+#### At any time
+
+These need nothing from the others and could begin now, alongside the first two.
+
 **11. What is already recorded** (knots)
+*Design:* Secondary analysis of existing recordings
 Laboratories that study trigger points hold ultrasound, colour Doppler and elastography of tender spots, recorded for
 other questions (Sikdar et al. 2009). Read again with the perforators in mind, these might say whether one runs beneath
 the spot, in which layer any bump lies, and whether the layers glide over it.
@@ -172,6 +206,7 @@ the motor switch, a perforator beneath toward perforators or nerves, and layers 
 *Likely needs:* access to existing recordings · someone who reads musculoskeletal ultrasound
 
 **12. A small artery held shut for hours** (knots)
+*Design:* Ex vivo physiology: pressure myography of isolated small arteries
 In a pressure myograph, a small artery, human if possible, might be shut with an agonist for five minutes or for four
 hours, and the agonist then lowered to a resting level.
 *What it might show.* Whether a vessel can remember. If knots are vessels that set, the first might reopen and the
@@ -180,6 +215,7 @@ that would count against vessels setting.
 *Likely needs:* a laboratory with a pressure myograph · small arteries · a day's work
 
 **13. The breath and the skin of the trunk** (knots)
+*Design:* Human microvascular physiology: skin blood flow over the trunk by laser speckle
 The breath's effects on skin flow, such as the brief narrowing of skin vessels with a deep breath, are measured mostly
 in the fingers. They could be measured over the back and neck, where knots are reported, with laser speckle: how far the
 vessels there narrow, and how fast they relax once the sympathetic drive falls.
@@ -188,6 +224,7 @@ vascular accounts, the perforators and the latch, depend on.
 *Likely needs:* laser speckle or laser Doppler · a physiology laboratory
 
 **14. Acupoints on perforators** (knots)
+*Design:* Blinded mapping against chance, or a retrospective study of CT angiograms
 Perforators might be mapped by thermal camera as the skin rewarms after a mild cold, and checked by Doppler, while
 practitioners mark the classical points by the WHO's proportional rules, out of the reader's sight. Or, from records:
 the channels could be laid over the CT angiograms taken before abdominal flap surgery, which record perforators by the
@@ -200,7 +237,9 @@ both are measured they sit only a little nearer than random points: not shown, n
 
 A page or less, which shouldn't take long to write:
 
-- the question, and what the result might show;
+- your reading of the list: which experiments are the lowest-hanging fruit, and which should be addressed first,
+  including ones you would not take on yourself;
+- what you could do: the question, and what the result might show;
 - what you would measure, in whom, and with what;
 - who would do it, and their relevant experience;
 - a rough timeline and a rough total cost.
