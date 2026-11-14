@@ -149,105 +149,113 @@ const p2 = (v: number) => v.toFixed(2);
 const baseRate = (r: string) => `${pct(acu.base_rate[r as '1'].lo)}–${pct(acu.base_rate[r as '1'].hi)}`;
 const ptScore = (name: string, code: string) => (acu.lines.find((l) => l.name.startsWith(name))!.points as unknown as Record<string, number>)[code];
 
-// Experiments that would help, on the two open questions: what a knot is, and what runaway release is. Equally weighted, in
+// Experiments that might help, on the two open questions: what a knot is, and what runaway release is. Equally weighted, in
 // the order the page shows them. docs/RESEARCHHUB.md (the draft call on ResearchHub) repeats their text: keep the two in step.
-const EXPERIMENTS: { prong: string; title: string; what: string; decide: string; needs: string }[] = [
+const EXPERIMENTS: { prong: string; title: string; what: string; show: string; needs: string }[] = [
   {
     prong: 'knots',
     title: 'Catch a knot as it lets go',
-    what: `People who can release knots at will (bodyworkers, practitioners skilled with a foam roller, a ball or the breath)
-      release them in a laboratory while instruments watch the tissue: skin flow by laser speckle or a thermal camera,
-      ultrasound with colour Doppler and the layers' sliding, surface EMG resolved to single motor units. A button marks each
-      felt release; a spot pressed alike, without a knot, is the sham.`,
-    decide: `Each of the seven mechanisms leaves a different trace at release, from a flood of flow to the skin to nothing in
-      the tissue at all (<a href="#measurement">the ladder</a>); one careful recording would sort releases by kind.`,
-    needs: 'a laboratory with ultrasound and EMG or skin-flow imaging · a few skilled practitioners · ethics review',
+    what: `People who can release knots at will (bodyworkers, practitioners skilled with a foam roller, a ball or the
+      breath) might release them in a laboratory while instruments watch the tissue: skin flow by laser speckle or a
+      thermal camera, ultrasound with colour Doppler and the layers' sliding, surface EMG resolved to single motor
+      units. A button could mark each felt release, with a spot pressed alike, without a knot, as the sham.`,
+    show: `Each of the seven mechanisms, as modelled, would leave a different trace at release, from a flood of flow to the
+      skin to nothing in the tissue at all (<a href="#measurement">the ladder</a>); a careful recording might begin to
+      sort releases by kind.`,
+    needs: `a laboratory with ultrasound and EMG or skin-flow imaging · a few skilled practitioners · ethics review`,
   },
   {
     prong: 'runaway release',
     title: 'Examine someone in runaway release',
-    what: `People already in runaway release are examined while it runs and again as it settles: ultrasound of the fascial
-      layers and their glide where change is felt and at matched places, colour Doppler of the perforators, skin-flow imaging,
-      and the blood tests a physician would order. No one is asked to begin or seek it, and their care comes first.`,
-    decide: `If the tissue is changing, the glide should differ at the reported places and settle on the clock the reports
-      give; if only perception is changing, the tissue looks as it did.`,
-    needs: 'a clinician-researcher with imaging who knows meditation-related difficulty · a route to participants · a plan for referral · ethics review',
+    what: `People already in runaway release might be examined while it runs and again as it settles: ultrasound of the
+      fascial layers and their glide where change is felt and at matched places, colour Doppler of the perforators,
+      skin-flow imaging, and the blood tests a physician would order. No one would be asked to begin or seek it, and
+      their care would come first.`,
+    show: `If the tissue is changing, the glide might differ at the reported places and settle on the clock the reports
+      give; if only perception is changing, the tissue would likely look as it did.`,
+    needs: `a clinician-researcher with imaging who knows meditation-related difficulty · a route to participants · a plan
+      for referral · ethics review`,
   },
   {
     prong: 'runaway release',
     title: 'Characterise runaway release',
-    what: `Gather the case histories that fit its profile, from published case reports, the record of meditation-related
-      difficulty, teachers, clinicians and support services, and interview people who have been through it or are in it now,
-      with one set of questions: how it began and ran, its stages and regions, how long each took, what helped and what made
-      it worse.`,
-    decide: `No study of it as such is known. A careful description would show whether it is one thing or several, how
-      common it is, who is at risk and what helps, and would find the participants for experiment 2.`,
-    needs: `a qualitative or clinical researcher, best with experience of meditation-related difficulty (${cite('lindahl2017')}; ${cite('cooper2021')}) · ethics review · support at hand for participants`,
+    what: `The case histories that fit its profile could be gathered, from published case reports, the record of
+      meditation-related difficulty, teachers, clinicians and support services, and people who have been through it,
+      or are in it now, interviewed with one set of questions: how it began and ran, its stages and regions, how long
+      each took, what helped and what made it worse.`,
+    show: `No study of it as such is known. A careful description might show whether it is one thing or several, how common
+      it is, who is at risk and what helps, and might find the participants for experiment 2.`,
+    needs: `a qualitative or clinical researcher, best with experience of meditation-related difficulty
+      (${cite('lindahl2017')}; ${cite('cooper2021')}) · ethics review · support at hand for participants`,
   },
   {
     prong: 'knots',
     title: 'Where knots sit',
-    what: `Two examiners, blind to each other, mark the tender points over a region of the back; a third, blind to the marks,
-      maps the perforators with a pencil Doppler, or with a thermal camera as the skin rewarms after a mild cold
-      (${cite('weum2016b')}). The marks are set against the vessels at several distances, and against random and shifted maps.`,
-    decide: `Whether knots sit on perforators (the perforator and nerve views), where a muscle's nerve enters (trigger points),
-      or wherever stress is held (the other four): the cheapest test of the perforator view, an afternoon's work.`,
-    needs: 'a pencil Doppler or thermal camera · two examiners · a statistician',
+    what: `Two examiners, blind to each other, might mark the tender points over a region of the back, and a third, blind
+      to the marks, map the perforators with a pencil Doppler, or with a thermal camera as the skin rewarms after a
+      mild cold (${cite('weum2016b')}). The marks could then be set against the vessels at several distances, and
+      against random and shifted maps.`,
+    show: `Whether knots sit on perforators (as the perforator and nerve views expect), where a muscle's nerve enters
+      (trigger points), or wherever stress is held (the other four). Perhaps the cheapest test of the perforator view:
+      an afternoon's work.`,
+    needs: `a pencil Doppler or thermal camera · two examiners · a statistician`,
   },
   {
     prong: 'knots',
     title: 'Whether a knot is a stable thing',
-    what: `Two examiners map the same people's knots, blind to each other and to earlier maps, and each person is mapped again
-      over weeks and months, against their own map of perforators.`,
-    decide: `Whether examiners find the same knots at all, and whether a person's knots return to fixed places (the perforator
-      and nerve views) or arise anywhere and drift. Every other study rests on the answer.`,
-    needs: 'two examiners · a few people, each seen several times · a Doppler or thermal map',
+    what: `Two examiners might map the same people's knots, blind to each other and to earlier maps, with each person
+      mapped again over weeks and months against their own map of perforators.`,
+    show: `Whether examiners find the same knots at all, and whether a person's knots return to fixed places (as the
+      perforator and nerve views expect) or arise anywhere and drift. Much else may rest on the answer.`,
+    needs: `two examiners · a few people, each seen several times · a Doppler or thermal map`,
   },
   {
     prong: 'knots',
     title: 'What is already recorded',
-    what: `Laboratories that study trigger points hold ultrasound, colour Doppler and elastography of tender spots, recorded for
-      other questions (${cite('sikdar2009')}). Read again with the perforators in mind: does one run beneath the spot, in which
-      layer is any bump, and do the layers glide over it?`,
-    decide: `A first look, for the cost of the analysis: a bump in muscle points to a trigger point or the motor switch, a
-      perforator beneath to perforators or nerves, and layers that do not glide to densification.`,
-    needs: 'access to existing recordings · someone who reads musculoskeletal ultrasound',
+    what: `Laboratories that study trigger points hold ultrasound, colour Doppler and elastography of tender spots,
+      recorded for other questions (${cite('sikdar2009')}). Read again with the perforators in mind, these might say
+      whether one runs beneath the spot, in which layer any bump lies, and whether the layers glide over it.`,
+    show: `A first look, for the cost of the analysis: a bump in muscle would point toward a trigger point or the motor
+      switch, a perforator beneath toward perforators or nerves, and layers that do not glide toward densification.`,
+    needs: `access to existing recordings · someone who reads musculoskeletal ultrasound`,
   },
   {
     prong: 'knots',
     title: 'A small artery held shut for hours',
-    what: `In a pressure myograph, a small artery, human if possible, is shut with an agonist for five minutes or for four
-      hours, and the agonist is then lowered to a resting level.`,
-    decide: `Whether a vessel can remember. If knots are vessels that set, the first reopens and the second stays shut, and
-      opens past its resting diameter when finally released; if the second reopens as fully as the first, vessels do not set.`,
-    needs: "a laboratory with a pressure myograph · small arteries · a day's work",
+    what: `In a pressure myograph, a small artery, human if possible, might be shut with an agonist for five minutes or for
+      four hours, and the agonist then lowered to a resting level.`,
+    show: `Whether a vessel can remember. If knots are vessels that set, the first might reopen and the second stay shut,
+      opening past its resting diameter when finally released; if the second reopens as fully as the first, that would
+      count against vessels setting.`,
+    needs: `a laboratory with a pressure myograph · small arteries · a day's work`,
   },
   {
     prong: 'knots',
     title: 'The breath and the skin of the trunk',
     what: `The breath's effects on skin flow, such as the brief narrowing of skin vessels with a deep breath, are measured
-      mostly in the fingers. Measure them over the back and neck, where knots are reported, with laser speckle: how far the
-      vessels there narrow, and how fast they relax once the sympathetic drive falls.`,
-    decide: `Whether a vessel over the trunk can let go within one breath or needs many: the timing on which the vascular
-      accounts, the perforators and the latch, depend.`,
-    needs: 'laser speckle or laser Doppler · a physiology laboratory',
+      mostly in the fingers. They could be measured over the back and neck, where knots are reported, with laser
+      speckle: how far the vessels there narrow, and how fast they relax once the sympathetic drive falls.`,
+    show: `Whether a vessel over the trunk could let go within one breath or would need many: timing that the vascular
+      accounts, the perforators and the latch, depend on.`,
+    needs: `laser speckle or laser Doppler · a physiology laboratory`,
   },
   {
     prong: 'knots',
     title: 'Acupoints on perforators',
-    what: `Perforators are mapped by thermal camera as the skin rewarms after a mild cold, and checked by Doppler; practitioners
-      mark the classical points by the WHO's proportional rules, out of the reader's sight. Or, from records: lay the channels
-      over the CT angiograms taken before abdominal flap surgery, which record perforators by the thousand.`,
-    decide: `Whether the points sit on perforators more than chance would put them. On the five lines where both are measured
-      they sit only a little nearer than random points: not shown, not excluded (<a href="#decide">the study that would
+    what: `Perforators might be mapped by thermal camera as the skin rewarms after a mild cold, and checked by Doppler,
+      while practitioners mark the classical points by the WHO's proportional rules, out of the reader's sight. Or,
+      from records: the channels could be laid over the CT angiograms taken before abdominal flap surgery, which
+      record perforators by the thousand.`,
+    show: `Whether the points sit on perforators more than chance would put them. On the five lines where both are measured
+      they sit only a little nearer than random points: not shown, not excluded (<a href="#decide">a study that might
       decide it</a>).`,
-    needs: 'a thermal camera and Doppler · practitioners and a reader, blind to each other · a statistician',
+    needs: `a thermal camera and Doppler · practitioners and a reader, blind to each other · a statistician`,
   },
 ];
 
 const index = [
   { id: 'summary', label: 'summary' },
-  { id: 'experiments', label: 'experiments that would help' },
+  { id: 'experiments', label: 'experiments that might help' },
   { id: 'part', label: 'where the theories part' },
   { id: 'suggest', label: 'what the models suggest' },
   { id: 'measurement', label: 'measurements' },
@@ -313,7 +321,7 @@ const index = [
         tell those traces apart, after cheaper questions a hand can ask (<a href="#measurement">the ladder below</a>).
       </p>
       <p>
-        <strong>Experiments that would help.</strong> Nine sketches, on what a knot is and on runaway release, from an afternoon
+        <strong>Experiments that might help.</strong> Nine sketches, on what a knot is and on runaway release, from an afternoon
         with a pencil Doppler to a recording at the moment of release (<a href="#experiments">next</a>).
       </p>
       <p>
@@ -334,10 +342,10 @@ const index = [
   </section>
 
   <section id="experiments" class="sec full" data-glyph="試">
-    <h2>Experiments that would help</h2>
+    <h2>Experiments that might help</h2>
     <p class="sub">
       Two things are unexplained: what a knot is, and what runaway release is. Knots hold, sometimes for years, and let go
-      within seconds, and nothing has yet been recorded at the moment one lets go. Runaway release is a rarer process
+      within seconds, and nothing seems yet to have been recorded at the moment one lets go. Runaway release is a rarer process
       described by some who work forcefully and for long at clearing knots. Releases come in chains that cannot be set down;
       then the fascia is felt to peel, hollow and fill in again, in phases over days to weeks that recur over months or years
       (<a href={`${base}/research/perforator-hypothesis/#fascia`}>the position paper, Section 5</a>). Each experiment below
@@ -350,14 +358,14 @@ const index = [
           <span class="dk mono">{i + 1} · {x.prong}</span>
           <p class="dt">{x.title}</p>
           <p set:html={x.what} />
-          <p><strong>What it would decide.</strong> <Fragment set:html={x.decide} /></p>
-          <p class="need mono">Needs: <Fragment set:html={x.needs} /></p>
+          <p><strong>What it might show.</strong> <Fragment set:html={x.show} /></p>
+          <p class="need mono">Likely needs: <Fragment set:html={x.needs} /></p>
         </div>
       ))}
     </div>
     <p class="sub">
       Or one not listed here: anything that might help tell what a knot is, or what runaway release is. The traces
-      each theory predicts are <a href="#part">below</a>, and the numbers the models most need under{' '}
+      each theory's model predicts are <a href="#part">below</a>, and the numbers the models most need under{' '}
       <a href="#asks">what we need</a>.
     </p>
     <p class="caution">
@@ -438,7 +446,7 @@ const index = [
   <section id="measurement" class="sec full" data-glyph="験">
     <h2>Measurements that might tell the theories apart</h2>
     <p class="sub">
-      Cheapest first. Each observes what already happens, at the usual pace; each step names the theories it would tell
+      Cheapest first. Each observes what already happens, at the usual pace; each step names the theories it might tell
       apart.
     </p>
     <ol class="steps">
@@ -735,7 +743,7 @@ const index = [
       </div>
     </div>
 
-    <h3 id="decide" class="h3">The study that would decide it</h3>
+    <h3 id="decide" class="h3">A study that might decide it</h3>
     <ol class="steps">
       <li><strong>In the same people.</strong> Perforators mapped by thermal camera as the skin rewarms after a mild cold
         challenge; the first hot spots lie over perforators that Doppler hears and CT angiography shows{' '}

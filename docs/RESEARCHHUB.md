@@ -16,8 +16,8 @@ published sources, never how it is set off, and always with where to find help.
 
 Bodyworkers, people who foam-roll and contemplative practitioners all describe knots: discrete places in the body that
 hold, sometimes for years, and let go within seconds, under a hand, with the breath or to attention, often with a tingle
-over the spot. They are among the commonest things a hand finds in a body and among the least explained. Nothing has ever
-been recorded at the moment one lets go.
+over the spot. They are among the commonest things a hand finds in a body and among the least explained. As far as is
+known, nothing has been recorded at the moment one lets go.
 
 A position paper, *The perforator hypothesis: knots as small arteries held shut where they pierce the fascia* (Zenodo,
 https://doi.org/10.5281/zenodo.23901648), argues from established physiology that a knot is a cutaneous perforator, a
@@ -52,90 +52,92 @@ propose something better. The experiment you think would actually decide the que
 ### The experiments
 
 **1. Catch a knot as it lets go** (knots)
-People who can release knots at will (bodyworkers, practitioners skilled with a foam roller, a ball or the breath) release
-them in a laboratory while instruments watch the tissue: skin flow by laser speckle or a thermal camera, ultrasound with
-colour Doppler and the layers' sliding, surface EMG resolved to single motor units. A button marks each felt release; a
-spot pressed alike, without a knot, is the sham.
-*What it would decide.* Each of the seven mechanisms leaves a different trace at release, from a flood of flow to the skin
-to nothing in the tissue at all; one careful recording would sort releases by kind.
-*Needs:* a laboratory with ultrasound and EMG or skin-flow imaging · a few skilled practitioners · ethics review
+People who can release knots at will (bodyworkers, practitioners skilled with a foam roller, a ball or the breath) might
+release them in a laboratory while instruments watch the tissue: skin flow by laser speckle or a thermal camera,
+ultrasound with colour Doppler and the layers' sliding, surface EMG resolved to single motor units. A button could mark
+each felt release, with a spot pressed alike, without a knot, as the sham.
+*What it might show.* Each of the seven mechanisms, as modelled, would leave a different trace at release, from a flood
+of flow to the skin to nothing in the tissue at all; a careful recording might begin to sort releases by kind.
+*Likely needs:* a laboratory with ultrasound and EMG or skin-flow imaging · a few skilled practitioners · ethics review
 
 **2. Examine someone in runaway release** (runaway release)
-People already in runaway release are examined while it runs and again as it settles: ultrasound of the fascial layers
-and their glide where change is felt and at matched places, colour Doppler of the perforators, skin-flow imaging, and the
-blood tests a physician would order. No one is asked to begin or seek it, and their care comes first.
-*What it would decide.* If the tissue is changing, the glide should differ at the reported places and settle on the clock
-the reports give; if only perception is changing, the tissue looks as it did.
-*Needs:* a clinician-researcher with imaging who knows meditation-related difficulty · a route to participants · a plan
-for referral · ethics review
+People already in runaway release might be examined while it runs and again as it settles: ultrasound of the fascial
+layers and their glide where change is felt and at matched places, colour Doppler of the perforators, skin-flow imaging,
+and the blood tests a physician would order. No one would be asked to begin or seek it, and their care would come first.
+*What it might show.* If the tissue is changing, the glide might differ at the reported places and settle on the clock
+the reports give; if only perception is changing, the tissue would likely look as it did.
+*Likely needs:* a clinician-researcher with imaging who knows meditation-related difficulty · a route to participants ·
+a plan for referral · ethics review
 
 **3. Characterise runaway release** (runaway release)
-Gather the case histories that fit its profile, from published case reports, the record of meditation-related difficulty,
-teachers, clinicians and support services, and interview people who have been through it or are in it now, with one set
-of questions: how it began and ran, its stages and regions, how long each took, what helped and what made it worse.
-*What it would decide.* No study of it as such is known. A careful description would show whether it is one thing or
-several, how common it is, who is at risk and what helps, and would find the participants for experiment 2.
-*Needs:* a qualitative or clinical researcher, best with experience of meditation-related difficulty (Lindahl et al.
-2017; Cooper et al. 2021) · ethics review · support at hand for participants
+The case histories that fit its profile could be gathered, from published case reports, the record of meditation-related
+difficulty, teachers, clinicians and support services, and people who have been through it, or are in it now,
+interviewed with one set of questions: how it began and ran, its stages and regions, how long each took, what helped and
+what made it worse.
+*What it might show.* No study of it as such is known. A careful description might show whether it is one thing or
+several, how common it is, who is at risk and what helps, and might find the participants for experiment 2.
+*Likely needs:* a qualitative or clinical researcher, best with experience of meditation-related difficulty (Lindahl et
+al. 2017; Cooper et al. 2021) · ethics review · support at hand for participants
 
 **4. Where knots sit** (knots)
-Two examiners, blind to each other, mark the tender points over a region of the back; a third, blind to the marks, maps
-the perforators with a pencil Doppler, or with a thermal camera as the skin rewarms after a mild cold (Weum et al. 2016).
-The marks are set against the vessels at several distances, and against random and shifted maps.
-*What it would decide.* Whether knots sit on perforators (the perforator and nerve views), where a muscle's nerve enters
-(trigger points), or wherever stress is held (the other four): the cheapest test of the perforator view, an afternoon's
-work.
-*Needs:* a pencil Doppler or thermal camera · two examiners · a statistician
+Two examiners, blind to each other, might mark the tender points over a region of the back, and a third, blind to the
+marks, map the perforators with a pencil Doppler, or with a thermal camera as the skin rewarms after a mild cold (Weum
+et al. 2016). The marks could then be set against the vessels at several distances, and against random and shifted maps.
+*What it might show.* Whether knots sit on perforators (as the perforator and nerve views expect), where a muscle's
+nerve enters (trigger points), or wherever stress is held (the other four). Perhaps the cheapest test of the perforator
+view: an afternoon's work.
+*Likely needs:* a pencil Doppler or thermal camera · two examiners · a statistician
 
 **5. Whether a knot is a stable thing** (knots)
-Two examiners map the same people's knots, blind to each other and to earlier maps, and each person is mapped again over
-weeks and months, against their own map of perforators.
-*What it would decide.* Whether examiners find the same knots at all, and whether a person's knots return to fixed places
-(the perforator and nerve views) or arise anywhere and drift. Every other study rests on the answer.
-*Needs:* two examiners · a few people, each seen several times · a Doppler or thermal map
+Two examiners might map the same people's knots, blind to each other and to earlier maps, with each person mapped again
+over weeks and months against their own map of perforators.
+*What it might show.* Whether examiners find the same knots at all, and whether a person's knots return to fixed places
+(as the perforator and nerve views expect) or arise anywhere and drift. Much else may rest on the answer.
+*Likely needs:* two examiners · a few people, each seen several times · a Doppler or thermal map
 
 **6. What is already recorded** (knots)
 Laboratories that study trigger points hold ultrasound, colour Doppler and elastography of tender spots, recorded for
-other questions (Sikdar et al. 2009). Read again with the perforators in mind: does one run beneath the spot, in which
-layer is any bump, and do the layers glide over it?
-*What it would decide.* A first look, for the cost of the analysis: a bump in muscle points to a trigger point or the
-motor switch, a perforator beneath to perforators or nerves, and layers that do not glide to densification.
-*Needs:* access to existing recordings · someone who reads musculoskeletal ultrasound
+other questions (Sikdar et al. 2009). Read again with the perforators in mind, these might say whether one runs beneath
+the spot, in which layer any bump lies, and whether the layers glide over it.
+*What it might show.* A first look, for the cost of the analysis: a bump in muscle would point toward a trigger point or
+the motor switch, a perforator beneath toward perforators or nerves, and layers that do not glide toward densification.
+*Likely needs:* access to existing recordings · someone who reads musculoskeletal ultrasound
 
 **7. A small artery held shut for hours** (knots)
-In a pressure myograph, a small artery, human if possible, is shut with an agonist for five minutes or for four hours, and
-the agonist is then lowered to a resting level.
-*What it would decide.* Whether a vessel can remember. If knots are vessels that set, the first reopens and the second
-stays shut, and opens past its resting diameter when finally released; if the second reopens as fully as the first,
-vessels do not set.
-*Needs:* a laboratory with a pressure myograph · small arteries · a day's work
+In a pressure myograph, a small artery, human if possible, might be shut with an agonist for five minutes or for four
+hours, and the agonist then lowered to a resting level.
+*What it might show.* Whether a vessel can remember. If knots are vessels that set, the first might reopen and the
+second stay shut, opening past its resting diameter when finally released; if the second reopens as fully as the first,
+that would count against vessels setting.
+*Likely needs:* a laboratory with a pressure myograph · small arteries · a day's work
 
 **8. The breath and the skin of the trunk** (knots)
-The breath's effects on skin flow, such as the brief narrowing of skin vessels with a deep breath, are measured mostly in
-the fingers. Measure them over the back and neck, where knots are reported, with laser speckle: how far the vessels there
-narrow, and how fast they relax once the sympathetic drive falls.
-*What it would decide.* Whether a vessel over the trunk can let go within one breath or needs many: the timing on which
-the vascular accounts, the perforators and the latch, depend.
-*Needs:* laser speckle or laser Doppler · a physiology laboratory
+The breath's effects on skin flow, such as the brief narrowing of skin vessels with a deep breath, are measured mostly
+in the fingers. They could be measured over the back and neck, where knots are reported, with laser speckle: how far the
+vessels there narrow, and how fast they relax once the sympathetic drive falls.
+*What it might show.* Whether a vessel over the trunk could let go within one breath or would need many: timing that the
+vascular accounts, the perforators and the latch, depend on.
+*Likely needs:* laser speckle or laser Doppler · a physiology laboratory
 
 **9. Acupoints on perforators** (knots)
-Perforators are mapped by thermal camera as the skin rewarms after a mild cold, and checked by Doppler; practitioners mark
-the classical points by the WHO's proportional rules, out of the reader's sight. Or, from records: lay the channels over
-the CT angiograms taken before abdominal flap surgery, which record perforators by the thousand.
-*What it would decide.* Whether the points sit on perforators more than chance would put them. On the five lines where
+Perforators might be mapped by thermal camera as the skin rewarms after a mild cold, and checked by Doppler, while
+practitioners mark the classical points by the WHO's proportional rules, out of the reader's sight. Or, from records:
+the channels could be laid over the CT angiograms taken before abdominal flap surgery, which record perforators by the
+thousand.
+*What it might show.* Whether the points sit on perforators more than chance would put them. On the five lines where
 both are measured they sit only a little nearer than random points: not shown, not excluded.
-*Needs:* a thermal camera and Doppler · practitioners and a reader, blind to each other · a statistician
+*Likely needs:* a thermal camera and Doppler · practitioners and a reader, blind to each other · a statistician
 
 ### What to send: a letter of intent
 
 A page or less, which shouldn't take long to write:
 
-- the question, and what the result would decide;
+- the question, and what the result might show;
 - what you would measure, in whom, and with what;
 - who would do it, and their relevant experience;
 - a rough timeline and a rough total cost.
 
-One experiment, or part of one, is enough. Letters are weighed by what they would settle for what they would cost, so
+One experiment, or part of one, is enough. Letters are weighed by what they might settle for what they would cost, so
 small, decisive experiments are as welcome as large ones. [Letters under $X are especially welcome.] [Letters by DATE /
 open until filled.]
 
