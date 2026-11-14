@@ -154,6 +154,17 @@ const ptScore = (name: string, code: string) => (acu.lines.find((l) => l.name.st
 const EXPERIMENTS: { prong: string; title: string; what: string; show: string; needs: string }[] = [
   {
     prong: 'knots',
+    title: 'Who can feel a knot',
+    what: `Many people who foam-roll or do bodywork might be surveyed and interviewed: whether they can isolate single
+      knots and feel them clearly, whether they can release them, how they learned, and what part the breath plays.
+      Those who say they can might then be tested blind: do two of them find the same knots on the same back?`,
+    show: `Whether finding and feeling knots is itself a skill, perhaps tied to the breath as releasing them seems to be,
+      held by some and not by others. If so, the studies that locate or release knots would need to recruit those who
+      have it.`,
+    needs: `a survey and interview researcher · many people who foam-roll or do bodywork · a simple blind test`,
+  },
+  {
+    prong: 'knots',
     title: 'Catch a knot as it lets go',
     what: `People who can release knots at will (bodyworkers, practitioners skilled with a foam roller, a ball or the
       breath) might release them in a laboratory while instruments watch the tissue: skin flow by laser speckle or a
@@ -162,7 +173,8 @@ const EXPERIMENTS: { prong: string; title: string; what: string; show: string; n
     show: `Each of the seven mechanisms, as modelled, would leave a different trace at release, from a flood of flow to the
       skin to nothing in the tissue at all (<a href="#measurement">the ladder</a>); a careful recording might begin to
       sort releases by kind.`,
-    needs: `a laboratory with ultrasound and EMG or skin-flow imaging · a few skilled practitioners · ethics review`,
+    needs: `a laboratory with ultrasound and EMG or skin-flow imaging · a few skilled practitioners (experiment 1 might find
+      them) · ethics review`,
   },
   {
     prong: 'runaway release',
@@ -184,30 +196,31 @@ const EXPERIMENTS: { prong: string; title: string; what: string; show: string; n
       or are in it now, interviewed with one set of questions: how it began and ran, its stages and regions, how long
       each took, what helped and what made it worse.`,
     show: `No study of it as such is known. A careful description might show whether it is one thing or several, how common
-      it is, who is at risk and what helps, and might find the participants for experiment 2.`,
+      it is, who is at risk and what helps, and might find the participants for experiment 3.`,
     needs: `a qualitative or clinical researcher, best with experience of meditation-related difficulty
       (${cite('lindahl2017')}; ${cite('cooper2021')}) · ethics review · support at hand for participants`,
   },
   {
     prong: 'knots',
     title: 'Where knots sit',
-    what: `Two examiners, blind to each other, might mark the tender points over a region of the back, and a third, blind
-      to the marks, map the perforators with a pencil Doppler, or with a thermal camera as the skin rewarms after a
-      mild cold (${cite('weum2016b')}). The marks could then be set against the vessels at several distances, and
-      against random and shifted maps.`,
+    what: `Two examiners who can isolate knots (experiment 1), blind to each other, might mark them over a region of the
+      back, and a third, blind to the marks, map the perforators with a pencil Doppler, or with a thermal camera as
+      the skin rewarms after a mild cold (${cite('weum2016b')}). The marks could then be set against the vessels at
+      several distances, and against random and shifted maps.`,
     show: `Whether knots sit on perforators (as the perforator and nerve views expect), where a muscle's nerve enters
       (trigger points), or wherever stress is held (the other four). Perhaps the cheapest test of the perforator view:
       an afternoon's work.`,
-    needs: `a pencil Doppler or thermal camera · two examiners · a statistician`,
+    needs: `two examiners who can isolate knots · a pencil Doppler or thermal camera · a statistician`,
   },
   {
     prong: 'knots',
     title: 'Whether a knot is a stable thing',
-    what: `Two examiners might map the same people's knots, blind to each other and to earlier maps, with each person
-      mapped again over weeks and months against their own map of perforators.`,
-    show: `Whether examiners find the same knots at all, and whether a person's knots return to fixed places (as the
-      perforator and nerve views expect) or arise anywhere and drift. Much else may rest on the answer.`,
-    needs: `two examiners · a few people, each seen several times · a Doppler or thermal map`,
+    what: `Two examiners who can isolate knots might map the same people's knots, blind to each other and to earlier maps,
+      with each person mapped again over weeks and months against their own map of perforators.`,
+    show: `Whether examiners find the same knots at all, which may depend on their skill (experiment 1), and whether a
+      person's knots return to fixed places (as the perforator and nerve views expect) or arise anywhere and drift.
+      Much else may rest on the answer.`,
+    needs: `two examiners who can isolate knots · a few people, each seen several times · a Doppler or thermal map`,
   },
   {
     prong: 'knots',
@@ -321,7 +334,7 @@ const index = [
         tell those traces apart, after cheaper questions a hand can ask (<a href="#measurement">the ladder below</a>).
       </p>
       <p>
-        <strong>Experiments that might help.</strong> Nine sketches, on what a knot is and on runaway release, from an afternoon
+        <strong>Experiments that might help.</strong> Ten sketches, on what a knot is and on runaway release, from an afternoon
         with a pencil Doppler to a recording at the moment of release (<a href="#experiments">next</a>).
       </p>
       <p>
@@ -351,6 +364,11 @@ const index = [
       (<a href={`${base}/research/perforator-hypothesis/#fascia`}>the position paper, Section 5</a>). Each experiment below
       might help with one or the other. They are ideas from a non-expert working with AI, in no order of importance. Those
       who know the methods should judge them and lead: change them, combine them, or set them aside for something better.
+    </p>
+    <p class="sub">
+      Finding a knot may itself be a skill. Informal reports suggest that some who foam-roll cannot isolate single knots at
+      all, while others feel and release them readily, perhaps through the breath. If so, studies that locate knots cannot
+      assume that anyone can find one, which is why the first experiment asks who can.
     </p>
     <div class="exps">
       {EXPERIMENTS.map((x, i) => (
@@ -816,7 +834,7 @@ const index = [
       <li>
         <p class="ask-h">The recording at release</p>
         <p>A laboratory with ultrasound, single-unit EMG or laser speckle, and a skilled practitioner, to make the recordings above; or the first of them
-          alone (<a href="#experiment-1">the first experiment</a>).</p>
+          alone (<a href="#experiment-2">experiment 2</a>).</p>
       </li>
       <li>
         <p class="ask-h">The proponents' eyes</p>
