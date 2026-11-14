@@ -35,6 +35,20 @@ const EXPERIMENTS: { prong: string; title: string; what: string; show: string; n
   },
   {
     prong: 'knots',
+    title: 'How best to detect a knot',
+    what: `At knots marked by their owners or by examiners (experiment 1), and at matched spots nearby, instruments might
+      be compared, each blind to the marks: a pencil Doppler listening for a perforator and its flow; ultrasound
+      looking for a bump, a vessel beneath and the layers' glide, with colour Doppler and elastography; and a thermal
+      camera watching the skin rewarm after a mild cold (${cite('weum2016b')}).`,
+    show: `Whether an instrument can find a knot without a skilled hand, which would free other studies from depending on
+      who can feel one. If knots are perforators held shut, a pencil Doppler, cheap and quick, might find a perforator
+      at the knot, silent while it holds and sounding once it lets go; ultrasound might instead place a bump in muscle
+      (trigger points, the motor switch) or show layers that do not glide (densification).`,
+    needs: `a pencil Doppler · ultrasound with colour Doppler and elastography · a thermal camera · people whose knots have
+      been marked`,
+  },
+  {
+    prong: 'knots',
     title: 'Catch a knot as it lets go',
     what: `People who can release knots at will (bodyworkers, practitioners skilled with a foam roller, a ball or the
       breath) might release them in a laboratory while instruments watch the tissue: skin flow by laser speckle or a
@@ -54,7 +68,7 @@ const EXPERIMENTS: { prong: string; title: string; what: string; show: string; n
       or are in it now, interviewed with one set of questions: how it began and ran, its stages and regions, how long
       each took, what helped and what made it worse.`,
     show: `No study of it as such is known. A careful description might show whether it is one thing or several, how common
-      it is, who is at risk and what helps, and might find the participants for experiment 4.`,
+      it is, who is at risk and what helps, and might find the participants for experiment 5.`,
     needs: `a qualitative or clinical researcher, best with experience of meditation-related difficulty
       (${cite('lindahl2017')}; ${cite('cooper2021')}) · ethics review · support at hand for participants`,
   },
@@ -98,6 +112,18 @@ const EXPERIMENTS: { prong: string; title: string; what: string; show: string; n
   },
   {
     prong: 'knots',
+    title: 'Whether knots grow with age',
+    what: `Knots might be counted and sized in people of all ages, from childhood to old age, and in the same people over
+      years: by their own marks and by examiners (experiment 1), and by whichever instrument proves best (experiment
+      2). People might also be asked when their knots first appeared and how they have changed.`,
+    show: `Whether knots grow larger and more numerous with age, and whether children are nearly free of them. The accounts
+      part here: perforators, densification and nerves expect knots to rise with age (the first, in number and size);
+      latches accumulate from early childhood; trigger points follow overload and injury; the motor switch remembers
+      nothing by itself; perception follows history more than age.`,
+    needs: `examiners or an instrument (experiments 1 and 2) · people of all ages · a statistician`,
+  },
+  {
+    prong: 'knots',
     title: 'What is already recorded',
     what: `Laboratories that study trigger points hold ultrasound, colour Doppler and elastography of tender spots,
       recorded for other questions (${cite('sikdar2009')}). Read again with the perforators in mind, these might say
@@ -105,6 +131,29 @@ const EXPERIMENTS: { prong: string; title: string; what: string; show: string; n
     show: `A first look, for the cost of the analysis: a bump in muscle would point toward a trigger point or the motor
       switch, a perforator beneath toward perforators or nerves, and layers that do not glide toward densification.`,
     needs: `access to existing recordings · someone who reads musculoskeletal ultrasound`,
+  },
+  {
+    prong: 'knots',
+    title: 'What remains after death',
+    what: `People whose knots were mapped in life (experiment 1), and who give their bodies to science, might be examined
+      after death where the knots were and at matched places: the perforators' walls and lumens, the fascial layers,
+      the muscle and the nerves, under the microscope. Or tissue from ordinary post-mortem examinations, taken where
+      knots are often reported, such as the upper back, might be compared with tissue from elsewhere.`,
+    show: `Whether anything structural remains where a knot was. Holds kept only by the nervous system (the motor switch,
+      perception) would likely leave nothing; a vessel narrowed by long holding, a densified layer, an entrapped nerve
+      or changed muscle might remain, and would point to the accounts that expect them.`,
+    needs: `an anatomist or pathologist · a body donation programme, or post-mortem tissue · ethics review`,
+  },
+  {
+    prong: 'knots',
+    title: 'Whether animals have knots',
+    what: `Veterinarians and animal bodyworkers might be asked whether they find knots in horses, dogs or other animals,
+      and where; with their owners' consent, the spots might be examined with the instruments of experiment 2. Where
+      an animal that had them dies or is put down for other reasons, the tissue beneath might be examined too
+      (experiment 10). No animal would be harmed for the study.`,
+    show: `Whether knots are something mammals share, as most of the accounts would expect, since animals have the same
+      vessels, fascia, muscle and nerves; and a route to the tissue beneath a knot that was felt in life.`,
+    needs: `veterinarians or animal bodyworkers · a pencil Doppler or ultrasound · ethics review`,
   },
   {
     prong: 'knots',
@@ -150,7 +199,7 @@ const index = [
   kicker="For researchers"
   current="research"
   lede="People who work with the body find places that hold for years and let go in a breath. Here are ideas for experiments that might help find out what these knots are, and what runaway release is."
-  description="An open problem in physiology: what a knot is, and what runaway release is. Ten ideas for experiments that might help, and the position paper."
+  description="An open problem in physiology: what a knot is, and what runaway release is. Fourteen ideas for experiments that might help, and the position paper."
   glyph="究"
   index={index}
   wide
@@ -173,7 +222,7 @@ const index = [
       Informal reports suggest that some who foam-roll can isolate a single knot, felt as a distinct bump, and release
       it readily, perhaps through the breath, while others never feel single knots at all, only broad, dull masses. If
       so, studies that locate or release knots cannot assume that anyone can find one, in themselves or in others, which
-      is why the first experiment asks who can.
+      is why the first experiment asks who can, and the second whether an instrument can.
     </p>
     <div class="exps">
       {EXPERIMENTS.map((x, i) => (
