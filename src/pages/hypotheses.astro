@@ -109,12 +109,13 @@ const pressed = (vsc.press_and_release.summary.events.find((e) => e.to === 'open
 const afterPress = vsc.press_and_release.summary.flow_after_open ?? 0;
 const afterEase = vsc.stress_eases.summary.flow_after_open ?? 0;
 const index = [
+  { id: 'unknown', label: 'what no one knows' },
   { id: 'watch', label: 'watch them' },
   { id: 'reports', label: 'the reports and the models' },
   ...HYPOTHESES.map((h, i) => ({ id: h.id, label: `${String(i + 1).padStart(2, '0')} ${h.label}` })),
   { id: 'differ', label: 'how they differ' },
   { id: 'physics', label: 'what physics allows' },
-  { id: 'made', label: 'how it is made' },
+  { id: 'made', label: 'what the models are' },
 ];
 ---
 <Doc
@@ -122,19 +123,43 @@ const index = [
   kicker="Hypotheses"
   current="hypotheses"
   lede={nModelled === HYPOTHESES.length
-    ? 'Seven answers, each at its strongest, and each run as a model from its own physiology in the same patch of body: watch how their knots would form, feel, let go and move, then read what each says and what its model shows.'
-    : `Seven answers, each at its strongest. ${cap(WORD[nModelled])} are run as models from their own physiology in the same patch of body: watch how their knots would form, feel, let go and move, then read what each says and what its model shows.`}
-  description="What is a knot? Seven answers, each at its strongest, each run as a model: how their knots would form, feel, let go and move, and what a measurement would show."
+    ? 'Knots are among the commonest things people find in their bodies, and no one yet knows what they are. Here are seven answers, each at its strongest and in its own terms, and, for interest, a simple model of each: an experiment in what each would imply, not evidence for any.'
+    : `Knots are among the commonest things people find in their bodies, and no one yet knows what they are. Here are seven answers, each at its strongest and in its own terms, and, for interest, simple models of ${WORD[nModelled]}: an experiment in what each would imply, not evidence for any.`}
+  description="What is a knot? No one yet knows. Seven answers, each at its strongest and in its own terms; a simple model of each, for interest; and what a measurement would show."
   glyph="説"
   index={index}
   wide
 >
   <div data-guide-page>
+    <section id="unknown" class="sec full" data-glyph="未">
+      <h2>What no one yet knows</h2>
+      <div class="made prose">
+        <p>Knots are among the commonest things people find in their bodies. They are felt as bumps in the soft tissue, from very
+          small to about the size of a penny; they seldom hurt unless pressed hard, and they can let go within seconds, under a hand,
+          under a roller or with the breath. Massage therapists and physiotherapists work on them every day, and contemplative
+          traditions describe something like them in their own words. Yet no one knows what they are. Trigger points have been imaged as stiff spots in muscle{' '}
+          <Fragment set:html={`(${cite('sikdar2009')})`} />, but whether those are the knots people find is not known, and no one
+          has yet recorded what changes in the tissue at the moment a knot lets go.</p>
+        <p>Seven answers are on the table. Two place the knot in the vessels: in the wall of a small artery that pierces the fascia
+          (the perforators, this site's proposal), or in the latch of the vessels' smooth muscle, holding a prediction
+          (the vascular latch, from vasocomputation). Two place it in muscle: a contraction knot at an overactive motor endplate (trigger points), or a few
+          motor units that switch on and stay on (the motor switch). One places it in the fascia, where the layers stop gliding
+          (densification); one in a sensitised nerve and its sheath (nerves); and one in the spinal cord and brain, which may turn ordinary
+          signals into a felt knot (perception). Each is set out below at its strongest and in its own terms, with its best evidence
+          and its sharpest test. None has yet been tested against the others at a knot.</p>
+        <p>For interest, each account has also been written as a simple model and run through the same scenes. The models make each
+          account's logic explicit and show what it would imply; they are not evidence. Nothing about a knot has been measured to set
+          them by, so many of their numbers are guesses, and their breaths and scenes are stand-ins. What physics rules out holds
+          whatever the settings (<a href="#physics">below</a>); the rest is an experiment in reasoning, not a finding (see{' '}
+          <a href="#made">what the models are, and are not</a>).</p>
+      </div>
+    </section>
+
     <section id="watch" class="sec full" data-glyph="観">
       <h2>Watch them</h2>
-      <p class="sub">Choose a scene. Each modelled theory grows its own knots in the same 4 cm of the upper back, where its own anatomy
-        puts them, and meets the same stress, breath and hand. Nothing here is fitted to anyone's reports; it shows what each mechanism
-        would do, and it measures nothing.</p>
+      <p class="sub">Choose a scene. Each theory's model grows its own knots in the same 4 cm of the upper back, where its anatomy puts
+        them, and meets the same stress, breath and hand. It is an experiment, for interest: nothing is fitted to anyone's reports, many
+        of the numbers are guesses, and it measures nothing (see <a href="#made">what the models are, and are not</a>).</p>
       <div class="instrument" data-guide>
         <div class="scenes" role="group" aria-label="Scenes">
           {films.map((s) => (
@@ -199,7 +224,7 @@ const index = [
         <h2>The reports, and the models</h2>
         <p class="sub">What people who work with knots report (the Introduction's observations, in the site's own words), and in how many
           of the plausible settings each theory's model does it. The models were built without the reports; this is the comparison that
-          comes after. A full circle: in every setting; an empty one: in none; a dash: the model has no route to it.</p>
+          comes after, and like the models it is an illustration, not a test. A full circle: in every setting; an empty one: in none; a dash: the model has no route to it.</p>
         <div class="table-wrap">
           <table class="rep">
             <thead>
@@ -294,7 +319,7 @@ const index = [
                 </p>
               </div>
               <div class="shows">
-                <p class="col-h mono">What its model shows</p>
+                <p class="col-h mono">What its model shows, for interest</p>
                 {th ? (
                   <>
                     {sw && sw.branches && (
@@ -350,8 +375,9 @@ const index = [
 
     <section id="differ" class="sec full" data-glyph="別">
       <h2>How they differ</h2>
-      <p class="sub">The same scenes, the modelled answers side by side. Where two columns part on something a hand or an instrument can
-        tell, that is a test (see{' '}<a href={`${base}/research/#studies`}>studies that might help</a>).</p>
+      <p class="sub">The models' answers side by side, scene by scene. Where two accounts part on something a hand or an instrument can
+        tell, that is a test worth making, on people rather than on models (see{' '}<a href={`${base}/research/#studies`}>studies that
+        might help</a>).</p>
       <div class="table-wrap">
         <table class="differ">
           <thead>
@@ -430,18 +456,27 @@ const index = [
     </section>
 
     <section id="made" class="sec full" data-glyph="法">
-      <h2>How it is made</h2>
+      <h2>What the models are, and are not</h2>
       <div class="made prose">
-        <p>Each theory is a model in its strongest form, every number taken from a quoted line of a paper or marked as a guess with a
-          range. The same patch, the same scenes, the same hand and breath for every theory; each places its own units where its anatomy
-          puts them. What is felt comes from one rule for all: a finger feels stiffness through skin and fat, fainter the deeper it lies.
-          The films show one typical setting; the lines beside each theory speak for all {g.run.settings}. In every theory a stressful
-          moment forms knots and the held stress keeps them: that is how stress is scaled, not a finding. The breaths are stand-ins:
-          slow, even breaths, and subtle ones a third their size; the trained breath reported to release knots, a subtle weave of
-          small in- and out-breaths carried out on a stronger out-breath, is not modelled as such.</p>
-        <p>A model shows what a mechanism would do; it measures nothing, and it cannot say which theory is true. The scenes are things
-          that happen to a model, not instructions. Deep somatic and meditative work carries real risks: see the site's{' '}
-          <a href={`${base}/about/#moderation`}>moderation guidance</a>.</p>
+        <p><strong>What they are.</strong> Each theory is written as a model in its strongest form, every number taken from a quoted
+          line of a paper or marked as a guess with a range. The same patch, the same scenes, the same hand and breath for every
+          theory; each places its own units where its anatomy puts them. What is felt comes from one rule for all: a finger feels
+          stiffness through skin and fat, fainter the deeper it lies. The films show one typical setting; the lines beside each theory
+          speak for all {g.run.settings}.</p>
+        <p><strong>Why they are only an experiment.</strong> No one has measured a knot, so there is nothing to set the models by. The
+          numbers taken from papers were measured in other tissues, often in animals, and many others are guesses, run across a range.
+          Each model is one way of writing its theory down; another, equally fair, could behave differently. In every theory a
+          stressful moment forms knots and the held stress keeps them: that is how stress is scaled, by hand, not a finding. The
+          breaths are stand-ins: slow, even breaths, and subtle ones a third their size; the trained breath reported to release
+          knots, a subtle weave of small in- and out-breaths carried out on a stronger out-breath, is not modelled as such. And the
+          perforator model, the site's own proposal, is the most detailed of the seven: a model with more parts can reach more
+          reports. So the shares, times and traces on this page illustrate each account's logic. They are not predictions, they
+          measure nothing, and they cannot say which theory is true.</p>
+        <p><strong>What holds up.</strong> What physics rules out holds whatever the settings (<a href="#physics">above</a>). And
+          where two accounts part on something a hand or an instrument can tell, the difference points to a study that could decide
+          between them, made on people (<a href={`${base}/research/#studies`}>studies that might help</a>).</p>
+        <p>The scenes are things that happen to a model, not instructions. Deep somatic and meditative work carries real risks: see the
+          site's <a href={`${base}/about/#moderation`}>moderation guidance</a>.</p>
         <p class="links mono">
           <a href={`${base}/simulation/vessel/`}>one perforator up close</a>
           <a href={`${base}/research/`}>research</a>
