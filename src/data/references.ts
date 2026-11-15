@@ -422,6 +422,17 @@ const EXTRA: Reference[] = [
     note: 'A certifying body’s guide for trainers: discomfort of about 5 to 7 out of 10, never sharp pain or a breath-holding grimace; about 30 to 45 seconds on a tender spot; not over the lumbar spine, joints or acute injuries.',
   },
   {
+    id: 'halvorson2016',
+    authors: 'Ryan Halvorson',
+    year: 2016,
+    title: 'When Myofascial Release Gets Emotional',
+    venue: 'IDEA Health & Fitness Association',
+    url: 'https://www.ideafit.com/when-myofascial-release-gets-emotional/',
+    kind: 'web',
+    tags: ['rolling', 'safety'],
+    note: 'Teachers of rolling, among them Sue Hitzmann and Jill Miller, on the tears that can come in a rolling class: they treat them as normal, keep rolling optional, and refer anyone who cries every time to a counsellor.',
+  },
+  {
     id: 'hitzmann2026',
     authors: 'Sue Hitzmann',
     year: 2026,
