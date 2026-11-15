@@ -11,12 +11,16 @@
 # sometimes off. Reports found only in the essays are listed under `set_aside`, unscored, until the author confirms them.
 # The author's lines are quoted under `words`. Evidence: S, self-report; M, measured in the literature.
 
-version: 6
+version: 7
 status: versioned
 sealed: 2026-09-27
 updated: 2026-11-14
 
 changes:  # each version's changes, newest first
+  - version: 7
+    date: 2026-11-14
+    items:
+      - "O11 follows the introduction, which now says that two reports describe the peeling: the author's data on runaway release, and on the changes in the fascia that come with it, rest on only two reports. Its text and quote change with it. The exam is retired (sim/PLAN.md §2), so nothing is rescored."
   - version: 6
     date: 2026-11-14
     items:
@@ -236,10 +240,10 @@ observations:
   - id: O11
     group: noted
     title: Peeling and filling
-    text: "Layers of the fascia beneath the skin can peel apart along lines, leaving places that feel hollow, rarely; then a filling-in, felt as re-stitching, that can move like a snake along a limb, up the body, or up into the head."
+    text: "In two reports, layers of the fascia beneath the skin peel apart along lines, leaving places that feel hollow, rarely; then a filling-in, felt as re-stitching, that can move like a snake along a limb, up the body, or up into the head."
     evidence: S
     words:
-      - quote: "Some have reported layers of the fascia beneath the skin peeling apart along lines, leaving places that feel hollow. It is rare and little understood"
+      - quote: "Two reports describe layers of the fascia beneath the skin peeling apart along lines, leaving places that feel hollow. It is rare and little understood"
         from: "the introduction, Observations"
       - quote: "Then a filling-in, felt as re-stitching, that can move like a snake along a limb, up the body, or up into the head."
         from: "the introduction, Observations"

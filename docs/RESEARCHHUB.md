@@ -28,7 +28,7 @@ A position paper, *The perforator hypothesis: knots as small arteries held shut 
 https://doi.org/10.5281/zenodo.23901648), argues from established physiology that a knot is a cutaneous perforator, a
 small artery held shut by its own wall where it pierces the fascia. The idea grew from vasocomputation, the proposal
 that held predictions are held vascular tension (Johnson 2023), whose first step it keeps, a held contraction as a
-stored state; and from the phenomenology of runaway release, described below. It sets out six alternatives in their
+stored state; and from two reports of runaway release, described below. It sets out six alternatives in their
 strongest forms (smooth muscle in the latch state, a myofascial trigger point, densified hyaluronan, a sensitised nerve,
 motor units that latch on, and perception) and the measurements that would refute it. The project's site sets out all
 seven, each at its strongest: https://ejhong.github.io/knots/hypotheses/ (code and data:
@@ -39,11 +39,11 @@ to a journal. If, having weighed the alternatives, you think the perforator hypo
 it, rework it, publish it (the paper is CC BY 4.0). A letter can propose that write-up, and it can be funded. If you think
 a rival theory fits better, the models, data and code are open to you too.
 
-**Runaway release.** Some who work forcefully and for long at clearing knots, in contemplative practice or in somatic
-work, describe a rarer process. Past some point, releases come in chains and the process can no longer be set down: it
+**Runaway release.** Two reports describe a rarer process that can follow forceful, long work at clearing knots, in
+contemplative practice or in somatic work. Past some point, releases come in chains and the process can no longer be set down: it
 feels unfinished, and stopping is harder to bear than going on. Then come phases felt in the fascia, over days to weeks
 and recurring over months or years: the layers peel apart along lines, places are left hollow, and a slow re-stitching in
-the end brings back a sense of wholeness. The reports are many but informal, and no study of the process as such is known
+the end brings back a sense of wholeness. There are only two reports, both informal, and no study of the process as such is known
 (the position paper, Section 5). It is arduous and can be dangerous, above all for someone facing it alone: difficulties
 of the wider kind it belongs to have lasted years, and in a study that recruited Western Buddhist meditators who could
 describe difficult experiences, about one in six reported suicidality (Lindahl et al. 2017).
@@ -186,7 +186,8 @@ The case histories that fit its profile could be gathered, from published case r
 difficulty, teachers, clinicians and support services, and people who have been through it, or are in it now,
 interviewed with one set of questions: how it began and ran, its stages and regions, how long each took, what helped and
 what made it worse.
-*What it might show.* No study of it as such is known. A careful description might show whether it is a syndrome, one
+*What it might show.* It rests so far on two informal reports, and no study of it as such is known. A careful description
+might show whether others describe it too; whether it is a syndrome, one
 recognisable pattern that a case definition could capture, or several things; how common it is, who is at risk and what
 helps; and it might find the participants for study 10.
 *Likely needs:* a qualitative or clinical researcher, best with experience of meditation-related difficulty (Lindahl et
