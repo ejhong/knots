@@ -19,8 +19,9 @@ hold, sometimes for years, and let go within seconds, under a hand, with the bre
 over the spot. A knot is felt as a bump, from very small to about the size of a penny; it seldom hurts unless pressed
 hard, as under a foam roller, so tenderness does not define it. The breath that releases knots is described as a trained
 one: a subtle weave of small in- and out-breaths, perhaps beginning with a small in-breath, builds the release, which is
-probably carried out on an out-breath that can be fairly strong, as an athlete's is. Such breaths may help to find knots
-as well. They are among the commonest things a hand finds in a body and among the least explained. As far as is known,
+probably carried out on an out-breath that can be fairly strong, as an athlete's is. Under the pain of a foam roller the
+out-breaths are often strong and many, as in the breathing taught for childbirth. Such breaths may help to find knots as
+well. They are among the commonest things people report in their bodies and among the least explained. As far as is known,
 nothing has been recorded at the moment one lets go.
 
 A position paper, *The perforator hypothesis: knots as small arteries held shut where they pierce the fascia* (Zenodo,

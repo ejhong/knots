@@ -1,5 +1,20 @@
 [
  {
+  "id": "aboodarda2015",
+  "authors": "Aboodarda SJ, Spence AJ, Button DC",
+  "year": 2015,
+  "title": "Pain pressure threshold of a muscle tender spot increases following local and non-local rolling massage",
+  "venue": "BMC Musculoskelet Disord 16:265",
+  "url": "https://doi.org/10.1186/s12891-015-0729-5",
+  "pmid": "26416265",
+  "kind": "paper",
+  "tags": [
+   "rolling",
+   "nerve"
+  ],
+  "note": "Heavy rolling of the other calf raised the pain threshold of a tender spot almost as much as rolling its own calf (by 21% and 24% at 30 seconds), in 150 people."
+ },
+ {
   "id": "adler2019",
   "authors": "Adler TE, Coovadia Y, Cirone D et al.",
   "year": 2019,
@@ -147,6 +162,36 @@
    "animals"
   ],
   "note": "Arterial smooth muscle shortened by a fifth regains force over three contractions, by adding actin filaments; released from 1.25 to 0.75 of its optimal length, its sustained force rises by half."
+ },
+ {
+  "id": "behm2019",
+  "authors": "Behm DG, Wilke J",
+  "year": 2019,
+  "title": "Do Self-Myofascial Release Devices Release Myofascia? Rolling Mechanisms: A Narrative Review",
+  "venue": "Sports Med 49:1173-1181",
+  "url": "https://doi.org/10.1007/s40279-019-01149-y",
+  "pmid": "31256353",
+  "kind": "paper",
+  "tags": [
+   "rolling",
+   "fascia",
+   "critique"
+  ],
+  "note": "Do rollers release fascia? Too little evidence that they do, so 'self-myofascial release' is misleading; the effects are put down to mechanoreceptors and small afferents that shift sympathetic and parasympathetic activity, pain modulation, reflex falls in tone, and changes in blood flow and fascial hydration."
+ },
+ {
+  "id": "behm2020",
+  "authors": "Behm DG, Alizadeh S, Hadjizadeh Anvar S et al.",
+  "year": 2020,
+  "title": "Foam Rolling Prescription: A Clinical Commentary",
+  "venue": "J Strength Cond Res 34:3301-3308",
+  "url": "https://doi.org/10.1519/JSC.0000000000003765",
+  "pmid": "33105383",
+  "kind": "paper",
+  "tags": [
+   "rolling"
+  ],
+  "note": "How much rolling: for range of motion, the regressions favour one to three sets of rolls of 2 to 4 seconds each, 30 to 120 seconds a set; the effects on strength and jumping are trivial to small."
  },
  {
   "id": "benias2018",
@@ -384,6 +429,20 @@
    "nerve"
   ],
   "note": "After exercise that dehydrates, resting blood pressure is lower, and saline by vein lowers the sympathetic drive to muscle."
+ },
+ {
+  "id": "cheatham2018",
+  "authors": "Cheatham SW, Stull KR",
+  "year": 2018,
+  "title": "ROLLER MASSAGE: A COMMENTARY ON CLINICAL STANDARDS AND SURVEY OF PHYSICAL THERAPY PROFESSIONALS- PART 1",
+  "venue": "Int J Sports Phys Ther 13:763-772",
+  "pmid": "30140569",
+  "kind": "paper",
+  "tags": [
+   "rolling",
+   "safety"
+  ],
+  "note": "Proposed clinical standards for roller massage, with tables of precautions and contraindications: no direct pressure over arteries, veins, nerves or bony prominences such as the lumbar vertebrae, nor to extreme discomfort."
  },
  {
   "id": "chen2001",
@@ -868,6 +927,35 @@
   "note": "In toned coronary arterioles, a larger pressure pulse at the same mean pressure widens the lumen: the pulse itself dilates, with or without the endothelium."
  },
  {
+  "id": "grabow2018",
+  "authors": "Grabow L, Young JD, Alcock LR et al.",
+  "year": 2018,
+  "title": "Higher Quadriceps Roller Massage Forces Do Not Amplify Range-of-Motion Increases nor Impair Strength and Jump Performance",
+  "venue": "J Strength Cond Res 32:3059-3069",
+  "url": "https://doi.org/10.1519/JSC.0000000000001906",
+  "pmid": "30152808",
+  "kind": "paper",
+  "tags": [
+   "rolling"
+  ],
+  "note": "Rolling the quadriceps at pain ratings of 3.9, 6.2 or 8.2 out of 10 raised range of motion alike: harder rolling added nothing."
+ },
+ {
+  "id": "gronroos1994",
+  "authors": "Grönroos M, Naukkarinen H, Pertovaara A",
+  "year": 1994,
+  "title": "Capsaicin-induced central facilitation of a sympathetic vasoconstrictor response to painful stimulation in humans",
+  "venue": "Neurosci Lett 182:163-6",
+  "url": "https://doi.org/10.1016/0304-3940(94)90788-9",
+  "pmid": "7715802",
+  "kind": "paper",
+  "tags": [
+   "vascular",
+   "nerve"
+  ],
+  "note": "Pain narrows the skin's vessels by reflex: painful electrical or heat stimulation of the forearm's skin set off a sympathetic vasoconstriction in the other hand's fingertip, measured by laser Doppler."
+ },
+ {
   "id": "guimberteau2005",
   "authors": "Guimberteau JC, Sentucq-Rigall J, Panconi B et al.",
   "year": 2005,
@@ -985,6 +1073,20 @@
    "animals"
   ],
   "note": "After 4 hours of constriction, arterioles relax more slowly when the drive is removed; the hold still needs calcium, and goes at once without it."
+ },
+ {
+  "id": "hirose2025",
+  "authors": "Hirose N, Yoshimura A, Akiyama K et al.",
+  "year": 2025,
+  "title": "Sex and pressure effects of foam rolling on acute range of motion in the hamstring muscles",
+  "venue": "PLoS One 20:e0319148",
+  "url": "https://doi.org/10.1371/journal.pone.0319148",
+  "pmid": "39993022",
+  "kind": "paper",
+  "tags": [
+   "rolling"
+  ],
+  "note": "Rolling the hamstrings on a ball at 15 to 25% or at 45 to 55% of body weight raised range of motion alike, and perceived pain did not change the gain."
  },
  {
   "id": "holowatz2010",
@@ -1157,7 +1259,8 @@
   "kind": "paper",
   "tags": [
    "fascia",
-   "mind"
+   "mind",
+   "rolling"
   ],
   "note": "A scoping review: one bout of foam rolling on one limb increases range of motion in the other, untreated limb, most likely through reduced perception of pain. A single bout leaves the other side’s maximal strength unchanged."
  },
@@ -2533,6 +2636,34 @@
    "anatomy"
   ],
   "note": "Small, densely populated perforators supply the front of the face and the scalp; large, sparse ones in predictable places supply the sides of the face."
+ },
+ {
+  "id": "wiewelhove2019",
+  "authors": "Wiewelhove T, Döweling A, Schneider C et al.",
+  "year": 2019,
+  "title": "A Meta-Analysis of the Effects of Foam Rolling on Performance and Recovery",
+  "venue": "Front Physiol 10:376",
+  "url": "https://doi.org/10.3389/fphys.2019.00376",
+  "pmid": "31024339",
+  "kind": "paper",
+  "tags": [
+   "rolling"
+  ],
+  "note": "Twenty-one studies: rolling before exercise slightly improves sprinting and flexibility, and after it slightly eases the loss of performance and reduces muscle pain; the effects are mostly minor."
+ },
+ {
+  "id": "wilke2020",
+  "authors": "Wilke J, Müller AL, Giesche F et al.",
+  "year": 2020,
+  "title": "Acute Effects of Foam Rolling on Range of Motion in Healthy Adults: A Systematic Review with Multilevel Meta-analysis",
+  "venue": "Sports Med 50:387-402",
+  "url": "https://doi.org/10.1007/s40279-019-01205-7",
+  "pmid": "31628662",
+  "kind": "paper",
+  "tags": [
+   "rolling"
+  ],
+  "note": "Twenty-six trials: rolling raises range of motion at once, a large effect against doing nothing, and no more than stretching."
  },
  {
   "id": "willard2012",

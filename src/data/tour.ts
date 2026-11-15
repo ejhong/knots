@@ -68,7 +68,7 @@ export const CHAPTERS: Chapter[] = [
 <li><b>Peeling.</b> Some have reported layers of the fascia beneath the skin peeling apart along lines, leaving places that feel hollow. It is rare and little understood — one reason for <a href="#moderation">the caution at the end</a>.</li>
 <li><b>Filling.</b> Then a filling-in, felt as re-stitching, that can move like a snake along a limb, up the body, or up into the head.</li>
 </ul>
-<p>The contemplative traditions describe much of this in their own words. How each theory's model answers these reports is set out on the <a href="HYP#reports">Hypotheses</a> page.</p>`,
+<p>The contemplative traditions describe much of this in their own words, and the teachers of foam rolling advise on pressure, breath and time, asking for gentler work than these reports describe; both are on the <a href="TRAD#rolling">Traditions</a> page. How each theory's model answers these reports is set out on the <a href="HYP#reports">Hypotheses</a> page.</p>`,
     refs: ['bolton1936', 'kelly2016', 'konrad2023', 'lindahl2017'],
     scene: { pose: { p: [0.34, 0.66, -1.5], t: [0.02, 0.62, -0.02] }, age: 46, demo: 'breath' },
   },

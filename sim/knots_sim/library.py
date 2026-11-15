@@ -291,10 +291,29 @@ NEW = [
      "After exercise that dehydrates, resting blood pressure is lower, and saline by vein lowers the sympathetic drive to muscle."),
     ("12053855", "gardner2002", ["safety"],
      "Deaths from drinking too much water: more than 5 litres, usually 10 to 20, within a few hours, diluting the blood's sodium and swelling the brain."),
+    ("7715802", "gronroos1994", ["vascular", "nerve"],
+     "Pain narrows the skin's vessels by reflex: painful electrical or heat stimulation of the forearm's skin set off a sympathetic vasoconstriction in the other hand's fingertip, measured by laser Doppler."),
+    # Foam rolling: the trials and standards beside its teachers' advice (Traditions, #rolling).
+    ("33105383", "behm2020", ["rolling"],
+     "How much rolling: for range of motion, the regressions favour one to three sets of rolls of 2 to 4 seconds each, 30 to 120 seconds a set; the effects on strength and jumping are trivial to small."),
+    ("30152808", "grabow2018", ["rolling"],
+     "Rolling the quadriceps at pain ratings of 3.9, 6.2 or 8.2 out of 10 raised range of motion alike: harder rolling added nothing."),
+    ("39993022", "hirose2025", ["rolling"],
+     "Rolling the hamstrings on a ball at 15 to 25% or at 45 to 55% of body weight raised range of motion alike, and perceived pain did not change the gain."),
+    ("30140569", "cheatham2018", ["rolling", "safety"],
+     "Proposed clinical standards for roller massage, with tables of precautions and contraindications: no direct pressure over arteries, veins, nerves or bony prominences such as the lumbar vertebrae, nor to extreme discomfort."),
+    ("26416265", "aboodarda2015", ["rolling", "nerve"],
+     "Heavy rolling of the other calf raised the pain threshold of a tender spot almost as much as rolling its own calf (by 21% and 24% at 30 seconds), in 150 people."),
+    ("31256353", "behm2019", ["rolling", "fascia", "critique"],
+     "Do rollers release fascia? Too little evidence that they do, so 'self-myofascial release' is misleading; the effects are put down to mechanoreceptors and small afferents that shift sympathetic and parasympathetic activity, pain modulation, reflex falls in tone, and changes in blood flow and fascial hydration."),
+    ("31628662", "wilke2020", ["rolling"],
+     "Twenty-six trials: rolling raises range of motion at once, a large effect against doing nothing, and no more than stretching."),
+    ("31024339", "wiewelhove2019", ["rolling"],
+     "Twenty-one studies: rolling before exercise slightly improves sprinting and flexibility, and after it slightly eases the loss of performance and reduces muscle pain; the effects are mostly minor."),
 ]
 
-# Existing entries that the simulation also leans on gain the models tag.
-RETAG = {"hai1988": "models"}
+# Existing entries that the simulation also leans on gain the models tag; konrad2023 joins foam rolling.
+RETAG = {"hai1988": "models", "konrad2023": "rolling"}
 
 
 def merge() -> list[str]:

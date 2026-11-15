@@ -39,6 +39,16 @@ const CORRESPONDENCES = [
   ['Rapture (pīti) suffusing the body', 'Buddhist', 'The skin’s small vessels opening widely at once — warmth, tingling, well-being', 'Proposed'],
   ['Cupping and gua sha', 'China', 'Tools for the fascia: lift and shear the superficial plane', 'Mechanically plausible'],
 ];
+// Foam rolling: what its teachers advise and its trials find, beside what is reported of knots (sources in the prose below).
+const ROLLING = [
+  ['Finding a spot', 'For the workbook and the trainers’ guide, a tender spot on which pressure is then held; the guide finds it by rolling a region slowly. Hitzmann advises against intense direct pressure on sensitive spots.', 'A bump, from very small to about the size of a penny, found by touch; it seldom hurts unless pressed hard. Some find that a trained breath helps to find knots too.'],
+  ['Pressure', 'Moderate: a pain of 5 out of 10 in the workbook, a discomfort of 5 to 7 in the guide, never sharp pain; for Miller and Hitzmann it need not hurt. In two small trials, harder rolling added no range of motion.', 'Pressed hard under a roller, a knot can hurt sharply: past what the teachers advise.'],
+  ['Breath', 'For the workbook and the guide, a gauge: a held breath or a grimace means pressing too hard. For Miller, a method: a big breath in, held while the muscles around the ball contract, then an out-breath that lets go.', 'A trained breath: a subtle weave of small in- and out-breaths builds the release, which is probably carried out on an out-breath that can be fairly strong. Under a roller’s pain the out-breaths are often strong and many, as in the breathing taught for childbirth.'],
+  ['Time', 'About 30 to 45 seconds of held pressure on a spot; in the workbook, its pain eases over days of short, repeated sessions.', 'The let-go itself takes seconds, sometimes with a small pop; the most stubborn knots may take a whole session of work first.'],
+  ['Tingling', 'Pain, numbness or tingling that persists belongs with a physician or physical therapist.', 'Sometimes a star of tingling across a patch of skin as a knot lets go.'],
+  ['The other side', 'The teachers cited say nothing of it. In trials, heavy rolling of one calf raised the pain threshold of a tender spot in the other almost as much as rolling its own, and rolling one leg adds range of motion to the other, most likely through a reduced perception of pain.', 'Working the knots on one side can ease the other side as well.'],
+  ['What it is for', 'Relief from pain, and range of motion, which rises for a while.', 'The knots themselves, released one place at a time. A release can bring a wave of well-being.'],
+];
 const index = [
   { id: 'reading', label: 'reading' },
   { id: 'china', label: 'China' },
@@ -47,6 +57,7 @@ const index = [
   { id: 'tibet', label: 'Tibet' },
   { id: 'buddhist', label: 'Buddhist' },
   { id: 'japan', label: 'Japan' },
+  { id: 'rolling', label: 'foam rolling' },
   { id: 'table', label: 'correspondences' },
   { id: 'points', label: 'points and perforators' },
 ];
@@ -56,7 +67,7 @@ const index = [
   kicker="Traditions"
   current="traditions"
   lede="Nearly every tradition that mapped the inner body arrived at the same three claims: there are knots, breath is the tool, and untying them changes the mind."
-  description="Maps of the inner body from Chinese medicine, Daoist alchemy, yoga and tantra, Tibetan tsa lung and Dzogchen, and Buddhist practice — read beside the anatomy of perforators and fascia."
+  description="Maps of the inner body from Chinese medicine, Daoist alchemy, yoga and tantra, Tibetan tsa lung and Dzogchen, and Buddhist practice, and the advice of today’s foam-rolling teachers — read beside the anatomy of perforators and fascia, and beside what is reported of knots."
   glyph="経"
   index={index}
 >
@@ -191,6 +202,93 @@ const index = [
         below the navel.
       </p>
     </div>
+  </section>
+
+  <section id="rolling" class="sec" data-glyph="転">
+    <h2>The roller’s teachers</h2>
+    <p class="label">Foam rolling · what its teachers advise, beside what is reported of knots</p>
+    <div class="prose">
+      <p>
+        The newest tradition of work on the soft tissue is the foam roller’s, and it has teachers of its own: physiotherapists,
+        massage therapists and trainers, and the books and courses they write. Their advice is set out here as they give it,
+        beside what is reported of knots. It is gentler than the reports.
+      </p>
+      <p><strong>Pressure.</strong> The teachers ask for moderate pressure. <em>The Trigger Point Therapy Workbook</em> aims at a
+        pain of 5 on a scale of 1 to 10, “a pleasant kind of pain”; its earlier editions asked for more, and the third edition
+        values being able to relax <Fragment set:html={`(${cite('davies2013')})`} />. A trainers’ guide from the National Academy
+        of Sports Medicine puts discomfort at 5 to 7 out of 10, never sharp pain <Fragment set:html={`(${cite('penney2021')})`} />.
+        Jill Miller, author of <em>The Roll Model</em>, holds that rolling does not have to hurt to work{' '}
+        <Fragment set:html={`(${cite('jmiller2025')})`} />, and Sue Hitzmann, creator of the MELT Method, that pain cannot be
+        self-inflicted to get out of pain, and that consistency matters more than intensity{' '}
+        <Fragment set:html={`(${cite('hitzmann2026')})`} />. In two small trials, harder rolling added no range of motion: rolling
+        at pain ratings of about 4, 6 and 8 out of 10 raised it alike <Fragment set:html={`(${cite('grabow2018')})`} />, as did
+        rolling at 15–25% or 45–55% of body weight <Fragment set:html={`(${cite('hirose2025')})`} />.</p>
+      <p><strong>Breath.</strong> For the workbook and the trainers’ guide the breath is a gauge: “If you are grimacing or holding
+        your breath, you are pressing too hard” <Fragment set:html={`(${cite('davies2013')})`} />. The trainers’ guide rules out
+        “a breath-holding grimace” and holds a spot “while breathing and consciously relaxing”{' '}
+        <Fragment set:html={`(${cite('penney2021')})`} />. Miller makes it a method. She reads the pain of a ball as the muscle
+        bracing against it, and meets it with contract-relax: a big breath in, held while the muscles around the ball contract,
+        then out, letting go, again and again, until the guarding quiets and the ball sinks in{' '}
+        <Fragment set:html={`(${cite('jmiller2026')})`} />.</p>
+      <p><strong>Time.</strong> The teachers speak of tens of seconds on a spot and of days for it to ease. The trainers’ guide
+        holds pressure for about 30 to 45 seconds <Fragment set:html={`(${cite('penney2021')})`} />. The workbook repeats short
+        sessions daily until the same pressure brings a pain of only 2 or 3, and does not expect that in one session{' '}
+        <Fragment set:html={`(${cite('davies2013')})`} />. For range of motion, a review of the trials’ doses favours one to three
+        sets of 30 to 120 seconds of rolling along a muscle <Fragment set:html={`(${cite('behm2020')})`} />.</p>
+      <p><strong>What it does.</strong> The field calls it self-myofascial release; the reviews are more cautious. Rolling raises
+        range of motion at once, about as much as stretching does <Fragment set:html={`(${cite('wilke2020')})`} />, and after
+        exercise it eases muscle pain a little <Fragment set:html={`(${cite('wiewelhove2019')})`} />. That release of the fascia
+        is the main way rollers work has too little evidence behind it, and one review calls the name misleading; it puts the
+        effects down instead to receptors in the skin and fascia, small nerve fibres that shift the balance of sympathetic and
+        parasympathetic activity, the body’s own damping of pain, reflex falls in muscle tone, and changes in blood flow and in
+        the fascia’s water <Fragment set:html={`(${cite('behm2019')})`} />, ground that several of the theories on the{' '}
+        <a href={`${base}/hypotheses/`}>Hypotheses</a> page stand on.</p>
+      <p><strong>Cautions.</strong> The trainers’ guide advises against rolling directly over the lumbar spine, the joints and
+        acute injuries <Fragment set:html={`(${cite('penney2021')})`} />. A set of proposed clinical standards lists among its
+        contraindications direct pressure over the face, eyes, arteries, veins or nerves and over bony prominences, extreme
+        discomfort, deep vein thrombosis, peripheral vascular disease, medicines that thin the blood or alter sensation, and
+        conditions in which sensation is lost or altered; its authors call the list a starting point, not a complete one{' '}
+        <Fragment set:html={`(${cite('cheatham2018')})`} />. The workbook’s rule is never to massage a pulse, lest plaque be
+        loosened from a large artery and carried to the brain <Fragment set:html={`(${cite('davies2013')})`} />. Pain, numbness or
+        tingling that persists, or symptoms that worsen, belong with a physician or physical therapist{' '}
+        <Fragment set:html={`(${cite('penney2021')})`} />.</p>
+    </div>
+    <div class="table-wrap">
+      <table class="roll">
+        <thead>
+          <tr><th></th><th>What the teachers advise, and trials find</th><th>What is reported of knots</th></tr>
+        </thead>
+        <tbody>
+          {ROLLING.map((r) => (
+            <tr>{r.map((c) => <td>{c}</td>)}</tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
+    <div class="prose">
+      <p><strong>Where they meet.</strong> Both attend to the breath. For two of the teachers it is a gauge, and for Miller a
+        method; her contract-relax shares one thing with the breath reported, a letting go on an out-breath. Otherwise they
+        differ: hers is a big breath held with the muscles contracted, the reported one a weave of small breaths. The trials, too,
+        measure something like the mirroring reported: heavy rolling of one calf raised the pain threshold of a tender spot in
+        the other almost as much as rolling its own <Fragment set:html={`(${cite('aboodarda2015')})`} />, and rolling one leg adds
+        range of motion to the other, most likely, on one review’s reading, through a reduced perception of pain{' '}
+        <Fragment set:html={`(${cite('konrad2023')})`} />.</p>
+      <p><strong>Where they part.</strong> On pain, first: the teachers ask for moderate discomfort, and the workbook has lowered
+        its level since its earlier editions; the reports describe rolling past that point, into sharp pain met with strong
+        out-breaths. On time: the teachers hold a spot for tens of seconds and expect its pain to ease over days; the reports
+        describe a let-go within seconds, which may be another event or the same one seen more closely. On tingling: the teachers
+        send pain, numbness or tingling that persists to a physician, and the reports describe a tingle as a knot lets go; the
+        two are not always easy to tell apart, and the teachers’ caution stands. And on what is worked: the teachers work on
+        tender spots and the trials measure range of motion and pain, while the reports describe bumps that seldom hurt. None of
+        the trials cited here asked whether a bump was there before and gone after, or whether knots let go at the pressures the
+        teachers advise; a recording at a release could show what happens there
+        (<a href={`${base}/research/#study-3`}>study 3</a>).</p>
+    </div>
+    <p class="fine prose">
+      A summary of advice, not advice: nothing here is a practice or a protocol. Where the reports go further than the teachers
+      advise, harder and with stronger breaths, the site’s moderation guidance applies (see{' '}
+      <a href={`${base}/about/#moderation`}>About</a>).
+    </p>
   </section>
 
   <section id="table" class="sec full" data-glyph="対照">
@@ -385,6 +483,15 @@ const index = [
   }
   table.pt {
     min-width: 560px;
+  }
+  table.roll {
+    min-width: 640px;
+  }
+  table.roll td:first-child {
+    width: 15%;
+  }
+  #rolling .table-wrap {
+    margin: 16px 0;
   }
   .nw {
     white-space: nowrap;

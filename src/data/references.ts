@@ -14,6 +14,7 @@ export type Tag =
   | 'vascular'
   | 'breath'
   | 'trigger-points'
+  | 'rolling'
   | 'nerve'
   | 'imaging'
   | 'acupuncture'
@@ -397,6 +398,62 @@ const EXTRA: Reference[] = [
     tags: ['contemplative', 'breath'],
     note: 'Practices of release. Read the cautions first.',
   },
+
+  // Foam rolling: what its teachers advise (Traditions, #rolling).
+  {
+    id: 'davies2013',
+    authors: 'Clair Davies, Amber Davies',
+    year: 2013,
+    title: 'The Trigger Point Therapy Workbook: Your Self-Treatment Guide for Pain Relief',
+    venue: 'New Harbinger Publications (3rd ed.)',
+    kind: 'book',
+    tags: ['rolling', 'trigger-points', 'safety'],
+    note: 'The self-treatment workbook. Its third edition aims at a pain of 5 on a scale of 1 to 10, less than its earlier editions: “If you are grimacing or holding your breath, you are pressing too hard.” Never massage a pulse.',
+  },
+  {
+    id: 'penney2021',
+    authors: 'Stacey Penney',
+    year: 2021,
+    title: 'Foam Rolling and Self-Myofascial Release: The Trainer’s Application Guide',
+    venue: 'National Academy of Sports Medicine (updated June 2026)',
+    url: 'https://www.nasm.org/resource-center/blog/recovery/foam-rolling-and-self-myofascial-release-the-trainer-application-guide',
+    kind: 'web',
+    tags: ['rolling', 'safety'],
+    note: 'A certifying body’s guide for trainers: discomfort of about 5 to 7 out of 10, never sharp pain or a breath-holding grimace; about 30 to 45 seconds on a tender spot; not over the lumbar spine, joints or acute injuries.',
+  },
+  {
+    id: 'hitzmann2026',
+    authors: 'Sue Hitzmann',
+    year: 2026,
+    title: 'Why Does Pain Persist? Revisiting the Brain–Body Connection',
+    venue: 'MELT Method (written in 2012, revisited 2026)',
+    url: 'https://www.meltmethod.com/blogs/articles/why-does-pain-persist-brain-body-connection',
+    kind: 'web',
+    tags: ['rolling'],
+    note: 'From the creator of the MELT Method: “You can’t cause pain or self-inflict pain to get out of pain.” Intense direct pressure on sensitive spots does not seem to resolve them; consistency matters more than intensity.',
+  },
+  {
+    id: 'jmiller2025',
+    authors: 'Jill Miller, Andy Galpin',
+    year: 2025,
+    title: 'Jill Miller: Increase Flexibility & Relieve Pain with Breathwork & Myofascial Release',
+    venue: 'Perform with Dr. Andy Galpin (podcast transcript)',
+    url: 'https://www.performpodcast.com/episodes/jill-miller-increase-flexibility-relieve-pain-with-breathwork-myofascial-release/transcript/',
+    kind: 'web',
+    tags: ['rolling', 'breath'],
+    note: 'The author of The Roll Model: rolling does not have to hurt to work.',
+  },
+  {
+    id: 'jmiller2026',
+    authors: 'Jill Miller, Shawn Stevenson',
+    year: 2026,
+    title: 'Use Your Breathing to Control Stress, Reduce Pain, & Much More',
+    venue: 'The Model Health Show, episode 972 (transcript)',
+    url: 'https://themodelhealthshow.s3.us-east-2.amazonaws.com/Episode+972.pdf',
+    kind: 'web',
+    tags: ['rolling', 'breath'],
+    note: 'Contract-relax on a ball: a big breath in, held while the muscles around the ball contract, then out, letting go, again and again, until the muscle’s guarding quiets and the ball sinks in.',
+  },
 ];
 
 export const REFERENCES: Reference[] = [
@@ -413,6 +470,7 @@ export const TAG_LABELS: Record<Tag, string> = {
   vascular: 'Vessels',
   breath: 'Breath',
   'trigger-points': 'Trigger points',
+  rolling: 'Foam rolling',
   nerve: 'Nerve',
   imaging: 'Imaging',
   acupuncture: 'Acupuncture',
