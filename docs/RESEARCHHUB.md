@@ -41,9 +41,9 @@ a rival theory fits better, the models, data and code are open to you too.
 
 **Runaway release.** Two reports describe a rarer process that can follow forceful, long work at clearing knots, in
 contemplative practice or in somatic work. Past some point, releases come in chains and the process can no longer be set down: it
-feels unfinished, and stopping is harder to bear than going on. Then come phases felt in the fascia, over days to weeks
-and recurring over months or years: the layers peel apart along lines, places are left hollow, and a slow re-stitching in
-the end brings back a sense of wholeness. Where many knots let go together, the skin over them can grow wet, then
+feels unfinished, and stopping is harder to bear than going on. It does not come and go but runs on, over months or
+years, through phases: knots releasing, and changes felt in the fascia over days to weeks, as the layers peel apart
+along lines, places are left hollow, and a slow re-stitching in the end brings back a sense of wholeness. Where many knots let go together, the skin over them can grow wet, then
 crust and flake away; unlike the rest, that can be seen and photographed. There are only two reports, both informal, and no study of the process as such is known
 (the position paper, Section 5). It is arduous and can be dangerous, above all for someone facing it alone: difficulties
 of the wider kind it belongs to have lasted years, and in a study that recruited Western Buddhist meditators who could
