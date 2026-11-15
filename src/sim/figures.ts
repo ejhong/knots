@@ -676,10 +676,10 @@ export function cellMark(c: Cell, r = 7): string {
   return `<svg class="mk-cell" viewBox="-8 -8 16 16" aria-hidden="true"><circle r="${r}" fill="none" stroke="${PAPER.line}" stroke-width="0.8"/><circle r="${rr.toFixed(2)}" fill="${PAPER.ink}"/></svg>`;
 }
 
-/** How many knots each theory would hold in a body, beside practitioners' estimate, on a log scale: each modelled
+/** How many knots each theory would hold in a body, beside the estimate from the reports of release, on a log scale: each modelled
  *  theory's range across its plausible parameter sets (10th to 90th percentile), its median where it holds any, the
  *  share of settings with none, and all its units. */
-export function countsStrip(m: Matrix, estimate: [number, number] = [1e5, 1e6]): string {
+export function countsStrip(m: Matrix, estimate: [number, number] = [1e4, 1e5]): string {
   const W = 720;
   const rows = m.theories.map((t) => ({ t, c: t.variants[0].count }));
   const H = 70 + rows.length * 34;
@@ -691,9 +691,9 @@ export function countsStrip(m: Matrix, estimate: [number, number] = [1e5, 1e6]):
   const out: string[] = [];
   const top = 34;
   const bottom = top + rows.length * 34;
-  // The practitioners' estimate, as a band behind everything.
-  out.push(`<g><title>${esc('Practitioners who count: micro-knots at dozens to the square inch, hundreds of thousands in a body (their own estimate)')}</title><rect x="${f1(X(estimate[0]))}" y="${top - 6}" width="${f1(X(estimate[1]) - X(estimate[0]))}" height="${bottom - top + 6}" fill="${PAPER.knot}" opacity="0.07"/></g>`);
-  out.push(`<text x="${f1(X(estimate[1]))}" y="${top - 12}" text-anchor="end" fill="${PAPER.knot}" font-size="8.5" ${MONO}>reported: hundreds of thousands</text>`);
+  // The reports' estimate, as a band behind everything.
+  out.push(`<g><title>${esc('The reports of release: micro-knots at dozens to the square inch, tens of thousands to a hundred thousand in a body (their estimate)')}</title><rect x="${f1(X(estimate[0]))}" y="${top - 6}" width="${f1(X(estimate[1]) - X(estimate[0]))}" height="${bottom - top + 6}" fill="${PAPER.knot}" opacity="0.07"/></g>`);
+  out.push(`<text x="${f1(X(estimate[1]))}" y="${top - 12}" text-anchor="end" fill="${PAPER.knot}" font-size="8.5" ${MONO}>reported: tens of thousands to 100,000</text>`);
   for (const e of [0, 1, 2, 3, 4, 5, 6]) {
     const x = X(10 ** e);
     out.push(`<line x1="${f1(x)}" x2="${f1(x)}" y1="${top - 6}" y2="${bottom}" stroke="${PAPER.line}" stroke-width="0.7"/>`);
@@ -720,5 +720,5 @@ export function countsStrip(m: Matrix, estimate: [number, number] = [1e5, 1e6]):
     if (c.none > 0) out.push(`<text x="${f1(x0)}" y="${y + 16}" fill="${PAPER.muted}" font-size="8" ${MONO}>none in ${Math.round(100 * c.none)}%</text>`);
   });
   const label = rows.map(({ t, c }) => (c ? `${t.name} about ${(c.median_any ?? 0).toLocaleString('en-GB')} of ${c.units.toLocaleString('en-GB')} where it holds any` : `${t.name} no count`)).join('; ');
-  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(`How many knots each theory would hold in a body: ${label}; practitioners report hundreds of thousands`)}">${out.join('')}</svg>`;
+  return `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="${esc(`How many knots each theory would hold in a body: ${label}; the reports of release estimate tens of thousands to a hundred thousand`)}">${out.join('')}</svg>`;
 }
