@@ -310,6 +310,12 @@ NEW = [
      "Twenty-six trials: rolling raises range of motion at once, a large effect against doing nothing, and no more than stretching."),
     ("31024339", "wiewelhove2019", ["rolling"],
      "Twenty-one studies: rolling before exercise slightly improves sprinting and flexibility, and after it slightly eases the loss of performance and reduces muscle pain; the effects are mostly minor."),
+    ("7968463", "menger1994", ["vascular", "animals"],
+     "Reperfusion injury in the microcirculation of animal skin and muscle: after prolonged ischaemia (six hours in skin), returning blood brings white-cell adhesion, reactive oxygen and mediators, and increased microvascular permeability with interstitial oedema."),
+    ("31711648", "matei2019", ["perforators"],
+     "Digital artery perforator flaps for finger defects: venous congestion in 7 cases, followed by epidermolysis in 4 and superficial necrosis in 3, which healed by re-epithelialisation."),
+    ("18586145", "stekelenburg2008", ["vascular", "anatomy"],
+     "Deep pressure ulcers arise in the muscle layers adjacent to bony prominences under sustained loading; deformation and ischaemia damage tissue on different clocks."),
 ]
 
 # Existing entries that the simulation also leans on gain the models tag; konrad2023 joins foam rolling.

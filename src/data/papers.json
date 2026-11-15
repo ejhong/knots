@@ -1517,6 +1517,20 @@
   "note": "Copeman nodules (episacral lipomas) are common: fat herniated beneath the fascia through weakened areas of the thoracodorsal fascia, usually on both sides."
  },
  {
+  "id": "matei2019",
+  "authors": "Matei IR, Bumbasirevic M, Georgescu AV",
+  "year": 2019,
+  "title": "Finger defect coverage with digital artery perforator flaps",
+  "venue": "Injury 50 Suppl 5:S95-S98",
+  "url": "https://doi.org/10.1016/j.injury.2019.10.057",
+  "pmid": "31711648",
+  "kind": "paper",
+  "tags": [
+   "perforators"
+  ],
+  "note": "Digital artery perforator flaps for finger defects: venous congestion in 7 cases, followed by epidermolysis in 4 and superficial necrosis in 3, which healed by re-epithelialisation."
+ },
+ {
   "id": "maurer2019",
   "authors": "Maurer N, Nissel H, Egerbacher M et al.",
   "year": 2019,
@@ -1591,6 +1605,21 @@
    "perforators"
   ],
   "note": "Dissection of the five-shu points of the arm: perforating cutaneous vessels are a key feature of acupoints."
+ },
+ {
+  "id": "menger1994",
+  "authors": "Menger MD, Vollmar B",
+  "year": 1994,
+  "title": "In vivo analysis of microvascular reperfusion injury in striated muscle and skin",
+  "venue": "Microsurgery 15:383-9",
+  "url": "https://doi.org/10.1002/micr.1920150605",
+  "pmid": "7968463",
+  "kind": "paper",
+  "tags": [
+   "vascular",
+   "animals"
+  ],
+  "note": "Reperfusion injury in the microcirculation of animal skin and muscle: after prolonged ischaemia (six hours in skin), returning blood brings white-cell adhesion, reactive oxygen and mediators, and increased microvascular permeability with interstitial oedema."
  },
  {
   "id": "miller2026",
@@ -2368,6 +2397,21 @@
    "imaging"
   ],
   "note": "The loose-connective-tissue sublayers of neck fascia are thicker in chronic neck pain and thin with treatment."
+ },
+ {
+  "id": "stekelenburg2008",
+  "authors": "Stekelenburg A, Gawlitta D, Bader DL et al.",
+  "year": 2008,
+  "title": "Deep tissue injury: how deep is our understanding?",
+  "venue": "Arch Phys Med Rehabil 89:1410-3",
+  "url": "https://doi.org/10.1016/j.apmr.2008.01.012",
+  "pmid": "18586145",
+  "kind": "paper",
+  "tags": [
+   "vascular",
+   "anatomy"
+  ],
+  "note": "Deep pressure ulcers arise in the muscle layers adjacent to bony prominences under sustained loading; deformation and ischaemia damage tissue on different clocks."
  },
  {
   "id": "syyong2008",

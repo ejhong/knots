@@ -43,7 +43,8 @@ a rival theory fits better, the models, data and code are open to you too.
 contemplative practice or in somatic work. Past some point, releases come in chains and the process can no longer be set down: it
 feels unfinished, and stopping is harder to bear than going on. Then come phases felt in the fascia, over days to weeks
 and recurring over months or years: the layers peel apart along lines, places are left hollow, and a slow re-stitching in
-the end brings back a sense of wholeness. There are only two reports, both informal, and no study of the process as such is known
+the end brings back a sense of wholeness. Where many knots let go together, the skin over them can grow wet, then
+crust and flake away; unlike the rest, that can be seen and photographed. There are only two reports, both informal, and no study of the process as such is known
 (the position paper, Section 5). It is arduous and can be dangerous, above all for someone facing it alone: difficulties
 of the wider kind it belongs to have lasted years, and in a study that recruited Western Buddhist meditators who could
 describe difficult experiences, about one in six reported suicidality (Lindahl et al. 2017).
@@ -197,9 +198,10 @@ al. 2017; Cooper et al. 2021) · ethics review · support at hand for participan
 *Design:* Observational: a prospective case series with repeated imaging
 People already in runaway release might be examined while it runs and again as it settles: ultrasound of the fascial
 layers and their glide where change is felt and at matched places, colour Doppler of the perforators, skin-flow imaging,
-and the blood tests a physician would order. No one would be asked to begin or seek it, and their care would come first.
+photographs of any skin that weeps or crusts, and the blood tests a physician would order. No one would be asked to begin or seek it, and their care would come first.
 *What it might show.* If the tissue is changing, the glide might differ at the reported places and settle on the clock
-the reports give; if only perception is changing, the tissue would likely look as it did.
+the reports give; if only perception is changing, the tissue would likely look as it did. Skin that weeps where knots let go, and not
+where it was rubbed, would show a change in the tissue itself.
 *Likely needs:* a clinician-researcher with imaging who knows meditation-related difficulty · a route to participants ·
 a plan for referral · ethics review
 
