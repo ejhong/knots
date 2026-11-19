@@ -316,6 +316,19 @@ NEW = [
      "Digital artery perforator flaps for finger defects: venous congestion in 7 cases, followed by epidermolysis in 4 and superficial necrosis in 3, which healed by re-epithelialisation."),
     ("18586145", "stekelenburg2008", ["vascular", "anatomy"],
      "Deep pressure ulcers arise in the muscle layers adjacent to bony prominences under sustained loading; deformation and ischaemia damage tissue on different clocks."),
+    # What a map by flow can and cannot see, and the bump as a pocket of dammed blood (the position paper, draft 4).
+    ("18827630", "rozen2008", ["perforators", "imaging"],
+     "CT angiography before abdominal flap surgery against what the surgeon then found, blinded, in 42 patients: of 280 perforators over 1 mm across it mapped 279 accurately, with one false positive and one false negative."),
+    ("16980853", "yu2006", ["perforators", "imaging"],
+     "The handheld Doppler against surgery in 100 thigh flaps: its signal lay within 1 cm of the commonest perforator in 70–74%, and one of the two units gave a signal even where that perforator was absent."),
+    ("36348753", "mohammad2022", ["perforators", "vascular"],
+     "Perforators under 1 mm across watched by video-capillaroscopy as flaps were raised: 20 of 25 went into spasm or their pulse weakened; 7 recovered within five minutes unaided, and the other 13 within fifteen with papaverine and hot water."),
+    ("11149772", "dhar1999", ["perforators", "vascular", "animals"],
+     "The delay phenomenon in rabbits and dogs: when a flap is delayed, in dogs by tying a source artery, the reduced-calibre choke vessels that link its vascular territories dilate, in rabbit skin most between 48 and 72 hours, and were still dilated up to a year later; the authors judge the change permanent."),
+    ("2367570", "taylor1990", ["perforators", "anatomy"],
+     "The body's veins mapped by injection in cadavers: valved venous territories, matching the arterial ones, are linked by many valveless veins that let flow and pressure even out across the tissue."),
+    ("10199637", "koltzenburg1999", ["nerve"],
+     "After a nerve is injured on one side, changes appear in the uninjured structures of the other side, similar but smaller and briefer: circumstantial evidence favours signalling within the spinal cord and brainstem, perhaps through commissural interneurons and chemical signals."),
 ]
 
 # Existing entries that the simulation also leans on gain the models tag; konrad2023 joins foam rolling.

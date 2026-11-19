@@ -8,6 +8,7 @@ import vessel from '../data/sim/vessel.json';
 import type { GuideIndex, ReportCell, Trait } from '../sim/guide/data';
 import { envelopeChart } from '../sim/guide/envelope';
 import { switchChart, type Switch } from '../sim/guide/switch';
+import { calibrate, type Params } from '../sim/vessel';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const repo = 'https://github.com/ejhong/knots/blob/main';
@@ -108,6 +109,22 @@ const vsc = vessel.scenarios as Record<string, { summary: { events: { t: number;
 const pressed = (vsc.press_and_release.summary.events.find((e) => e.to === 'open')?.t ?? NaN) - 150;
 const afterPress = vsc.press_and_release.summary.flow_after_open ?? 0;
 const afterEase = vsc.stress_eases.summary.flow_after_open ?? 0;
+// Pressure around a vessel, from the same wall model: the tone a shut vessel needs to stay shut with 20 and 30 mmHg
+// outside it, and the outside pressure at which it would stay shut at resting tone.
+const vp = vessel.params.values as unknown as Params;
+const sw0 = calibrate(vp);
+const ring20 = calibrate(vp, 20);
+const ring30 = calibrate(vp, 30);
+const ringRest = (() => {
+  let lo = 0;
+  let hi = vp.P;
+  for (let i = 0; i < 40; i++) {
+    const mid = (lo + hi) / 2;
+    if (calibrate(vp, mid).Aopen <= sw0.urest) hi = mid;
+    else lo = mid;
+  }
+  return hi;
+})();
 const index = [
   { id: 'unknown', label: 'what no one knows' },
   { id: 'watch', label: 'watch them' },
@@ -440,6 +457,11 @@ const index = [
           <p class="q">Can a pressed vessel let go under the hand?</p>
           <p class="a">Not until it lifts.</p>
           <p>Pressure outside a shut vessel only helps keep it shut. After 40 s of pressure the vessel reopens {pressed.toFixed(1)} s after the pressure lifts, and flow returns from near nothing to {afterPress.toFixed(2)} of resting flow while drive stays raised ({afterEase.toFixed(2)} when stress eases instead).</p>
+        </article>
+        <article class="check">
+          <p class="q">Can a tight ring hold a vessel shut?</p>
+          <p class="a">It helps; at resting tone, only above about {Math.round(ringRest)} mmHg.</p>
+          <p set:html={`Pressure outside the wall counts against the pressure inside. Around a shut vessel, 20–30 mmHg, enough to slow the blood leaving a nerve (${cite('rydevik1981')}), lowers the tone it needs to stay shut from ${sw0.Aopen.toFixed(2)} of maximal to ${ring30.Aopen.toFixed(2)}–${ring20.Aopen.toFixed(2)}, with rest at ${sw0.urest.toFixed(2)}. To stay shut at rest takes ${Math.round(ringRest)} mmHg of the ${vp.P} inside: by then the ring, not the wall, is doing much of the holding, and nothing is known to supply it.`} />
         </article>
         <article class="check">
           <p class="q">Can calm quiet a sensitised nerve within a breath?</p>

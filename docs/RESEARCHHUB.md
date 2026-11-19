@@ -96,11 +96,14 @@ from inside. If so, studies that locate or release knots would need to recruit t
 At knots marked by their owners or by examiners (study 1), and at matched spots nearby, instruments might be compared,
 each blind to the marks: a pencil Doppler listening for a perforator and its flow; ultrasound looking for a bump, a
 vessel beneath and the layers' glide, with colour Doppler and elastography; and a thermal camera watching the skin
-rewarm after a mild cold (Weum et al. 2016).
+rewarm after a mild cold (Weum et al. 2016). Each might look twice: while the knots hold, and again once their owners
+have released them by their usual means.
 *What it might show.* Whether an instrument can find a knot without a skilled hand, which would free other studies from
-depending on who can feel one. If knots are perforators held shut, a pencil Doppler, cheap and quick, might find a
-perforator beneath each knot, faint or silent while it holds and sounding once it lets go; ultrasound might instead
-place a bump in muscle (trigger points, the motor switch) or show layers that do not glide (densification).
+depending on who can feel one. A Doppler and a thermal camera see a vessel only by the blood moving in it. If knots are
+perforators held shut, both would find little or nothing at a held knot: its sign would be a spot that is silent and slow to
+rewarm while the knot holds, and that sounds and warms once it lets go. Ultrasound might show what the bump is: fluid or
+swollen veins where the bundle passes the fascia, a firm place where the layers do not glide (densification), or a
+nodule in muscle (trigger points, the motor switch).
 *Likely needs:* a pencil Doppler · ultrasound with colour Doppler and elastography · a thermal camera · people whose
 knots have been marked
 
@@ -125,19 +128,25 @@ practitioners (study 1 might find them) · ethics review
 *Design:* Blinded mapping, with spatial statistics against chance
 Knots might be marked over a region of the body in two ways, or both (study 1): by two examiners who can feel knots in
 others, blind to each other, or by people who can isolate their own. A third person, blind to the marks, might map the
-perforators with a pencil Doppler, or with a thermal camera as the skin rewarms after a mild cold (Weum et al. 2016).
-The marks could then be set against the vessels at several distances, and against random and shifted maps.
-*What it might show.* Whether knots sit on perforators (as the perforator and nerve views expect), where a muscle's
-nerve enters (trigger points), or wherever stress is held (the other four); and, marked both ways, whether people's own
-marks and an examiner's agree. Perhaps the cheapest test of the perforator view: an afternoon's work.
+perforators with a pencil Doppler, or with a thermal camera as the skin rewarms after a mild cold (Weum et al. 2016),
+and map them again once the marked knots have been released, by their owners' usual means, with comfortable pressure and
+ordinary breathing: both instruments see a vessel only by its flow, so a perforator held shut would be faint or missing
+on the first map. Knots that do not let go would be left, and not counted. The marks could then be set against the
+vessels of each map at several distances, and against random and shifted maps.
+*What it might show.* Whether knots sit at perforators, and in what state. On the perforator view a held knot lies where
+the first map is empty and the second shows a vessel; on the nerve view its perforator sounds throughout. Or knots may
+lie where a muscle's nerve enters (trigger points), or wherever stress is held (the other four). Marked both ways, it
+would also show whether people's own marks and an examiner's agree. Perhaps the cheapest test of the perforator view: an
+afternoon's work.
 *Likely needs:* examiners who can feel knots in others, or people who can isolate their own · a pencil Doppler or
 thermal camera · a statistician
 
 **5. Whether a knot is a stable thing** (knots)
 *Design:* Longitudinal: blinded mapping repeated over weeks and months
-The same people's knots might be mapped again over weeks and months, against their own map of perforators: by two
-examiners who can feel knots in others, blind to each other and to earlier maps, or by the people themselves, if they
-can isolate their own (study 1), blind to their earlier marks.
+The same people's knots might be mapped again over weeks and months, against their own map of perforators, built up
+over the visits, since a map made by flow misses a vessel held shut (study 4): by two examiners who can feel knots in
+others, blind to each other and to earlier maps, or by the people themselves, if they can isolate their own (study 1),
+blind to their earlier marks.
 *What it might show.* Whether the same knots are found again at all, which may depend on the skill of whoever marks
 them, and whether a person's knots return to fixed places (as the perforator and nerve views expect) or arise anywhere
 and drift. Much else may rest on the answer.
@@ -213,12 +222,18 @@ These need nothing from the others and could begin now, alongside the first two.
 *Design:* Secondary analysis of existing recordings
 Laboratories that study trigger points hold ultrasound, colour Doppler and elastography of the spots they examine,
 recorded for other questions (Sikdar et al. 2009). Read again with the perforators in mind, these might say whether one
-runs beneath the spot, in which layer any bump lies, and whether the layers glide over it.
+runs beneath the spot, in which layer any bump lies, and whether the layers glide over it. Surgeons hold another
+record. Before a flap of skin is moved, its perforators are mapped by CT angiography or Doppler, which show a vessel
+only by the blood in it, and at the operation the surgeon sees them directly.
 *What it might show.* A first look, for the cost of the analysis: a bump in muscle would point toward a trigger point or
 the motor switch, a perforator beneath toward perforators or nerves, and layers that do not glide toward densification.
 But trigger points are found by tenderness in a taut band, and knots seldom hurt unless pressed hard, so the recordings
-may show other things than knots; latent trigger points, painless until pressed, may be the nearest.
-*Likely needs:* access to existing recordings · someone who reads musculoskeletal ultrasound
+may show other things than knots; latent trigger points, painless until pressed, may be the nearest. The surgeons'
+records might say how often a perforator found at operation had been missed by the map before it: a ceiling on how many
+large perforators were shut when scanned yet found at operation. In the lower abdomen it is low: in one blinded series
+the scan missed one of 280 (Rozen et al. 2008). Other regions might differ: knots are said to be densest around the hips and shoulders.
+*Likely needs:* access to existing recordings · someone who reads musculoskeletal ultrasound · a plastic surgery unit's
+maps and operative records
 
 **12. A small artery held shut for hours** (knots)
 *Design:* Ex vivo physiology: pressure myography of isolated small arteries, with their myosin phosphorylation
@@ -310,6 +325,9 @@ line at https://findahelpline.com.
 - Lindahl JR, Fisher NE, Cooper DJ et al. The varieties of contemplative experience: a mixed-methods study of
   meditation-related challenges in Western Buddhists. PLoS One 12:e0176239 (2017).
   https://doi.org/10.1371/journal.pone.0176239
+- Rozen WM, Ashton MW, Stella DL et al. The accuracy of computed tomographic angiography for mapping the perforators
+  of the deep inferior epigastric artery: a blinded, prospective cohort study. Plast Reconstr Surg 122:1003–9 (2008).
+  https://doi.org/10.1097/PRS.0b013e3181845994
 - Sikdar S, Shah JP, Gebreab T et al. Novel applications of ultrasound technology to visualize and characterize
   myofascial trigger points and surrounding soft tissue. Arch Phys Med Rehabil 90:1829–38 (2009).
   https://doi.org/10.1016/j.apmr.2009.04.015

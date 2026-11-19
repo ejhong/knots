@@ -268,8 +268,9 @@ Cheapest first. All descriptive: they observe what already happens, at the usual
    beneath it; does the bump change when it lets go?
 3. *Surface EMG that picks out single motor units*, with a button pressed at each felt release: does a unit fall silent at
    the moment it goes (T7), or does nothing in the muscle change (T1, T6)?
-4. *A Doppler map against blinded marks*: do knots sit on perforators more than chance (T1, T5), on the innervation zone
-   (T3), or anywhere (T6, T7)?
+4. *A Doppler or thermal map against blinded marks, made before the knots are released and again after*: a map by flow
+   cannot see a vessel held shut, so T1 expects a held knot where the first map is empty and a perforator there in the
+   second; T5 expects its perforator to sound throughout; T3 expects knots on the innervation zone; T6 and T7 anywhere.
 5. *Laser speckle at a release*, with a pressed sham (a press flushes every place it presses): does the skin over a knot
    flood as it goes (T1), or not (T3, T6, T7)?
 
