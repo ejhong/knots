@@ -202,8 +202,9 @@ paper, Section 5). This is why the studies here ask no one to press, breathe or 
 usually do (Care, below). Studies of runaway release itself are not part of this call: they wait on fuller accounts of
 it.
 
-Anyone struggling with it can find support from Cheetah House (https://www.cheetahhouse.org); anyone thinking about
-suicide should reach out now: in the US, call or text 988; elsewhere, find a line at https://findahelpline.com.
+Anyone struggling with it should seek medical advice; Cheetah House (https://www.cheetahhouse.org), which supports
+meditators in distress, is one further resource. Anyone thinking about suicide should reach out now: in the US, call or
+text 988; elsewhere, find a line at https://findahelpline.com.
 
 ### Care
 

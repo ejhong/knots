@@ -17,8 +17,8 @@ the author's reports, is retired: `sim/archive/`.)
   and brightness. The figure itself is sacred art: light in an ink-stone card. See `docs/DESIGN.md`.
 - **Anatomical honesty.** Counts and clusters come from the literature (Taylor & Palmer 1987; Saint-Cyr 2009). Anything representative
   is labelled as such. The atlas's simulation illustrates a hypothesis; it is not a measurement.
-- **Describe, never prescribe.** Nothing is a protocol. Keep the moderation guidance (Varieties of Contemplative Experience, Cheetah
-  House) and keep the narrative general; check with the author before adding anything about technique or intensity.
+- **Describe, never prescribe.** Nothing is a protocol. Keep the moderation guidance (seek medical advice first; the Varieties of Contemplative Experience;
+  Cheetah House as one further resource; the crisis lines) and keep the narrative general; check with the author before adding anything about technique or intensity.
 - **Words.** Say *fascia* (not “sheet”) and *knots* or *perforators* (not “staples”). State things directly: the essays are credited in
   About and listed in the Library (sources run newest first), not narrated (“the essay says”).
 - **Fair to every theory.** Each gets its strongest form, its best evidence and its sharpest test (`src/data/hypotheses.ts`); the

@@ -385,7 +385,7 @@ const EXTRA: Reference[] = [
     url: 'https://www.cheetahhouse.org',
     kind: 'web',
     tags: ['safety', 'contemplative'],
-    note: 'If a process is destabilising you, start here — and see a physician.',
+    note: 'One resource if a process is destabilising you. Seek medical advice as well.',
   },
   {
     id: 'unclench',
