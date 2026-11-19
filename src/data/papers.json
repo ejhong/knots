@@ -1412,6 +1412,21 @@
   "note": "A deep inspiratory gasp cuts fingertip skin blood flow by 59–71%, graded with the depth of the breath."
  },
  {
+  "id": "leknes2011",
+  "authors": "Leknes S, Lee M, Berna C et al.",
+  "year": 2011,
+  "title": "Relief as a reward: hedonic and neural responses to safety from pain",
+  "venue": "PLoS One 6:e17870",
+  "url": "https://doi.org/10.1371/journal.pone.0017870",
+  "pmid": "21490964",
+  "kind": "paper",
+  "tags": [
+   "mind",
+   "nerve"
+  ],
+  "note": "Relief from the threat of pain is a reward: in 18 healthy volunteers its pleasantness went with their dread and pessimism, and with activity in the nucleus accumbens."
+ },
+ {
   "id": "lindahl2017",
   "authors": "Lindahl JR, Fisher NE, Cooper DJ et al.",
   "year": 2017,

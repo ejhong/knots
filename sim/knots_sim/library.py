@@ -348,6 +348,8 @@ NEW = [
      "The arm's lymph vessels traced by injection in fourteen arms from ten cadavers: the superficial vessels run in the subcutaneous fat close to the main subcutaneous veins, and no communication with the deep system was found."),
     ("18176203", "suami2008", ["anatomy", "animals"],
      "Perforating lymph vessels in the dog's loin and buttock: they rise from the skin, pass through the abdominal wall always in the company of blood vessels, especially perforating veins, and drain to nodes beside the aorta, as pathways seen on scans in people would suggest."),
+    ("21490964", "leknes2011", ["mind", "nerve"],
+     "Relief from the threat of pain is a reward: in 18 healthy volunteers its pleasantness went with their dread and pessimism, and with activity in the nucleus accumbens."),
 ]
 
 # Existing entries that the simulation also leans on gain the models tag; konrad2023 joins foam rolling.

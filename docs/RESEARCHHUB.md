@@ -17,11 +17,21 @@ published sources, never how it is set off, and always with where to find help.
 Bodyworkers, people who foam-roll and contemplative practitioners all describe knots: discrete places in the body that
 hold, sometimes for years, and let go within seconds, under a hand, with the breath or to attention, often with a tingle
 over the spot. A knot is felt as a bump, from very small to about the size of a penny; it seldom hurts unless pressed
-hard, as under a foam roller, so tenderness does not define it. The breath that releases knots is described as a trained
-one: a subtle weave of small in- and out-breaths, perhaps beginning with a small in-breath, builds the release, which is
-probably carried out on an out-breath that can be fairly strong, as an athlete's is. Under the pain of a foam roller the
-out-breaths are often strong and many, as in the breathing taught for childbirth. Such breaths may help to find knots as
-well. They are among the commonest things people report in their bodies and among the least explained. As far as is known,
+hard, as under a foam roller, so tenderness does not define it. Its release does. A knot lets go within seconds, most
+familiarly under a roller, and the person feels it go. A rush of feeling is often reported to follow: relief or
+well-being, at times tears or euphoria, and most of all when a whole cluster lets go together. These are the knots meant here; the feeling is given as
+a mark to know them by, not as something to seek.
+
+A knot does not always stand out. An area with many knots seems to be less flexible, and is felt more as a dull block.
+A trained breath may be needed for the person to feel its knots as distinct bumps, and to release them; another's hand
+might then feel them too. As the knots let go, the block seems to ease. So an examiner's hand on a body at rest might
+find no bumps where there are many knots. The breath that releases knots is described as a trained one: a subtle weave
+of small in- and out-breaths, perhaps
+beginning with a small in-breath, builds the release, which is probably carried out on an out-breath that can be fairly
+strong, as an athlete's is. Under the pain of a foam roller the out-breaths are often strong and many, as in the
+breathing taught for childbirth.
+
+Knots are among the commonest things people report in their bodies and among the least explained. As far as is known,
 nothing has been recorded at the moment one lets go.
 
 A position paper, *The perforator hypothesis: knots as small arteries held shut where they pierce the fascia* (Zenodo,
@@ -74,24 +84,30 @@ here.
 Feeling a knot may itself be a skill, and a knot that its owner feels may or may not be one that others can feel.
 Informal reports suggest that some who foam-roll can isolate a single knot, felt as a distinct bump, and release it
 readily, perhaps through a trained breath that may also help to find it, while others never feel single knots at all,
-only broad, dull masses. If so, studies that locate or release knots cannot assume that anyone can find one, in
-themselves or in others. So these two come first: who can feel a knot, and whether an instrument can find one.
+only broad, dull masses. The bumps and the dull masses may be one thing: an area with many knots is felt more as a dull
+block, and a trained breath may be needed to feel its knots as distinct bumps and to release them. If so, studies that locate or release knots
+cannot assume that anyone can find one, in themselves or in others, or that a bump is there for a hand to find in a body
+at rest. So these two come first: who can feel a knot, and whether an instrument can find one.
 
 **1. Who can feel a knot: its owner, others, or both** (knots)
 *Design:* Survey and phenomenological interviews, then a blinded reliability study (test–retest and inter-rater)
 Two questions, which may have different answers: can people feel their own knots, and can others feel them too? A knot
 might be felt only by its owner, or by a hand from outside as well. Many who foam-roll or work on their own knots might
 be surveyed and interviewed: whether they can isolate a single knot, felt as a distinct bump, or feel only broad, dull
-masses; how firmly they must press to find one; whether they can release them; how they learned; and what part the
-breath plays, in finding knots as well as in releasing them. Bodyworkers might be asked the same about the knots they
-feel in others. Then, in the same people, each might mark the knots they feel, blind to the other marks: the person
-their own, twice, an hour apart, and two examiners by touch. Which knots does each find, and do they agree? And as a
-person lets a knot go under an examiner's resting finger, does the examiner feel the bump go too?
+masses; whether a bump is there when they first press, or stands out only as they attend to it and breathe; how firmly
+they must press to find one; whether they can release them; what a release feels like and what follows it, from nothing
+to relief, well-being, tears or euphoria, how often, and whether many knots ever let go at once; how they learned; and
+what part the breath plays, in finding knots as well as in releasing them. Bodyworkers might be asked the same about the
+knots they feel in others. Then, in the same people, each might mark the knots they feel, blind to the other marks: the
+person their own, twice, an hour apart, and two examiners by touch. Which knots does each find, and do they agree? And
+as a person lets a knot go under an examiner's resting finger, does the examiner feel the bump go too?
 *What it might show.* Whether feeling knots is itself a skill, perhaps tied to the breath as releasing them seems to be,
 held by some and not by others; and whether the knots a person feels in themselves can be felt by others too, or only
 from inside. Someone pressing their own knot feels it twice over, with the finger and in the place pressed, and cannot
-easily tell the two apart; an examiner's finger has only the first. If feeling knots is a skill, studies that locate or
-release knots would need to recruit those who have the skill they rely on.
+easily tell the two apart; an examiner's finger has only the first. How common a felt release is among people who roll,
+and the feeling that can follow it, is not known; the survey would give a first estimate, and would find the people who
+have the knots meant here. If feeling knots is a skill, studies that locate or release knots would need to recruit those who have the
+skill they rely on; and if bumps stand out only with a trained breath, an examiner might find none in a body at rest.
 *Likely needs:* a survey and interview researcher · many people who foam-roll, and bodyworkers · simple blind tests
 
 **2. How best to detect a knot** (knots)
@@ -121,20 +137,29 @@ attention) might release them in a laboratory while instruments watch the tissue
 thermal camera, ultrasound with colour Doppler and the layers' sliding, surface EMG resolved to single motor units. The
 breath might be recorded too, with its carbon dioxide, since a run of strong or quick out-breaths lowers it and can
 cause tingling by itself. A button could mark each felt release, with a spot pressed alike, without a knot, as the sham.
+After each, the person might say what followed, from nothing to relief, well-being or tears, and how many knots seemed
+to go; and the range of a stretch that the area limits might be measured before and after, on that side and on the
+other. No one would be taught a breath, or asked to press, breathe or work harder or longer, or to release more knots,
+than they usually do.
 *What it might show.* Each of the seven proposed mechanisms would, on its own account, leave a different trace at
 release, from a flood of flow to the skin to nothing in the tissue at all, only changes that follow the breath; a
-careful recording might begin to sort releases by kind.
+careful recording might begin to sort releases by kind. It might also show whether the feeling that follows a release
+comes without a roller's pain and its hard, repeated out-breaths as well, since relief, even when an expected pain
+simply does not come, is itself felt as pleasant (Leknes et al. 2011); whether it grows with how much lets go; and
+whether the dull block eases as an area's knots let go, on the worked side alone or on both.
 *Likely needs:* a laboratory with ultrasound and EMG or skin-flow imaging, and a capnograph · a few skilled
 practitioners (study 1 might find them) · ethics review
 
 **4. Where knots sit** (knots)
 *Design:* Blinded mapping, with spatial statistics against chance
 Knots might be marked over a region of the body in two ways, or both (study 1): by two examiners who can feel knots in
-others, blind to each other, or by people who can isolate their own. A third person, blind to the marks, might map the
+others, blind to each other, or by people who can isolate their own, with the breath they use to feel them, if they use
+one. A third person, blind to the marks, might map the
 perforators with a pencil Doppler, or with a thermal camera as the skin rewarms after a mild cold (Weum et al. 2016),
-and map them again once the marked knots have been released, by their owners' usual means, with comfortable pressure and
-ordinary breathing: both instruments see a vessel only by its flow, so a perforator held shut would be faint or missing
-on the first map. Knots that do not let go would be left, and not counted. The marks could then be set against the
+and map them again once the marked knots have been released by their owners' usual means, with comfortable pressure.
+Those who use a breath to release their knots would use it as they already do; no one would be taught a breath, or
+asked to press, breathe or work harder or longer than usual. Both instruments see a vessel only by its flow, so a
+perforator held shut would be faint or missing on the first map. Knots that do not let go would be left, and not counted. The marks could then be set against the
 vessels of each map at several distances, and against random and shifted maps.
 *What it might show.* Whether knots sit at perforators, and in what state. On the perforator view a held knot lies where
 the first map is empty and the second shows a vessel; on the nerve view its perforator sounds throughout. Or knots may
@@ -307,8 +332,10 @@ frequent one-liners are ideal ("first three participants recorded", "switched fr
 
 ### Care
 
-Any study with people needs ethics review, ordinary breathing, comfortable pressure and a plan for referral; nothing here
-is a practice or a protocol. No one should be asked to begin or seek runaway release: studies of it observe people
+Any study with people needs ethics review, comfortable pressure and a plan for referral. Breathing should be ordinary
+or, for people who already use a breath to release their knots, that breath as they already use it; no one should be
+taught a breath, or asked to press, breathe or work harder or longer, or to release more knots, than they usually do.
+Nothing here is a practice or a protocol. No one should be asked to begin or seek runaway release: studies of it observe people
 already in it, put their care first, and need clinicians who know meditation-related difficulty. If you are struggling
 with it yourself, Cheetah House (https://www.cheetahhouse.org) supports meditators in distress, and anything physical
 calls for a physician. If you are thinking about suicide, reach out now: in the US, call or text 988; elsewhere, find a
@@ -325,6 +352,8 @@ line at https://findahelpline.com.
 - Johnson ME. Principles of Vasocomputation: A Unification of Buddhist Phenomenology, Active Inference, and Physical
   Reflex (Part I). opentheory.net (2023).
   https://opentheory.net/2023/07/principles-of-vasocomputation-a-unification-of-buddhist-phenomenology-active-inference-and-physical-reflex-part-i/
+- Leknes S, Lee M, Berna C et al. Relief as a reward: hedonic and neural responses to safety from pain. PLoS One
+  6:e17870 (2011). https://doi.org/10.1371/journal.pone.0017870
 - Lindahl JR, Fisher NE, Cooper DJ et al. The varieties of contemplative experience: a mixed-methods study of
   meditation-related challenges in Western Buddhists. PLoS One 12:e0176239 (2017).
   https://doi.org/10.1371/journal.pone.0176239

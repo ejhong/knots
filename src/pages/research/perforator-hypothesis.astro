@@ -92,7 +92,7 @@ const OWN: Record<string, string> = {
 // ---------- The text, in reading order ----------
 
 const abstract = `People who use a foam roller often find them: small bumps in the soft tissue, painless unless pressed hard,
-that persist for years yet can let go within seconds, sometimes with a tingle across a patch of skin. No mechanism for them is established, and no
+that persist for years yet can let go within seconds, sometimes with a tingle across a patch of skin and often with a rush of feeling. No mechanism for them is established, and no
 release has been recorded as it happens. We propose one. A knot is a cutaneous perforator, a small artery travelling with
 its veins and a nerve through an opening in the fascia, held shut by the smooth muscle of its own wall. Most of its parts rest on
 measured physiology. A toned small artery can snap shut and stay shut until its tone falls well below the level that shut
@@ -104,7 +104,7 @@ the bundle's veins are pinched. A knot, then, is a memory with an anatomy: the h
 vasocomputation, placed in one class of vessel, written by the sympathetic drive, kept by the wall rather than by the
 latch of his account, and read by the perforator's own nerve. We argue that it is now the strongest account in a specific sense: it
 explains more of what is reported, with less that is new, than six alternatives in their strongest forms. We state what it
-does not explain, weigh the claim that acupuncture points sit on perforators, describe runaway release, a little-known and
+does not explain, which includes the feeling a release can bring, weigh the claim that acupuncture points sit on perforators, describe runaway release, a little-known and
 dangerous process described in two reports after forceful efforts to clear knots, with the slower changes in the fascia that come with it, and
 give the measurements that would refute it.`;
 
@@ -114,6 +114,8 @@ const intro1 = [
   of thousands to a hundred thousand, at up to dozens to the square inch, too many to mark one by one. By the accounts we have, they are densest around the hips
   and shoulders, and more numerous with every decade. Massage therapists and physiotherapists call them knots or trigger points. Like a latent trigger point,
   a knot seldom hurts unless pressed, and then only hard; but it is found as a bump rather than by its tenderness.
+  What marks out the knots meant here is their release: one lets go within seconds, the person feels it go, and a rush of
+  feeling often follows (Box 1).
   Contemplative traditions speak of knots in the body's channels. Stretched, it gives not the sharp pain of a muscle at the end of its range but a dull block, as
   though layers had stopped sliding past each other.`,
   `Those who work on knots, the author among them, describe a consistent set of features (Box 1). These are impressions
@@ -126,7 +128,9 @@ const intro1 = [
 const box1 = [
   `They are felt as bumps, from very small to about the size of a penny. They seldom hurt unless pressed hard; under a
   roller they can hurt sharply. As a knot lets go, the bump seems to go with it; by one account it is hard to tell
-  whether the pressing finger feels the bump, or the pressed place itself.`,
+  whether the pressing finger feels the bump, or the pressed place itself. A bump does not always stand out: an area
+  with many knots is felt more as a dull block (below), and a trained breath may be needed for the person to feel its
+  knots as distinct bumps, and to release them; another's hand can perhaps then feel them too.`,
   `They persist until released, for years if left alone, yet any of them can let go quickly. Some are more stubborn than
   others; freeing those takes more skill, above all with the breath, and the skill takes training. The toughest may take a
   skilled practitioner a whole session, never months.`,
@@ -140,10 +144,14 @@ const box1 = [
   `Warmth helps: a hot shower softens many at once. Some find that a drink of water eases releases within about ten
   minutes, though on the account below it should not (Section 3.5).`,
   `A release can come with a small pop, or a tingle across a patch of skin.`,
-  `They limit movement: a stretch meets a dull block at the knot, unlike the sharper pull of a tight muscle, and ordinary
-  stretching does little to free it.`,
+  `A release is felt, and a rush of feeling often follows it: relief or well-being, at times tears or euphoria. The
+  feeling is strongest when a whole cluster of knots lets go together. This felt release is what marks out the knots
+  meant here; the feeling is given as a mark to know them by, not as something to seek (Section 9).`,
+  `They limit movement: an area with many knots seems less flexible, and a stretch meets a dull block there, unlike the
+  sharper pull of a tight muscle; ordinary stretching does little to free it. The block seems to ease as the area's knots
+  let go.`,
   `They come in families. When one lets go, others nearby may go with it, or another may appear close by; a large one can
-  free smaller ones around it, not the reverse.`,
+  free smaller ones around it, not the reverse. A whole cluster can let go at once.`,
   `Working the knots on one side can ease the other side as well.`,
   `They gather where stress is held, and accumulate with age.`,
   `Some come back to roughly the same place.`,
@@ -159,7 +167,9 @@ spot for tens of seconds ${c('penney2021')} and expect its pain to ease over rep
 ${c('davies2013')}, where Box 1 describes a let-go within seconds. The trainers' guide sends pain, numbness or tingling
 that persists to a physician or physical therapist ${c('penney2021')}. One teacher's method, contract-relax, shares with
 the breath of Box 1 a letting go on an out-breath, after a breath held while the muscles around a ball contract
-${c('jmiller2026')}; Box 1 describes no held breath.`;
+${c('jmiller2026')}; Box 1 describes no held breath. The teachers also know that rolling can move people: they see
+tears in rolling classes, treat them as normal, keep rolling optional, and send anyone who cries every time to a counsellor
+${c('halvorson2016')}.`;
 
 const intro2 = `A knot that lets go within a breath cannot be a scar or an adhesion: what the body has built, it cannot
 unbuild in a breath. It must be a state the body is holding, as the first essay on these knots put it
@@ -410,6 +420,16 @@ from within, what goes at a release may be a sensation, carried by the bundle's 
 there would be nothing for a sleeve or a pocket to explain. An examiner's finger resting on a knot as it lets go, or
 ultrasound, would tell (Section 7).`;
 
+const evoked = `Nor need the bump be there all the time (Box 1). An area with many knots is felt more as a dull block, and a
+trained breath may be needed for the person to feel its knots as distinct bumps, and to release them; another's hand can
+perhaps then feel them too. The hypothesis has a route from the breath to a release (Section 3.4), and none from the breath
+to a bump. A sleeve that stiffened slowly would not come and go with a breath, and a vessel already shut does not change
+as a bump appears; whether a pocket of dammed blood would swell with a breath is not known. If only the person feels the
+bumps, that is what the perception account expects, in which attention is part of what makes a knot felt (Table 2). If
+another's hand feels them too, the breath may have made something firm, or made something already there easier to feel,
+as muscles braced by a strong out-breath might. Either way, what there is to explain in a body at rest may be the block
+and not a lump, and knots may have to be marked while their owner breathes (Section 7).`;
+
 const trees = `Perforators form trees: a parent vessel feeds children around it. A child cannot flow while its parent is
 shut, so a shut parent holds its children shut, and when the parent opens, those not held by their own walls open with it.
 A child that opens does nothing for a parent that stays shut. The asymmetry is hydraulic: pressure comes from the source.
@@ -418,7 +438,9 @@ fading with a length constant of about two millimetres, and those started on dau
 ${c('segal1989')}; over the centimetres between one perforator and the next, they would have faded. Release should then run
 in families: freeing a large knot frees small ones around it, and freeing a small one does not free the large one.
 Trigger-point practice describes a similar order: dry needling a key trigger point raised the pressure-pain threshold of
-satellite points in its zone of referred pain ${c('hsieh2007')}, though a spinal mechanism has been proposed for it.`;
+satellite points in its zone of referred pain ${c('hsieh2007')}, though a spinal mechanism has been proposed for it.
+A whole cluster is also said to let go at once (Box 1). On this account that would be a parent opening, or the drive
+falling far enough over a region to take many vessels below their bands together.`;
 
 const age = `Small mesenteric arteries from organ donors over sixty-five contract more strongly to adrenergic stimulation
 ${c('elassar2022')}, and resting sympathetic activity to muscle rises with age ${c('ng1993')}; older skin reaches a lower
@@ -447,11 +469,12 @@ const T1: [string, string, string, string][] = [
   ['A hot shower frees many', "Local warming lowers the tone of the skin's vessels", c('minson2001'), 'Established'],
   ['Water eases releases (some)', "Drinking narrows the skin's vessels; it could help only someone short of water, or whose pressure it raises", c('scott2001', 'lu2012', 'charkoudian2003b'), 'Against, unless short of water'],
   ['A tingle over a patch', 'A nerve that went without blood fires when it returns; reactive hyperaemia', c('ochoa1980', 'lorenzo2007'), 'Established'],
+  ['A release is felt, often with a rush of feeling; most when a cluster goes together', 'None for the feeling; many going together would be a parent opening, or the drive falling over a region', '', 'Not explained; under a roller, relief may be a plainer source of the feeling (Section 4)'],
   ['A dull block to stretch', 'A dry sleeve jams in the gliding layer', c('guimberteau2005', 'cowman2015', 'coussot2002'), 'Hypothesis'],
   ['Families; a large one frees small ones', 'Trees: a shut parent holds its children shut', c('taylor1987'), 'Hydraulics; in knots, untested'],
   ['More with age', 'Stronger adrenergic contraction; less capacity to dilate', c('elassar2022', 'holowatz2010'), 'Mixed'],
   ['One side eases the other', 'The two sides share the drive, and working one side might lower it for both; no route to the matching place on the other', c('konrad2023', 'aboodarda2015', 'koltzenburg1999'), 'In part, untested; rolling one limb adds range of motion to the other, probably through perception'],
-  ['Some find them with the breath', 'No direct route', '', 'Not explained'],
+  ['A trained breath may be needed to feel a dull area as distinct bumps', 'No direct route', '', 'Not explained; if only their owner feels the bumps, what the perception account expects'],
   ['Deeper ones go to attention alone', 'No direct route', '', 'Not explained'],
 ];
 
@@ -496,7 +519,9 @@ const altAfter = [
   `Second, the perforator hypothesis has no direct route for knots that let go to attention alone, without touch. The latch
   or the motor switch would; so would a perforator whose tone is held in its band by a held prediction, the latch's command
   acting on the perforator's wall. That would join the two accounts: a held prediction keeps up the drive, the
-  wall keeps the vessel shut, and the knot lets go when attention lets the prediction update. Working one side is
+  wall keeps the vessel shut, and the knot lets go when attention lets the prediction update. Nor has it a route for
+  bumps that, as reported, may be felt only with a trained breath (Section 3.7); if only their owner feels them,
+  perception would supply one. Working one side is
   said to ease the other (Box 1). The hypothesis reaches the other side only through the drive, which the two sides share:
   working one side might lower it everywhere (Section 5). It has no route to the matching place on the other side, if that
   is what eases. Rolling one limb adds range of motion to the other, most likely, on one review's reading, through a
@@ -509,6 +534,14 @@ const altAfter = [
   recording should classify each release rather than crown one theory.`,
   `Fourth, the bump itself, the feature by which knots are found, is where the trigger-point account is strongest, with
   stiff nodules seen on ultrasound ${c('sikdar2009')}, and where this one is weakest (Section 3.7).`,
+  `The feeling a release can bring (Box 1) is explained by no account that places the knot in the tissue, this one
+  included; the perception account, in which a release is a change in how the body is read, comes nearest. Relief is
+  itself a reward: in healthy volunteers the pleasantness of relief from the threat of pain went with activity in the
+  nucleus accumbens ${c('leknes2011')}, so some of what follows a roller's pain may be relief. The teachers of foam
+  rolling see tears in their classes (Section 1.1). On this account many vessels opening together would mark a wide fall
+  in the sympathetic drive, and whether that is felt as well-being is not known. What would count for a source in the
+  tissue is the feeling following a release made without a roller's pain or hard, repeated out-breaths, and growing
+  with how much lets go.`,
   `A variant of the hypothesis itself was weighed and set aside: the same idea with a lymph vessel in place of the
   artery. The skin's lymph collectors, a fraction of a millimetre across, run in the fat above the fascia
   ${c('tourani2013')}. They are muscular, valved vessels that contract to pass lymph on, in the arm about once a minute and at
@@ -641,8 +674,11 @@ thermal camera sees only the warmth that blood brings: after a mild cold challen
 that Doppler hears and CT angiography shows ${c('weum2016b')}. A perforator held shut would be faint or missing on both.
 A map made once therefore cannot show knots on perforators: on this account the knots lie where such a map is empty. The
 map must be made twice, before the marked knots are released and again after, and the prediction is that perforators
-appear where the knots were. The knots would be released by their owners' usual means, with comfortable pressure and
-ordinary breathing (Section 9); those that do not let go would be left, and not counted. An ordinary pulse traced to a
+appear where the knots were. The knots would be marked by their owners or by examiners, with the breath their owners
+use to feel them if one is needed (Section 3.7), and released by their owners' usual means, with comfortable pressure.
+Those who use a breath to release their knots would use it as they already do; no one would be taught a breath, or asked
+to press, breathe or work harder or longer than usual (Section 9). Knots that do not let go would be left, and not
+counted. An ordinary pulse traced to a
 knot's own vessel while it holds would count against that vessel's being shut, and for the nerve, which shares its
 opening (Section 4). Once it is known who can find knots (Box 2), the test needs an afternoon, a pencil Doppler or a
 thermal camera, two markers blind to the map, and a statistician. Both instruments are loose. In 100 thigh flaps the
@@ -698,8 +734,11 @@ const limits = [
   except someone short of water or whose blood pressure it raises (Section 3.5).`,
   `The evidence on age points both ways. The breath's effects are measured in the skin of the fingers and toes and in the
   nerves to muscle, not at the trunk's perforators, and which of its routes matters is unknown.`,
-  `Releases to attention alone are not explained, nor how a breath could help to find knots; and working one side could
-  ease the other only through the drive they share, not at the matching place (Section 4).`,
+  `Releases to attention alone are not explained, nor why a trained breath might be needed to feel an area's knots as
+  distinct bumps (Section 3.7), nor the feeling a release can bring (Section 4); and working one side could ease the
+  other only through the drive they share, not at the matching place (Section 4).`,
+  `The knots meant here are known by a release that is felt (Box 1). That mark rests on what people report, is open to
+  expectation, and how common it is among people who roll is not known.`,
   `The breath reported is a trained skill, hard to describe and harder to standardise, and which part of it does the work is
   unknown.`,
   `Runaway release and the slower changes in the fascia (Section 5) rest on two informal reports, the hardest to check, and are
@@ -719,7 +758,8 @@ const safety = [
   their effects on people's lives, and with the many ways practitioners, teachers, doctors and therapists read and managed
   them ${c('cooper2021')}. Attention to the body is not always benign: past some point, its effects can turn negative
   ${c('britton2019')}.`,
-  `Runaway release (Section 5) is a particular danger for anyone who works forcefully at clearing knots, and no one should
+  `The feeling a release can bring, strongest when many knots go together (Box 1), is given here as a mark by which these
+  knots are known, not as something to seek. Runaway release (Section 5) is a particular danger for anyone who works forcefully at clearing knots, and no one should
   face it alone. If it begins, easing off the work that set it off, even if the process itself goes on, the grounding, calming, sleep and exercise that
   practitioners in difficulty have found helpful ${c('lindahl2017')}, and the support of people who know these experiences
   all belong to getting through it. Any sign of physical illness calls for a physician at once, and drinking large amounts
@@ -737,8 +777,10 @@ const safety = [
   `Nothing in this paper is a practice, a protocol or a recommendation, and nothing in it is a reason to seek these
   experiences: the hypothesis concerns what happens, not what anyone should do. Anyone in difficulty can find support from
   Cheetah House ${c('cheetah')}, whose team includes the researchers of the Varieties of Contemplative Experience project
-  ${c('britton')}, and should also see a physician. Any study with people belongs under ethics review, with ordinary
-  breathing, comfortable pressure and a plan for referral.`,
+  ${c('britton')}, and should also see a physician. Any study with people belongs under ethics review, with comfortable
+  pressure and a plan for referral. Breathing should be ordinary or, for people who already use a breath to release
+  their knots, that breath as they already use it; no one should be taught a breath, or asked to press, breathe or work
+  harder or longer, or to release more knots, than they usually do.`,
 ];
 
 const conclusion = `Knots are among the commonest things people report finding in their bodies, and among the least
@@ -755,7 +797,10 @@ above it, it should be set aside. If both are found, the body keeps some of its 
 openings in its fascia: a register of held states that a hand can find, the breath can reach and an instrument can read.`;
 
 const open = [
-  `Who can feel a knot: its owner, others, or both; and can an instrument find one?`,
+  `Who can feel a knot: its owner, others, or both; is a bump there in a body at rest, or only with a trained breath;
+  and can an instrument find one?`,
+  `How common is a felt release among people who roll, and the feeling that can follow it? Does the feeling come without
+  a roller's pain and hard out-breaths, and grow with how much lets go?`,
   `Is a perforator found where a knot has let go, silent while the knot held, and does each person's set of knots recur at
   the same places?`,
   `What is the bump: a stiffened sleeve, a pocket of dammed blood, or something in the muscle beneath?`,
@@ -778,7 +823,7 @@ the practitioner observations that motivate it. The text was drafted by Claude O
 (Anthropic) from those essays, the site, the project's models and the cited literature. A draft was then refereed by a
 second model, Claude Fable 5.1 (Anthropic), and the changes of draft 4 by Claude Fable 5.2, which checked each claim
 against its source's record, abstract or excerpt; their corrections were checked again against the sources before they
-were made. The additions of 18 November 2026 (Versions) were AI-assisted in the same way. Every reference was taken from its
+were made. The additions of 18 and 19 November 2026 (Versions) were AI-assisted in the same way. Every reference was taken from its
 own record, PubMed's for papers indexed there and the publisher's or Crossref's for the rest, rather than from a model's
 memory, and every number from the cited sources or the project's data. The author is responsible for the content.`;
 
@@ -801,11 +846,11 @@ const index = [
   current="research"
   glyph="結"
   index={index}
-  citation={{ authors: ['Jhong, Eugene'], date: '2026/11/18', doi, pdf: '/research/perforator-hypothesis.pdf' }}
+  citation={{ authors: ['Jhong, Eugene'], date: '2026/11/19', doi, pdf: '/research/perforator-hypothesis.pdf' }}
   description="A position paper: knots as cutaneous perforators held shut by their own walls. The case from established physiology, the alternatives in their strongest forms, runaway release and the fascia, the acupuncture points, the dangers, and the measurements that would refute it."
 >
   <div class="paper">
-    <p class="byline">Eugene Jhong · Knots of Existence, independent · <span class="mono">18 November 2026 · draft 4 · <a href={`https://doi.org/${doi}`}>doi.org/{doi}</a></span></p>
+    <p class="byline">Eugene Jhong · Knots of Existence, independent · <span class="mono">19 November 2026 · draft 4 · <a href={`https://doi.org/${doi}`}>doi.org/{doi}</a></span></p>
     <p class="byline disclose">Written by AI (Claude Opus 5.5, Anthropic) under the author's direction, and refereed by a second model (Claude Fable 5.1; for draft 4, Claude Fable 5.2). See <a href="#authorship">Authorship and AI use</a>.</p>
     <p class="byline mono">Correspondence and objections: <a href={`${repo}/issues`}>github.com/ejhong/knots/issues</a> · <a href={`${base}/research/perforator-hypothesis.pdf`}>PDF</a> · <a href={`${base}/research/#studies`}>studies that might help</a></p>
 
@@ -882,6 +927,7 @@ const index = [
       <p set:html={block} />
       <p set:html={pocket} />
       <p set:html={felt} />
+      <p set:html={evoked} />
       <h3>3.8 Why releases come in families</h3>
       <p set:html={trees} />
       <h3>3.9 Why more with age</h3>
@@ -909,7 +955,7 @@ const index = [
           {T2.map(([name, holds, ev, ex, rec]) => (
             <tr><th scope="row">{name}</th><td set:html={holds} /><td set:html={ev} /><td set:html={ex} /><td>{rec}</td></tr>
           ))}
-          <tr class="own"><th scope="row">Perforators</th><td>A small artery's wall holds itself shut</td><td>Its parts are measured; the identity is not</td><td>Most of Box 1; not release to attention alone, or finding knots with the breath</td><td>Skin flow floods in</td></tr>
+          <tr class="own"><th scope="row">Perforators</th><td>A small artery's wall holds itself shut</td><td>Its parts are measured; the identity is not</td><td>Most of Box 1; not release to attention alone, finding knots with the breath, or the feeling a release brings</td><td>Skin flow floods in</td></tr>
         </tbody>
       </table>
       {altAfter.map((t) => <p set:html={t} />)}
@@ -1006,6 +1052,15 @@ const index = [
         no longer puts a lymphatic in every bundle, since few lymph vessels pass through the fascia (Sections 2, 3.7
         and 4). These changes were AI-assisted and checked
         against their sources' records and abstracts, and for safe messaging.</p>
+      <p>It was extended again (19 November 2026). Box 1 now says what marks these knots out: a release that is felt,
+        often with a rush of feeling, strongest when a whole cluster lets go together (the abstract, Sections 1.1, 3.8,
+        4, 8 and 9, Tables 1 and 2 and Box 2). It adds that an area with many knots is felt more as a dull block, and
+        that a trained breath may be needed for its knots to be felt as distinct bumps, by the person and perhaps by
+        another's hand, and released (Box 1, Sections 3.7, 4, 7 and 8, Table 1 and Box 2). The hypothesis explains
+        neither. Since the breath may be needed, the tests now let people who already use a breath to release their
+        knots use it as they do, with no one taught a breath or asked for more than they usually do (Sections 7 and 9).
+        These changes were AI-assisted and checked against their sources' records and abstracts, and for safe
+        messaging.</p>
     </section>
 
     <section class="refs">

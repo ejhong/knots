@@ -55,14 +55,14 @@ export const CHAPTERS: Chapter[] = [
     html: `<p>Press into a knot and breathe, and it often lets go within seconds. That speed is the first clue. Tissue does not remodel in seconds — collagen, scar and adhesion change over days and weeks — so whatever lets go within a breath must be a <strong>state</strong>: something the body is doing, and can stop doing.</p>
 <p>Reports from contemplative practice and bodywork include:</p>
 <ul class="obs">
-<li><b>Feel.</b> A knot is felt as a bump, from very small to about the size of a penny. It seldom hurts unless pressed hard, as under a foam roller.</li>
+<li><b>Feel.</b> A knot is felt as a bump, from very small to about the size of a penny. It seldom hurts unless pressed hard, as under a foam roller. Single knots do not always stand out: an area with many is felt more as a dull block, and a trained breath may be needed to feel its knots as distinct bumps.</li>
 <li><b>Breath.</b> Knots seem to answer to the breath, possibly a complex breath woven together with fine proprioception. A single relaxing breath — the kind that comes on its own in a hot shower — can soften many small knots at once. Some knots seem to come and go with breath and mood, and some may even be held from moment to moment; deeper, persistent knots let go only to focused attention and breath.</li>
 <li><b>Attention.</b> Pressure and focused attention — a foam roller, a patient hand — release knots one place at a time.</li>
 <li><b>Water.</b> Drinking water seems to ease release, and to speed it.</li>
 <li><b>Stress.</b> Knots seem to worsen under stress, and gather where it is held: neck and shoulders, jaw, belly, low back.</li>
 <li><b>Stiffness.</b> As knots gather they seem to limit movement. A stretch is felt as a clear, sharp pull in the muscle, but it meets the knots as dull, deep blocks it cannot reach.</li>
 <li><b>Sparks.</b> A knot goes with a small pop, sometimes a star of tingling across a patch of skin.</li>
-<li><b>Euphoria.</b> A release can bring a wave of well-being — at times a euphoria some compare to MDMA.</li>
+<li><b>Euphoria.</b> A release can bring a wave of well-being — at times a euphoria some compare to MDMA. A felt release, with the feeling that can follow it, is the plainest mark of the knots meant here: a mark to know them by, not something to seek.</li>
 <li><b>Migration.</b> When one knot lets go, others move in to fill the gap and settle into new places, as if the body were evening itself out.</li>
 <li><b>Mirroring.</b> Working the knots on one side can ease the other side as well. Foam-rolling studies measure something like it — the crossover effect: rolling one leg adds range of motion to the other, untouched one.</li>
 <li><b>Peeling.</b> Two reports describe layers of the fascia beneath the skin peeling apart along lines, leaving places that feel hollow. It is rare and little understood — one reason for <a href="#moderation">the caution at the end</a>.</li>
