@@ -1,0 +1,122 @@
+---
+// The call for letters of intent, as posted on ResearchHub, on a page of its own so that it can be shared with a
+// picture. Not linked from the site and kept out of search engines. The text is read from docs/RESEARCHHUB.md (the
+// post, below the second rule) when the site is built, so the two cannot drift.
+import fs from 'node:fs';
+import path from 'node:path';
+import Doc from '../layouts/Doc.astro';
+
+const base = import.meta.env.BASE_URL.replace(/\/$/, '');
+const SITE = 'https://ejhong.github.io/knots';
+// The call's address on ResearchHub, once it is live there; the page then offers it as the place to respond.
+const RHUB = '';
+
+const raw = fs.readFileSync(path.join(process.cwd(), 'docs/RESEARCHHUB.md'), 'utf-8');
+const post = raw.split('\n---\n').pop()!.trim();
+
+const esc = (s: string) => s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+const href = (u: string) => (u.startsWith(SITE) ? base + u.slice(SITE.length) : u);
+const inline = (s: string) =>
+  esc(s)
+    .replace(/https?:\/\/[^\s)]*[^\s).,;:]/g, (u) => `<a href="${href(u)}">${u.replace(/^https?:\/\/(www\.)?/, '')}</a>`)
+    .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\*(.+?)\*/g, '<em>$1</em>');
+const slug = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+
+// The post uses a small part of Markdown: headings, paragraphs, bullets, numbered studies and a few bold labels.
+const blocks = post.split(/\n\s*\n/);
+if (!blocks[0].startsWith('## ')) throw new Error('call: the post should open with its title');
+const title = blocks[0].replace(/^## /, '').trim();
+const kicker = blocks[1].trim();
+const out: string[] = [];
+for (const block of blocks.slice(2)) {
+  const lines = block.split('\n');
+  if (lines[0].startsWith('### ')) {
+    const h = lines[0].slice(4).trim();
+    out.push(`<h2 id="${slug(h)}">${inline(h)}</h2>`);
+  } else if (lines.length === 1 && /^\*\*[^*]+\*\*$/.test(lines[0])) {
+    out.push(`<h3>${esc(lines[0].slice(2, -2))}</h3>`);
+  } else if (/^- /.test(lines[0])) {
+    const items: string[] = [];
+    for (const l of lines) /^- /.test(l) ? items.push(l.slice(2)) : (items[items.length - 1] += ' ' + l.trim());
+    out.push(`<ul>${items.map((i) => `<li>${inline(i)}</li>`).join('')}</ul>`);
+  } else if (/^\d+\. /.test(lines[0])) {
+    const items = lines.map((l) => {
+      const m = l.match(/^(\d+)\. (.+?)\. \*(.+)\.\* (https:\/\/\S+)$/);
+      if (!m) throw new Error(`call: a study line is not in the expected form: ${l.slice(0, 60)}`);
+      return `<li value="${m[1]}"><a href="${href(m[4])}">${esc(m[2])}</a>. <em>${esc(m[3])}.</em></li>`;
+    });
+    out.push(`<ol>${items.join('')}</ol>`);
+  } else {
+    out.push(`<p>${inline(lines.map((l) => l.trim()).join(' '))}</p>`);
+  }
+}
+const html = out.join('\n');
+---
+<Doc
+  title={title}
+  kicker={kicker}
+  current="research"
+  description="A call for letters of intent: studies that might help to find out exactly what one particular kind of knot is, the kind that lets go within seconds under a foam roller or a bodyworker’s hand, with a release the person feels."
+  image="/og-call.jpg"
+  imageAlt="What is a knot? A call for letters of intent. A figure drawn as the body’s perforators, with knots as bright points."
+  noindex
+>
+  <img
+    class="call-banner"
+    src={`${base}/call-banner.jpg`}
+    width="1800"
+    height="945"
+    alt="What is a knot? A call for letters of intent. A figure drawn as the body’s perforators, seen from behind, with knots as bright points."
+  />
+  <p class="where mono">
+    {RHUB ? (
+      <>The call is open on ResearchHub: <a href={RHUB}>respond there</a>{' '}·{' '}</>
+    ) : (
+      <>The call as posted on ResearchHub{' '}·{' '}</>
+    )}
+    <a href={`${base}/research/`}>the studies in full</a>{' '}·{' '}
+    <a href={`${base}/research/perforator-hypothesis/`}>the position paper</a>
+  </p>
+  <section class="sec prose call" set:html={html} />
+</Doc>
+
+<style is:global>
+  /* The banner carries the title, so the sheet's own heading is kept for readers of the page's outline only. */
+  .sheet:has(.call-banner) .sheet-head {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    overflow: hidden;
+    clip-path: inset(50%);
+    white-space: nowrap;
+    margin: 0;
+    padding: 0;
+  }
+  .call-banner {
+    display: block;
+    width: 100%;
+    height: auto;
+    border-radius: 10px;
+    background: #1d2226;
+  }
+  .where {
+    margin: 10px 0 18px;
+    font-size: 10px;
+    color: var(--muted);
+  }
+  .call ol {
+    padding-left: 2.2em;
+  }
+  .call h3 {
+    margin-top: 14px;
+  }
+  @media print {
+    .sheet:has(.call-banner) .sheet-head {
+      position: static;
+      width: auto;
+      height: auto;
+      clip-path: none;
+    }
+  }
+</style>
