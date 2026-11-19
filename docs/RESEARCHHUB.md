@@ -36,7 +36,8 @@ Please set up a ResearchHub RFP from the text below. It asks for letters of inte
   Please keep that point wherever you summarise, and keep "Purpose" and "The knots meant here" as written: they tell
   researchers which knots to study.
 - The studies live on the project's own page, https://ejhong.github.io/knots/research/. Please keep the list here as
-  short titles with their links, and don't expand them.
+  short titles with their links, and don't expand them. They are quickly assessed possibilities, not recommendations:
+  please keep that framing, and the request that researchers judge for themselves what would really be useful.
 - Please keep the wording of "What is asked", "How letters are weighed" and "Care", and the help lines, as written.
 - No cost ceiling and no deadline are set. If you add cost estimates to the studies, mark them as rough guides, not
   limits.
@@ -99,8 +100,9 @@ a rival theory fits better, the models, data and code are open to you too.
 ### You are the experts
 
 The studies on the Research page are ideas from a non-expert working with AI, meant to show the kind of thing that
-might help. You know the methods, the pitfalls and what is feasible, and three judgements would help more than any one
-idea there:
+might help. They were assessed only quickly, and some may prove not useful, or not worth doing now. You know the
+methods, the pitfalls and what is feasible: please make your own assessment of what would really be useful. Three
+judgements would help more than any one idea there:
 
 - **The lowest-hanging fruit.** Which could be done soon and cheaply, and still tell something?
 - **What to address first.** The list starts with finding knots, since much of the rest builds on it. Is that where to
@@ -158,7 +160,8 @@ fit.
 
 ### The studies
 
-Thirteen ideas, grouped by what each needs and listed in the order they build on one another, not by importance. After
+Thirteen ideas, grouped by what each needs and listed in the order they build on one another, not by importance. They
+are possibilities, assessed only quickly, and some may not be worth doing: your own assessment counts for more. After
 each title is the kind of study it would be. The Research page sets each out in full, with what it might show and what
 it likely needs: https://ejhong.github.io/knots/research/#studies. The numbers are the page's; its last two, 14
 and 15, concern runaway release and are not part of this call.
