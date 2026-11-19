@@ -4,6 +4,9 @@
 perforators and fascia, the theories of what knots are, and the maps the contemplative traditions drew of the same ground. It grew
 from Eugene Jhong’s essays, which head the Library.
 
+The knots meant are known by their release: one lets go within seconds and the person feels it go, often with a rush of
+feeling (a mark to know them by, not something to seek).
+
 **Live:** <https://ejhong.github.io/knots/>
 
 - **Introduction** — nine short chapters; scroll the panel and the figure illustrates each one.
@@ -12,8 +15,8 @@ from Eugene Jhong’s essays, which head the Library.
 - **Hypotheses** — seven answers, each at its strongest, with a comparison table.
 - **Traditions** — Chinese medicine, Daoist alchemy, yoga and tantra, Tibetan tsa lung and Dzogchen, Buddhist practice.
 - **Library** — verified references and a short history of knots.
-- **Research** — the case for researchers: what people report, the theories, what the models show with measured numbers,
-  what each theory predicts a recording at release would show, and experiments that might find out.
+- **Research** — for researchers: two open questions (what a knot is, and what runaway release is), what would help most,
+  how to respond with a letter of intent, fifteen studies that might help, and the position paper.
 - **Simulation** (`/simulation/`) — the bench: one perforator's small artery as a switch, running live, with every number
   traced to its source.
 

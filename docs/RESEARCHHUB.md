@@ -9,6 +9,8 @@ What must stay in step with the site (`src/pages/research.astro`):
 - **The list of studies:** their numbers, titles, kinds and order (the `STUDIES` and `STAGES` lists; each card has its
   own anchor, `#study-1` to `#study-15`). Their full text is on the site only.
 - **The ask:** what is asked, how letters are weighed and what happens next (`#respond` on the page).
+- **Which knots are meant:** known by a release the person feels, often with a rush of feeling, "a mark to know them
+  by, not something to seek" (the page's open questions and the sentence that opens its list of studies).
 - **The care rule** on breathing, pressure and runaway release.
 
 Settled by the author on 19 November: letters are public, there is no cost ceiling and no deadline, and an invited
@@ -26,6 +28,8 @@ To paste into ResearchHub's agent: the note just below, then the post.
 
 Please set up a ResearchHub RFP from the text below. It asks for letters of intent, not full proposals.
 
+- The knots meant are those known by a release the person feels, often with a rush of feeling. Please keep that point
+  wherever you summarise, and keep "The knots meant here" as written: it tells researchers which knots to study.
 - The studies live on the project's own page, https://ejhong.github.io/knots/research/. Please keep the list here as
   short titles with their links, and don't expand them.
 - Please keep the wording of "What is asked", "How letters are weighed" and "Care", and the help lines, as written.
@@ -44,8 +48,9 @@ A call for letters of intent
 ### Purpose
 
 Bodyworkers, people who foam-roll and contemplative practitioners all describe knots: discrete places in the body that
-hold, sometimes for years, and let go within seconds, under a hand, with the breath or to attention. Knots are among
-the commonest things people report in their bodies and among the least explained. No mechanism for them is
+hold, sometimes for years, and let go within seconds, under a hand, with the breath or to attention. The knots meant
+here are known by that release: the person feels it go, often with a rush of feeling (a mark to know them by, not
+something to seek). Knots are among the commonest things people report in their bodies and among the least explained. No mechanism for them is
 established and, as far as is known, nothing has been recorded at the moment one lets go.
 
 This call invites short letters of intent for studies that might help to tell **what a knot is**, or **what runaway
@@ -122,6 +127,7 @@ long to write.
 - **Your reading of the list.** Which studies are the lowest-hanging fruit, and which should be addressed first,
   including ones you would not take on yourself.
 - **What you would do.** The question, what you would measure, in whom and with what, and what the result might show.
+  If it studies knots, say how you would know they are the ones meant here.
 - **Who would do it.** The people and their relevant experience, the instruments, laboratory, participants or data
   already to hand, and any competing interests.
 - **Time and cost.** A rough timeline and a rough total cost. If a smaller first step would still tell something, say
@@ -164,6 +170,9 @@ fit.
 Fifteen ideas, grouped by what each needs and listed in the order they build on one another, not by importance. After
 each title is the kind of study it would be. The Research page sets each out in full, with what it might show and what
 it likely needs: https://ejhong.github.io/knots/research/#studies
+
+Throughout, a knot means the kind described above, known by a release its owner feels. A study that marks or counts
+knots should say how it would know that they are of this kind; a bump or a tender spot is not enough.
 
 **First: finding knots**
 
