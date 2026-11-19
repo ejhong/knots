@@ -86,7 +86,9 @@ the author's reports, is retired: `sim/archive/`.)
   Hypotheses. The page also asks for letters of intent (`#respond`: what a letter holds, how letters are weighed, what
   happens next). `docs/RESEARCHHUB.md`, the draft call on ResearchHub, lists the studies by number, title and kind and
   points to the page for their text, and repeats that ask and the care rule: keep the two in step. The site names
-  ResearchHub only once the call is live and can be linked, and states no cost ceiling. The September preprint and pilot are retired (`research/preprint/` and
+  ResearchHub only once the call is live and can be linked, and states no cost ceiling. For now (19 Nov 2026) letters
+  are asked for on knots only: the two runaway-release studies stay on the page, marked as waiting on fuller accounts,
+  and the call leaves them out and carries only a short caution on runaway release. The September preprint and pilot are retired (`research/preprint/` and
   `pilot/` redirect, as the paper cites them). The paper's PDF is its Zenodo file: reprint with `npx tsx scripts/pdf.ts`
   (a running dev server) only for a new Zenodo version.
 - Deploy: push to `main` (GitHub Actions → Pages at https://ejhong.github.io/knots/). Every push also runs `ci.yml`: the sim

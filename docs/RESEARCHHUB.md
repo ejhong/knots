@@ -7,14 +7,16 @@ below the second line is the post; it is written without "I" or "we".
 What must stay in step with the site (`src/pages/research.astro`):
 
 - **The list of studies:** their numbers, titles, kinds and order (the `STUDIES` and `STAGES` lists; each card has its
-  own anchor, `#study-1` to `#study-15`). Their full text is on the site only.
+  own anchor, `#study-1` to `#study-15`). Their full text is on the site only. The call lists the thirteen on knots
+  and keeps the page's numbers, so 9 and 10 are skipped.
 - **The ask:** what is asked, how letters are weighed and what happens next (`#respond` on the page).
 - **Which knots are meant:** known by a release the person feels, often with a rush of feeling, "a mark to know them
   by, not something to seek" (the page's open questions and the sentence that opens its list of studies).
 - **The care rule** on breathing, pressure and runaway release.
 
-Settled by the author on 19 November: letters are public, there is no cost ceiling and no deadline, and an invited
-full proposal is paid for. Carried over that day from the call the author gave as an example (ResearchHub RFP 32943,
+Settled by the author on 19 November: the first call is on knots only; letters are public, there is no cost ceiling
+and no deadline, and an invited full proposal is paid for. Runaway release appears in the call as a short caution, and
+the page's studies 9 and 10 are left out: they wait on fuller accounts, and the page says so. Carried over that day from the call the author gave as an example (ResearchHub RFP 32943,
 "Epothilone B and anesthetic sensitivity"), and still to be confirmed for this one: who may apply, awards made as gifts
 to institutions, and open plans and reports as hopes that weigh in selection.
 
@@ -37,11 +39,12 @@ Please set up a ResearchHub RFP from the text below. It asks for letters of inte
   limits.
 - "Who may apply, and how awards are made" is adapted from the Epothilone B call (RFP 32943). Please make it match how
   this call's awards will really be made.
-- Please don't add how runaway release is set off, or present anything here as a practice to try.
+- This call is on knots only. Runaway release appears as a short caution with help lines: please keep it short, and
+  don't add how it is set off or present anything here as a practice to try.
 
 ---
 
-## What is a knot, and what is runaway release?
+## What is a knot?
 
 A call for letters of intent
 
@@ -53,10 +56,9 @@ here are known by that release: the person feels it go, often with a rush of fee
 something to seek). Knots are among the commonest things people report in their bodies and among the least explained. No mechanism for them is
 established and, as far as is known, nothing has been recorded at the moment one lets go.
 
-This call invites short letters of intent for studies that might help to tell **what a knot is**, or **what runaway
-release is**, a rarer and dangerous process described below. A useful result may be positive, negative or
-inconclusive. Fifteen ideas for studies are set out on the project's Research page, each with what it might show and
-what it likely needs: https://ejhong.github.io/knots/research/
+This call invites short letters of intent for studies that might help to tell **what a knot is**. A useful result may
+be positive, negative or inconclusive. Thirteen ideas for studies are set out on the project's Research page, each
+with what it might show and what it likely needs: https://ejhong.github.io/knots/research/
 
 ### The knots meant here
 
@@ -89,18 +91,14 @@ to a journal. If, having weighed the alternatives, you think the perforator hypo
 it, rework it, publish it (the paper is CC BY 4.0). A letter can propose that write-up, and it can be funded. If you think
 a rival theory fits better, the models, data and code are open to you too.
 
-### Runaway release
+### A caution: runaway release
 
-Two reports describe a rarer process that can follow forceful, long work at clearing knots, in contemplative practice
-or in somatic work. Past some point, releases come in chains and the process can no longer be set down: it feels
-unfinished, and stopping is harder to bear than going on. It does not come and go but runs on, over months or years,
-through phases: knots releasing, and changes felt in the fascia over days to weeks, as the layers peel apart along
-lines, places are left hollow, and a slow re-stitching in the end brings back a sense of wholeness. Where many knots
-let go together, the skin over them can grow wet, then crust and flake away; unlike the rest, that can be seen and
-photographed. There are only two reports, both informal, and no study of the process as such is known (the position
-paper, Section 5). It is arduous and can be dangerous, above all for someone facing it alone: difficulties of the wider
-kind it belongs to have lasted years, and in a study that recruited Western Buddhist meditators who could describe
-difficult experiences, about one in six reported suicidality (Lindahl et al. 2017).
+Two informal reports describe a rarer process that can follow forceful, long work at clearing knots, in contemplative
+practice or in somatic work. Past some point, releases come in chains and the process can no longer be set down; it
+runs on over months or years. It is arduous and can be dangerous, above all for someone facing it alone (the position
+paper, Section 5). This is why the studies here ask no one to press, breathe or work harder or longer than they
+usually do (Care, below). Studies of runaway release itself are not part of this call: they wait on fuller accounts of
+it.
 
 Anyone struggling with it can find support from Cheetah House (https://www.cheetahhouse.org); anyone thinking about
 suicide should reach out now: in the US, call or text 988; elsewhere, find a line at https://findahelpline.com.
@@ -112,8 +110,8 @@ might help. You know the methods, the pitfalls and what is feasible, and three j
 idea there:
 
 - **The lowest-hanging fruit.** Which could be done soon and cheaply, and still tell something?
-- **What to address first.** The list starts with finding knots and with characterising runaway release, since much of the
-  rest builds on them. Is that where to begin, and what should be taken up now?
+- **What to address first.** The list starts with finding knots, since much of the rest builds on it. Is that where to
+  begin, and what should be taken up now?
 - **What you could do.** Which could you take on, with the skills, instruments, laboratory, patients or data you have,
   alone or with others?
 
@@ -167,9 +165,10 @@ fit.
 
 ### The studies
 
-Fifteen ideas, grouped by what each needs and listed in the order they build on one another, not by importance. After
+Thirteen ideas, grouped by what each needs and listed in the order they build on one another, not by importance. After
 each title is the kind of study it would be. The Research page sets each out in full, with what it might show and what
-it likely needs: https://ejhong.github.io/knots/research/#studies
+it likely needs: https://ejhong.github.io/knots/research/#studies. The numbers are the page's; its studies 9 and 10
+concern runaway release and are not part of this call.
 
 Throughout, a knot means the kind described above, known by a release its owner feels. A study that marks or counts
 knots should say how it would know that they are of this kind; a bump or a tender spot is not enough.
@@ -188,11 +187,6 @@ knots should say how it would know that they are of this kind; a bump or a tende
 7. What remains after death. *Post-mortem histology: knot sites against matched control sites.* https://ejhong.github.io/knots/research/#study-7
 8. Whether animals have knots. *Comparative (veterinary): a survey, examination by instrument, and opportunistic necropsy.* https://ejhong.github.io/knots/research/#study-8
 
-**Runaway release**
-
-9. Characterise runaway release. *Phenomenology and natural history: semi-structured interviews and a case series.* https://ejhong.github.io/knots/research/#study-9
-10. Examine someone in runaway release. *Observational: a prospective case series with repeated imaging.* https://ejhong.github.io/knots/research/#study-10
-
 **At any time**
 
 11. What is already recorded. *Secondary analysis of existing recordings.* https://ejhong.github.io/knots/research/#study-11
@@ -201,7 +195,7 @@ knots should say how it would know that they are of this kind; a bump or a tende
 14. Acupoints on perforators. *Blinded mapping against chance, or a retrospective study of CT angiograms.* https://ejhong.github.io/knots/research/#study-14
 15. Whether vasomotion stops in deep meditation. *Laboratory physiology with first-person event marking: fNIRS or fMRI, and laser Doppler flowmetry.* https://ejhong.github.io/knots/research/#study-15
 
-Or one not listed: anything that might help tell what a knot is, or what runaway release is.
+Or one not listed: anything that might help tell what a knot is.
 
 ### Care
 
@@ -209,11 +203,7 @@ Any study with people needs ethics review, comfortable pressure and a plan for r
 human tissue needs the approvals its institution requires, all before work begins. Breathing should be ordinary or,
 for people who already use a breath to release their knots, that breath as they already use it; no one should be
 taught a breath, or asked to press, breathe or work harder or longer, or to release more knots, than they usually do.
-Nothing here is a practice or a protocol. No one should be asked to begin or seek runaway release: studies of it observe people
-already in it, put their care first, and need clinicians who know meditation-related difficulty. If you are struggling
-with it yourself, Cheetah House (https://www.cheetahhouse.org) supports meditators in distress, and anything physical
-calls for a physician. If you are thinking about suicide, reach out now: in the US, call or text 988; elsewhere, find a
-line at https://findahelpline.com.
+Nothing here is a practice or a protocol. No one should be asked to begin or seek runaway release (the caution above).
 
 ### References
 
@@ -222,6 +212,3 @@ line at https://findahelpline.com.
 - Johnson ME. Principles of Vasocomputation: A Unification of Buddhist Phenomenology, Active Inference, and Physical
   Reflex (Part I). opentheory.net (2023).
   https://opentheory.net/2023/07/principles-of-vasocomputation-a-unification-of-buddhist-phenomenology-active-inference-and-physical-reflex-part-i/
-- Lindahl JR, Fisher NE, Cooper DJ et al. The varieties of contemplative experience: a mixed-methods study of
-  meditation-related challenges in Western Buddhists. PLoS One 12:e0176239 (2017).
-  https://doi.org/10.1371/journal.pone.0176239
