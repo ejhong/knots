@@ -4,7 +4,7 @@
  * A cut through the layers — skin, superficial fat, superficial fascia, the
  * gliding plane, deep fascia, muscle — with one perforator's bundle rising
  * through its ring in the deep fascia: the artery (a wall of smooth muscle
- * around the blood), two veins, the nerve and a lymphatic. Held, the artery
+ * around the blood), two veins, the nerve and, as in some bundles, a lymphatic. Held, the artery
  * is shut by the muscle of its own wall — the knot, glowing at the ring —
  * and its patch of skin is short of blood. As its tone eases the artery
  * snaps open, blood floods back, and the starved nerve wakes: a spark runs
@@ -161,7 +161,7 @@ export function createKnotPlate(tone: Tone): KnotPlate {
     ${label((Y.plane + Y.deep) / 2 + 3, 'gliding plane')}
     ${label(Y.deepBottom - 1, 'deep fascia')}
     ${label(Y.deepBottom + 30, 'muscle')}
-    ${tag(X0, Y.bottom + 10, 'lymphatic · vein · artery · vein · nerve')}
+    ${tag(X0, Y.bottom + 10, '(lymphatic) · vein · artery · vein · nerve')}
     ${tag(X0 + 30, (Y.deep + Y.deepBottom) / 2 + 3, 'ring', 'start')}
     <text data-caption x="14" y="${Y.bottom + 34}" fill="${c.text}" font-size="9.5" font-family="Georgia, serif" font-style="italic"></text>
     <text data-breath x="14" y="${Y.bottom + 44}" fill="${c.faint}" font-size="7.5" font-family="SF Mono, Menlo, monospace"></text>

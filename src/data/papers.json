@@ -59,6 +59,21 @@
   "note": "How precisely a point is found: for 95% to land on it, it would need to cover almost 13 cm² by the directional method and under 3 cm² by ruler."
  },
  {
+  "id": "aldrich2017",
+  "authors": "Aldrich MB, Gross D, Morrow JR et al.",
+  "year": 2017,
+  "title": "Effect of pneumatic compression therapy on lymph movement in lymphedema-affected extremities, as assessed by near-infrared fluorescence lymphatic imaging",
+  "venue": "J Innov Opt Health Sci 10:pii: 1650049. 10.1142/S1793545816500498",
+  "url": "https://doi.org/10.1142/S1793545816500498",
+  "pmid": "29104671",
+  "kind": "paper",
+  "tags": [
+   "vascular",
+   "imaging"
+  ],
+  "note": "In four people with lymphoedema of the legs, pneumatic compression moved lymph, and where vessels were open their contractions kept time with the garment's sequential squeezing."
+ },
+ {
   "id": "alexandrou2021",
   "authors": "Alexandrou ME, Gkaliagkousi Ε, Loutradis C et al.",
   "year": 2021,
@@ -1076,6 +1091,19 @@
   "note": "About 80% of classical acupoints coincide with perforations of the superficial fascia by a vessel–nerve bundle."
  },
  {
+  "id": "hidden1990",
+  "authors": "Hidden G",
+  "year": 1990,
+  "title": "[Some recent, or claiming to be recent, data on the superficial lymphatic circulation of the limbs]",
+  "venue": "J Mal Vasc 15:149-51",
+  "pmid": "2358757",
+  "kind": "paper",
+  "tags": [
+   "anatomy"
+  ],
+  "note": "The limbs' superficial lymph collectors far outnumber the deep ones and are almost unconnected with them; they merge toward the root of the limb, at the groin and the armpit, and at the armpit three or four trunks pierce the fascia, each through its own opening."
+ },
+ {
   "id": "hill2003",
   "authors": "Hill MA, Potocnik SJ, Martinez-Lemus LA et al.",
   "year": 2003,
@@ -1263,6 +1291,21 @@
    "mind"
   ],
   "note": "Foam rolling the calf of one leg increased ankle range of motion in that leg for at least 20 minutes, and in the other, untouched leg for up to 10 — a cross-over effect, perhaps through greater stretch tolerance."
+ },
+ {
+  "id": "kelly2020",
+  "authors": "Kelly B, Mohanakumar S, Telinius N et al.",
+  "year": 2020,
+  "title": "Function of Upper Extremity Human Lymphatics Assessed by Near-Infrared Fluorescence Imaging",
+  "venue": "Lymphat Res Biol 18:226-231",
+  "url": "https://doi.org/10.1089/lrb.2019.0041",
+  "pmid": "31526221",
+  "kind": "paper",
+  "tags": [
+   "vascular",
+   "imaging"
+  ],
+  "note": "Lymphatics of the healthy arm filmed by near-infrared fluorescence: about 0.9 contractions a minute, propelled at about 1.1 cm/s, against a maximal pressure of 59 ± 12 mmHg; local warming raised the contraction rate, and exercise lowered it and raised the speed."
  },
  {
   "id": "koltzenburg1999",
@@ -1589,6 +1632,22 @@
    "vascular"
   ],
   "note": "The inspiratory gasp reflex reviewed: the skin's vessels in the hands and feet constrict 3.6–3.8 s after a gasp, most deeply at 4.6–5.2 s; capillary flow returns to normal some 5–15 s after the gasp, and the review's own trace recovers in about 34 s."
+ },
+ {
+  "id": "mchale1990",
+  "authors": "McHale NG",
+  "year": 1990,
+  "title": "Lymphatic innervation",
+  "venue": "Blood Vessels 27:127-36",
+  "url": "https://doi.org/10.1159/000158803",
+  "pmid": "1700733",
+  "kind": "paper",
+  "tags": [
+   "vascular",
+   "nerve",
+   "animals"
+  ],
+  "note": "Lymphatic vessels have noradrenergic nerves: stimulating them quickened the spontaneous contractions of bovine lymphatics, and stimulating the sympathetic chain raised lymph flow in anaesthetised sheep."
  },
  {
   "id": "mcnulty1994",
@@ -2242,6 +2301,21 @@
   "note": "Radial artery perforators in 26 forearms: two main clusters, at 17.6% and 61.7% of the way from the radial styloid to the lateral epicondyle."
  },
  {
+  "id": "scallan2016",
+  "authors": "Scallan JP, Zawieja SD, Castorena-Gonzalez JA et al.",
+  "year": 2016,
+  "title": "Lymphatic pumping: mechanics, mechanisms and malfunction",
+  "venue": "J Physiol 594:5749-5768",
+  "url": "https://doi.org/10.1113/JP272088",
+  "pmid": "27219461",
+  "kind": "paper",
+  "tags": [
+   "vascular",
+   "anatomy"
+  ],
+  "note": "How lymph is pumped: collecting lymphatics contract segment by segment, and propulsion needs contractions synchronised along each segment and working valves; the pump is set by how full it is, what it pumps against, its own rhythm and its nerves, and forces from outside the vessel move lymph as well."
+ },
+ {
   "id": "schiffrin1995",
   "authors": "Schiffrin EL, Deng LY, Larochelle P",
   "year": 1995,
@@ -2474,6 +2548,35 @@
   "note": "Deep pressure ulcers arise in the muscle layers adjacent to bony prominences under sustained loading; deformation and ischaemia damage tissue on different clocks."
  },
  {
+  "id": "suami2007",
+  "authors": "Suami H, Taylor GI, Pan WR",
+  "year": 2007,
+  "title": "The lymphatic territories of the upper limb: anatomical study and clinical implications",
+  "venue": "Plast Reconstr Surg 119:1813-1822",
+  "url": "https://doi.org/10.1097/01.prs.0000246516.64780.61",
+  "pmid": "17440362",
+  "kind": "paper",
+  "tags": [
+   "anatomy"
+  ],
+  "note": "The arm's lymph vessels traced by injection in fourteen arms from ten cadavers: the superficial vessels run in the subcutaneous fat close to the main subcutaneous veins, and no communication with the deep system was found."
+ },
+ {
+  "id": "suami2008",
+  "authors": "Suami H, O'Neill JK, Pan WR et al.",
+  "year": 2008,
+  "title": "Perforating lymph vessels in the canine torso: direct lymph pathway from skin to the deep lymphatics",
+  "venue": "Plast Reconstr Surg 121:31-36",
+  "url": "https://doi.org/10.1097/01.prs.0000293753.93274.21",
+  "pmid": "18176203",
+  "kind": "paper",
+  "tags": [
+   "anatomy",
+   "animals"
+  ],
+  "note": "Perforating lymph vessels in the dog's loin and buttock: they rise from the skin, pass through the abdominal wall always in the company of blood vessels, especially perforating veins, and drain to nodes beside the aorta, as pathways seen on scans in people would suggest."
+ },
+ {
   "id": "syyong2008",
   "authors": "Syyong H, Cheung C, Solomon D et al.",
   "year": 2008,
@@ -2487,6 +2590,21 @@
    "animals"
   ],
   "note": "Pulmonary arterial smooth muscle shortened to 0.6 of its length regains 73% of the force it lost, along a single exponential: the muscle adapts to the length it is held at."
+ },
+ {
+  "id": "tan2011",
+  "authors": "Tan IC, Maus EA, Rasmussen JC et al.",
+  "year": 2011,
+  "title": "Assessment of lymphatic contractile function after manual lymphatic drainage using near-infrared fluorescence imaging",
+  "venue": "Arch Phys Med Rehabil 92:756-764.e1",
+  "url": "https://doi.org/10.1016/j.apmr.2010.12.027",
+  "pmid": "21530723",
+  "kind": "paper",
+  "tags": [
+   "vascular",
+   "imaging"
+  ],
+  "note": "Manual lymphatic drainage, a massage used for lymphoedema, raised the apparent speed of lymph by 23–28% and shortened the time between propulsions by 9–23%, in limbs with lymphoedema and in healthy ones."
  },
  {
   "id": "tang2009",
@@ -2578,6 +2696,20 @@
    "nerve"
   ],
   "note": "The thoracolumbar fascia is densely innervated, including nociceptors."
+ },
+ {
+  "id": "tourani2013",
+  "authors": "Tourani SS, Taylor GI, Ashton MW",
+  "year": 2013,
+  "title": "Anatomy of the superficial lymphatics of the abdominal wall and the upper thigh and its implications in lymphatic microsurgery",
+  "venue": "J Plast Reconstr Aesthet Surg 66:1390-5",
+  "url": "https://doi.org/10.1016/j.bjps.2013.05.030",
+  "pmid": "23746863",
+  "kind": "paper",
+  "tags": [
+   "anatomy"
+  ],
+  "note": "The skin's lymph collectors, dissected in four cadavers: in the abdominal wall they run above Scarpa's fascia just beneath the subdermal venules, 0.2–0.8 mm across; in the upper thigh the main bundle runs deep in the fat, 0.6–1 mm across; the superficial inguinal nodes also drain the lower back and upper buttock."
  },
  {
   "id": "travell1952",

@@ -329,6 +329,25 @@ NEW = [
      "The body's veins mapped by injection in cadavers: valved venous territories, matching the arterial ones, are linked by many valveless veins that let flow and pressure even out across the tissue."),
     ("10199637", "koltzenburg1999", ["nerve"],
      "After a nerve is injured on one side, changes appear in the uninjured structures of the other side, similar but smaller and briefer: circumstantial evidence favours signalling within the spinal cord and brainstem, perhaps through commissural interneurons and chemical signals."),
+    # A variant weighed and set aside: a lymph vessel in place of the artery (the position paper, Section 4).
+    ("27219461", "scallan2016", ["vascular", "anatomy"],
+     "How lymph is pumped: collecting lymphatics contract segment by segment, and propulsion needs contractions synchronised along each segment and working valves; the pump is set by how full it is, what it pumps against, its own rhythm and its nerves, and forces from outside the vessel move lymph as well."),
+    ("31526221", "kelly2020", ["vascular", "imaging"],
+     "Lymphatics of the healthy arm filmed by near-infrared fluorescence: about 0.9 contractions a minute, propelled at about 1.1 cm/s, against a maximal pressure of 59 ± 12 mmHg; local warming raised the contraction rate, and exercise lowered it and raised the speed."),
+    ("21530723", "tan2011", ["vascular", "imaging"],
+     "Manual lymphatic drainage, a massage used for lymphoedema, raised the apparent speed of lymph by 23–28% and shortened the time between propulsions by 9–23%, in limbs with lymphoedema and in healthy ones."),
+    ("29104671", "aldrich2017", ["vascular", "imaging"],
+     "In four people with lymphoedema of the legs, pneumatic compression moved lymph, and where vessels were open their contractions kept time with the garment's sequential squeezing."),
+    ("1700733", "mchale1990", ["vascular", "nerve", "animals"],
+     "Lymphatic vessels have noradrenergic nerves: stimulating them quickened the spontaneous contractions of bovine lymphatics, and stimulating the sympathetic chain raised lymph flow in anaesthetised sheep."),
+    ("23746863", "tourani2013", ["anatomy"],
+     "The skin's lymph collectors, dissected in four cadavers: in the abdominal wall they run above Scarpa's fascia just beneath the subdermal venules, 0.2–0.8 mm across; in the upper thigh the main bundle runs deep in the fat, 0.6–1 mm across; the superficial inguinal nodes also drain the lower back and upper buttock."),
+    ("2358757", "hidden1990", ["anatomy"],
+     "The limbs' superficial lymph collectors far outnumber the deep ones and are almost unconnected with them; they merge toward the root of the limb, at the groin and the armpit, and at the armpit three or four trunks pierce the fascia, each through its own opening."),
+    ("17440362", "suami2007", ["anatomy"],
+     "The arm's lymph vessels traced by injection in fourteen arms from ten cadavers: the superficial vessels run in the subcutaneous fat close to the main subcutaneous veins, and no communication with the deep system was found."),
+    ("18176203", "suami2008", ["anatomy", "animals"],
+     "Perforating lymph vessels in the dog's loin and buttock: they rise from the skin, pass through the abdominal wall always in the company of blood vessels, especially perforating veins, and drain to nodes beside the aorta, as pathways seen on scans in people would suggest."),
 ]
 
 # Existing entries that the simulation also leans on gain the models tag; konrad2023 joins foam rolling.
