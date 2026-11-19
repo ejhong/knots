@@ -7,16 +7,17 @@ below the second line is the post; it is written without "I" or "we".
 What must stay in step with the site (`src/pages/research.astro`):
 
 - **The list of studies:** their numbers, titles, kinds and order (the `STUDIES` and `STAGES` lists; each card has its
-  own anchor, `#study-1` to `#study-15`). Their full text is on the site only. The call lists the thirteen on knots
-  and keeps the page's numbers, so 9 and 10 are skipped.
+  own anchor, `#study-1` to `#study-15`). Their full text is on the site only. The call lists the thirteen on knots,
+  which are the page's 1 to 13; the page's last two, 14 and 15, are on runaway release and are left out.
 - **The ask:** what is asked, how letters are weighed and what happens next (`#respond` on the page).
 - **Which knots are meant:** known by a release the person feels, often with a rush of feeling, "a mark to know them
   by, not something to seek" (the page's open questions and the sentence that opens its list of studies).
 - **The care rule** on breathing, pressure and runaway release.
 
 Settled by the author on 19 November: the first call is on knots only; letters are public, there is no cost ceiling
-and no deadline, and an invited full proposal is paid for. Runaway release appears in the call as a short caution, and
-the page's studies 9 and 10 are left out: they wait on fuller accounts, and the page says so. Carried over that day from the call the author gave as an example (ResearchHub RFP 32943,
+and no deadline, and an invited full proposal is paid for. Runaway release appears in the call as a short caution placed
+below the studies, and the page's two studies on it (14 and 15, in its last group) are left out: they wait on fuller
+accounts, and the page says so. Carried over that day from the call the author gave as an example (ResearchHub RFP 32943,
 "Epothilone B and anesthetic sensitivity"), and still to be confirmed for this one: who may apply, awards made as gifts
 to institutions, and open plans and reports as hopes that weigh in selection.
 
@@ -30,8 +31,10 @@ To paste into ResearchHub's agent: the note just below, then the post.
 
 Please set up a ResearchHub RFP from the text below. It asks for letters of intent, not full proposals.
 
-- The knots meant are those known by a release the person feels, often with a rush of feeling. Please keep that point
-  wherever you summarise, and keep "The knots meant here" as written: it tells researchers which knots to study.
+- The goal is to find out exactly what one particular kind of knot is: the kind that lets go under a foam roller or a
+  bodyworker's hand, with a release the person feels at once, often with a sudden rush of relief, emotion or euphoria.
+  Please keep that point wherever you summarise, and keep "Purpose" and "The knots meant here" as written: they tell
+  researchers which knots to study.
 - The studies live on the project's own page, https://ejhong.github.io/knots/research/. Please keep the list here as
   short titles with their links, and don't expand them.
 - Please keep the wording of "What is asked", "How letters are weighed" and "Care", and the help lines, as written.
@@ -50,23 +53,25 @@ A call for letters of intent
 
 ### Purpose
 
-Bodyworkers, people who foam-roll and contemplative practitioners all describe knots: discrete places in the body that
-hold, sometimes for years, and let go within seconds, under a hand, with the breath or to attention. The knots meant
-here are known by that release: the person feels it go, often with a rush of feeling (a mark to know them by, not
-something to seek). Knots are among the commonest things people report in their bodies and among the least explained. No mechanism for them is
-established and, as far as is known, nothing has been recorded at the moment one lets go.
+The aim is to find out exactly what one particular kind of knot is: the kind that lets go within seconds under a foam
+roller or a bodyworker's hand, with a release the person feels at once and, often, a sudden rush of feeling: relief or
+well-being, at times tears or euphoria. That felt release is what marks these knots out (a mark to know them by, not
+something to seek). Bodyworkers, people who foam-roll and contemplative practitioners all describe them. They are among
+the commonest things people report in their bodies and among the least explained: no mechanism for them is established
+and, as far as is known, nothing has been recorded at the moment one lets go.
 
-This call invites short letters of intent for studies that might help to tell **what a knot is**. A useful result may
-be positive, negative or inconclusive. Thirteen ideas for studies are set out on the project's Research page, each
-with what it might show and what it likely needs: https://ejhong.github.io/knots/research/
+This call invites short letters of intent for studies that might help. A useful result may be positive, negative or
+inconclusive. Thirteen ideas for studies are set out on the project's Research page, each with what it might show and
+what it likely needs: https://ejhong.github.io/knots/research/
 
 ### The knots meant here
 
 A knot is felt as a bump, from very small to about the size of a penny; it seldom hurts unless pressed hard, as under
 a foam roller, so tenderness does not define it. Its release does. A knot lets go within seconds, most familiarly
-under a roller, and the person feels it go, often with a tingle over the spot. A rush of feeling is often reported to
-follow: relief or well-being, at times tears or euphoria, and most of all when a whole cluster lets go together. These
-are the knots meant here; the feeling is given as a mark to know them by, not as something to seek.
+under a roller or a bodyworker's hand, though also with the breath or to attention alone, and the person feels it go,
+often with a tingle over the spot. A rush of feeling is often reported to follow at once: relief or well-being, at
+times tears or euphoria, and most of all when a whole cluster lets go together. These are the knots meant here; the
+feeling is given as a mark to know them by, not as something to seek.
 
 A knot does not always stand out. An area with many knots seems to be less flexible, and is felt more as a dull block.
 A trained breath may be needed for the person to feel its knots as distinct bumps, and to release them; another's hand
@@ -90,18 +95,6 @@ The paper was written by AI under its author's direction and has not been peer-r
 to a journal. If, having weighed the alternatives, you think the perforator hypothesis is the best fit, take it up: test
 it, rework it, publish it (the paper is CC BY 4.0). A letter can propose that write-up, and it can be funded. If you think
 a rival theory fits better, the models, data and code are open to you too.
-
-### A caution: runaway release
-
-Two informal reports describe a rarer process that can follow forceful, long work at clearing knots, in contemplative
-practice or in somatic work. Past some point, releases come in chains and the process can no longer be set down; it
-runs on over months or years. It is arduous and can be dangerous, above all for someone facing it alone (the position
-paper, Section 5). This is why the studies here ask no one to press, breathe or work harder or longer than they
-usually do (Care, below). Studies of runaway release itself are not part of this call: they wait on fuller accounts of
-it.
-
-Anyone struggling with it can find support from Cheetah House (https://www.cheetahhouse.org); anyone thinking about
-suicide should reach out now: in the US, call or text 988; elsewhere, find a line at https://findahelpline.com.
 
 ### You are the experts
 
@@ -167,8 +160,8 @@ fit.
 
 Thirteen ideas, grouped by what each needs and listed in the order they build on one another, not by importance. After
 each title is the kind of study it would be. The Research page sets each out in full, with what it might show and what
-it likely needs: https://ejhong.github.io/knots/research/#studies. The numbers are the page's; its studies 9 and 10
-concern runaway release and are not part of this call.
+it likely needs: https://ejhong.github.io/knots/research/#studies. The numbers are the page's; its last two, 14
+and 15, concern runaway release and are not part of this call.
 
 Throughout, a knot means the kind described above, known by a release its owner feels. A study that marks or counts
 knots should say how it would know that they are of this kind; a bump or a tender spot is not enough.
@@ -189,13 +182,25 @@ knots should say how it would know that they are of this kind; a bump or a tende
 
 **At any time**
 
-11. What is already recorded. *Secondary analysis of existing recordings.* https://ejhong.github.io/knots/research/#study-11
-12. A small artery held shut for hours. *Ex vivo physiology: pressure myography of isolated small arteries, with their myosin phosphorylation.* https://ejhong.github.io/knots/research/#study-12
-13. The breath and the skin of the trunk. *Human microvascular physiology: skin blood flow over the trunk by laser speckle, through ordinary and trained breaths.* https://ejhong.github.io/knots/research/#study-13
-14. Acupoints on perforators. *Blinded mapping against chance, or a retrospective study of CT angiograms.* https://ejhong.github.io/knots/research/#study-14
-15. Whether vasomotion stops in deep meditation. *Laboratory physiology with first-person event marking: fNIRS or fMRI, and laser Doppler flowmetry.* https://ejhong.github.io/knots/research/#study-15
+9. What is already recorded. *Secondary analysis of existing recordings.* https://ejhong.github.io/knots/research/#study-9
+10. A small artery held shut for hours. *Ex vivo physiology: pressure myography of isolated small arteries, with their myosin phosphorylation.* https://ejhong.github.io/knots/research/#study-10
+11. The breath and the skin of the trunk. *Human microvascular physiology: skin blood flow over the trunk by laser speckle, through ordinary and trained breaths.* https://ejhong.github.io/knots/research/#study-11
+12. Acupoints on perforators. *Blinded mapping against chance, or a retrospective study of CT angiograms.* https://ejhong.github.io/knots/research/#study-12
+13. Whether vasomotion stops in deep meditation. *Laboratory physiology with first-person event marking: fNIRS or fMRI, and laser Doppler flowmetry.* https://ejhong.github.io/knots/research/#study-13
 
 Or one not listed: anything that might help tell what a knot is.
+
+### A caution: runaway release
+
+Two informal reports describe a rarer process that can follow forceful, long work at clearing knots, in contemplative
+practice or in somatic work. Past some point, releases come in chains and the process can no longer be set down; it
+runs on over months or years. It is arduous and can be dangerous, above all for someone facing it alone (the position
+paper, Section 5). This is why the studies here ask no one to press, breathe or work harder or longer than they
+usually do (Care, below). Studies of runaway release itself are not part of this call: they wait on fuller accounts of
+it.
+
+Anyone struggling with it can find support from Cheetah House (https://www.cheetahhouse.org); anyone thinking about
+suicide should reach out now: in the US, call or text 988; elsewhere, find a line at https://findahelpline.com.
 
 ### Care
 

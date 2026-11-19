@@ -171,37 +171,6 @@ const STUDIES: { stage: string; prong: string; title: string; design: string; wh
     needs: `veterinarians or animal bodyworkers · a pencil Doppler or ultrasound · ethics review`,
   },
   {
-    stage: 'runaway-release',
-    prong: 'runaway release',
-    title: 'Characterise runaway release',
-    design: `Phenomenology and natural history: semi-structured interviews and a case series`,
-    what: `The case histories that fit its profile could be gathered, from published case reports, the record of
-      meditation-related difficulty, teachers, clinicians and support services, and people who have been through it,
-      or are in it now, interviewed with one set of questions: how it began and ran, its stages and regions, how long
-      each took, what helped and what made it worse.`,
-    show: `It rests so far on two informal reports, and no study of it as such is known. A careful description might show
-      whether others describe it too; whether it is a syndrome, one recognisable
-      pattern that a case definition could capture, or several things; how common it is, who is at risk and what
-      helps; and it might find the participants for study 10.`,
-    needs: `a qualitative or clinical researcher, best with experience of meditation-related difficulty
-      (${cite('lindahl2017')}; ${cite('cooper2021')}) · ethics review · support at hand for participants`,
-  },
-  {
-    stage: 'runaway-release',
-    prong: 'runaway release',
-    title: 'Examine someone in runaway release',
-    design: `Observational: a prospective case series with repeated imaging`,
-    what: `People already in runaway release might be examined while it runs and again as it settles: ultrasound of the
-      fascial layers and their glide where change is felt and at matched places, colour Doppler of the perforators,
-      skin-flow imaging, photographs of any skin that weeps or crusts, and the blood tests a physician would order. No one would be asked to begin or seek it, and
-      their care would come first.`,
-    show: `If the tissue is changing, the glide might differ at the reported places and settle on the clock the reports
-      give; if only perception is changing, the tissue would likely look as it did. Skin that weeps where knots let go,
-      and not where it was rubbed, would show a change in the tissue itself.`,
-    needs: `a clinician-researcher with imaging who knows meditation-related difficulty · a route to participants · a plan
-      for referral · ethics review`,
-  },
-  {
     stage: 'any-time',
     prong: 'knots',
     title: 'What is already recorded',
@@ -282,6 +251,37 @@ const STUDIES: { stage: string; prong: string; title: string; design: string; wh
       cessations would count against it. Recorded over a knot too, it might show whether the vessels there take part.`,
     needs: `a meditation research laboratory · meditators who report cessations · fNIRS or fMRI, and laser Doppler`,
   },
+  {
+    stage: 'runaway-release',
+    prong: 'runaway release',
+    title: 'Characterise runaway release',
+    design: `Phenomenology and natural history: semi-structured interviews and a case series`,
+    what: `The case histories that fit its profile could be gathered, from published case reports, the record of
+      meditation-related difficulty, teachers, clinicians and support services, and people who have been through it,
+      or are in it now, interviewed with one set of questions: how it began and ran, its stages and regions, how long
+      each took, what helped and what made it worse.`,
+    show: `It rests so far on two informal reports, and no study of it as such is known. A careful description might show
+      whether others describe it too; whether it is a syndrome, one recognisable
+      pattern that a case definition could capture, or several things; how common it is, who is at risk and what
+      helps; and it might find the participants for study 15.`,
+    needs: `a qualitative or clinical researcher, best with experience of meditation-related difficulty
+      (${cite('lindahl2017')}; ${cite('cooper2021')}) · ethics review · support at hand for participants`,
+  },
+  {
+    stage: 'runaway-release',
+    prong: 'runaway release',
+    title: 'Examine someone in runaway release',
+    design: `Observational: a prospective case series with repeated imaging`,
+    what: `People already in runaway release might be examined while it runs and again as it settles: ultrasound of the
+      fascial layers and their glide where change is felt and at matched places, colour Doppler of the perforators,
+      skin-flow imaging, photographs of any skin that weeps or crusts, and the blood tests a physician would order. No one would be asked to begin or seek it, and
+      their care would come first.`,
+    show: `If the tissue is changing, the glide might differ at the reported places and settle on the clock the reports
+      give; if only perception is changing, the tissue would likely look as it did. Skin that weeps where knots let go,
+      and not where it was rubbed, would show a change in the tissue itself.`,
+    needs: `a clinician-researcher with imaging who knows meditation-related difficulty · a route to participants · a plan
+      for referral · ethics review`,
+  },
 ];
 const STAGES: { id: string; title: string; intro: string }[] = [
   {
@@ -303,16 +303,16 @@ const STAGES: { id: string; title: string; intro: string }[] = [
     intro: `Each of these needs knots found, by hand or by instrument, and so builds on the first two.`,
   },
   {
-    id: 'runaway-release',
-    title: 'Runaway release',
-    intro: `These two wait: runaway release is known so far from two informal reports, and letters are not yet asked for
-      on it. They are set out for when fuller accounts are in hand. Characterising it would come first: no study of it
-      as such is known, and that study might find the participants for the second.`,
-  },
-  {
     id: 'any-time',
     title: 'At any time',
     intro: `These need nothing from the others and could begin now, alongside the first two.`,
+  },
+  {
+    id: 'runaway-release',
+    title: 'Later: runaway release',
+    intro: `These two wait: runaway release is known so far from two informal reports, and letters are not yet asked for
+      on it. They are set out for when fuller accounts are in hand. Characterising it would come first: no study of it
+      as such is known, and that study might find the participants for the second.`,
   },
 ];
 
@@ -328,7 +328,7 @@ const index = [
   title="Knots: an open problem, and ways to find out"
   kicker="For researchers"
   current="research"
-  lede="People who work with the body find places that hold for years and let go in a breath. Here are ideas for studies that might help find out what these knots are, and what runaway release is, set out for those who know the methods to judge."
+  lede="People who work with the body find places that hold for years and let go in a breath, with a release the person feels at once. The aim is to find out exactly what this kind of knot is. Here are ideas for studies that might help, and a second question, what runaway release is, set out for those who know the methods to judge."
   description="An open problem in physiology: what a knot is, and what runaway release is. Fifteen ideas for studies that might help, which come first, how to respond, and the position paper."
   glyph="究"
   index={index}
@@ -341,9 +341,10 @@ const index = [
       discrete places in the body that hold, sometimes for years, and let go within seconds, under a hand, with the breath or
       to attention. A knot is felt as a bump, from very small to about the size of a penny; it seldom hurts unless pressed
       hard, as under a foam roller, so tenderness does not define it. Its release does. A knot lets go within seconds,
-      most familiarly under a roller, and the person feels it go. A rush of feeling is often reported to follow: relief or
-      well-being, at times tears or euphoria, and most of all when a whole cluster lets go together. These are the knots meant here; the
-      feeling is given as a mark to know them by, not as something to seek.
+      most familiarly under a roller or a bodyworker's hand, and the person feels it go. A rush of feeling is often
+      reported to follow at once: relief or well-being, at times tears or euphoria, and most of all when a whole cluster
+      lets go together. These are the knots meant here; the feeling is given as a mark to know them by, not as something
+      to seek. The aim is to find out exactly what this particular kind of knot is.
     </p>
     <p class="sub">
       A knot does not always stand out. An area with many knots seems to be less flexible, and is felt more as a dull
