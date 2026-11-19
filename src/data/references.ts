@@ -66,13 +66,13 @@ const EXTRA: Reference[] = [
     note: 'The original: knots as a state, not a structure — “a stale lock file” — the two-key protocol of pressure and breath, and a research programme.',
   },
   {
-    // Title, author, date and DOI from the DataCite records of 10.5281/zenodo.23901649 (draft 1) and 10.5281/zenodo.23925028
-    // (draft 3); the URL is the concept DOI, which resolves to the latest version.
+    // Title, author, date and DOI from the DataCite records of 10.5281/zenodo.23901649 (draft 1), 10.5281/zenodo.23925028
+    // (draft 3) and 10.5281/zenodo.24376190 (draft 4); the URL is the concept DOI, which resolves to the latest version.
     id: 'jhong2026b',
-    authors: 'Eugene Jhong (text by Claude Opus 5.5, refereed by Claude Fable 5.1)',
+    authors: 'Eugene Jhong (text by Claude Opus 5.5, refereed by Claude Fable 5.1; for draft 4, Claude Fable 5.2)',
     year: 2026,
     title: 'The perforator hypothesis: knots as small arteries held shut where they pierce the fascia',
-    venue: 'Zenodo preprint, 2 November 2026; draft 3, 3 November 2026',
+    venue: 'Zenodo preprint, 2 November 2026; draft 4, 19 November 2026',
     url: 'https://doi.org/10.5281/zenodo.23901648',
     kind: 'paper',
     tags: ['essay', 'perforators', 'vascular', 'fascia'],
