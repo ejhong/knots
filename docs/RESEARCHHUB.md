@@ -85,10 +85,13 @@ be surveyed and interviewed: whether they can isolate a single knot, felt as a d
 masses; how firmly they must press to find one; whether they can release them; how they learned; and what part the
 breath plays, in finding knots as well as in releasing them. Bodyworkers might be asked the same about the knots they
 feel in others. Then, in the same people, each might mark the knots they feel, blind to the other marks: the person
-their own, twice, an hour apart, and two examiners by touch. Which knots does each find, and do they agree?
+their own, twice, an hour apart, and two examiners by touch. Which knots does each find, and do they agree? And as a
+person lets a knot go under an examiner's resting finger, does the examiner feel the bump go too?
 *What it might show.* Whether feeling knots is itself a skill, perhaps tied to the breath as releasing them seems to be,
 held by some and not by others; and whether the knots a person feels in themselves can be felt by others too, or only
-from inside. If so, studies that locate or release knots would need to recruit those who have the skill they rely on.
+from inside. Someone pressing their own knot feels it twice over, with the finger and in the place pressed, and cannot
+easily tell the two apart; an examiner's finger has only the first. If feeling knots is a skill, studies that locate or
+release knots would need to recruit those who have the skill they rely on.
 *Likely needs:* a survey and interview researcher · many people who foam-roll, and bodyworkers · simple blind tests
 
 **2. How best to detect a knot** (knots)
