@@ -1,72 +1,110 @@
 # The ResearchHub call (draft)
 
-The text for the call on ResearchHub, drafted 14 November 2026. Everything below the line is the post; it is written
-without "I" or "we". The studies, with their groups and the kind of study each would be, repeat the Research page's word
-for word (`src/pages/research.astro`, the `STUDIES` and `STAGES` lists, shown at
-https://ejhong.github.io/knots/research/#studies; each card has its own anchor, `#study-1` to `#study-15`): change one,
-change the other. The site itself says nothing of ResearchHub, letters of intent or cost.
+The text for the call on ResearchHub: a request for letters of intent. First drafted on 14 November 2026; rewritten on
+19 November as a short call that points to the Research page for the studies, at the author's request. Everything
+below the second line is the post; it is written without "I" or "we".
 
-Passages in [brackets] are choices still open. The references are from the project's verified records
-(`src/data/papers.json`, `src/data/references.ts`). Runaway release follows the site's rules: stated as a danger, from
-published sources, never how it is set off, and always with where to find help.
+What must stay in step with the site (`src/pages/research.astro`):
+
+- **The list of studies:** their numbers, titles, kinds and order (the `STUDIES` and `STAGES` lists; each card has its
+  own anchor, `#study-1` to `#study-15`). Their full text is on the site only.
+- **The ask:** what is asked, how letters are weighed and what happens next (`#respond` on the page).
+- **The care rule** on breathing, pressure and runaway release.
+
+Settled by the author on 19 November: letters are public, there is no cost ceiling and no deadline, and an invited
+full proposal is paid for. Carried over that day from the call the author gave as an example (ResearchHub RFP 32943,
+"Epothilone B and anesthetic sensitivity"), and still to be confirmed for this one: who may apply, awards made as gifts
+to institutions, and open plans and reports as hopes that weigh in selection.
+
+The site gives the same ask but names ResearchHub only once the call is live and can be linked. The references are
+from the project's verified records (`src/data/papers.json`, `src/data/references.ts`). Runaway release follows the
+site's rules: stated as a danger, from published sources, never how it is set off, and always with where to find help.
+
+To paste into ResearchHub's agent: the note just below, then the post.
 
 ---
 
-## What is a knot, and what is runaway release? A call for studies
+Please set up a ResearchHub RFP from the text below. It asks for letters of intent, not full proposals.
+
+- The studies live on the project's own page, https://ejhong.github.io/knots/research/. Please keep the list here as
+  short titles with their links, and don't expand them.
+- Please keep the wording of "What is asked", "How letters are weighed" and "Care", and the help lines, as written.
+- No cost ceiling and no deadline are set. If you add cost estimates to the studies, mark them as rough guides, not
+  limits.
+- "Who may apply, and how awards are made" is adapted from the Epothilone B call (RFP 32943). Please make it match how
+  this call's awards will really be made.
+- Please don't add how runaway release is set off, or present anything here as a practice to try.
+
+---
+
+## What is a knot, and what is runaway release?
+
+A call for letters of intent
+
+### Purpose
 
 Bodyworkers, people who foam-roll and contemplative practitioners all describe knots: discrete places in the body that
-hold, sometimes for years, and let go within seconds, under a hand, with the breath or to attention, often with a tingle
-over the spot. A knot is felt as a bump, from very small to about the size of a penny; it seldom hurts unless pressed
-hard, as under a foam roller, so tenderness does not define it. Its release does. A knot lets go within seconds, most
-familiarly under a roller, and the person feels it go. A rush of feeling is often reported to follow: relief or
-well-being, at times tears or euphoria, and most of all when a whole cluster lets go together. These are the knots meant here; the feeling is given as
-a mark to know them by, not as something to seek.
+hold, sometimes for years, and let go within seconds, under a hand, with the breath or to attention. Knots are among
+the commonest things people report in their bodies and among the least explained. No mechanism for them is
+established and, as far as is known, nothing has been recorded at the moment one lets go.
+
+This call invites short letters of intent for studies that might help to tell **what a knot is**, or **what runaway
+release is**, a rarer and dangerous process described below. A useful result may be positive, negative or
+inconclusive. Fifteen ideas for studies are set out on the project's Research page, each with what it might show and
+what it likely needs: https://ejhong.github.io/knots/research/
+
+### The knots meant here
+
+A knot is felt as a bump, from very small to about the size of a penny; it seldom hurts unless pressed hard, as under
+a foam roller, so tenderness does not define it. Its release does. A knot lets go within seconds, most familiarly
+under a roller, and the person feels it go, often with a tingle over the spot. A rush of feeling is often reported to
+follow: relief or well-being, at times tears or euphoria, and most of all when a whole cluster lets go together. These
+are the knots meant here; the feeling is given as a mark to know them by, not as something to seek.
 
 A knot does not always stand out. An area with many knots seems to be less flexible, and is felt more as a dull block.
 A trained breath may be needed for the person to feel its knots as distinct bumps, and to release them; another's hand
 might then feel them too. As the knots let go, the block seems to ease. So an examiner's hand on a body at rest might
-find no bumps where there are many knots. The breath that releases knots is described as a trained one: a subtle weave
-of small in- and out-breaths, perhaps
-beginning with a small in-breath, builds the release, which is probably carried out on an out-breath that can be fairly
-strong, as an athlete's is. Under the pain of a foam roller the out-breaths are often strong and many, as in the
-breathing taught for childbirth.
+find no bumps where there are many knots.
 
-Knots are among the commonest things people report in their bodies and among the least explained. As far as is known,
-nothing has been recorded at the moment one lets go.
+### One hypothesis, and six others
 
 A position paper, *The perforator hypothesis: knots as small arteries held shut where they pierce the fascia* (Zenodo,
 https://doi.org/10.5281/zenodo.23901648), argues from established physiology that a knot is a cutaneous perforator, a
 small artery held shut by its own wall where it pierces the fascia. The idea grew from vasocomputation, the proposal
 that held predictions are held vascular tension (Johnson 2023), whose first step it keeps, a held contraction as a
-stored state; and from two reports of runaway release, described below. It sets out six alternatives in their
+stored state; and from two reports of runaway release, described below. It is untested. The paper sets out six
+alternatives in their
 strongest forms (smooth muscle in the latch state, a myofascial trigger point, densified hyaluronan, a sensitised nerve,
 motor units that latch on, and perception) and the measurements that would refute it. The project's site sets out all
 seven, each at its strongest: https://ejhong.github.io/knots/hypotheses/ (code and data:
-https://github.com/ejhong/knots).
+https://github.com/ejhong/knots). Studies that count against the hypothesis are as welcome as studies that support it.
 
 The paper was written by AI under its author's direction and has not been peer-reviewed, and its author will not take it
 to a journal. If, having weighed the alternatives, you think the perforator hypothesis is the best fit, take it up: test
 it, rework it, publish it (the paper is CC BY 4.0). A letter can propose that write-up, and it can be funded. If you think
 a rival theory fits better, the models, data and code are open to you too.
 
-**Runaway release.** Two reports describe a rarer process that can follow forceful, long work at clearing knots, in
-contemplative practice or in somatic work. Past some point, releases come in chains and the process can no longer be set down: it
-feels unfinished, and stopping is harder to bear than going on. It does not come and go but runs on, over months or
-years, through phases: knots releasing, and changes felt in the fascia over days to weeks, as the layers peel apart
-along lines, places are left hollow, and a slow re-stitching in the end brings back a sense of wholeness. Where many knots let go together, the skin over them can grow wet, then
-crust and flake away; unlike the rest, that can be seen and photographed. There are only two reports, both informal, and no study of the process as such is known
-(the position paper, Section 5). It is arduous and can be dangerous, above all for someone facing it alone: difficulties
-of the wider kind it belongs to have lasted years, and in a study that recruited Western Buddhist meditators who could
-describe difficult experiences, about one in six reported suicidality (Lindahl et al. 2017).
+### Runaway release
 
-So this call has two prongs: **what a knot is**, and **what runaway release is**. Fifteen studies that might help
-with one or the other follow, numbered for reference, grouped by what each needs and listed in the order they build on
-one another rather than by importance; under each title is the kind of study it would be. They are also on the site:
-https://ejhong.github.io/knots/research/#studies.
+Two reports describe a rarer process that can follow forceful, long work at clearing knots, in contemplative practice
+or in somatic work. Past some point, releases come in chains and the process can no longer be set down: it feels
+unfinished, and stopping is harder to bear than going on. It does not come and go but runs on, over months or years,
+through phases: knots releasing, and changes felt in the fascia over days to weeks, as the layers peel apart along
+lines, places are left hollow, and a slow re-stitching in the end brings back a sense of wholeness. Where many knots
+let go together, the skin over them can grow wet, then crust and flake away; unlike the rest, that can be seen and
+photographed. There are only two reports, both informal, and no study of the process as such is known (the position
+paper, Section 5). It is arduous and can be dangerous, above all for someone facing it alone: difficulties of the wider
+kind it belongs to have lasted years, and in a study that recruited Western Buddhist meditators who could describe
+difficult experiences, about one in six reported suicidality (Lindahl et al. 2017).
 
-**You are the experts.** These studies are ideas from a non-expert working with AI, meant to show the kind of thing
-that might help. You know the methods, the pitfalls and what is feasible, and three judgements would help more than any
-one idea here:
+Anyone struggling with it can find support from Cheetah House (https://www.cheetahhouse.org); anyone thinking about
+suicide should reach out now: in the US, call or text 988; elsewhere, find a line at https://findahelpline.com.
+
+### You are the experts
+
+The studies on the Research page are ideas from a non-expert working with AI, meant to show the kind of thing that
+might help. You know the methods, the pitfalls and what is feasible, and three judgements would help more than any one
+idea there:
 
 - **The lowest-hanging fruit.** Which could be done soon and cheaply, and still tell something?
 - **What to address first.** The list starts with finding knots and with characterising runaway release, since much of the
@@ -74,266 +112,93 @@ one idea here:
 - **What you could do.** Which could you take on, with the skills, instruments, laboratory, patients or data you have,
   alone or with others?
 
-Or propose something better: the study you think would actually decide the question matters more than any listed
-here.
+Or propose something better: the study you think would actually decide the question matters more than any listed.
 
-### The studies
+### What is asked: a letter of intent
 
-#### First: finding knots
+This call depends on your expertise, and a short letter is enough to give it: a page or less, which should not take
+long to write.
 
-Feeling a knot may itself be a skill, and a knot that its owner feels may or may not be one that others can feel.
-Informal reports suggest that some who foam-roll can isolate a single knot, felt as a distinct bump, and release it
-readily, perhaps through a trained breath that may also help to find it, while others never feel single knots at all,
-only broad, dull masses. The bumps and the dull masses may be one thing: an area with many knots is felt more as a dull
-block, and a trained breath may be needed to feel its knots as distinct bumps and to release them. If so, studies that locate or release knots
-cannot assume that anyone can find one, in themselves or in others, or that a bump is there for a hand to find in a body
-at rest. So these two come first: who can feel a knot, and whether an instrument can find one.
+- **Your reading of the list.** Which studies are the lowest-hanging fruit, and which should be addressed first,
+  including ones you would not take on yourself.
+- **What you would do.** The question, what you would measure, in whom and with what, and what the result might show.
+- **Who would do it.** The people and their relevant experience, the instruments, laboratory, participants or data
+  already to hand, and any competing interests.
+- **Time and cost.** A rough timeline and a rough total cost. If a smaller first step would still tell something, say
+  what it is and what it would cost.
 
-**1. Who can feel a knot: its owner, others, or both** (knots)
-*Design:* Survey and phenomenological interviews, then a blinded reliability study (test–retest and inter-rater)
-Two questions, which may have different answers: can people feel their own knots, and can others feel them too? A knot
-might be felt only by its owner, or by a hand from outside as well. Many who foam-roll or work on their own knots might
-be surveyed and interviewed: whether they can isolate a single knot, felt as a distinct bump, or feel only broad, dull
-masses; whether a bump is there when they first press, or stands out only as they attend to it and breathe; how firmly
-they must press to find one; whether they can release them; what a release feels like and what follows it, from nothing
-to relief, well-being, tears or euphoria, how often, and whether many knots ever let go at once; how they learned; and
-what part the breath plays, in finding knots as well as in releasing them. Bodyworkers might be asked the same about the
-knots they feel in others. Then, in the same people, each might mark the knots they feel, blind to the other marks: the
-person their own, twice, an hour apart, and two examiners by touch. Which knots does each find, and do they agree? And
-as a person lets a knot go under an examiner's resting finger, does the examiner feel the bump go too?
-*What it might show.* Whether feeling knots is itself a skill, perhaps tied to the breath as releasing them seems to be,
-held by some and not by others; and whether the knots a person feels in themselves can be felt by others too, or only
-from inside. Someone pressing their own knot feels it twice over, with the finger and in the place pressed, and cannot
-easily tell the two apart; an examiner's finger has only the first. How common a felt release is among people who roll,
-and the feeling that can follow it, is not known; the survey would give a first estimate, and would find the people who
-have the knots meant here. If feeling knots is a skill, studies that locate or release knots would need to recruit those who have the
-skill they rely on; and if bumps stand out only with a trained breath, an examiner might find none in a body at rest.
-*Likely needs:* a survey and interview researcher · many people who foam-roll, and bodyworkers · simple blind tests
+One study, or part of one, is enough. A reading of the list helps even without an offer to take any of it on.
 
-**2. How best to detect a knot** (knots)
-*Design:* Blinded diagnostic-accuracy study, with marked knots as the reference standard
-At knots marked by their owners or by examiners (study 1), and at matched spots nearby, instruments might be compared,
-each blind to the marks: a pencil Doppler listening for a perforator and its flow; ultrasound looking for a bump, a
-vessel beneath and the layers' glide, with colour Doppler and elastography; and a thermal camera watching the skin
-rewarm after a mild cold (Weum et al. 2016). Each might look twice: while the knots hold, and again once their owners
-have released them by their usual means.
-*What it might show.* Whether an instrument can find a knot without a skilled hand, which would free other studies from
-depending on who can feel one. A Doppler and a thermal camera see a vessel only by the blood moving in it. If knots are
-perforators held shut, both would find little or nothing at a held knot: its sign would be a spot that is silent and slow to
-rewarm while the knot holds, and that sounds and warms once it lets go. Ultrasound might show what the bump is: fluid or
-swollen veins where the bundle passes the fascia, a firm place where the layers do not glide (densification), or a
-nodule in muscle (trigger points, the motor switch).
-*Likely needs:* a pencil Doppler · ultrasound with colour Doppler and elastography · a thermal camera · people whose
-knots have been marked
+Letters are public: post yours on ResearchHub under this call, where others can read it and build on it. There is no
+deadline; letters are read as they arrive.
 
-#### Then: with knots found
+### How letters are weighed
 
-Each of these needs knots found, by hand or by instrument, and so builds on the first two.
-
-**3. Catch a knot as it lets go** (knots)
-*Design:* Sham-controlled laboratory physiology, with felt releases marked as they happen
-People who can release knots at will (bodyworkers, practitioners skilled with a foam roller, a ball, a trained breath or
-attention) might release them in a laboratory while instruments watch the tissue: skin flow by laser speckle or a
-thermal camera, ultrasound with colour Doppler and the layers' sliding, surface EMG resolved to single motor units. The
-breath might be recorded too, with its carbon dioxide, since a run of strong or quick out-breaths lowers it and can
-cause tingling by itself. A button could mark each felt release, with a spot pressed alike, without a knot, as the sham.
-After each, the person might say what followed, from nothing to relief, well-being or tears, and how many knots seemed
-to go; and the range of a stretch that the area limits might be measured before and after, on that side and on the
-other. No one would be taught a breath, or asked to press, breathe or work harder or longer, or to release more knots,
-than they usually do.
-*What it might show.* Each of the seven proposed mechanisms would, on its own account, leave a different trace at
-release, from a flood of flow to the skin to nothing in the tissue at all, only changes that follow the breath; a
-careful recording might begin to sort releases by kind. It might also show whether the feeling that follows a release
-comes without a roller's pain and its hard, repeated out-breaths as well, since relief, even when an expected pain
-simply does not come, is itself felt as pleasant (Leknes et al. 2011); whether it grows with how much lets go; and
-whether the dull block eases as an area's knots let go, on the worked side alone or on both.
-*Likely needs:* a laboratory with ultrasound and EMG or skin-flow imaging, and a capnograph · a few skilled
-practitioners (study 1 might find them) · ethics review
-
-**4. Where knots sit** (knots)
-*Design:* Blinded mapping, with spatial statistics against chance
-Knots might be marked over a region of the body in two ways, or both (study 1): by two examiners who can feel knots in
-others, blind to each other, or by people who can isolate their own, with the breath they use to feel them, if they use
-one. A third person, blind to the marks, might map the
-perforators with a pencil Doppler, or with a thermal camera as the skin rewarms after a mild cold (Weum et al. 2016),
-and map them again once the marked knots have been released by their owners' usual means, with comfortable pressure.
-Those who use a breath to release their knots would use it as they already do; no one would be taught a breath, or
-asked to press, breathe or work harder or longer than usual. Both instruments see a vessel only by its flow, so a
-perforator held shut would be faint or missing on the first map. Knots that do not let go would be left, and not counted. The marks could then be set against the
-vessels of each map at several distances, and against random and shifted maps.
-*What it might show.* Whether knots sit at perforators, and in what state. On the perforator view a held knot lies where
-the first map is empty and the second shows a vessel; on the nerve view its perforator sounds throughout. Or knots may
-lie where a muscle's nerve enters (trigger points), or wherever stress is held (the other four). Marked both ways, it
-would also show whether people's own marks and an examiner's agree. Perhaps the cheapest test of the perforator view: an
-afternoon's work.
-*Likely needs:* examiners who can feel knots in others, or people who can isolate their own · a pencil Doppler or
-thermal camera · a statistician
-
-**5. Whether a knot is a stable thing** (knots)
-*Design:* Longitudinal: blinded mapping repeated over weeks and months
-The same people's knots might be mapped again over weeks and months, against their own map of perforators, built up
-over the visits, since a map made by flow misses a vessel held shut (study 4): by two examiners who can feel knots in
-others, blind to each other and to earlier maps, or by the people themselves, if they can isolate their own (study 1),
-blind to their earlier marks.
-*What it might show.* Whether the same knots are found again at all, which may depend on the skill of whoever marks
-them, and whether a person's knots return to fixed places (as the perforator and nerve views expect) or arise anywhere
-and drift. Much else may rest on the answer.
-*Likely needs:* examiners, or people who can isolate their own knots · a few people, each seen several times · a Doppler
-or thermal map
-
-**6. Whether knots grow with age** (knots)
-*Design:* Epidemiology: cross-sectional across ages, then a cohort followed over years
-Knots might be counted and sized in people of all ages, from childhood to old age, and in the same people over years: by
-their own marks and by examiners (study 1), and by whichever instrument proves best (study 2). People might also be
-asked when their knots first appeared and how they have changed.
-*What it might show.* Whether knots grow larger and more numerous with age, and whether children are nearly free of
-them. The accounts part here: perforators, densification and nerves expect knots to rise with age (the first, in number
-and size); latches accumulate from early childhood; trigger points follow overload and injury; the motor switch
-remembers nothing by itself; perception follows history more than age.
-*Likely needs:* examiners or an instrument (studies 1 and 2) · people of all ages · a statistician
-
-**7. What remains after death** (knots)
-*Design:* Post-mortem histology: knot sites against matched control sites
-People whose knots were mapped in life (study 1), and who give their bodies to science, might be examined after death
-where the knots were and at matched places: the perforators' walls and lumens, the fascial layers, the muscle and the
-nerves, under the microscope. Or tissue from ordinary post-mortem examinations, taken where knots are often reported,
-such as the upper back, might be compared with tissue from elsewhere.
-*What it might show.* Whether anything structural remains where a knot was. Holds kept only by the nervous system (the
-motor switch, perception) would likely leave nothing; a vessel narrowed by long holding, a densified layer, an entrapped
-nerve or changed muscle might remain, and would point to the accounts that expect them.
-*Likely needs:* an anatomist or pathologist · a body donation programme, or post-mortem tissue · ethics review
-
-**8. Whether animals have knots** (knots)
-*Design:* Comparative (veterinary): a survey, examination by instrument, and opportunistic necropsy
-Veterinarians and animal bodyworkers might be asked whether they find knots in horses, dogs or other animals, and where;
-with their owners' consent, the spots might be examined with the instruments of study 2. Where an animal that had them
-dies or is put down for other reasons, the tissue beneath might be examined too (study 7). No animal would be harmed for
-the study.
-*What it might show.* Whether knots are something mammals share, as most of the accounts would expect, since animals
-have the same vessels, fascia, muscle and nerves; and a route to the tissue beneath a knot that was felt in life.
-*Likely needs:* veterinarians or animal bodyworkers · a pencil Doppler or ultrasound · ethics review
-
-#### Runaway release
-
-Characterising it comes first: no study of it as such is known, and that study might find the participants for the
-second.
-
-**9. Characterise runaway release** (runaway release)
-*Design:* Phenomenology and natural history: semi-structured interviews and a case series
-The case histories that fit its profile could be gathered, from published case reports, the record of meditation-related
-difficulty, teachers, clinicians and support services, and people who have been through it, or are in it now,
-interviewed with one set of questions: how it began and ran, its stages and regions, how long each took, what helped and
-what made it worse.
-*What it might show.* It rests so far on two informal reports, and no study of it as such is known. A careful description
-might show whether others describe it too; whether it is a syndrome, one
-recognisable pattern that a case definition could capture, or several things; how common it is, who is at risk and what
-helps; and it might find the participants for study 10.
-*Likely needs:* a qualitative or clinical researcher, best with experience of meditation-related difficulty (Lindahl et
-al. 2017; Cooper et al. 2021) · ethics review · support at hand for participants
-
-**10. Examine someone in runaway release** (runaway release)
-*Design:* Observational: a prospective case series with repeated imaging
-People already in runaway release might be examined while it runs and again as it settles: ultrasound of the fascial
-layers and their glide where change is felt and at matched places, colour Doppler of the perforators, skin-flow imaging,
-photographs of any skin that weeps or crusts, and the blood tests a physician would order. No one would be asked to begin or seek it, and their care would come first.
-*What it might show.* If the tissue is changing, the glide might differ at the reported places and settle on the clock
-the reports give; if only perception is changing, the tissue would likely look as it did. Skin that weeps where knots let go, and not
-where it was rubbed, would show a change in the tissue itself.
-*Likely needs:* a clinician-researcher with imaging who knows meditation-related difficulty · a route to participants ·
-a plan for referral · ethics review
-
-#### At any time
-
-These need nothing from the others and could begin now, alongside the first two.
-
-**11. What is already recorded** (knots)
-*Design:* Secondary analysis of existing recordings
-Laboratories that study trigger points hold ultrasound, colour Doppler and elastography of the spots they examine,
-recorded for other questions (Sikdar et al. 2009). Read again with the perforators in mind, these might say whether one
-runs beneath the spot, in which layer any bump lies, and whether the layers glide over it. Surgeons hold another
-record. Before a flap of skin is moved, its perforators are mapped by CT angiography or Doppler, which show a vessel
-only by the blood in it, and at the operation the surgeon sees them directly.
-*What it might show.* A first look, for the cost of the analysis: a bump in muscle would point toward a trigger point or
-the motor switch, a perforator beneath toward perforators or nerves, and layers that do not glide toward densification.
-But trigger points are found by tenderness in a taut band, and knots seldom hurt unless pressed hard, so the recordings
-may show other things than knots; latent trigger points, painless until pressed, may be the nearest. The surgeons'
-records might say how often a perforator found at operation had been missed by the map before it: a ceiling on how many
-large perforators were shut when scanned yet found at operation. In the lower abdomen it is low: in one blinded series
-the scan missed one of 280 (Rozen et al. 2008). Other regions might differ: knots are said to be densest around the hips and shoulders.
-*Likely needs:* access to existing recordings · someone who reads musculoskeletal ultrasound · a plastic surgery unit's
-maps and operative records
-
-**12. A small artery held shut for hours** (knots)
-*Design:* Ex vivo physiology: pressure myography of isolated small arteries, with their myosin phosphorylation
-In a pressure myograph, a small artery, human if possible, might be shut with an agonist for five minutes or for four
-hours, and the agonist then lowered to a resting level, with the muscle's myosin phosphorylation measured through the
-hold.
-*What it might show.* Whether a vessel can remember, as vasocomputation proposes a held contraction does (Johnson 2023),
-and how. If knots are vessels that set, the first might reopen and the second stay shut, opening past its resting
-diameter when finally released; if the second reopens as fully as the first, that would count against vessels setting.
-Tension kept while the phosphorylation falls would show the latch state (Hai and Murphy 1988), the cheap hold
-vasocomputation proposes.
-*Likely needs:* a laboratory with a pressure myograph · small arteries · a day's work, and more for the phosphorylation
-
-**13. The breath and the skin of the trunk** (knots)
-*Design:* Human microvascular physiology: skin blood flow over the trunk by laser speckle, through ordinary and trained
-breaths
-The breath's effects on skin flow, such as the brief narrowing of skin vessels with a deep breath, are measured mostly
-in the fingers, and for ordinary breaths. They could be measured over the back and neck, where knots are reported, with
-laser speckle: through ordinary breathing, a deep breath, and the trained breath said to release knots, a subtle weave
-of small in- and out-breaths and the out-breath that carries it out, in people practised in it.
-*What it might show.* Which part of the breath the vessels over the trunk follow, the subtle weave, the out-breath that
-carries it out, or only the sum of many breaths; and whether they could let go within the seconds a release is said to
-take: timing that the vascular accounts, the perforators and the latch, depend on.
-*Likely needs:* laser speckle or laser Doppler · a physiology laboratory · a few people practised in such breathing
-
-**14. Acupoints on perforators** (knots)
-*Design:* Blinded mapping against chance, or a retrospective study of CT angiograms
-Perforators might be mapped by thermal camera as the skin rewarms after a mild cold, and checked by Doppler, while
-practitioners mark the classical points by the WHO's proportional rules, out of the reader's sight. Or, from records:
-the channels could be laid over the CT angiograms taken before abdominal flap surgery, which record perforators by the
-thousand.
-*What it might show.* Whether the points sit on perforators more than chance would put them. On the five lines where
-both are measured they sit only a little nearer than random points: not shown, not excluded.
-*Likely needs:* a thermal camera and Doppler · practitioners and a reader, blind to each other · a statistician
-
-**15. Whether vasomotion stops in deep meditation** (knots)
-*Design:* Laboratory physiology with first-person event marking: fNIRS or fMRI, and laser Doppler flowmetry
-Vasocomputation proposes that held predictions are held vascular tension: a contraction of the smooth muscle around a
-vessel stores a prediction and, held long enough, latches (Johnson 2023). It predicts that vasomotion, the slow rhythm
-of the vessels' tone, nearly stops in deep meditative cessations. In meditators who report cessations, moments in which
-experience is said to stop, vasomotion might be recorded as they sit as usual: in the brain by fNIRS or fMRI, and in the
-skin over a knot and at a matched spot by laser Doppler, with each cessation marked as it is reported.
-*What it might show.* Whether the vessels follow the deepest meditative states, as the account predicts; a rhythm
-unchanged through cessations would count against it. Recorded over a knot too, it might show whether the vessels there
-take part.
-*Likely needs:* a meditation research laboratory · meditators who report cessations · fNIRS or fMRI, and laser Doppler
-
-### What to send: a letter of intent
-
-A page or less, which shouldn't take long to write:
-
-- your reading of the list: which studies are the lowest-hanging fruit, and which should be addressed first,
-  including ones you would not take on yourself;
-- what you could do: the question, and what the result might show;
-- what you would measure, in whom, and with what;
-- who would do it, and their relevant experience;
-- a rough timeline and a rough total cost.
-
-One study, or part of one, is enough. Letters are weighed by what they might settle for what they would cost, so
-small, decisive studies are as welcome as large ones. [Letters under $X are especially welcome.] [Letters by DATE /
-open until filled.]
+- **Usefulness now.** What the study would settle, and how much of the rest depends on it.
+- **Cost-effectiveness.** What it would settle for what it would cost. Small, decisive studies are as welcome as large
+  ones, and a low price alone is not enough.
+- **Experience and capability.** Whether the people, the instruments and the access to participants are in place to do
+  it well and without delay.
 
 ### What happens next
 
-Every letter will be read, and promising ones followed up with questions or an invitation to a full proposal[, with the
-time a full proposal takes paid for]. Funded work shares its data and code, and keeps a simple public log of updates:
-frequent one-liners are ideal ("first three participants recorded", "switched from thermal imaging to laser speckle").
+Every letter will be read, and promising ones followed up with questions. A small study may be funded on its letter
+and a conversation. Where a full proposal is needed, it will be asked for, and the time it takes to write will be paid
+for, whether or not the study is then funded.
+
+It is hoped that funded work will register its plan in public before data are collected, report whatever the result,
+share its data and code, and keep a simple public log of updates: frequent one-liners are ideal ("first three
+participants recorded", "switched from thermal imaging to laser speckle"). These weigh in selection.
+
+### Who may apply, and how awards are made
+
+Researchers and clinicians at accredited universities, colleges and academically affiliated research hospitals may
+apply. A principal investigator there takes institutional responsibility for the work; student-led projects are
+welcome under qualified supervision. Each award is made as a charitable gift to the recipient institution, so it
+carries the institution's gift fee and not a sponsored-project indirect cost rate. No cost ceiling is set. Awards
+assume access to existing equipment, facilities and qualified supervision; major equipment purchases are unlikely to
+fit.
+
+### The studies
+
+Fifteen ideas, grouped by what each needs and listed in the order they build on one another, not by importance. After
+each title is the kind of study it would be. The Research page sets each out in full, with what it might show and what
+it likely needs: https://ejhong.github.io/knots/research/#studies
+
+**First: finding knots**
+
+1. Who can feel a knot: its owner, others, or both. *Survey and phenomenological interviews, then a blinded reliability study (test–retest and inter-rater).* https://ejhong.github.io/knots/research/#study-1
+2. How best to detect a knot. *Blinded diagnostic-accuracy study, with marked knots as the reference standard.* https://ejhong.github.io/knots/research/#study-2
+
+**Then: with knots found**
+
+3. Catch a knot as it lets go. *Sham-controlled laboratory physiology, with felt releases marked as they happen.* https://ejhong.github.io/knots/research/#study-3
+4. Where knots sit. *Blinded mapping, with spatial statistics against chance.* https://ejhong.github.io/knots/research/#study-4
+5. Whether a knot is a stable thing. *Longitudinal: blinded mapping repeated over weeks and months.* https://ejhong.github.io/knots/research/#study-5
+6. Whether knots grow with age. *Epidemiology: cross-sectional across ages, then a cohort followed over years.* https://ejhong.github.io/knots/research/#study-6
+7. What remains after death. *Post-mortem histology: knot sites against matched control sites.* https://ejhong.github.io/knots/research/#study-7
+8. Whether animals have knots. *Comparative (veterinary): a survey, examination by instrument, and opportunistic necropsy.* https://ejhong.github.io/knots/research/#study-8
+
+**Runaway release**
+
+9. Characterise runaway release. *Phenomenology and natural history: semi-structured interviews and a case series.* https://ejhong.github.io/knots/research/#study-9
+10. Examine someone in runaway release. *Observational: a prospective case series with repeated imaging.* https://ejhong.github.io/knots/research/#study-10
+
+**At any time**
+
+11. What is already recorded. *Secondary analysis of existing recordings.* https://ejhong.github.io/knots/research/#study-11
+12. A small artery held shut for hours. *Ex vivo physiology: pressure myography of isolated small arteries, with their myosin phosphorylation.* https://ejhong.github.io/knots/research/#study-12
+13. The breath and the skin of the trunk. *Human microvascular physiology: skin blood flow over the trunk by laser speckle, through ordinary and trained breaths.* https://ejhong.github.io/knots/research/#study-13
+14. Acupoints on perforators. *Blinded mapping against chance, or a retrospective study of CT angiograms.* https://ejhong.github.io/knots/research/#study-14
+15. Whether vasomotion stops in deep meditation. *Laboratory physiology with first-person event marking: fNIRS or fMRI, and laser Doppler flowmetry.* https://ejhong.github.io/knots/research/#study-15
+
+Or one not listed: anything that might help tell what a knot is, or what runaway release is.
 
 ### Care
 
-Any study with people needs ethics review, comfortable pressure and a plan for referral. Breathing should be ordinary
-or, for people who already use a breath to release their knots, that breath as they already use it; no one should be
+Any study with people needs ethics review, comfortable pressure and a plan for referral, and work with animals or with
+human tissue needs the approvals its institution requires, all before work begins. Breathing should be ordinary or,
+for people who already use a breath to release their knots, that breath as they already use it; no one should be
 taught a breath, or asked to press, breathe or work harder or longer, or to release more knots, than they usually do.
 Nothing here is a practice or a protocol. No one should be asked to begin or seek runaway release: studies of it observe people
 already in it, put their care first, and need clinicians who know meditation-related difficulty. If you are struggling
@@ -345,24 +210,9 @@ line at https://findahelpline.com.
 
 - Jhong E. The perforator hypothesis: knots as small arteries held shut where they pierce the fascia. Zenodo preprint
   (2026). https://doi.org/10.5281/zenodo.23901648
-- Cooper DJ, Lindahl JR, Palitsky R, Britton WB. “Like a vibration cascading through the body”: energy-like somatic
-  experiences reported by Western Buddhist meditators. Religions 12:1042 (2021). https://doi.org/10.3390/rel12121042
-- Hai CM, Murphy RA. Cross-bridge phosphorylation and regulation of latch state in smooth muscle. Am J Physiol
-  254:C99–106 (1988). https://doi.org/10.1152/ajpcell.1988.254.1.C99
 - Johnson ME. Principles of Vasocomputation: A Unification of Buddhist Phenomenology, Active Inference, and Physical
   Reflex (Part I). opentheory.net (2023).
   https://opentheory.net/2023/07/principles-of-vasocomputation-a-unification-of-buddhist-phenomenology-active-inference-and-physical-reflex-part-i/
-- Leknes S, Lee M, Berna C et al. Relief as a reward: hedonic and neural responses to safety from pain. PLoS One
-  6:e17870 (2011). https://doi.org/10.1371/journal.pone.0017870
 - Lindahl JR, Fisher NE, Cooper DJ et al. The varieties of contemplative experience: a mixed-methods study of
   meditation-related challenges in Western Buddhists. PLoS One 12:e0176239 (2017).
   https://doi.org/10.1371/journal.pone.0176239
-- Rozen WM, Ashton MW, Stella DL et al. The accuracy of computed tomographic angiography for mapping the perforators
-  of the deep inferior epigastric artery: a blinded, prospective cohort study. Plast Reconstr Surg 122:1003–9 (2008).
-  https://doi.org/10.1097/PRS.0b013e3181845994
-- Sikdar S, Shah JP, Gebreab T et al. Novel applications of ultrasound technology to visualize and characterize
-  myofascial trigger points and surrounding soft tissue. Arch Phys Med Rehabil 90:1829–38 (2009).
-  https://doi.org/10.1016/j.apmr.2009.04.015
-- Weum S, Mercer JB, de Weerd L. Evaluation of dynamic infrared thermography as an alternative to CT angiography for
-  perforator mapping in breast reconstruction: a clinical study. BMC Med Imaging 16:43 (2016).
-  https://doi.org/10.1186/s12880-016-0144-x

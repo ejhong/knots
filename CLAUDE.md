@@ -83,8 +83,10 @@ the author's reports, is retired: `sim/archive/`.)
   grouped by what each needs and listed in the order they build on one another, not by importance, each with the kind of
   study it would be), after two open questions and what would help most (the lowest-hanging fruit, what to address first,
   what a researcher could do). The Research page carries nothing from the models: the theories, their models and what physics allows are on
-  Hypotheses. `docs/RESEARCHHUB.md`, the draft call on ResearchHub, repeats them: keep the two in step. The site says nothing
-  of ResearchHub, letters of intent or cost. The September preprint and pilot are retired (`research/preprint/` and
+  Hypotheses. The page also asks for letters of intent (`#respond`: what a letter holds, how letters are weighed, what
+  happens next). `docs/RESEARCHHUB.md`, the draft call on ResearchHub, lists the studies by number, title and kind and
+  points to the page for their text, and repeats that ask and the care rule: keep the two in step. The site names
+  ResearchHub only once the call is live and can be linked, and states no cost ceiling. The September preprint and pilot are retired (`research/preprint/` and
   `pilot/` redirect, as the paper cites them). The paper's PDF is its Zenodo file: reprint with `npx tsx scripts/pdf.ts`
   (a running dev server) only for a new Zenodo version.
 - Deploy: push to `main` (GitHub Actions → Pages at https://ejhong.github.io/knots/). Every push also runs `ci.yml`: the sim

@@ -18,7 +18,9 @@ const ALIAS: Record<string, string> = { 'Acupoints on perforators': 'points' };
 
 // Studies that might help, on the two open questions: what a knot is, and what runaway release is. Grouped by what each
 // needs (STAGES) and listed in the order they build on one another, not by importance, each with the kind of study it would
-// be. docs/RESEARCHHUB.md (the draft call on ResearchHub) repeats the groups and the text: keep the two in step.
+// be. docs/RESEARCHHUB.md (the draft call on ResearchHub) lists the studies by number, title and kind, in this order,
+// and points here for their text; it repeats the ask for letters of intent (#respond: what a letter holds, how letters
+// are weighed, what happens next) and the care rule. Keep the two in step.
 const STUDIES: { stage: string; prong: string; title: string; design: string; what: string; show: string; needs: string }[] = [
   {
     stage: 'finding-knots',
@@ -316,6 +318,7 @@ const STAGES: { id: string; title: string; intro: string }[] = [
 const index = [
   { id: 'questions', label: 'two open questions' },
   { id: 'help', label: 'what would help most' },
+  { id: 'respond', label: 'how to respond' },
   { id: 'studies', label: 'studies that might help' },
   { id: 'further', label: 'the position paper' },
 ];
@@ -325,7 +328,7 @@ const index = [
   kicker="For researchers"
   current="research"
   lede="People who work with the body find places that hold for years and let go in a breath. Here are ideas for studies that might help find out what these knots are, and what runaway release is, set out for those who know the methods to judge."
-  description="An open problem in physiology: what a knot is, and what runaway release is. Fifteen ideas for studies that might help, which come first, and the position paper."
+  description="An open problem in physiology: what a knot is, and what runaway release is. Fifteen ideas for studies that might help, which come first, how to respond, and the position paper."
   glyph="究"
   index={index}
   wide
@@ -390,8 +393,49 @@ const index = [
     </ul>
     <p class="sub">
       Or propose something better: a study that would decide a question matters more than any listed here. A reading
-      of the list helps even without an offer to take any of it on. To answer, or to object, open an{' '}
-      <a href="https://github.com/ejhong/knots/issues">issue</a> on the project's repository.
+      of the list helps even without an offer to take any of it on.
+    </p>
+
+    <h3 class="ask-h" id="respond">How to respond: a letter of intent</h3>
+    <p class="sub">
+      This work depends on your expertise, and a short letter is enough to give it: a page or less, which should not
+      take long to write.
+    </p>
+    <ul class="ask">
+      <li><strong>Your reading of the list.</strong> Which studies are the lowest-hanging fruit, and which should be
+        addressed first, including ones you would not take on yourself.</li>
+      <li><strong>What you would do.</strong> The question, what you would measure, in whom and with what, and what the
+        result might show.</li>
+      <li><strong>Who would do it.</strong> The people and their relevant experience, the instruments, laboratory,
+        participants or data already to hand, and any competing interests.</li>
+      <li><strong>Time and cost.</strong> A rough timeline and a rough total cost. If a smaller first step would still
+        tell something, say what it is and what it would cost.</li>
+    </ul>
+    <p class="sub">
+      One study, or part of one, is enough. Letters are public: post yours as an{' '}
+      <a href="https://github.com/ejhong/knots/issues">issue</a> on the project's repository, where others can read it
+      and build on it. Objections are welcome there too. There is no deadline; letters are read as they arrive.
+    </p>
+
+    <h3 class="ask-h">How letters are weighed</h3>
+    <ul class="ask">
+      <li><strong>Usefulness now.</strong> What the study would settle, and how much of the rest depends on it.</li>
+      <li><strong>Cost-effectiveness.</strong> What it would settle for what it would cost. Small, decisive studies are
+        as welcome as large ones, and a low price alone is not enough.</li>
+      <li><strong>Experience and capability.</strong> Whether the people, the instruments and the access to participants
+        are in place to do it well and without delay.</li>
+    </ul>
+
+    <h3 class="ask-h">What happens next</h3>
+    <p class="sub">
+      Every letter will be read, and promising ones followed up with questions. A small study may be funded on its
+      letter and a conversation. Where a full proposal is needed, it will be asked for, and the time it takes to write
+      will be paid for, whether or not the study is then funded.
+    </p>
+    <p class="sub">
+      It is hoped that funded work will register its plan in public before data are collected, report whatever the
+      result, share its data and code, and keep a simple public log of updates: frequent one-liners are ideal (“first
+      three participants recorded”, “switched from thermal imaging to laser speckle”). These weigh in selection.
     </p>
   </section>
 
@@ -595,6 +639,13 @@ const index = [
   }
   .ask li {
     margin-bottom: 4px;
+  }
+  .ask-h {
+    font-family: var(--font-sans);
+    font-size: 13.5px;
+    font-weight: 700;
+    margin: 18px 0 4px;
+    scroll-margin-top: calc(var(--topbar-h) + 12px);
   }
   .stage {
     margin-top: 20px;
