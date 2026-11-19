@@ -167,7 +167,9 @@ it likely needs: https://ejhong.github.io/knots/research/#studies. The numbers a
 and 15, concern runaway release and are not part of this call.
 
 Throughout, a knot means the kind described above, known by a release its owner feels. A study that marks or counts
-knots should say how it would know that they are of this kind; a bump or a tender spot is not enough.
+knots should say how it would know that they are of this kind; a bump or a tender spot is not enough. People who
+foam-roll regularly are a likely group to begin with: many may know this release in themselves, and they can be
+studied doing only what they already do. Bodyworkers, who feel knots in others, are another.
 
 **First: finding knots**
 
