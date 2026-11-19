@@ -20,13 +20,10 @@ interface Props {
   noindex?: boolean;
   /** Scholarly metadata for a research document (see Base). */
   citation?: Citation;
-  /** Preview image for shared links (see Base). */
-  image?: string;
-  imageAlt?: string;
 }
-const { title, kicker, lede, current, description, glyph, index = [], wide = false, noindex = false, citation, image, imageAlt } = Astro.props;
+const { title, kicker, lede, current, description, glyph, index = [], wide = false, noindex = false, citation } = Astro.props;
 ---
-<Base title={title} current={current} description={description} noindex={noindex} citation={citation} image={image} imageAlt={imageAlt}>
+<Base title={title} current={current} description={description} noindex={noindex} citation={citation}>
   <div class="doc">
     <article class:list={['sheet', { wide }]}>
       {glyph && <span class="ornament cjk" aria-hidden="true">{glyph}</span>}
