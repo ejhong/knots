@@ -5,7 +5,7 @@ perforators and fascia, the theories of what knots are, and the maps the contemp
 from Eugene Jhong’s essays, which head the Library.
 
 The knots meant are known by their release: one lets go within seconds and the person feels it go, often with a rush of
-feeling (a mark to know them by, not something to seek).
+feeling.
 
 **Live:** <https://ejhong.github.io/knots/>
 

@@ -100,7 +100,9 @@ the author's reports, is retired: `sim/archive/`.)
   whether a knot is a stable thing were taken out. The people are never identified, and Cheetah House is named only as a
   place to find help, never as a place to recruit. The September preprint and pilot are retired (`research/preprint/` and
   `pilot/` redirect, as the paper cites them). The paper's PDF is its Zenodo file: reprint with `npx tsx scripts/pdf.ts`
-  (a running dev server) only for a new Zenodo version.
+  (a running dev server) only for a new Zenodo version. Since 22 Nov 2026 the paper's page differs from the deposited draft 5 by one
+  dropped remark (the feeling a release brings as "a mark to know them by, not something to seek", taken off the site at
+  the author's word); its Versions section says so, and the next Zenodo version should carry the removal.
 - Deploy: push to `main` (GitHub Actions → Pages at https://ejhong.github.io/knots/). Every push also runs `ci.yml`: the sim
   tests, plus the site checks on branches other than `main`.
 - Roadmap and open questions: `docs/ROADMAP.md`; the simulation's stages: `sim/PLAN.md` §10.

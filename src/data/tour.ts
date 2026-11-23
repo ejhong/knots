@@ -62,7 +62,7 @@ export const CHAPTERS: Chapter[] = [
 <li><b>Stress.</b> Knots seem to worsen under stress, and gather where it is held: neck and shoulders, jaw, belly, low back.</li>
 <li><b>Stiffness.</b> As knots gather they seem to limit movement. A stretch is felt as a clear, sharp pull in the muscle, but it meets the knots as dull, deep blocks it cannot reach.</li>
 <li><b>Sparks.</b> A knot goes with a small pop, sometimes a star of tingling across a patch of skin.</li>
-<li><b>Euphoria.</b> A release can bring a wave of well-being — at times a euphoria some compare to MDMA. A felt release, with the feeling that can follow it, is the plainest mark of the knots meant here: a mark to know them by, not something to seek.</li>
+<li><b>Euphoria.</b> A release can bring a wave of well-being — at times a euphoria some compare to MDMA. A felt release, with the feeling that can follow it, is the plainest mark of the knots meant here.</li>
 <li><b>Migration.</b> When one knot lets go, others move in to fill the gap and settle into new places, as if the body were evening itself out.</li>
 <li><b>Mirroring.</b> Working the knots on one side can ease the other side as well. Foam-rolling studies measure something like it — the crossover effect: rolling one leg adds range of motion to the other, untouched one.</li>
 <li><b>Peeling.</b> Two reports describe layers of the fascia beneath the skin peeling apart along lines, leaving places that feel hollow. It is rare and little understood — one reason for <a href="#moderation">the caution at the end</a>.</li>

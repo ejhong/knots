@@ -13,8 +13,8 @@ What must stay in step with the site (`src/pages/research.astro`):
   section after, beside the caution and the help lines.
 - **The ask:** what is asked, how letters are weighed and what happens next (`#respond` on the page), and the likely
   place to start (the page's "What would help most").
-- **Which knots are meant:** known by a release the person feels, often with a rush of feeling, "a mark to know them
-  by, not something to seek" (the page's open questions and the sentence that opens its list of studies).
+- **Which knots are meant:** known by a release the person feels, often with a rush of feeling (the page's open
+  questions and the sentence that opens its list of studies).
 - **The care rule** on breathing, pressure and runaway release, and on interviews about it.
 
 Settled by the author on 19 November: letters are public, there is no cost ceiling and no deadline, and an invited
@@ -37,7 +37,8 @@ comment).
 
 The author also edited the draft on ResearchHub by hand that day, and those edits are carried here word for word: in
 "Purpose" and "The knots meant here" (a knot is "subjectively felt", lets go "possibly due primarily to the breath", and
-the phrase "a mark to know them by, not something to seek" is gone from the call, though it stays on the site), in the
+the phrase "a mark to know them by, not something to seek" is gone from the call, and later that day from the site
+too, at the author's word: the release is what people who foam-roll are seeking, and that is all right), in the
 runaway-release section (the one or two people "possibly might be introduced", the branch is "conditional on their
 agreement", and they "may define the profile"), and in the short description ("as example research ideas"). Read the
 draft for further hand edits before changing it, and change it paragraph by paragraph, never by replacing the whole
