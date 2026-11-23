@@ -22,7 +22,7 @@ const ALIAS: Record<string, string> = { 'Acupoints on perforators': 'points' };
 // and points here for their text; it repeats the ask for letters of intent (#respond: what a letter holds, how letters
 // are weighed, what happens next) and the care rule. Keep the two in step.
 // Runaway release (the author, 22 Nov 2026): letters are asked for on study 13, which describes it and can begin with
-// one or two people who can be introduced, with their agreement; study 14 is limited to those one or two, and no one
+// one or two people who might be introduced, with their agreement; study 14 is limited to those one or two, and no one
 // is recruited for it. Studies 1 and 13, which begin with what people report, are named as a likely place to start.
 // The same day the author asked for a plainer first study (what people who foam-roll feel), with whether another hand
 // can feel a knot as a study of its own; for the two studies of vascular mechanism (a small artery held shut for
@@ -252,8 +252,9 @@ const STUDIES: { stage: string; prong: string; title: string; design: string; wh
     title: 'Characterise runaway release',
     design: `Phenomenology and natural history: a search of what is already recorded, semi-structured interviews and a
       case series`,
-    what: `It might begin with interviews: one or two people who know runaway release at first hand can be introduced,
-      with their agreement. Others might be found in what is already recorded: published case reports, and the
+    what: `It might begin with interviews: one or two people who know runaway release at first hand might be
+      introduced, with their agreement, and this part depends on that agreement. Once their accounts give a profile,
+      others might be found in what is already recorded: published case reports, and the
       interviews gathered in studies of meditation-related difficulty, which could be read again with this in mind;
       and through teachers, clinicians and support services. No one else calls it runaway release, so the search
       needs other names: those studies describe currents of energy and involuntary movement
@@ -279,7 +280,7 @@ const STUDIES: { stage: string; prong: string; title: string; design: string; wh
     what: `People already in runaway release might be examined while it runs and again as it settles: ultrasound of the
       fascial layers and their glide where change is felt and at matched places, colour Doppler of the perforators,
       skin-flow imaging, photographs of any skin that weeps or crusts, and the blood tests a physician would order. No one would be asked to begin or seek it, and
-      their care would come first. For now it is limited to the one or two people who can be introduced (study 13),
+      their care would come first. For now it is limited to the one or two people who might be introduced (study 13), and who may define the profile,
       if they are willing: no one is recruited for it. A laboratory already measuring knots (studies 3 and 4) has
       the instruments and could add it.`,
     show: `If the tissue is changing, the glide might differ at the reported places and settle on the clock the reports
@@ -319,8 +320,8 @@ const STAGES: { id: string; title: string; intro: string }[] = [
     id: 'runaway-release',
     title: 'Runaway release',
     intro: `Runaway release is known so far from two informal reports, and no study of it as such is known, so
-      describing it comes first (study 13). That could begin now: it only listens to people who already know the
-      process, and one or two can be introduced, with their agreement, once a letter is taken up. Examining people
+      describing it comes first (study 13). That could begin now: one or two people who know it might be introduced,
+      with their agreement, once a letter is taken up, and this part depends on that agreement. Examining people
       in it (study 14) is limited for now to those one or two, if they are willing; more waits on the description,
       which might say where and when to look, and find the participants.`,
   },
@@ -349,9 +350,9 @@ const index = [
     <p class="sub">
       <strong>What a knot is.</strong> Bodyworkers, people who foam-roll and contemplative practitioners all describe knots:
       discrete places in the body that hold, sometimes for years, and let go within seconds, under a hand, with the breath or
-      to attention. A knot is felt as a bump, from very small to about the size of a penny; it seldom hurts unless pressed
+      to attention. A knot is subjectively felt as a bump, from very small to about the size of a penny; it seldom hurts unless pressed
       hard, as under a foam roller, so tenderness does not define it. Its release does. A knot lets go within seconds,
-      most familiarly under a roller or a bodyworker's hand, and the person feels it go. A rush of feeling is often
+      most familiarly under a roller or a bodyworker's hand, though possibly due primarily to the breath, and the person feels it go. A rush of feeling is often
       reported to follow at once: relief or well-being, at times tears or euphoria, and most of all when a whole cluster
       lets go together. These are the knots meant here; the feeling is given as a mark to know them by, not as something
       to seek. The aim is to find out exactly what this particular kind of knot is.
@@ -359,7 +360,7 @@ const index = [
     <p class="sub">
       A knot does not always stand out. An area with many knots seems to be less flexible, and is felt more as a dull
       block. A trained breath may be needed for the person to feel its knots as distinct bumps, and to release them;
-      another's hand might then feel them too. As the knots let go, the block seems to ease. So an examiner's hand on a
+      another's hand might possibly feel them too. As the knots let go, the block seems to ease. So an examiner's hand on a
       body at rest might find no bumps where there are many knots. The breath that releases knots is described as a
       trained one: a subtle weave of small in- and
       out-breaths, perhaps beginning with a small in-breath, builds the release, which is probably carried out on an
@@ -422,7 +423,7 @@ const index = [
     <p class="sub">
       This work depends on your expertise, and a short letter is enough to give it: a page or less, which should not
       take long to write. Letters are asked for on both questions. On runaway release, the study to begin with is the
-      one that describes it (study 13); examining people in it (study 14) is limited for now to one or two who can be
+      one that describes it (study 13); examining people in it (study 14) is limited for now to one or two who might be
       introduced.
     </p>
     <ul class="ask">

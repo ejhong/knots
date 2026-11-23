@@ -34,15 +34,18 @@ Also on 22 November, at the author's word: the position paper is not listed amon
 is. Where the post names the paper or points to it, the link goes to the site, not to Zenodo. And the list of studies
 changed: fourteen, opening with what people who foam-roll feel (see the page's source comment).
 
-Held back from the post until the author confirms the terms (ResearchHub's assistant left the section out for the
-same reason), to be restored after "What happens next" once they are settled:
+The author also edited the draft on ResearchHub by hand that day, and those edits are carried here word for word: in
+"Purpose" and "The knots meant here" (a knot is "subjectively felt", lets go "possibly due primarily to the breath", and
+the phrase "a mark to know them by, not something to seek" is gone from the call, though it stays on the site), in the
+runaway-release section (the one or two people "possibly might be introduced", the branch is "conditional on their
+agreement", and they "may define the profile"), and in the short description ("as example research ideas"). Read the
+draft for further hand edits before changing it, and change it paragraph by paragraph, never by replacing the whole
+text.
 
-> **Who may apply, and how awards are made.** Researchers and clinicians at accredited universities, colleges and
-> academically affiliated research hospitals may apply. A principal investigator there takes institutional
-> responsibility for the work; student-led projects are welcome under qualified supervision. Each award is made as a
-> charitable gift to the recipient institution, so it carries the institution's gift fee and not a sponsored-project
-> indirect cost rate. Awards assume access to existing equipment, facilities and qualified supervision; major
-> equipment purchases are unlikely to fit.
+"Who may apply, and how awards are made" was left out of the draft by ResearchHub's assistant until its terms were
+confirmed. On 22 November the author asked that assistant how to specify that only academic institutions can apply,
+so the section is back in the post, in the wording of 19 November (adapted from RFP 32943), which the author had seen.
+The gift terms in it are still the author's to confirm with ResearchHub.
 
 The site gives the same ask but names ResearchHub only once the call is live and can be linked. The references are
 from the project's verified records (`src/data/papers.json`, `src/data/references.ts`). Runaway release follows the
@@ -68,19 +71,18 @@ not full proposals. Please don't publish it: the author will set the funding amo
   "Care", and the help lines, as written.
 - No cost ceiling and no deadline are set. If you add cost estimates to the studies, mark them as rough guides, not
   limits.
-- Who may apply and how awards are made are not yet confirmed, so the text has no such section. Please don't add
-  one.
+- Please keep "Who may apply, and how awards are made" as written: only academic institutions may apply.
 - The call has a second, smaller part on runaway release, in its own section near the end, with two studies (13 and
   14). Please keep that section short, with its caution and help lines beside it. Don't add how runaway release is
   set off, don't present anything here as a practice to try, and don't add anything about the people who can be
   introduced.
 - For the short description, please use: "A call for short letters of intent to find out what one particular kind of
   knot is: the kind that lets go within seconds under a foam roller or a bodyworker's hand, with a release the person
-  feels at once, often with a sudden rush of relief, emotion or euphoria (a mark to know these knots by, not something
-  to seek). Fourteen quickly assessed study ideas are linked for researchers to judge or improve upon: twelve on
-  knots, and two on runaway release, a rarer and dangerous process, beginning with interviews of people who already
-  know it. Letters are public; no deadline or cost ceiling is set. Invited full-proposal preparation is paid whether
-  or not the study is funded. Ethics review and the call's care rules apply."
+  feels at once, often with a sudden rush of relief, emotion or euphoria. Fourteen quickly assessed study ideas are
+  linked for researchers as example research ideas: twelve on knots, and two on runaway release, a rarer and dangerous
+  process, beginning with interviews of people who already know it. Letters are public; no deadline or cost ceiling is
+  set. Invited full-proposal preparation is paid whether or not the study is funded. Ethics review and the call's care
+  rules apply."
 
 ---
 
@@ -92,11 +94,10 @@ A call for letters of intent
 
 The aim is to find out exactly what one particular kind of knot is: the kind that lets go within seconds under a foam
 roller or a bodyworker's hand, with a release the person feels at once and, often, a sudden rush of feeling: relief or
-well-being, at times tears or euphoria. That felt release is what marks these knots out (a mark to know them by, not
-something to seek). Bodyworkers, people who foam-roll and contemplative practitioners all describe them. They are among
-the commonest things people report in their bodies and among the least explained: no mechanism for them is established
-and, as far as is known, nothing has been recorded at the moment one lets go. The question is about the knot itself,
-not the general effects of foam rolling.
+well-being, at times tears or euphoria. That felt release is what marks these knots out. Bodyworkers, people who
+foam-roll and some contemplative practitioners all describe them. No mechanism for them is considered established and,
+as far as is known, nothing has been recorded at the moment one lets go. The question is about the knot itself, not
+the general effects of foam rolling.
 
 This call invites short letters of intent for studies that might help. A useful result may be positive, negative or
 inconclusive. Fourteen ideas for studies are set out on the project's Research page, each with what it might show and
@@ -107,16 +108,16 @@ described near the end of this call.
 
 ### The knots meant here
 
-A knot is felt as a bump, from very small to about the size of a penny; it seldom hurts unless pressed hard, as under
-a foam roller, so tenderness does not define it. Its release does. A knot lets go within seconds, most familiarly
-under a roller or a bodyworker's hand, though also with the breath or to attention alone, and the person feels it go,
-often with a tingle over the spot. A rush of feeling is often reported to follow at once: relief or well-being, at
-times tears or euphoria, and most of all when a whole cluster lets go together. These are the knots meant here; the
-feeling is given as a mark to know them by, not as something to seek.
+A knot is subjectively felt as a bump, from very small to about the size of a penny; it seldom hurts unless pressed
+hard, as under a foam roller, so tenderness does not define it. Its release does. A knot lets go within seconds, most
+familiarly under a roller or a bodyworker's hand for example, though possibly due primarily to the breath, and the
+person feels it go, often with a tingle over the spot. A rush of feeling is often reported to follow at once: relief
+or well-being, at times tears or euphoria, and most of all when a whole cluster lets go together. These are the knots
+meant here.
 
 A knot does not always stand out. An area with many knots seems to be less flexible, and is felt more as a dull block.
 A trained breath may be needed for the person to feel its knots as distinct bumps, and to release them; another's hand
-might then feel them too. As the knots let go, the block seems to ease. So an examiner's hand on a body at rest might
+might possibly feel them too. As the knots let go, the block seems to ease. So an examiner's hand on a body at rest might
 find no bumps where there are many knots.
 
 ### One hypothesis, and six others
@@ -198,6 +199,14 @@ participants recorded", "switched from thermal imaging to laser speckle"). These
 
 No cost ceiling is set.
 
+### Who may apply, and how awards are made
+
+Researchers and clinicians at accredited universities, colleges and academically affiliated research hospitals may
+apply. A principal investigator there takes institutional responsibility for the work; student-led projects are
+welcome under qualified supervision. Each award is made as a charitable gift to the recipient institution, so it
+carries the institution's gift fee and not a sponsored-project indirect cost rate. Awards assume access to existing
+equipment, facilities and qualified supervision; major equipment purchases are unlikely to fit.
+
 ### The studies
 
 Fourteen ideas, grouped by what each needs and listed in the order they build on one another, not by importance. They
@@ -246,13 +255,14 @@ Anyone struggling with it should seek medical advice; Cheetah House (https://www
 meditators in distress, is one further resource. Anyone thinking about suicide should reach out now: in the US, call or
 text 988; elsewhere, find a line at https://findahelpline.com.
 
-No study of it as such is known, so describing it comes first, and that could begin now: it only listens to people who
-already know the process. One or two can be introduced, with their agreement, once a letter is taken up. Others might
-be found in what is already recorded, and through teachers, clinicians and support services. It may be recorded under
-other names: studies of meditation-related difficulty describe currents of energy and involuntary movement (Lindahl
-2017) and energy-like somatic experiences (Cooper 2021), and researchers with that experience are best placed.
-Examining people in it is limited for now to those one or two, if they are willing: no one is recruited for it, and a
-laboratory already measuring knots (studies 3 and 4) could add it.
+No study of it as such is known, so describing it comes first, and that could begin now. One or two possibly might be
+introduced, with their agreement, once a letter is taken up. So this branch is conditional on their agreement. Once a
+profile is determined, others might be found in what is already recorded, and through teachers, clinicians and support
+services. It may be recorded under other names: studies of meditation-related difficulty describe currents of energy
+and involuntary movement (Lindahl 2017) and energy-like somatic experiences (Cooper 2021), and researchers with that
+experience are best placed. Examining people in it is limited for now to those one or two, who may define the profile,
+if they are willing: no one is recruited for it, and a laboratory already measuring knots (studies 3 and 4) could add
+it.
 
 13. Characterise runaway release. *Phenomenology and natural history: a search of what is already recorded, semi-structured interviews and a case series.* https://ejhong.github.io/knots/research/#study-13
 14. Examine someone in runaway release. *Observational: case studies with repeated imaging, then a prospective case series.* https://ejhong.github.io/knots/research/#study-14
