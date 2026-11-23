@@ -8,8 +8,8 @@ without "I" or "we".
 What must stay in step with the site (`src/pages/research.astro`):
 
 - **The list of studies:** their numbers, titles, kinds and order (the `STUDIES` and `STAGES` lists; each card has its
-  own anchor, `#study-1` to `#study-15`). Their full text is on the site only. The call lists all fifteen: the
-  thirteen on knots (the page's 1 to 13) under "The studies", and the two on runaway release (14 and 15) in the
+  own anchor, `#study-1` to `#study-14`). Their full text is on the site only. The call lists all fourteen: the
+  twelve on knots (the page's 1 to 12) under "The studies", and the two on runaway release (13 and 14) in the
   section after, beside the caution and the help lines.
 - **The ask:** what is asked, how letters are weighed and what happens next (`#respond` on the page), and the likely
   place to start (the page's "What would help most").
@@ -19,10 +19,10 @@ What must stay in step with the site (`src/pages/research.astro`):
 
 Settled by the author on 19 November: letters are public, there is no cost ceiling and no deadline, and an invited
 full proposal is paid for. That day the call was on knots only. Changed by the author on 22 November: the call also
-asks for the study that describes runaway release (14: a search of what is already recorded, and interviews), named
+asks for the study that describes runaway release (13: a search of what is already recorded, and interviews), named
 with study 1 as a likely place to start. One or two people who know it at first hand can be introduced, with their
 agreement; they are never identified, and introductions are made privately once a letter is taken up. Examining
-people in it (15) is limited to those one or two, and no one is recruited for it. Cheetah House is named only as a
+people in it (14) is limited to those one or two, and no one is recruited for it. Cheetah House is named only as a
 place to find help, never as a place to recruit. Carried over on 19 November from the call the author gave as an
 example (ResearchHub RFP 32943, "Epothilone B and anesthetic sensitivity"), and still to be confirmed for this one:
 who may apply, awards made as gifts to institutions, and open plans and reports as hopes that weigh in selection.
@@ -31,7 +31,8 @@ Title chosen by the author on 22 November: "Knots of Existence: what does a foam
 "What is a knot?"). The cover is `docs/researchhub-banner.jpg`, which carries the title in the picture.
 
 Also on 22 November, at the author's word: the position paper is not listed among the references; the project's site
-is. Where the post names the paper or points to it, the link goes to the site, not to Zenodo.
+is. Where the post names the paper or points to it, the link goes to the site, not to Zenodo. And the list of studies
+changed: fourteen, opening with what people who foam-roll feel (see the page's source comment).
 
 Held back from the post until the author confirms the terms (ResearchHub's assistant left the section out for the
 same reason), to be restored after "What happens next" once they are settled:
@@ -69,14 +70,14 @@ not full proposals. Please don't publish it: the author will set the funding amo
   limits.
 - Who may apply and how awards are made are not yet confirmed, so the text has no such section. Please don't add
   one.
-- The call has a second, smaller part on runaway release, in its own section near the end, with two studies (14 and
-  15). Please keep that section short, with its caution and help lines beside it. Don't add how runaway release is
+- The call has a second, smaller part on runaway release, in its own section near the end, with two studies (13 and
+  14). Please keep that section short, with its caution and help lines beside it. Don't add how runaway release is
   set off, don't present anything here as a practice to try, and don't add anything about the people who can be
   introduced.
 - For the short description, please use: "A call for short letters of intent to find out what one particular kind of
   knot is: the kind that lets go within seconds under a foam roller or a bodyworker's hand, with a release the person
   feels at once, often with a sudden rush of relief, emotion or euphoria (a mark to know these knots by, not something
-  to seek). Fifteen quickly assessed study ideas are linked for researchers to judge or improve upon: thirteen on
+  to seek). Fourteen quickly assessed study ideas are linked for researchers to judge or improve upon: twelve on
   knots, and two on runaway release, a rarer and dangerous process, beginning with interviews of people who already
   know it. Letters are public; no deadline or cost ceiling is set. Invited full-proposal preparation is paid whether
   or not the study is funded. Ethics review and the call's care rules apply."
@@ -98,10 +99,10 @@ and, as far as is known, nothing has been recorded at the moment one lets go. Th
 not the general effects of foam rolling.
 
 This call invites short letters of intent for studies that might help. A useful result may be positive, negative or
-inconclusive. Fifteen ideas for studies are set out on the project's Research page, each with what it might show and
+inconclusive. Fourteen ideas for studies are set out on the project's Research page, each with what it might show and
 what it likely needs: https://ejhong.github.io/knots/research/
 
-Thirteen are on knots. Two are on a second, smaller question, what runaway release is: a rarer and dangerous process,
+Twelve are on knots. Two are on a second, smaller question, what runaway release is: a rarer and dangerous process,
 described near the end of this call.
 
 ### The knots meant here
@@ -153,8 +154,8 @@ judgements would help more than any one idea there:
 Or propose something better: the study you think would actually decide the question matters more than any listed.
 
 One likely place to start, though you may judge otherwise, is with what people report. Two studies begin there, with
-surveys and interviews that need no instruments and could start now: who can feel a knot (study 1), among people who
-foam-roll and bodyworkers, and a description of runaway release (study 14), from people who know it at first hand. One
+surveys and interviews that need no instruments and could start now: what people who foam-roll feel (study 1), asked
+of them and of bodyworkers, and a description of runaway release (study 13), from people who know it at first hand. One
 team might do both. Neither need be large: their use is to tell the studies that measure whom to recruit, and where
 and when to look.
 
@@ -199,10 +200,10 @@ No cost ceiling is set.
 
 ### The studies
 
-Fifteen ideas, grouped by what each needs and listed in the order they build on one another, not by importance. They
+Fourteen ideas, grouped by what each needs and listed in the order they build on one another, not by importance. They
 are possibilities, assessed only quickly, and some may not be worth doing: your own assessment counts for more. After
 each title is the kind of study it would be. The Research page sets each out in full, with what it might show and what
-it likely needs: https://ejhong.github.io/knots/research/#studies. The thirteen on knots are listed here; the two on
+it likely needs: https://ejhong.github.io/knots/research/#studies. The twelve on knots are listed here; the two on
 runaway release follow in the next section.
 
 Throughout, a knot means the kind described above, known by a release its owner feels. A study that marks or counts
@@ -212,25 +213,24 @@ studied doing only what they already do. Bodyworkers, who feel knots in others, 
 
 **First: finding knots**
 
-1. Who can feel a knot: its owner, others, or both. *Survey and phenomenological interviews, then a blinded reliability study (test–retest and inter-rater).* https://ejhong.github.io/knots/research/#study-1
-2. How best to detect a knot. *Blinded diagnostic-accuracy study, with marked knots as the reference standard.* https://ejhong.github.io/knots/research/#study-2
+1. What people who foam-roll feel. *Survey and phenomenological interviews.* https://ejhong.github.io/knots/research/#study-1
+2. Whether another hand can feel a knot. *Blinded reliability study (test–retest and inter-rater).* https://ejhong.github.io/knots/research/#study-2
+3. What an instrument finds where a knot is felt. *Blinded comparison: felt knots against matched spots, before and after release.* https://ejhong.github.io/knots/research/#study-3
 
 **Then: with knots found**
 
-3. Catch a knot as it lets go. *Sham-controlled laboratory physiology, with felt releases marked as they happen.* https://ejhong.github.io/knots/research/#study-3
-4. Where knots sit. *Blinded mapping, with spatial statistics against chance.* https://ejhong.github.io/knots/research/#study-4
-5. Whether a knot is a stable thing. *Longitudinal: blinded mapping repeated over weeks and months.* https://ejhong.github.io/knots/research/#study-5
-6. Whether knots grow with age. *Epidemiology: cross-sectional across ages, then a cohort followed over years.* https://ejhong.github.io/knots/research/#study-6
-7. What remains after death. *Post-mortem histology: knot sites against matched control sites.* https://ejhong.github.io/knots/research/#study-7
+4. Catch a knot as it lets go. *Sham-controlled laboratory physiology, with felt releases marked as they happen.* https://ejhong.github.io/knots/research/#study-4
+5. Where knots sit. *Blinded mapping, with spatial statistics against chance.* https://ejhong.github.io/knots/research/#study-5
+6. Whether a knot is a stable thing. *Longitudinal: blinded mapping repeated over weeks and months.* https://ejhong.github.io/knots/research/#study-6
+7. Whether knots grow with age. *Epidemiology: cross-sectional across ages, then a cohort followed over years.* https://ejhong.github.io/knots/research/#study-7
 8. Whether animals have knots. *Comparative (veterinary): a survey, examination by instrument, and opportunistic necropsy.* https://ejhong.github.io/knots/research/#study-8
 
 **At any time**
 
 9. What is already recorded. *Secondary analysis of existing recordings.* https://ejhong.github.io/knots/research/#study-9
-10. A small artery held shut for hours. *Ex vivo physiology: pressure myography of isolated small arteries, with their myosin phosphorylation.* https://ejhong.github.io/knots/research/#study-10
-11. The breath and the skin of the trunk. *Human microvascular physiology: skin blood flow over the trunk by laser speckle, through ordinary and trained breaths.* https://ejhong.github.io/knots/research/#study-11
-12. Acupoints on perforators. *Blinded mapping against chance, or a retrospective study of CT angiograms.* https://ejhong.github.io/knots/research/#study-12
-13. Whether vasomotion stops in deep meditation. *Laboratory physiology with first-person event marking: fNIRS or fMRI, and laser Doppler flowmetry.* https://ejhong.github.io/knots/research/#study-13
+10. What cadavers show. *Anatomy and histology: existing dissection and post-mortem records, then dissection where knots are commonly reported.* https://ejhong.github.io/knots/research/#study-10
+11. Acupoints on perforators. *Blinded mapping against chance, or a retrospective study of CT angiograms.* https://ejhong.github.io/knots/research/#study-11
+12. Whether vasomotion stops in deep meditation. *Laboratory physiology with first-person event marking: fNIRS or fMRI, and laser Doppler flowmetry.* https://ejhong.github.io/knots/research/#study-12
 
 Or one not listed: anything that might help tell what a knot is.
 
@@ -252,10 +252,10 @@ be found in what is already recorded, and through teachers, clinicians and suppo
 other names: studies of meditation-related difficulty describe currents of energy and involuntary movement (Lindahl
 2017) and energy-like somatic experiences (Cooper 2021), and researchers with that experience are best placed.
 Examining people in it is limited for now to those one or two, if they are willing: no one is recruited for it, and a
-laboratory already measuring knots (studies 2 and 3) could add it.
+laboratory already measuring knots (studies 3 and 4) could add it.
 
-14. Characterise runaway release. *Phenomenology and natural history: a search of what is already recorded, semi-structured interviews and a case series.* https://ejhong.github.io/knots/research/#study-14
-15. Examine someone in runaway release. *Observational: case studies with repeated imaging, then a prospective case series.* https://ejhong.github.io/knots/research/#study-15
+13. Characterise runaway release. *Phenomenology and natural history: a search of what is already recorded, semi-structured interviews and a case series.* https://ejhong.github.io/knots/research/#study-13
+14. Examine someone in runaway release. *Observational: case studies with repeated imaging, then a prospective case series.* https://ejhong.github.io/knots/research/#study-14
 
 ### Care
 

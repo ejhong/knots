@@ -21,56 +21,72 @@ const ALIAS: Record<string, string> = { 'Acupoints on perforators': 'points' };
 // be. docs/RESEARCHHUB.md (the draft call on ResearchHub) lists the studies by number, title and kind, in this order,
 // and points here for their text; it repeats the ask for letters of intent (#respond: what a letter holds, how letters
 // are weighed, what happens next) and the care rule. Keep the two in step.
-// Runaway release (the author, 22 Nov 2026): letters are asked for on study 14, which describes it and can begin with
-// one or two people who can be introduced, with their agreement; study 15 is limited to those one or two, and no one
-// is recruited for it. Studies 1 and 14, which begin with what people report, are named as a likely place to start.
+// Runaway release (the author, 22 Nov 2026): letters are asked for on study 13, which describes it and can begin with
+// one or two people who can be introduced, with their agreement; study 14 is limited to those one or two, and no one
+// is recruited for it. Studies 1 and 13, which begin with what people report, are named as a likely place to start.
+// The same day the author asked for a plainer first study (what people who foam-roll feel), with whether another hand
+// can feel a knot as a study of its own; for the two studies of vascular mechanism (a small artery held shut for
+// hours; the breath and the skin of the trunk) to go; and for the post-mortem study not to depend on knots marked in
+// life. Fourteen studies: 1 to 12 on knots, 13 and 14 on runaway release.
 const STUDIES: { stage: string; prong: string; title: string; design: string; what: string; show: string; needs: string }[] = [
   {
     stage: 'finding-knots',
     prong: 'knots',
-    title: 'Who can feel a knot: its owner, others, or both',
-    design: `Survey and phenomenological interviews, then a blinded reliability study (test–retest and inter-rater)`,
-    what: `Two questions, which may have different answers: can people feel their own knots, and can others feel them too?
-      A knot might be felt only by its owner, or by a hand from outside as well. Many who foam-roll or work on their
-      own knots might be surveyed and interviewed: whether they can isolate a single knot, felt as a distinct bump, or
-      feel only broad, dull masses; whether a bump is there when they first press, or stands out only as they attend
-      to it and breathe; how firmly they must press to find one; whether they can release them; what a release feels
-      like and what follows it, from nothing to relief, well-being, tears or euphoria, how often, whether many
-      knots ever let go at once, and whether releases have ever run on in chains that could not be set down (study
-      14); how they learned; and what part the breath plays, in finding knots as well as in
-      releasing them. Bodyworkers might be asked the same about the knots they feel in others. Then, in the same
-      people, each might mark the knots they feel, blind to the other marks: the person their own, twice, an hour
-      apart, and two examiners by touch. Which knots does each find, and do they agree? And as a person lets a knot go
-      under an examiner's resting finger, does the examiner feel the bump go too?`,
-    show: `Whether feeling knots is itself a skill, perhaps tied to the breath as releasing them seems to be, held by some
-      and not by others; and whether the knots a person feels in themselves can be felt by others too, or only from
-      inside. Someone pressing their own knot feels it twice over, with the finger and in the place pressed, and
-      cannot easily tell the two apart; an examiner's finger has only the first. How common a felt release is among
-      people who roll, and the feeling that can follow it, is not known; the survey would give a first estimate, and
-      would find the people who have the knots meant here. Asked of everyone, the question on chains would say how
-      common they are among people who roll, and might find people for study 14. If feeling knots is a skill, studies that locate or release knots would
-      need to recruit those who have the skill they rely on; and if bumps stand out only with a trained breath, an
-      examiner might find none in a body at rest.`,
-    needs: `a survey and interview researcher · many people who foam-roll, and bodyworkers · simple blind tests`,
+    title: 'What people who foam-roll feel',
+    design: `Survey and phenomenological interviews`,
+    what: `Many who foam-roll, or work on their own bodies in other ways, might simply be asked what they feel, in their
+      own words first and then with set questions. Do they feel knots at all, and if so as distinct bumps or only as
+      broad, dull areas? Where? Are the bumps there all the time, or only when pressed, attended to or breathed with?
+      How firmly must they press to find one? Can they release them, and how did they learn? What does a release feel
+      like, and what follows it, from nothing to relief, well-being, tears or euphoria? How often, and do many knots
+      ever let go at once, or have releases ever run on in chains that could not be set down (study 13)? Has anyone
+      else, a partner or a bodyworker, felt the same bumps? And what part does the breath play, in finding knots as
+      well as in releasing them? Bodyworkers might be asked the same about the knots they feel in others.`,
+    show: `How much people's experience differs. Informal reports suggest that some feel single knots and release them
+      readily, while others feel only dull masses, or nothing; and that feeling knots may itself be a skill, perhaps
+      tied to the breath as releasing them seems to be. How common a felt release is among people who roll, and the
+      feeling that can follow it, is not known; the survey would give a first estimate, would show what the later
+      studies should ask, and would find the people who have the knots meant here. Asked of everyone, the question on
+      chains would say how common they are among people who roll, and might find people for study 13.`,
+    needs: `a survey and interview researcher · many people who foam-roll, and bodyworkers`,
   },
   {
     stage: 'finding-knots',
     prong: 'knots',
-    title: 'How best to detect a knot',
-    design: `Blinded diagnostic-accuracy study, with marked knots as the reference standard`,
-    what: `At knots marked by their owners or by examiners (study 1), and at matched spots nearby, instruments might be
-      compared, each blind to the marks: a pencil Doppler listening for a perforator and its flow; ultrasound looking
-      for a bump, a vessel beneath and the layers' glide, with colour Doppler and elastography; and a thermal camera
-      watching the skin rewarm after a mild cold (${cite('weum2016b')}). Each might look twice: while the knots hold,
-      and again once their owners have released them by their usual means.`,
-    show: `Whether an instrument can find a knot without a skilled hand, which would free other studies from depending on
-      who can feel one. A Doppler and a thermal camera see a vessel only by the blood moving in it. If knots are
-      perforators held shut, both would find little or nothing at a held knot: its sign would be a spot that is silent and slow
-      to rewarm while the knot holds, and that sounds and warms once it lets go. Ultrasound might show what the bump
-      is: fluid or swollen veins where the bundle passes the fascia, a firm place where the layers do not glide
-      (densification), or a nodule in muscle (trigger points, the motor switch).`,
-    needs: `a pencil Doppler · ultrasound with colour Doppler and elastography · a thermal camera · people whose knots have
-      been marked`,
+    title: 'Whether another hand can feel a knot',
+    design: `Blinded reliability study (test–retest and inter-rater)`,
+    what: `Two questions, which may have different answers: can people find their own knots again, and can others feel
+      them too? A knot might be felt only by its owner, or by a hand from outside as well. Among people who say they
+      feel knots (study 1), each might mark the knots they feel, blind to the other marks: the person their own,
+      twice, an hour apart, and two examiners by touch, with the breath the person uses to feel them, if they use
+      one. Which knots does each find, and do they agree? And as a person lets a knot go under an examiner's resting
+      finger, does the examiner feel the bump go too?`,
+    show: `Whether the knots a person feels in themselves can be felt by others too, or only from inside. Someone
+      pressing their own knot feels it twice over, with the finger and in the place pressed, and cannot easily tell
+      the two apart; an examiner's finger has only the first. If feeling knots is a skill, studies that locate or
+      release knots would need to recruit those who have it; if bumps stand out only with a trained breath, an
+      examiner might find none in a body at rest; and if only their owners can feel them, later studies would have
+      to rely on the owners' own marks.`,
+    needs: `people who feel their own knots (study 1) · two examiners, such as bodyworkers · simple blind tests`,
+  },
+  {
+    stage: 'finding-knots',
+    prong: 'knots',
+    title: 'What an instrument finds where a knot is felt',
+    design: `Blinded comparison: felt knots against matched spots, before and after release`,
+    what: `At spots where people feel a knot (studies 1 and 2), and at matched spots nearby, instruments might look,
+      each blind to which is which: ultrasound for a bump, a vessel beneath and the layers' glide, with colour
+      Doppler and elastography; a pencil Doppler listening for a vessel and its flow; and a thermal camera watching
+      the skin rewarm after a mild cold (${cite('weum2016b')}). Each might look twice: while the knots hold, and again once
+      their owners have released them by their usual means.`,
+    show: `Whether there is anything at a felt knot that an instrument can see, and what. Each account expects something
+      different. A Doppler and a thermal camera see a vessel only by the blood moving in it, so a vessel held shut
+      would be silent while a knot holds and sound once it lets go (perforators). Ultrasound might show fluid or
+      swollen veins, a firm place where the layers do not glide (densification), or a nodule in muscle (trigger
+      points, the motor switch). Or there may be nothing to see (perception). If an instrument can tell a knot from
+      a matched spot, later studies need not depend on who can feel one.`,
+    needs: `ultrasound with colour Doppler and elastography · a pencil Doppler · a thermal camera · people who feel
+      their own knots (studies 1 and 2)`,
   },
   {
     stage: 'with-knots-found',
@@ -100,7 +116,7 @@ const STUDIES: { stage: string; prong: string; title: string; design: string; wh
     prong: 'knots',
     title: 'Where knots sit',
     design: `Blinded mapping, with spatial statistics against chance`,
-    what: `Knots might be marked over a region of the body in two ways, or both (study 1): by two examiners who can feel
+    what: `Knots might be marked over a region of the body in two ways, or both (study 2): by two examiners who can feel
       knots in others, blind to each other, or by people who can isolate their own, with the breath they use to feel
       them, if they use one. A third person, blind to the
       marks, might map the perforators with a pencil Doppler, or with a thermal camera as the skin rewarms after a
@@ -125,7 +141,7 @@ const STUDIES: { stage: string; prong: string; title: string; design: string; wh
     title: 'Whether a knot is a stable thing',
     design: `Longitudinal: blinded mapping repeated over weeks and months`,
     what: `The same people's knots might be mapped again over weeks and months, against their own map of perforators,
-      built up over the visits, since a map made by flow misses a vessel held shut (study 4): by
+      built up over the visits, since a map made by flow misses a vessel held shut (study 5): by
       two examiners who can feel knots in others, blind to each other and to earlier maps, or by the people
       themselves, if they can isolate their own (study 1), blind to their earlier marks.`,
     show: `Whether the same knots are found again at all, which may depend on the skill of whoever marks them, and whether
@@ -140,27 +156,13 @@ const STUDIES: { stage: string; prong: string; title: string; design: string; wh
     title: 'Whether knots grow with age',
     design: `Epidemiology: cross-sectional across ages, then a cohort followed over years`,
     what: `Knots might be counted and sized in people of all ages, from childhood to old age, and in the same people over
-      years: by their own marks and by examiners (study 1), and by whichever instrument proves best (study 2). People
+      years: by their own marks and by examiners (study 2), and by whichever instrument proves best (study 3). People
       might also be asked when their knots first appeared and how they have changed.`,
     show: `Whether knots grow larger and more numerous with age, and whether children are nearly free of them. The accounts
       part here: perforators, densification and nerves expect knots to rise with age (the first, in number and size);
       latches accumulate from early childhood; trigger points follow overload and injury; the motor switch remembers
       nothing by itself; perception follows history more than age.`,
-    needs: `examiners or an instrument (studies 1 and 2) · people of all ages · a statistician`,
-  },
-  {
-    stage: 'with-knots-found',
-    prong: 'knots',
-    title: 'What remains after death',
-    design: `Post-mortem histology: knot sites against matched control sites`,
-    what: `People whose knots were mapped in life (study 1), and who give their bodies to science, might be examined after
-      death where the knots were and at matched places: the perforators' walls and lumens, the fascial layers, the
-      muscle and the nerves, under the microscope. Or tissue from ordinary post-mortem examinations, taken where knots
-      are often reported, such as the upper back, might be compared with tissue from elsewhere.`,
-    show: `Whether anything structural remains where a knot was. Holds kept only by the nervous system (the motor switch,
-      perception) would likely leave nothing; a vessel narrowed by long holding, a densified layer, an entrapped nerve
-      or changed muscle might remain, and would point to the accounts that expect them.`,
-    needs: `an anatomist or pathologist · a body donation programme, or post-mortem tissue · ethics review`,
+    needs: `examiners or an instrument (studies 2 and 3) · people of all ages · a statistician`,
   },
   {
     stage: 'with-knots-found',
@@ -168,8 +170,8 @@ const STUDIES: { stage: string; prong: string; title: string; design: string; wh
     title: 'Whether animals have knots',
     design: `Comparative (veterinary): a survey, examination by instrument, and opportunistic necropsy`,
     what: `Veterinarians and animal bodyworkers might be asked whether they find knots in horses, dogs or other animals,
-      and where; with their owners' consent, the spots might be examined with the instruments of study 2. Where an
-      animal that had them dies or is put down for other reasons, the tissue beneath might be examined too (study 7).
+      and where; with their owners' consent, the spots might be examined with the instruments of study 3. Where an
+      animal that had them dies or is put down for other reasons, the tissue beneath might be examined too (as in study 10).
       No animal would be harmed for the study.`,
     show: `Whether knots are something mammals share, as most of the accounts would expect, since animals have the same
       vessels, fascia, muscle and nerves; and a route to the tissue beneath a knot that was felt in life.`,
@@ -199,33 +201,21 @@ const STUDIES: { stage: string; prong: string; title: string; design: string; wh
   {
     stage: 'any-time',
     prong: 'knots',
-    title: 'A small artery held shut for hours',
-    design: `Ex vivo physiology: pressure myography of isolated small arteries, with their myosin phosphorylation`,
-    what: `In a pressure myograph, a small artery, human if possible, might be shut with an agonist for five minutes or for
-      four hours, and the agonist then lowered to a resting level, with the muscle's myosin phosphorylation measured
-      through the hold.`,
-    show: `Whether a vessel can remember, as vasocomputation proposes a held contraction does (${cite('johnson2023')}), and
-      how. If knots are vessels that set, the first might reopen and the second stay shut, opening past its resting
-      diameter when finally released; if the second reopens as fully as the first, that would count against vessels
-      setting. Tension kept while the phosphorylation falls would show the latch state (${cite('hai1988')}), the cheap
-      hold vasocomputation proposes.`,
-    needs: `a laboratory with a pressure myograph · small arteries · a day's work, and more for the phosphorylation`,
-  },
-  {
-    stage: 'any-time',
-    prong: 'knots',
-    title: 'The breath and the skin of the trunk',
-    design: `Human microvascular physiology: skin blood flow over the trunk by laser speckle, through ordinary and trained
-      breaths`,
-    what: `The breath's effects on skin flow, such as the brief narrowing of skin vessels with a deep breath, are measured
-      mostly in the fingers, and for ordinary breaths. They could be measured over the back and neck, where knots are
-      reported, with laser speckle: through ordinary breathing, a deep breath, and the trained breath said to release
-      knots, a subtle weave of small in- and out-breaths and the out-breath that carries it out, in people practised
-      in it.`,
-    show: `Which part of the breath the vessels over the trunk follow, the subtle weave, the out-breath that carries it
-      out, or only the sum of many breaths; and whether they could let go within the seconds a release is said to
-      take: timing that the vascular accounts, the perforators and the latch, depend on.`,
-    needs: `laser speckle or laser Doppler · a physiology laboratory · a few people practised in such breathing`,
+    title: 'What cadavers show',
+    design: `Anatomy and histology: existing dissection and post-mortem records, then dissection where knots are commonly
+      reported`,
+    what: `Knots need not have been marked in life. Anatomists and pathologists hold records and tissue from dissections
+      and post-mortem examinations, made for other questions, which could be read again for clues. And cadavers
+      could be examined where knots are commonly reported, around the hips and shoulders and over the upper back,
+      and where they seldom are: the perforators' walls and lumens where they pass the fascia, the fascial layers
+      and the tissue between them, the muscle and the nerves, by dissection and under the microscope. Bodies of
+      different ages could be compared, since knots are said to gather with age.`,
+    show: `Whether anything structural marks the places where knots are common. A vessel narrowed by long holding, a
+      thickened or stiffened layer, an entrapped nerve or changed muscle would each point to the accounts that
+      expect them; holds kept only by the nervous system (the motor switch, perception) would likely leave nothing,
+      and so might any state that is held only in life. It could not show that a given spot was a knot, only what
+      there is to find where knots are said to be.`,
+    needs: `an anatomist or pathologist · existing records and tissue, or a body donation programme · ethics review`,
   },
   {
     stage: 'any-time',
@@ -277,7 +267,7 @@ const STUDIES: { stage: string; prong: string; title: string; design: string; wh
       pattern that a case definition could capture, or several things; how common it is, who is at risk and what
       helps. Accounts taken by researchers, with their own questions, would also be independent of this project,
       whose perforator view grew from the two reports. And it might say where and when to look, and find the
-      participants, for study 15.`,
+      participants, for study 14.`,
     needs: `a qualitative or clinical researcher, best with experience of meditation-related difficulty · ethics review
       · support at hand for participants`,
   },
@@ -289,8 +279,8 @@ const STUDIES: { stage: string; prong: string; title: string; design: string; wh
     what: `People already in runaway release might be examined while it runs and again as it settles: ultrasound of the
       fascial layers and their glide where change is felt and at matched places, colour Doppler of the perforators,
       skin-flow imaging, photographs of any skin that weeps or crusts, and the blood tests a physician would order. No one would be asked to begin or seek it, and
-      their care would come first. For now it is limited to the one or two people who can be introduced (study 14),
-      if they are willing: no one is recruited for it. A laboratory already measuring knots (studies 2 and 3) has
+      their care would come first. For now it is limited to the one or two people who can be introduced (study 13),
+      if they are willing: no one is recruited for it. A laboratory already measuring knots (studies 3 and 4) has
       the instruments and could add it.`,
     show: `If the tissue is changing, the glide might differ at the reported places and settle on the clock the reports
       give; if only perception is changing, the tissue would likely look as it did. Skin that weeps where knots let go,
@@ -312,26 +302,26 @@ const STAGES: { id: string; title: string; intro: string }[] = [
       many knots is felt more as a dull block, and a trained breath may be needed to feel its knots as distinct
       bumps and to release them. If
       so, studies that locate or release knots cannot assume that anyone can find one, in themselves or in others,
-      or that a bump is there for a hand to find in a body at rest. So these two come first: who can feel a knot,
-      and whether an instrument can find one.`,
+      or that a bump is there for a hand to find in a body at rest. So these three come first: what people who roll
+      feel, whether another hand can feel a knot, and what an instrument finds there.`,
   },
   {
     id: 'with-knots-found',
     title: 'Then: with knots found',
-    intro: `Each of these needs knots found, by hand or by instrument, and so builds on the first two.`,
+    intro: `Each of these needs knots found, by hand or by instrument, and so builds on the first three.`,
   },
   {
     id: 'any-time',
     title: 'At any time',
-    intro: `These need nothing from the others and could begin now, alongside the first two.`,
+    intro: `These need nothing from the others and could begin now, alongside the first.`,
   },
   {
     id: 'runaway-release',
     title: 'Runaway release',
     intro: `Runaway release is known so far from two informal reports, and no study of it as such is known, so
-      describing it comes first (study 14). That could begin now: it only listens to people who already know the
+      describing it comes first (study 13). That could begin now: it only listens to people who already know the
       process, and one or two can be introduced, with their agreement, once a letter is taken up. Examining people
-      in it (study 15) is limited for now to those one or two, if they are willing; more waits on the description,
+      in it (study 14) is limited for now to those one or two, if they are willing; more waits on the description,
       which might say where and when to look, and find the participants.`,
   },
 ];
@@ -349,7 +339,7 @@ const index = [
   kicker="For researchers"
   current="research"
   lede="People who work with the body find places that hold for years and let go in a breath, with a release the person feels at once. The aim is to find out exactly what this kind of knot is. Here are ideas for studies that might help, and a second question, what runaway release is, set out for those who know the methods to judge."
-  description="An open problem in physiology: what a knot is, and what runaway release is. Fifteen ideas for studies that might help, which come first, how to respond, and the position paper."
+  description="An open problem in physiology: what a knot is, and what runaway release is. Fourteen ideas for studies that might help, which come first, how to respond, and the position paper."
   glyph="究"
   index={index}
   wide
@@ -390,7 +380,7 @@ const index = [
       or years, through phases: knots releasing, and the fascia felt to peel, hollow and fill in again over days to weeks (<a href={`${base}/research/perforator-hypothesis/#fascia`}
         >the position paper, Section 5</a>). Where many knots let go together, the skin over them can grow wet, then crust
       and flake away; unlike the rest, that can be seen and photographed. No study of it as such is known, so describing
-      it comes first (<a href="#study-14">study 14</a>).
+      it comes first (<a href="#study-13">study 13</a>).
     </p>
     <p class="caution">
       Runaway release can be prolonged and dangerous (<a href={`${base}/about/#moderation`}>Moderation</a>; the position paper,
@@ -422,8 +412,8 @@ const index = [
     </p>
     <p class="sub">
       One likely place to start, though you may judge otherwise, is with what people report. Two studies begin there,
-      with surveys and interviews that need no instruments and could start now: who can feel a knot (<a href="#study-1">study 1</a>),
-      among people who foam-roll and bodyworkers, and a description of runaway release (<a href="#study-14">study 14</a>),
+      with surveys and interviews that need no instruments and could start now: what people who foam-roll feel (<a href="#study-1">study 1</a>),
+      asked of them and of bodyworkers, and a description of runaway release (<a href="#study-13">study 13</a>),
       from people who know it at first hand. One team might do both. Neither need be large: their use is to tell the
       studies that measure whom to recruit, and where and when to look.
     </p>
@@ -432,7 +422,7 @@ const index = [
     <p class="sub">
       This work depends on your expertise, and a short letter is enough to give it: a page or less, which should not
       take long to write. Letters are asked for on both questions. On runaway release, the study to begin with is the
-      one that describes it (study 14); examining people in it (study 15) is limited for now to one or two who can be
+      one that describes it (study 13); examining people in it (study 14) is limited for now to one or two who can be
       introduced.
     </p>
     <ul class="ask">
@@ -477,7 +467,7 @@ const index = [
     <span class="alias" id="experiments" />
     <h2>Studies that might help</h2>
     <p class="sub">
-      Fifteen ideas, grouped by what each needs and listed in the order they build on one another, not by importance. They
+      Fourteen ideas, grouped by what each needs and listed in the order they build on one another, not by importance. They
       are possibilities, assessed only quickly, and some may not be worth doing: your own assessment counts for more. Some
       are laboratory experiments; others are surveys, interviews, or new readings of tissue and records. Under each title is
       the kind of study it would be.
