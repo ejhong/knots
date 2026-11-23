@@ -27,6 +27,22 @@ place to find help, never as a place to recruit. Carried over on 19 November fro
 example (ResearchHub RFP 32943, "Epothilone B and anesthetic sensitivity"), and still to be confirmed for this one:
 who may apply, awards made as gifts to institutions, and open plans and reports as hopes that weigh in selection.
 
+Title chosen by the author on 22 November: "Knots of Existence: what does a foam roller release?" (before that,
+"What is a knot?"). The cover is `docs/researchhub-banner.jpg`, which carries the title in the picture.
+
+Also on 22 November, at the author's word: the position paper is not listed among the references; the project's site
+is. Where the post names the paper or points to it, the link goes to the site, not to Zenodo.
+
+Held back from the post until the author confirms the terms (ResearchHub's assistant left the section out for the
+same reason), to be restored after "What happens next" once they are settled:
+
+> **Who may apply, and how awards are made.** Researchers and clinicians at accredited universities, colleges and
+> academically affiliated research hospitals may apply. A principal investigator there takes institutional
+> responsibility for the work; student-led projects are welcome under qualified supervision. Each award is made as a
+> charitable gift to the recipient institution, so it carries the institution's gift fee and not a sponsored-project
+> indirect cost rate. Awards assume access to existing equipment, facilities and qualified supervision; major
+> equipment purchases are unlikely to fit.
+
 The site gives the same ask but names ResearchHub only once the call is live and can be linked. The references are
 from the project's verified records (`src/data/papers.json`, `src/data/references.ts`). Runaway release follows the
 site's rules: stated as a danger, from published sources, never how it is set off, and always with where to find help.
@@ -35,8 +51,11 @@ To paste into ResearchHub's agent: the note just below, then the post.
 
 ---
 
-Please set up a ResearchHub RFP from the text below. It asks for letters of intent, not full proposals.
+Please update this draft RFP from the text below, which replaces the earlier text. It asks for letters of intent,
+not full proposals. Please don't publish it: the author will set the funding amount and publish.
 
+- Please rename it: "Knots of Existence: what does a foam roller release?" The line under the title, "A call for
+  letters of intent", is a subtitle: leave it out of the document, since the description says it.
 - The goal is to find out exactly what one particular kind of knot is: the kind that lets go under a foam roller or a
   bodyworker's hand, with a release the person feels at once, often with a sudden rush of relief, emotion or euphoria.
   Please keep that point wherever you summarise, and keep "Purpose" and "The knots meant here" as written: they tell
@@ -48,16 +67,23 @@ Please set up a ResearchHub RFP from the text below. It asks for letters of inte
   "Care", and the help lines, as written.
 - No cost ceiling and no deadline are set. If you add cost estimates to the studies, mark them as rough guides, not
   limits.
-- "Who may apply, and how awards are made" is adapted from the Epothilone B call (RFP 32943). Please make it match how
-  this call's awards will really be made.
+- Who may apply and how awards are made are not yet confirmed, so the text has no such section. Please don't add
+  one.
 - The call has a second, smaller part on runaway release, in its own section near the end, with two studies (14 and
   15). Please keep that section short, with its caution and help lines beside it. Don't add how runaway release is
   set off, don't present anything here as a practice to try, and don't add anything about the people who can be
   introduced.
+- For the short description, please use: "A call for short letters of intent to find out what one particular kind of
+  knot is: the kind that lets go within seconds under a foam roller or a bodyworker's hand, with a release the person
+  feels at once, often with a sudden rush of relief, emotion or euphoria (a mark to know these knots by, not something
+  to seek). Fifteen quickly assessed study ideas are linked for researchers to judge or improve upon: thirteen on
+  knots, and two on runaway release, a rarer and dangerous process, beginning with interviews of people who already
+  know it. Letters are public; no deadline or cost ceiling is set. Invited full-proposal preparation is paid whether
+  or not the study is funded. Ethics review and the call's care rules apply."
 
 ---
 
-## What is a knot?
+## Knots of Existence: what does a foam roller release?
 
 A call for letters of intent
 
@@ -68,7 +94,8 @@ roller or a bodyworker's hand, with a release the person feels at once and, ofte
 well-being, at times tears or euphoria. That felt release is what marks these knots out (a mark to know them by, not
 something to seek). Bodyworkers, people who foam-roll and contemplative practitioners all describe them. They are among
 the commonest things people report in their bodies and among the least explained: no mechanism for them is established
-and, as far as is known, nothing has been recorded at the moment one lets go.
+and, as far as is known, nothing has been recorded at the moment one lets go. The question is about the knot itself,
+not the general effects of foam rolling.
 
 This call invites short letters of intent for studies that might help. A useful result may be positive, negative or
 inconclusive. Fifteen ideas for studies are set out on the project's Research page, each with what it might show and
@@ -93,8 +120,9 @@ find no bumps where there are many knots.
 
 ### One hypothesis, and six others
 
-A position paper, *The perforator hypothesis: knots as small arteries held shut where they pierce the fascia* (Zenodo,
-https://doi.org/10.5281/zenodo.23901648), argues from established physiology that a knot is a cutaneous perforator, a
+A position paper, *The perforator hypothesis: knots as small arteries held shut where they pierce the fascia* (on the
+project's site: https://ejhong.github.io/knots/research/perforator-hypothesis/), argues from established physiology
+that a knot is a cutaneous perforator, a
 small artery held shut by its own wall where it pierces the fascia. The idea grew from vasocomputation, the proposal
 that held predictions are held vascular tension (Johnson 2023), whose first step it keeps, a held contraction as a
 stored state; and from two reports of runaway release, described below. It is untested. The paper sets out six
@@ -167,14 +195,7 @@ It is hoped that funded work will register its plan in public before data are co
 share its data and code, and keep a simple public log of updates: frequent one-liners are ideal ("first three
 participants recorded", "switched from thermal imaging to laser speckle"). These weigh in selection.
 
-### Who may apply, and how awards are made
-
-Researchers and clinicians at accredited universities, colleges and academically affiliated research hospitals may
-apply. A principal investigator there takes institutional responsibility for the work; student-led projects are
-welcome under qualified supervision. Each award is made as a charitable gift to the recipient institution, so it
-carries the institution's gift fee and not a sponsored-project indirect cost rate. No cost ceiling is set. Awards
-assume access to existing equipment, facilities and qualified supervision; major equipment purchases are unlikely to
-fit.
+No cost ceiling is set.
 
 ### The studies
 
@@ -217,8 +238,8 @@ Or one not listed: anything that might help tell what a knot is.
 
 Two informal reports describe a rarer process that can follow forceful, long work at clearing knots, in contemplative
 practice or in somatic work. Past some point, releases come in chains and the process can no longer be set down; it
-runs on over months or years. It is arduous and can be dangerous, above all for someone facing it alone (the position
-paper, Section 5). This is why the studies here ask no one to press, breathe or work harder or longer than they
+runs on over months or years. It is arduous and can be dangerous, above all for someone facing it alone (the project's
+Research page: https://ejhong.github.io/knots/research/). This is why the studies here ask no one to press, breathe or work harder or longer than they
 usually do (Care, below).
 
 Anyone struggling with it should seek medical advice; Cheetah House (https://www.cheetahhouse.org), which supports
@@ -251,8 +272,7 @@ could serve as a method.
 
 ### References
 
-- Jhong E. The perforator hypothesis: knots as small arteries held shut where they pierce the fascia. Zenodo preprint
-  (2026). https://doi.org/10.5281/zenodo.23901648
+- Knots of Existence, the project's site. https://ejhong.github.io/knots/
 - Johnson ME. Principles of Vasocomputation: A Unification of Buddhist Phenomenology, Active Inference, and Physical
   Reflex (Part I). opentheory.net (2023).
   https://opentheory.net/2023/07/principles-of-vasocomputation-a-unification-of-buddhist-phenomenology-active-inference-and-physical-reflex-part-i/

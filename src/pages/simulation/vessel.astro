@@ -82,7 +82,7 @@ const treeQueue = (data.tree as unknown as { queue: { drive: number[]; remain: n
 const index = [
   { id: 'switch', label: 'the switch' },
   { id: 'checks', label: 'four checks' },
-  { id: 'predicts', label: 'what it predicts' },
+  { id: 'predicts', label: 'what the model does' },
   { id: 'sure', label: 'how sure' },
   { id: 'measured', label: 'against measurements' },
   { id: 'time', label: 'how a knot sets' },
@@ -96,8 +96,8 @@ const repo = 'https://github.com/ejhong/knots/blob/main';
   title="Can a knot hold?"
   kicker="Hypotheses · perforators, up close"
   current="hypotheses"
-  lede="If a knot is a perforator held shut, something has to hold it, and it has to let go within seconds. A first model, built only from published measurements, finds that the vessel can hold itself."
-  description="A small artery with tone in its wall is a switch: open or shut over a band of tone. A live model of one perforator, built from published measurements, and four checks of what could hold a knot."
+  lede="If a knot is a perforator held shut, something has to hold it, and it has to let go within seconds. This page is an exercise in using AI to build a model of one vessel from published measurements. It is kept for interest, and is not evidence about knots."
+  description="An exercise in using AI to model one perforator from published measurements: a small artery with tone in its wall as a switch, open or shut over a band of tone. Kept for interest; not evidence about knots."
   glyph="験"
   index={index}
   wide
@@ -105,6 +105,12 @@ const repo = 'https://github.com/ejhong/knots/blob/main';
   <section id="switch" class="sec full" data-glyph="結">
     <h2>One perforator, running</h2>
     <div class="prose intro">
+      <p>
+        <strong>An exercise, not evidence.</strong> This model was an experiment in using AI to turn one hypothesis into
+        something that runs. No knot has been measured, so nothing here has been checked against one. Its numbers, times
+        and predictions show what the model does, not what knots do, and nothing else on this site or in the position
+        paper rests on it.
+      </p>
       <p>
         A perforator's small artery, 0.24 mm across. Blood pushes its wall out; the wall pulls in with its own elastic
         tension and with the tone of its muscle. Over a band of tone both answers balance: an open vessel snaps shut
@@ -205,10 +211,10 @@ const repo = 'https://github.com/ejhong/knots/blob/main';
   </section>
 
   <section id="predicts" class="sec" data-glyph="験">
-    <h2>What it predicts</h2>
+    <h2>What the model does</h2>
     <ul class="prose preds">
       <li><strong>Blood returns where a knot lets go.</strong> Within seconds of release, flow over the spot rises from near nothing to {f2(sc.stress_eases.summary.flow_after_open ?? 0)} of resting flow when stress eases, or {f2(sc.press_and_release.summary.flow_after_open ?? 0)} after a press while drive stays raised. Laser speckle imaging over the spot would see it; a theory with nothing held in the tissue predicts no local change. It rises above rest only as tone falls.</li>
-      <li><strong>Pressure, then release, lets go faster than calm alone:</strong> {pressed.toFixed(1)} s after the pressure lifts against {Math.round(eased)} s after stress eases, with a burst from the sensory nerves of {f2(sc.press_and_release.summary.peak_spark)} against {f2(sc.stress_eases.summary.peak_spark)}. The pressure runs up a debt, and returning blood repays it through the nerves.</li>
+      <li><strong>In the model, pressure and then release let go faster than calm alone:</strong> {pressed.toFixed(1)} s after the pressure lifts against {Math.round(eased)} s after stress eases, with a burst from the sensory nerves of {f2(sc.press_and_release.summary.peak_spark)} against {f2(sc.stress_eases.summary.peak_spark)}. The pressure runs up a debt, and returning blood repays it through the nerves. The model lets a pressed vessel reopen only as the pressure lifts. That is how it was written, not something known: whether a knot lets go under a press or as it lifts has not been observed.</li>
       <li><strong>Slowing near the edge.</strong> As stress carries a vessel toward its fold, it answers small changes more and more slowly; flow over the spot should flicker more slowly just before a knot forms.</li>
       <li><strong>Through drive, breath lets go of knots only if it is uneven.</strong> Tone rises in about a second and fades over {Math.round(p.tau_down)} s, so an even swing with each breath holds a knot slightly tighter. The out-breath has to lower the skin's sympathetic drive more than the in-breath raises it; laser Doppler over hairy skin can measure whether it does. Breath may also act through movement: rhythmic stretch cuts smooth muscle's force at once <Fragment set:html={`(${cite('ljung1975')})`} />, and squeezed arteries widen within seconds of release, more after several squeezes than after one long one <Fragment set:html={`(${cite('clifford2006')})`} />. The model now carries that route, fitted to those squeezes; it acts where the breath moves the tissue, and adds up over breaths (what a breath would have to do, theory by theory, is in the <a href={`${base}/hypotheses/#differ`}>field guide</a>).</li>
       <li><strong>What to measure next:</strong> how much force a small artery's muscle keeps when the vessel is nearly shut, and how thick its wall is, in skin perforators themselves (the model takes them from rat arteries and healthy human walls). More than anything else, they decide whether a knot can hold at rest.</li>
@@ -401,8 +407,9 @@ const repo = 'https://github.com/ejhong/knots/blob/main';
         reported over hairy skin, where the gasp reflex may be weaker. The movement route is calibrated on squeezed
         muscle arteries of the rat, not on skin. The bench is one vessel alone; the tree of a parent and its children
         is <a href="#trees">above</a>, and every theory, this one among them, runs through
-        the same scenes in the <a href={`${base}/hypotheses/#watch`}>field guide</a>. The simulation shows what a
-        mechanism can do with measured numbers; it does not show that knots are perforators.
+        the same scenes in the <a href={`${base}/hypotheses/#watch`}>field guide</a>. The simulation was an exercise
+        in using AI: it shows what one way of writing the mechanism down does with these numbers. It does not show that
+        knots are perforators, or how knots behave.
       </p>
       <p class="stamp mono">
         run {data.run.date} · inputs {data.run.inputs} · numpy {data.run.packages.numpy}, scipy {data.run.packages.scipy}, sympy {data.run.packages.sympy}, SALib {data.run.packages.SALib}

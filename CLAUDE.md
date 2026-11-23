@@ -32,6 +32,10 @@ the author's reports, is retired: `sim/archive/`.)
   never written by hand, and say whether they hold in every plausible setting, depend on an unmeasured number (which), or
   never happen; numbers from guessed parameters are the map, not the finding. Calibration (the shared stress scale) is shown as
   calibration. The work ends in a measurement: favour what designs it over more breadth or polish.
+- **The simulation is an exercise in using AI** (the author, 22 Nov 2026): kept on Hypotheses and the single-vessel page for
+  interest, and labelled there as an exercise, not evidence. Nothing in the position paper or elsewhere on the site rests on it:
+  no numbers from the project's own models in the paper, and no claim about whether a knot lets go under a press or as it lifts,
+  which is not known.
 - **No author quotes on the site.** The author's answers to questions are rough impressions, not written for presentation;
   the site speaks in its own words. On the site, simulated inputs are *scenes*.
 
@@ -82,7 +86,7 @@ the author's reports, is retired: `sim/archive/`.)
   studies that might help (`#studies`, from the `STUDIES` and `STAGES` lists: on knots and on runaway release,
   grouped by what each needs and listed in the order they build on one another, not by importance, each with the kind of
   study it would be), after two open questions and what would help most (the lowest-hanging fruit, what to address first,
-  what a researcher could do, and a likely place to start: the two studies that begin with what people report, 1 and 14). The Research page carries nothing from the models: the theories, their models and what physics allows are on
+  what a researcher could do, and a likely place to start: the two studies that begin with what people report, 1 and 14). The Research page carries nothing from the models: the theories, their models and a few rough checks are on
   Hypotheses. The page also asks for letters of intent (`#respond`: what a letter holds, how letters are weighed, what
   happens next). `docs/RESEARCHHUB.md`, the draft call on ResearchHub, lists the studies by number, title and kind and
   points to the page for their text, and repeats that ask and the care rule: keep the two in step. The site names

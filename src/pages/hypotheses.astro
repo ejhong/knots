@@ -8,7 +8,6 @@ import vessel from '../data/sim/vessel.json';
 import type { GuideIndex, ReportCell, Trait } from '../sim/guide/data';
 import { envelopeChart } from '../sim/guide/envelope';
 import { switchChart, type Switch } from '../sim/guide/switch';
-import { calibrate, type Params } from '../sim/vessel';
 
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const repo = 'https://github.com/ejhong/knots/blob/main';
@@ -102,36 +101,18 @@ const cite = (id: string) => {
   const who = /^\p{Lu}{1,3}$/u.test(last) ? parts.slice(0, -1).join(' ') : last; // "Burton AC" or "Michael Edward Johnson"
   return `<a class="cite" href="${base}/library/#${id}">${who} ${ref.year}</a>`;
 };
-// What physics allows: numbers from the vessel model's checks and scenarios (sim/knots_sim/export.py → vessel.json).
+// Rough checks: two rough estimates from the project's own arithmetic (sim/knots_sim/export.py → vessel.json). The
+// checks that came from running the vessel model (a pressed vessel, a tight ring) were taken out on 22 Nov 2026: the
+// models are an exercise in using AI, and nothing outside them should rest on what they do.
 const col = vessel.checks.collar;
 const cool = vessel.checks.cooling;
-const vsc = vessel.scenarios as Record<string, { summary: { events: { t: number; to: string }[]; flow_after_open: number | null } }>;
-const pressed = (vsc.press_and_release.summary.events.find((e) => e.to === 'open')?.t ?? NaN) - 150;
-const afterPress = vsc.press_and_release.summary.flow_after_open ?? 0;
-const afterEase = vsc.stress_eases.summary.flow_after_open ?? 0;
-// Pressure around a vessel, from the same wall model: the tone a shut vessel needs to stay shut with 20 and 30 mmHg
-// outside it, and the outside pressure at which it would stay shut at resting tone.
-const vp = vessel.params.values as unknown as Params;
-const sw0 = calibrate(vp);
-const ring20 = calibrate(vp, 20);
-const ring30 = calibrate(vp, 30);
-const ringRest = (() => {
-  let lo = 0;
-  let hi = vp.P;
-  for (let i = 0; i < 40; i++) {
-    const mid = (lo + hi) / 2;
-    if (calibrate(vp, mid).Aopen <= sw0.urest) hi = mid;
-    else lo = mid;
-  }
-  return hi;
-})();
 const index = [
   { id: 'unknown', label: 'what no one knows' },
   { id: 'watch', label: 'watch them' },
   { id: 'reports', label: 'the reports and the models' },
   ...HYPOTHESES.map((h, i) => ({ id: h.id, label: `${String(i + 1).padStart(2, '0')} ${h.label}` })),
   { id: 'differ', label: 'how they differ' },
-  { id: 'physics', label: 'what physics allows' },
+  { id: 'physics', label: 'rough checks' },
   { id: 'made', label: 'what the models are' },
 ];
 ---
@@ -165,10 +146,11 @@ const index = [
           (densification); one in a sensitised nerve and its sheath (nerves); and one in the spinal cord and brain, which may turn ordinary
           signals into a felt knot (perception). Each is set out below at its strongest and in its own terms, with its best evidence
           and its sharpest test. None has yet been tested against the others at a knot.</p>
-        <p>For interest, each account has also been written as a simple model and run through the same scenes. The models make each
-          account's logic explicit and show what it would imply; they are not evidence. Nothing about a knot has been measured to set
-          them by, so many of their numbers are guesses, and their breaths and scenes are stand-ins. What physics rules out holds
-          whatever the settings (<a href="#physics">below</a>); the rest is an experiment in reasoning, not a finding (see{' '}
+        <p>For interest, each account has also been written as a simple model and run through the same scenes. That was an
+          exercise in using AI: the models make each account's logic explicit and show what one way of writing it down would
+          imply, and they are not evidence. Nothing about a knot has been measured to set them by, so many of their numbers are
+          guesses, and their breaths and scenes are stand-ins. A few <a href="#physics">rough checks</a> from published numbers are
+          below; none of it is a finding (see{' '}
           <a href="#made">what the models are, and are not</a>).</p>
       </div>
     </section>
@@ -176,8 +158,9 @@ const index = [
     <section id="watch" class="sec full" data-glyph="観">
       <h2>Watch them</h2>
       <p class="sub">Choose a scene. Each theory's model grows its own knots in the same 4 cm of the upper back, where its anatomy puts
-        them, and meets the same stress, breath and hand. It is an experiment, for interest: nothing is fitted to anyone's reports, many
-        of the numbers are guesses, and it measures nothing (see <a href="#made">what the models are, and are not</a>).</p>
+        them, and meets the same stress, breath and hand. It is an exercise in using AI to turn each theory into a model, kept here
+        for interest. It is not evidence: nothing is fitted to anyone's reports, many of the numbers are guesses, and it measures
+        nothing (see <a href="#made">what the models are, and are not</a>).</p>
       <div class="instrument" data-guide>
         <div class="scenes" role="group" aria-label="Scenes">
           {films.map((s) => (
@@ -424,15 +407,16 @@ const index = [
     </section>
 
     <section id="physics" class="sec full" data-glyph="理">
-      <h2>What physics allows</h2>
+      <h2>Rough checks</h2>
       <p class="sub">
-        Questions that numbers settle before any model runs: what a mechanism cannot do, whatever its settings.
+        Questions put to each mechanism from published numbers and simple physics, without running any model. They are this
+        project's own arithmetic and have not been reviewed: places to look, not settled answers.
       </p>
       <div class="checks">
         <article class="check">
           <p class="q">Can hyaluronan hold a vessel shut?</p>
-          <p class="a">No.</p>
-          <p set:html={`A liquid resists motion, not position. At its most viscous (healthy synovial fluid; ${cite('nicholls2018')}), in a collar 20 µm thin, its drag is ${Math.round(col.pressure_over_drag)} times weaker than the pressure holding the vessel open, and fascia holds tens to hundreds of times less hyaluronan (${cite('fede2018')}).`} />
+          <p class="a">Probably not.</p>
+          <p set:html={`A liquid resists motion, not position. At its most viscous (healthy synovial fluid; ${cite('nicholls2018')}), in a collar 20 µm thin, its drag is by a rough estimate about ${Math.round(col.pressure_over_drag)} times weaker than the pressure holding the vessel open, and fascia holds tens to hundreds of times less hyaluronan (${cite('fede2018')}).`} />
         </article>
         <article class="check">
           <p class="q">Can acidity thicken hyaluronan?</p>
@@ -446,8 +430,8 @@ const index = [
         </article>
         <article class="check">
           <p class="q">Can warming release a vessel within a breath?</p>
-          <p class="a">No.</p>
-          <p>A patch of skin warms with a time constant of at least {Math.round(cool.tau_s_at_max_flow)} s even at maximal skin blood flow. Release within a breath needs something faster than heat.</p>
+          <p class="a">Probably not.</p>
+          <p>By a rough estimate, a patch of skin takes at least {Math.round(cool.tau_s_at_max_flow)} s to warm even at maximal skin blood flow. Release within a breath would need something faster than heat.</p>
         </article>
         <article class="check">
           <p class="q">Does the latch remember?</p>
@@ -455,14 +439,9 @@ const index = [
           <p set:html={`Relaxation follows the fall of calcium, not latch-bridge detachment (${cite('rembold1991')}): a latch holds cheaply while the drive lasts. In Johnson's account the memory lies elsewhere, in the held prediction that the clamp keeps from updating: the field guide runs that loop as <a href="#latch">the vascular latch</a>.`} />
         </article>
         <article class="check">
-          <p class="q">Can a pressed vessel let go under the hand?</p>
-          <p class="a">Not until it lifts.</p>
-          <p>Pressure outside a shut vessel only helps keep it shut. After 40 s of pressure the vessel reopens {pressed.toFixed(1)} s after the pressure lifts, and flow returns from near nothing to {afterPress.toFixed(2)} of resting flow while drive stays raised ({afterEase.toFixed(2)} when stress eases instead).</p>
-        </article>
-        <article class="check">
           <p class="q">Can a tight ring hold a vessel shut?</p>
-          <p class="a">It helps; at resting tone, only above about {Math.round(ringRest)} mmHg.</p>
-          <p set:html={`Pressure outside the wall counts against the pressure inside. Around a shut vessel, 20–30 mmHg, enough to slow the blood leaving a nerve (${cite('rydevik1981')}), lowers the tone it needs to stay shut from ${sw0.Aopen.toFixed(2)} of maximal to ${ring30.Aopen.toFixed(2)}–${ring20.Aopen.toFixed(2)}, with rest at ${sw0.urest.toFixed(2)}. To stay shut at rest takes ${Math.round(ringRest)} mmHg of the ${vp.P} inside: by then the ring, not the wall, is doing much of the holding, and nothing is known to supply it.`} />
+          <p class="a">It would help; how much is not known.</p>
+          <p set:html={`Pressure outside the wall counts against the pressure inside, so a tight opening would make a shut vessel easier to keep shut. Around a nerve, 20–30 mmHg is enough to slow the blood leaving it (${cite('rydevik1981')}). Whether an opening in the fascia presses on its vessel at all is not known.`} />
         </article>
         <article class="check">
           <p class="q">Can calm quiet a sensitised nerve within a breath?</p>
@@ -481,6 +460,9 @@ const index = [
     <section id="made" class="sec full" data-glyph="法">
       <h2>What the models are, and are not</h2>
       <div class="made prose">
+        <p><strong>An exercise in using AI.</strong> The models were built with AI, as an experiment in whether a theory about
+          knots can be written down and run. They are kept here for interest. Nothing else on this site, and nothing in the
+          position paper, rests on them.</p>
         <p><strong>What they are.</strong> Each theory is written as a model in its strongest form, every number taken from a quoted
           line of a paper or marked as a guess with a range. The same patch, the same scenes, the same hand and breath for every
           theory; each places its own units where its anatomy puts them. What is felt comes from one rule for all: a finger feels
@@ -495,9 +477,10 @@ const index = [
           perforator model, the site's own proposal, is the most detailed of the seven: a model with more parts can reach more
           reports. So the shares, times and traces on this page illustrate each account's logic. They are not predictions, they
           measure nothing, and they cannot say which theory is true.</p>
-        <p><strong>What holds up.</strong> What physics rules out holds whatever the settings (<a href="#physics">above</a>). And
-          where two accounts part on something a hand or an instrument can tell, the difference points to a study that could decide
-          between them, made on people (<a href={`${base}/research/#studies`}>studies that might help</a>).</p>
+        <p><strong>What may be of use.</strong> The <a href="#physics">rough checks above</a> do not depend on the models'
+          settings, though they too are unreviewed. And where two accounts part on something a hand or an instrument can tell, the
+          difference points to a study that could decide between them, made on people
+          (<a href={`${base}/research/#studies`}>studies that might help</a>).</p>
         <p>The scenes are things that happen to a model, not instructions. Deep somatic and meditative work carries real risks: see the
           site's <a href={`${base}/about/#moderation`}>moderation guidance</a>.</p>
         <p class="links mono">
@@ -1104,7 +1087,7 @@ const index = [
     font-size: 9.5px;
     color: var(--muted);
   }
-  /* What physics allows. */
+  /* Rough checks. */
   .checks {
     display: grid;
     grid-template-columns: repeat(4, minmax(0, 1fr));
