@@ -51,6 +51,8 @@ export function mountTour(viz: HTMLElement, panel: HTMLElement) {
     else setTimeout(() => !plateOn && plate.stop(), 900);
   };
   const articles = [...panel.querySelectorAll<HTMLElement>('[data-chapter]')];
+  const dots = [...panel.querySelectorAll<HTMLButtonElement>('[data-ch-dot]')];
+  const chCount = panel.querySelector<HTMLElement>('[data-ch-count]');
 
   let current = -1;
   let stopDemo: (() => void) | null = null;
@@ -113,6 +115,12 @@ export function mountTour(viz: HTMLElement, panel: HTMLElement) {
       if (i !== current) go(i, true);
     }),
   );
+  dots.forEach((d) =>
+    d.addEventListener('click', () => {
+      const i = Number(d.dataset.chDot);
+      if (i !== current) go(i, true);
+    }),
+  );
 
   // The figure follows the reader's scroll (but not our own programmatic
   // scrolls): the active chapter is the last one whose top has passed the
@@ -145,6 +153,12 @@ export function mountTour(viz: HTMLElement, panel: HTMLElement) {
     const ch = CHAPTERS[i];
     label.textContent = `${ch.n} · ${ch.title}`;
     articles.forEach((a, k) => a.classList.toggle('active', k === i));
+    dots.forEach((d, k) => {
+      d.classList.toggle('active', k === i);
+      if (k === i) d.setAttribute('aria-current', 'true');
+      else d.removeAttribute('aria-current');
+    });
+    if (chCount) chCount.textContent = `${ch.n} / ${String(CHAPTERS.length).padStart(2, '0')}`;
     history.replaceState(null, '', `#${ch.id}`);
     if (scroll) {
       scrollingByCode = true;

@@ -40,6 +40,19 @@ const html = (s: string) =>
   <aside class="notes-panel panel reading" aria-label="Introduction">
     <div class="panel-head">
       <span>Introduction</span>
+      <nav class="ch-nav" aria-label="Chapters">
+        {CHAPTERS.map((c, i) => (
+          <button
+            class:list={['ch-dot', { active: i === 0 }]}
+            type="button"
+            data-ch-dot={i}
+            title={`${c.n} · ${c.title}`}
+            aria-label={`Chapter ${c.n}: ${c.title}`}
+            aria-current={i === 0 ? 'true' : undefined}
+          />
+        ))}
+        <span class="ch-count mono" data-ch-count>01 / 0{CHAPTERS.length}</span>
+      </nav>
     </div>
     <div class="panel-body" data-chapters>
       {
@@ -79,6 +92,36 @@ const html = (s: string) =>
     width: 380px;
     min-width: 380px;
     max-width: 380px;
+  }
+  .ch-nav {
+    margin-left: auto;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  .ch-dot {
+    width: 6px;
+    height: 6px;
+    padding: 0;
+    border-radius: 50%;
+    border: 0;
+    background: var(--panel-line);
+    cursor: pointer;
+    transition: background 0.2s, transform 0.2s;
+  }
+  .ch-dot:hover {
+    background: var(--panel-muted);
+  }
+  .ch-dot.active {
+    background: var(--jade-light);
+    transform: scale(1.25);
+  }
+  .ch-count {
+    margin-left: 6px;
+    font-size: 9.5px;
+    font-weight: 400;
+    color: var(--panel-faint);
+    font-variant-numeric: tabular-nums;
   }
   .chapter {
     padding-bottom: 14px;

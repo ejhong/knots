@@ -113,7 +113,7 @@ export class Locator3D {
 
   constructor(
     private positions: Float32Array,
-    private normals: Float32Array,
+    _normals: Float32Array,
     private triangles: Uint32Array,
     private joint: JointLookup,
   ) {

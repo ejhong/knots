@@ -21,7 +21,7 @@ export class Picker {
   private ray = new Ray();
 
   constructor(
-    private geometry: BufferGeometry,
+    geometry: BufferGeometry,
     private normals: Float32Array,
     private triangles: Uint32Array,
   ) {

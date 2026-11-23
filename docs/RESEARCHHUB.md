@@ -73,14 +73,15 @@ not full proposals. Please don't publish it: the author will set the funding amo
   "Care", and the help lines, as written.
 - No cost ceiling and no deadline are set. If you add cost estimates to the studies, mark them as rough guides, not
   limits.
-- Please keep "Who may apply, and how awards are made" as written: only academic institutions may apply.
+- Please keep "Who may apply, and how awards are made" as written: accredited academic institutions, academically affiliated research hospitals, and qualified 501(c)(3) non-profit research organizations may apply.
 - The call has a second, smaller part on runaway release, in its own section near the end, with two studies (12 and
   13). Please keep that section short, with its caution and help lines beside it. Don't add how runaway release is
   set off, don't present anything here as a practice to try, and don't add anything about the people who can be
   introduced.
 - For the short description, please use: "A call for short letters of intent to find out what one particular kind of
   knot is: the kind that lets go within seconds under a foam roller or a bodyworker's hand, with a release the person
-  feels at once, often with a sudden rush of relief, emotion or euphoria. Thirteen quickly assessed study ideas are linked for researchers as example research ideas: eleven on knots, and two on runaway release, a rarer and dangerous
+  feels at once, often with a sudden rush of relief, emotion or euphoria. Thirteen study ideas are linked as starting
+  points for researchers to weigh or replace: eleven on knots, and two on runaway release, a rarer and dangerous
   process, beginning with interviews of people who already know it. Letters are public; no deadline or cost ceiling is
   set. Invited full-proposal preparation is paid whether or not the study is funded. Ethics review and the call's care
   rules apply."
@@ -135,17 +136,16 @@ motor units that latch on, and perception) and the measurements that would refut
 seven, each at its strongest: https://ejhong.github.io/knots/hypotheses/ (code and data:
 https://github.com/ejhong/knots). Studies that count against the hypothesis are as welcome as studies that support it.
 
-The paper was written by AI under its author's direction and has not been peer-reviewed, and its author will not take it
+The paper was drafted with AI under its author's direction, verified against PubMed records, and has not been peer-reviewed; its author will not take it
 to a journal. If, having weighed the alternatives, you think the perforator hypothesis is the best fit, take it up: test
 it, rework it, publish it (the paper is CC BY 4.0). A letter can propose that write-up, and it can be funded. If you think
 a rival theory fits better, the models, data and code are open to you too.
 
 ### You are the experts
 
-The studies on the Research page are ideas from a non-expert working with AI, meant to show the kind of thing that
-might help. They were assessed only quickly, and some may prove not useful, or not worth doing now. You know the
-methods, the pitfalls and what is feasible: please make your own assessment of what would really be useful. Three
-judgements would help more than any one idea there:
+The studies on the Research page are starting points drafted by an independent author with AI assistance, meant to map
+out tractable ways in. You know the methods, the pitfalls and what is feasible: please make your own assessment of what
+would move the question most. Three judgements would help more than any single item on the list:
 
 - **The lowest-hanging fruit.** Which could be done soon and cheaply, and still tell something?
 - **What to address first.** The list starts with what is felt, and by whom, since much of the rest builds on it. Is
@@ -159,7 +159,7 @@ One likely place to start, though you may judge otherwise, is with what people r
 surveys and interviews that need no instruments and could start now: what people who foam-roll feel (study 1), asked
 of them and of bodyworkers, and a description of runaway release (study 12), from people who know it at first hand. One
 team might do both. Neither need be large: their use is to tell the studies that measure whom to recruit, and where
-and when to look.
+and when to look. Existing imaging and surgical records (study 7) also offer a fast entry point with no new recruitment.
 
 ### What is asked: a letter of intent
 
@@ -202,16 +202,17 @@ No cost ceiling is set.
 
 ### Who may apply, and how awards are made
 
-Researchers and clinicians at accredited universities, colleges and academically affiliated research hospitals may
-apply. A principal investigator there takes institutional responsibility for the work; student-led projects are
-welcome under qualified supervision. Each award is made as a charitable gift to the recipient institution, so it
-carries the institution's gift fee and not a sponsored-project indirect cost rate. Awards assume access to existing
-equipment, facilities and qualified supervision; major equipment purchases are unlikely to fit.
+Researchers and clinicians at accredited universities, colleges, academically affiliated research hospitals, and
+qualified 501(c)(3) non-profit research organizations may apply. A principal investigator there takes institutional
+responsibility for the work, including ethics review; student-led projects are welcome under qualified supervision. Each
+award is made as a charitable gift to the recipient organization, so it carries the organization's gift fee and not a
+sponsored-project indirect cost rate. Awards assume access to existing equipment, facilities and qualified supervision;
+major equipment purchases are unlikely to fit.
 
 ### The studies
 
-Thirteen ideas, grouped by where each looks and listed in the order they build on one another, not by importance. They
-are possibilities, assessed only quickly, and some may not be worth doing: your own assessment counts for more. After
+Thirteen ideas, grouped by where each looks and listed in the order they build on one another, not by importance. Treat
+them as starting points to weigh or replace: your own judgement of what is feasible and decisive counts for more. After
 each title is the kind of study it would be. The Research page sets each out in full, with what it might show, what it likely needs and the
 closest existing work: https://ejhong.github.io/knots/research/#studies. The eleven on knots are listed here; the two on
 runaway release follow in the next section.
