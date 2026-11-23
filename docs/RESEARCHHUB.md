@@ -101,8 +101,8 @@ as far as is known, nothing has been recorded at the moment one lets go. The que
 the general effects of foam rolling.
 
 This call invites short letters of intent for studies that might help. A useful result may be positive, negative or
-inconclusive. Thirteen ideas for studies are set out on the project's Research page, each with what it might show and
-what it likely needs: https://ejhong.github.io/knots/research/
+inconclusive. Thirteen ideas for studies are set out on the project's Research page, each with what it might show, what
+it likely needs and the closest existing work: https://ejhong.github.io/knots/research/
 
 Eleven are on knots. Two are on a second, smaller question, what runaway release is: a rarer and dangerous process,
 described near the end of this call.
@@ -212,8 +212,8 @@ equipment, facilities and qualified supervision; major equipment purchases are u
 
 Thirteen ideas, grouped by where each looks and listed in the order they build on one another, not by importance. They
 are possibilities, assessed only quickly, and some may not be worth doing: your own assessment counts for more. After
-each title is the kind of study it would be. The Research page sets each out in full, with what it might show and what
-it likely needs: https://ejhong.github.io/knots/research/#studies. The eleven on knots are listed here; the two on
+each title is the kind of study it would be. The Research page sets each out in full, with what it might show, what it likely needs and the
+closest existing work: https://ejhong.github.io/knots/research/#studies. The eleven on knots are listed here; the two on
 runaway release follow in the next section.
 
 Throughout, a knot means the kind described above, known by a release its owner feels. A study that marks or counts
