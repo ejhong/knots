@@ -84,18 +84,20 @@ the author's reports, is retired: `sim/archive/`.)
   search "…"` finds papers, and `knots_sim.library` adds them to `papers.json` from PubMed's own records.
 - Research: the position paper (`src/pages/research/perforator-hypothesis.astro`) and, on the Research page, the
   studies that might help (`#studies`, from the `STUDIES` and `STAGES` lists: on knots and on runaway release,
-  grouped by what each needs and listed in the order they build on one another, not by importance, each with the kind of
+  grouped by where each looks (what is felt and by whom; knots in the living; other places to look; two particular
+  ideas; runaway release) and listed in the order they build on one another, not by importance, each with the kind of
   study it would be), after two open questions and what would help most (the lowest-hanging fruit, what to address first,
-  what a researcher could do, and a likely place to start: the two studies that begin with what people report, 1 and 13). The Research page carries nothing from the models: the theories, their models and a few rough checks are on
+  what a researcher could do, and a likely place to start: the two studies that begin with what people report, 1 and 12). The Research page carries nothing from the models: the theories, their models and a few rough checks are on
   Hypotheses. The page also asks for letters of intent (`#respond`: what a letter holds, how letters are weighed, what
   happens next). `docs/RESEARCHHUB.md`, the draft call on ResearchHub, lists the studies by number, title and kind and
   points to the page for their text, and repeats that ask and the care rule: keep the two in step. The site names
   ResearchHub only once the call is live and can be linked, and states no cost ceiling. On runaway release (since
-  22 Nov 2026) letters are asked for on the study that describes it (13: a search of what is already recorded, and
+  22 Nov 2026) letters are asked for on the study that describes it (12: a search of what is already recorded, and
   interviews), which can begin with one or two people who can be introduced, with their agreement; examining people in
-  it (14) is limited to those one or two, and no one is recruited for it. The call carries both in a section of their
-  own, beside the caution and the help lines. There are fourteen studies (22 Nov 2026): 1 to 12 on knots, opening with what
-  people who foam-roll feel, and 13 and 14 on runaway release; the two studies of vascular mechanism were taken out. The people are never identified, and Cheetah House is named only as a
+  it (13) is limited to those one or two, and no one is recruited for it. The call carries both in a section of their
+  own, beside the caution and the help lines. There are thirteen studies (22 Nov 2026): 1 to 11 on knots, opening with what
+  people who foam-roll feel, and 12 and 13 on runaway release; the two studies of vascular mechanism and the one on
+  whether a knot is a stable thing were taken out. The people are never identified, and Cheetah House is named only as a
   place to find help, never as a place to recruit. The September preprint and pilot are retired (`research/preprint/` and
   `pilot/` redirect, as the paper cites them). The paper's PDF is its Zenodo file: reprint with `npx tsx scripts/pdf.ts`
   (a running dev server) only for a new Zenodo version.

@@ -16,7 +16,7 @@ feeling (a mark to know them by, not something to seek).
 - **Traditions** — Chinese medicine, Daoist alchemy, yoga and tantra, Tibetan tsa lung and Dzogchen, Buddhist practice.
 - **Library** — verified references and a short history of knots.
 - **Research** — for researchers: two open questions (what a knot is, and what runaway release is), what would help most,
-  how to respond with a letter of intent, fourteen studies that might help, and the position paper.
+  how to respond with a letter of intent, thirteen studies that might help, and the position paper.
 - **Simulation** (`/simulation/`) — the bench: one perforator's small artery as a switch, running live, with every number
   traced to its source.
 

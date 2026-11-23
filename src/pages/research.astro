@@ -16,18 +16,20 @@ const cite = (id: string) => {
 // #experiments and its cards #experiment-N.
 const ALIAS: Record<string, string> = { 'Acupoints on perforators': 'points' };
 
-// Studies that might help, on the two open questions: what a knot is, and what runaway release is. Grouped by what each
-// needs (STAGES) and listed in the order they build on one another, not by importance, each with the kind of study it would
-// be. docs/RESEARCHHUB.md (the draft call on ResearchHub) lists the studies by number, title and kind, in this order,
+// Studies that might help, on the two open questions: what a knot is, and what runaway release is. Grouped by where each
+// looks (STAGES: what is felt and by whom; knots in the living; other places to look, which are records, cadavers and
+// animals; two particular ideas; runaway release) and listed in the order they build on one another, not by importance,
+// each with the kind of study it would be. docs/RESEARCHHUB.md (the draft call on ResearchHub) lists the studies by number, title and kind, in this order,
 // and points here for their text; it repeats the ask for letters of intent (#respond: what a letter holds, how letters
 // are weighed, what happens next) and the care rule. Keep the two in step.
-// Runaway release (the author, 22 Nov 2026): letters are asked for on study 13, which describes it and can begin with
-// one or two people who might be introduced, with their agreement; study 14 is limited to those one or two, and no one
-// is recruited for it. Studies 1 and 13, which begin with what people report, are named as a likely place to start.
+// Runaway release (the author, 22 Nov 2026): letters are asked for on study 12, which describes it and can begin with
+// one or two people who might be introduced, with their agreement; study 13 is limited to those one or two, and no one
+// is recruited for it. Studies 1 and 12, which begin with what people report, are named as a likely place to start.
 // The same day the author asked for a plainer first study (what people who foam-roll feel), with whether another hand
 // can feel a knot as a study of its own; for the two studies of vascular mechanism (a small artery held shut for
 // hours; the breath and the skin of the trunk) to go; and for the post-mortem study not to depend on knots marked in
-// life. Fourteen studies: 1 to 12 on knots, 13 and 14 on runaway release.
+// life; and, later that day, for the study of whether a knot is a stable thing to go. Thirteen studies: 1 to 11 on
+// knots, 12 and 13 on runaway release.
 const STUDIES: { stage: string; prong: string; title: string; design: string; what: string; show: string; needs: string }[] = [
   {
     stage: 'finding-knots',
@@ -39,7 +41,7 @@ const STUDIES: { stage: string; prong: string; title: string; design: string; wh
       broad, dull areas? Where? Are the bumps there all the time, or only when pressed, attended to or breathed with?
       How firmly must they press to find one? Can they release them, and how did they learn? What does a release feel
       like, and what follows it, from nothing to relief, well-being, tears or euphoria? How often, and do many knots
-      ever let go at once, or have releases ever run on in chains that could not be set down (study 13)? Has anyone
+      ever let go at once, or have releases ever run on in chains that could not be set down (study 12)? Has anyone
       else, a partner or a bodyworker, felt the same bumps? And what part does the breath play, in finding knots as
       well as in releasing them? Bodyworkers might be asked the same about the knots they feel in others.`,
     show: `How much people's experience differs. Informal reports suggest that some feel single knots and release them
@@ -47,7 +49,7 @@ const STUDIES: { stage: string; prong: string; title: string; design: string; wh
       tied to the breath as releasing them seems to be. How common a felt release is among people who roll, and the
       feeling that can follow it, is not known; the survey would give a first estimate, would show what the later
       studies should ask, and would find the people who have the knots meant here. Asked of everyone, the question on
-      chains would say how common they are among people who roll, and might find people for study 13.`,
+      chains would say how common they are among people who roll, and might find people for study 12.`,
     needs: `a survey and interview researcher · many people who foam-roll, and bodyworkers`,
   },
   {
@@ -70,7 +72,7 @@ const STUDIES: { stage: string; prong: string; title: string; design: string; wh
     needs: `people who feel their own knots (study 1) · two examiners, such as bodyworkers · simple blind tests`,
   },
   {
-    stage: 'finding-knots',
+    stage: 'with-knots-found',
     prong: 'knots',
     title: 'What an instrument finds where a knot is felt',
     design: `Blinded comparison: felt knots against matched spots, before and after release`,
@@ -138,21 +140,6 @@ const STUDIES: { stage: string; prong: string; title: string; design: string; wh
   {
     stage: 'with-knots-found',
     prong: 'knots',
-    title: 'Whether a knot is a stable thing',
-    design: `Longitudinal: blinded mapping repeated over weeks and months`,
-    what: `The same people's knots might be mapped again over weeks and months, against their own map of perforators,
-      built up over the visits, since a map made by flow misses a vessel held shut (study 5): by
-      two examiners who can feel knots in others, blind to each other and to earlier maps, or by the people
-      themselves, if they can isolate their own (study 1), blind to their earlier marks.`,
-    show: `Whether the same knots are found again at all, which may depend on the skill of whoever marks them, and whether
-      a person's knots return to fixed places (as the perforator and nerve views expect) or arise anywhere and drift.
-      Much else may rest on the answer.`,
-    needs: `examiners, or people who can isolate their own knots · a few people, each seen several times · a Doppler or
-      thermal map`,
-  },
-  {
-    stage: 'with-knots-found',
-    prong: 'knots',
     title: 'Whether knots grow with age',
     design: `Epidemiology: cross-sectional across ages, then a cohort followed over years`,
     what: `Knots might be counted and sized in people of all ages, from childhood to old age, and in the same people over
@@ -165,20 +152,7 @@ const STUDIES: { stage: string; prong: string; title: string; design: string; wh
     needs: `examiners or an instrument (studies 2 and 3) · people of all ages · a statistician`,
   },
   {
-    stage: 'with-knots-found',
-    prong: 'knots',
-    title: 'Whether animals have knots',
-    design: `Comparative (veterinary): a survey, examination by instrument, and opportunistic necropsy`,
-    what: `Veterinarians and animal bodyworkers might be asked whether they find knots in horses, dogs or other animals,
-      and where; with their owners' consent, the spots might be examined with the instruments of study 3. Where an
-      animal that had them dies or is put down for other reasons, the tissue beneath might be examined too (as in study 10).
-      No animal would be harmed for the study.`,
-    show: `Whether knots are something mammals share, as most of the accounts would expect, since animals have the same
-      vessels, fascia, muscle and nerves; and a route to the tissue beneath a knot that was felt in life.`,
-    needs: `veterinarians or animal bodyworkers · a pencil Doppler or ultrasound · ethics review`,
-  },
-  {
-    stage: 'any-time',
+    stage: 'elsewhere',
     prong: 'knots',
     title: 'What is already recorded',
     design: `Secondary analysis of existing recordings`,
@@ -199,7 +173,7 @@ const STUDIES: { stage: string; prong: string; title: string; design: string; wh
       and operative records`,
   },
   {
-    stage: 'any-time',
+    stage: 'elsewhere',
     prong: 'knots',
     title: 'What cadavers show',
     design: `Anatomy and histology: existing dissection and post-mortem records, then dissection where knots are commonly
@@ -216,6 +190,19 @@ const STUDIES: { stage: string; prong: string; title: string; design: string; wh
       and so might any state that is held only in life. It could not show that a given spot was a knot, only what
       there is to find where knots are said to be.`,
     needs: `an anatomist or pathologist · existing records and tissue, or a body donation programme · ethics review`,
+  },
+  {
+    stage: 'elsewhere',
+    prong: 'knots',
+    title: 'Whether animals have knots',
+    design: `Comparative (veterinary): a survey, examination by instrument, and opportunistic necropsy`,
+    what: `Veterinarians and animal bodyworkers might be asked whether they find knots in horses, dogs or other animals,
+      and where; with their owners' consent, the spots might be examined with the instruments of study 3. Where an
+      animal that had them dies or is put down for other reasons, the tissue beneath might be examined too (as in study 8).
+      No animal would be harmed for the study.`,
+    show: `Whether knots are something mammals share, as most of the accounts would expect, since animals have the same
+      vessels, fascia, muscle and nerves; and a route to the tissue beneath a knot that was felt in life.`,
+    needs: `veterinarians or animal bodyworkers · a pencil Doppler or ultrasound · ethics review`,
   },
   {
     stage: 'any-time',
@@ -268,7 +255,7 @@ const STUDIES: { stage: string; prong: string; title: string; design: string; wh
       pattern that a case definition could capture, or several things; how common it is, who is at risk and what
       helps. Accounts taken by researchers, with their own questions, would also be independent of this project,
       whose perforator view grew from the two reports. And it might say where and when to look, and find the
-      participants, for study 14.`,
+      participants, for study 13.`,
     needs: `a qualitative or clinical researcher, best with experience of meditation-related difficulty · ethics review
       · support at hand for participants`,
   },
@@ -280,7 +267,7 @@ const STUDIES: { stage: string; prong: string; title: string; design: string; wh
     what: `People already in runaway release might be examined while it runs and again as it settles: ultrasound of the
       fascial layers and their glide where change is felt and at matched places, colour Doppler of the perforators,
       skin-flow imaging, photographs of any skin that weeps or crusts, and the blood tests a physician would order. No one would be asked to begin or seek it, and
-      their care would come first. For now it is limited to the one or two people who might be introduced (study 13), and who may define the profile,
+      their care would come first. For now it is limited to the one or two people who might be introduced (study 12), and who may define the profile,
       if they are willing: no one is recruited for it. A laboratory already measuring knots (studies 3 and 4) has
       the instruments and could add it.`,
     show: `If the tissue is changing, the glide might differ at the reported places and settle on the clock the reports
@@ -295,7 +282,7 @@ const STUDIES: { stage: string; prong: string; title: string; design: string; wh
 const STAGES: { id: string; title: string; intro: string }[] = [
   {
     id: 'finding-knots',
-    title: 'First: finding knots',
+    title: 'First: what is felt, and by whom',
     intro: `Feeling a knot may itself be a skill, and a knot that its owner feels may or may not be one that others can
       feel. Informal reports suggest that some who foam-roll can isolate a single knot, felt as a distinct bump, and
       release it readily, perhaps through a trained breath that may also help to find it, while others never feel
@@ -303,26 +290,34 @@ const STAGES: { id: string; title: string; intro: string }[] = [
       many knots is felt more as a dull block, and a trained breath may be needed to feel its knots as distinct
       bumps and to release them. If
       so, studies that locate or release knots cannot assume that anyone can find one, in themselves or in others,
-      or that a bump is there for a hand to find in a body at rest. So these three come first: what people who roll
-      feel, whether another hand can feel a knot, and what an instrument finds there.`,
+      or that a bump is there for a hand to find in a body at rest. So these two come first: what people who roll
+      feel, and whether another hand can feel a knot.`,
   },
   {
     id: 'with-knots-found',
-    title: 'Then: with knots found',
-    intro: `Each of these needs knots found, by hand or by instrument, and so builds on the first three.`,
+    title: 'Then: looking at knots in the living',
+    intro: `Each of these needs people who can find their knots, by their own hand or another's, and so builds on the
+      first two. They begin with whether an instrument sees anything where a knot is felt.`,
+  },
+  {
+    id: 'elsewhere',
+    title: 'At any time: other places to look',
+    intro: `Records, cadavers and animals. These need nothing from the others and could begin now. None can show that a
+      given spot is a knot, only what there is to find where knots are said to be.`,
   },
   {
     id: 'any-time',
-    title: 'At any time',
-    intro: `These need nothing from the others and could begin now, alongside the first.`,
+    title: 'At any time: two particular ideas',
+    intro: `Each tests one idea that bears on knots, and needs nothing from the others: whether the acupuncture points sit
+      on perforators, and a prediction of vasocomputation about deep meditation.`,
   },
   {
     id: 'runaway-release',
     title: 'Runaway release',
     intro: `Runaway release is known so far from two informal reports, and no study of it as such is known, so
-      describing it comes first (study 13). That could begin now: one or two people who know it might be introduced,
+      describing it comes first (study 12). That could begin now: one or two people who know it might be introduced,
       with their agreement, once a letter is taken up, and this part depends on that agreement. Examining people
-      in it (study 14) is limited for now to those one or two, if they are willing; more waits on the description,
+      in it (study 13) is limited for now to those one or two, if they are willing; more waits on the description,
       which might say where and when to look, and find the participants.`,
   },
 ];
@@ -340,7 +335,7 @@ const index = [
   kicker="For researchers"
   current="research"
   lede="People who work with the body find places that hold for years and let go in a breath, with a release the person feels at once. The aim is to find out exactly what this kind of knot is. Here are ideas for studies that might help, and a second question, what runaway release is, set out for those who know the methods to judge."
-  description="An open problem in physiology: what a knot is, and what runaway release is. Fourteen ideas for studies that might help, which come first, how to respond, and the position paper."
+  description="An open problem in physiology: what a knot is, and what runaway release is. Thirteen ideas for studies that might help, which come first, how to respond, and the position paper."
   glyph="究"
   index={index}
   wide
@@ -381,7 +376,7 @@ const index = [
       or years, through phases: knots releasing, and the fascia felt to peel, hollow and fill in again over days to weeks (<a href={`${base}/research/perforator-hypothesis/#fascia`}
         >the position paper, Section 5</a>). Where many knots let go together, the skin over them can grow wet, then crust
       and flake away; unlike the rest, that can be seen and photographed. No study of it as such is known, so describing
-      it comes first (<a href="#study-13">study 13</a>).
+      it comes first (<a href="#study-12">study 12</a>).
     </p>
     <p class="caution">
       Runaway release can be prolonged and dangerous (<a href={`${base}/about/#moderation`}>Moderation</a>; the position paper,
@@ -402,8 +397,8 @@ const index = [
     </p>
     <ul class="ask">
       <li><strong>The lowest-hanging fruit.</strong> Which could be done soon and cheaply, and still tell something?</li>
-      <li><strong>What to address first.</strong> The list starts with finding knots, since much of the rest builds on
-        it. Is that where to begin, and what should be taken up now?</li>
+      <li><strong>What to address first.</strong> The list starts with what is felt, and by whom, since much of the rest
+        builds on it. Is that where to begin, and what should be taken up now?</li>
       <li><strong>What you could do.</strong> Which could you take on, with the skills, instruments, laboratory, patients or
         data you have, alone or with others?</li>
     </ul>
@@ -414,7 +409,7 @@ const index = [
     <p class="sub">
       One likely place to start, though you may judge otherwise, is with what people report. Two studies begin there,
       with surveys and interviews that need no instruments and could start now: what people who foam-roll feel (<a href="#study-1">study 1</a>),
-      asked of them and of bodyworkers, and a description of runaway release (<a href="#study-13">study 13</a>),
+      asked of them and of bodyworkers, and a description of runaway release (<a href="#study-12">study 12</a>),
       from people who know it at first hand. One team might do both. Neither need be large: their use is to tell the
       studies that measure whom to recruit, and where and when to look.
     </p>
@@ -423,7 +418,7 @@ const index = [
     <p class="sub">
       This work depends on your expertise, and a short letter is enough to give it: a page or less, which should not
       take long to write. Letters are asked for on both questions. On runaway release, the study to begin with is the
-      one that describes it (study 13); examining people in it (study 14) is limited for now to one or two who might be
+      one that describes it (study 12); examining people in it (study 13) is limited for now to one or two who might be
       introduced.
     </p>
     <ul class="ask">
@@ -468,7 +463,7 @@ const index = [
     <span class="alias" id="experiments" />
     <h2>Studies that might help</h2>
     <p class="sub">
-      Fourteen ideas, grouped by what each needs and listed in the order they build on one another, not by importance. They
+      Thirteen ideas, grouped by where each looks and listed in the order they build on one another, not by importance. They
       are possibilities, assessed only quickly, and some may not be worth doing: your own assessment counts for more. Some
       are laboratory experiments; others are surveys, interviews, or new readings of tissue and records. Under each title is
       the kind of study it would be.
