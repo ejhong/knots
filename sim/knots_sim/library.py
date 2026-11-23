@@ -381,15 +381,15 @@ NEW = [
      "Trigger points were found in every dressage and show-jumping horse examined, most often in the back; on thermography the skin over them was warmer than at control points."),
     # Pre-launch cleanup (23 Nov 2026): interoception & C-tactile afferents (Draft 6), and prior work for study 11 (meditative cessations & vasomotion).
     ("12154366", "craig2002", ["mind", "nerve"],
-     "An afferent neural system in primates and humans represents the physiological condition of the whole body, forming a substrate for subjective feelings, emotion and well-being."),
+     "A review: an afferent neural system in primates and humans represents the physiological condition of the body, and might provide a foundation for subjective feelings, emotion and self-awareness."),
     ("18952123", "olausson2010", ["nerve", "mind"],
-     "Unmyelinated C-tactile low-threshold mechanoreceptors in hairy skin project to the insular cortex, encode gentle touch and pleasantness, and may take part in pain inhibition."),
+     "A review: C-tactile afferents, unmyelinated low-threshold mechanoreceptors of hairy skin, activate the insular cortex, suit slow, gentle touch, may serve the pleasant side of touch, and may take part in pain inhibition."),
     ("37714573", "laukkonen2023", ["contemplative", "mind"],
      "A review and research agenda for cessations of consciousness in advanced meditation (nirodha samāpatti), presenting preliminary data from two laboratories and framing them in cognitive-neurocomputational and active inference terms."),
     ("37777153", "chowdhury2023", ["contemplative", "mind", "imaging"],
      "An intensively sampled EEG case study of 37 meditative cessation events in one experienced practitioner: large-scale alpha power fell starting about 40 s before onset and reached its lowest point immediately after."),
     ("21518271", "aalkjaer2011", ["vascular"],
-     "A review of vasomotion — coordinated oscillations in vascular smooth muscle tone producing flowmotion — its cellular mechanisms, endothelium and calcium handling, and physiological role."),
+     "A short review of vasomotion, the oscillation in a vessel's tone that makes its flow rise and fall: how common it is, the models of how smooth muscle cells come to oscillate together, and what it may be for."),
 ]
 
 # Existing entries that the simulation also leans on gain the models tag; konrad2023 joins foam rolling.

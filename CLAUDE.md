@@ -89,7 +89,9 @@ the author's reports, is retired: `sim/archive/`.)
   study it would be), after two open questions and what would help most (the lowest-hanging fruit, what to address first,
   what a researcher could do, and a likely place to start: the two studies that begin with what people report, 1 and 12). The Research page carries nothing from the models: the theories, their models and a few rough checks are on
   Hypotheses. The page also asks for letters of intent (`#respond`: what a letter holds, how letters are weighed, what
-  happens next). `docs/RESEARCHHUB.md`, the draft call on ResearchHub, lists the studies by number, title and kind and
+  happens next). Since 23 Nov 2026 it also says who may apply, in the call's words (keep the two in step), opens with a short strip of
+  links, and lists the studies in a quick-scan table above the cards; the table's last column comes from `STAGE_READY`
+  and two special cases for studies 12 and 13, so change it when the list changes. `docs/RESEARCHHUB.md`, the draft call on ResearchHub, lists the studies by number, title and kind and
   points to the page for their text, and repeats that ask and the care rule: keep the two in step. The site names
   ResearchHub only once the call is live and can be linked, and states no cost ceiling. On runaway release (since
   22 Nov 2026) letters are asked for on the study that describes it (12: a search of what is already recorded, and
