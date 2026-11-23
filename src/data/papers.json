@@ -59,6 +59,22 @@
   "note": "How precisely a point is found: for 95% to land on it, it would need to cover almost 13 cm² by the directional method and under 3 cm² by ruler."
  },
  {
+  "id": "akamatsu2015",
+  "authors": "Akamatsu FE, Ayres BR, Saleh SO et al.",
+  "year": 2015,
+  "title": "Trigger points: an anatomical substratum",
+  "venue": "Biomed Res Int 2015:623287",
+  "url": "https://doi.org/10.1155/2015/623287",
+  "pmid": "25811029",
+  "kind": "paper",
+  "tags": [
+   "trigger-points",
+   "anatomy",
+   "nerve"
+  ],
+  "note": "In twelve cadavers, the points where branches of the spinal accessory nerve enter the trapezius corresponded in every case to clinically described trigger points."
+ },
+ {
   "id": "aldrich2017",
   "authors": "Aldrich MB, Gross D, Morrow JR et al.",
   "year": 2017,
@@ -87,6 +103,22 @@
    "imaging"
   ],
   "note": "Reactive hyperaemia in forearm skin by laser speckle imaging: after an occlusion, flow rises 187% above baseline and peaks about 11 s after release."
+ },
+ {
+  "id": "alonsocalvete2021",
+  "authors": "Alonso-Calvete A, Padrón-Cabo A, Lorenzo-Martínez M et al.",
+  "year": 2021,
+  "title": "Acute Effects of Foam Rolling on Blood Flow Measured by Ultrasonography in Soccer Players",
+  "venue": "J Strength Cond Res 35:3256-3259",
+  "url": "https://doi.org/10.1519/JSC.0000000000004125",
+  "pmid": "34474435",
+  "kind": "paper",
+  "tags": [
+   "rolling",
+   "vascular",
+   "imaging"
+  ],
+  "note": "In soccer players, foam rolling the thigh raised the blood flow's maximal velocity and volume at once on ultrasonography; thirty minutes later there was no difference."
  },
  {
   "id": "alvarezprats2019",
@@ -162,6 +194,20 @@
    "animals"
   ],
   "note": "Small arteries remodel when their flow changes only with macrophages present, and their tone sets the direction, inward or outward."
+ },
+ {
+  "id": "bartsch2025",
+  "authors": "Bartsch K, Slomka G, Baumgart C et al.",
+  "year": 2025,
+  "title": "A survey of sports and rehabilitation professionals on foam rolling applications, contraindications, and adverse events - does the science reach professionals' perceptions?",
+  "venue": "Front Physiol 16:1659081",
+  "url": "https://doi.org/10.3389/fphys.2025.1659081",
+  "pmid": "40969920",
+  "kind": "paper",
+  "tags": [
+   "rolling"
+  ],
+  "note": "A survey of 776 German-speaking sports and rehabilitation professionals: 68.6% use foam rolling in their practice, judge its effects mainly by subjective methods, and report headaches and tissue inflammation most often as side effects."
  },
  {
   "id": "bednarek2011",
@@ -783,6 +829,21 @@
   "note": "The superficial fascia is richly innervated; about a third of its fibres are autonomic, concentrated around vessels."
  },
  {
+  "id": "formenton2025",
+  "authors": "Formenton MR, Fantoni DT, Gauthier L et al.",
+  "year": 2025,
+  "title": "Prevalence and location of myofascial trigger points in dogs with osteoarthritis",
+  "venue": "Front Vet Sci 12:1488801",
+  "url": "https://doi.org/10.3389/fvets.2025.1488801",
+  "pmid": "39886026",
+  "kind": "paper",
+  "tags": [
+   "trigger-points",
+   "animals"
+  ],
+  "note": "In 35 dogs with osteoarthritis examined by palpation, trigger points were common, and the number of muscles affected rose with age."
+ },
+ {
   "id": "fredberg1996",
   "authors": "Fredberg JJ, Jones KA, Nathan M et al.",
   "year": 1996,
@@ -1061,6 +1122,22 @@
   "note": "The dominant lumbar artery perforator in 20 patients: mostly the third lumbar (60%), reaching the fat 69.5 mm from the midline."
  },
  {
+  "id": "hasan2026",
+  "authors": "Hasan T",
+  "year": 2026,
+  "title": "Defining a superficial neurovascular corridor in the upper trapezius using proportional surface mapping and cadaveric correlation",
+  "venue": "Surg Radiol Anat 48:240",
+  "url": "https://doi.org/10.1007/s00276-026-04011-9",
+  "pmid": "42791379",
+  "kind": "paper",
+  "tags": [
+   "anatomy",
+   "nerve",
+   "trigger-points"
+  ],
+  "note": "A superficial neurovascular corridor in the upper trapezius, mapped in cadavers, lay in the same region as a clinically localised sensitive site, though not exactly on it; histology showed superficial nerve fascicles clustered beside the deep fascia."
+ },
+ {
   "id": "heckman2008",
   "authors": "Heckman CJ, Johnson M, Mottram C et al.",
   "year": 2008,
@@ -1159,6 +1236,22 @@
    "trigger-points"
   ],
   "note": "Trigger points reviewed: minute loci tied to nerve fibres and motor endplates; referred pain and the local twitch response depend on the spinal cord."
+ },
+ {
+  "id": "hotfiel2017",
+  "authors": "Hotfiel T, Swoboda B, Krinner S et al.",
+  "year": 2017,
+  "title": "Acute Effects of Lateral Thigh Foam Rolling on Arterial Tissue Perfusion Determined by Spectral Doppler and Power Doppler Ultrasound",
+  "venue": "J Strength Cond Res 31:893-900",
+  "url": "https://doi.org/10.1519/JSC.0000000000001641",
+  "pmid": "27749733",
+  "kind": "paper",
+  "tags": [
+   "rolling",
+   "vascular",
+   "imaging"
+  ],
+  "note": "After foam rolling the lateral thigh, arterial blood flow there rose on Doppler ultrasound: peak velocity by 73.6% at once and by 52.7% thirty minutes later."
  },
  {
   "id": "hou2002",
@@ -1306,6 +1399,21 @@
    "imaging"
   ],
   "note": "Lymphatics of the healthy arm filmed by near-infrared fluorescence: about 0.9 contractions a minute, propelled at about 1.1 cm/s, against a maximal pressure of 59 ± 12 mmHg; local warming raised the contraction rate, and exercise lowered it and raised the speed."
+ },
+ {
+  "id": "kobylarz2025",
+  "authors": "Kobylarz MD, Klich S, Sánchez-Jorge S et al.",
+  "year": 2025,
+  "title": "Shear-Wave Elastography Supports That Muscle Stiffness Should Not Be Considered a Criterion to Determine the Presence of Myofascial Trigger Points in the Infraspinatus Muscle",
+  "venue": "Am J Phys Med Rehabil 104:890-895",
+  "url": "https://doi.org/10.1097/PHM.0000000000002721",
+  "pmid": "40203809",
+  "kind": "paper",
+  "tags": [
+   "trigger-points",
+   "imaging"
+  ],
+  "note": "Latent trigger points in the infraspinatus of 40 people had lower pain pressure thresholds than control points nearby, but shear-wave elastography found no difference in stiffness between them."
  },
  {
   "id": "koltzenburg1999",
@@ -1501,6 +1609,21 @@
   "note": "Anterolateral thigh perforators on both sides of 20 people: their average place differs by 3% of thigh length, but their number is not symmetrical."
  },
  {
+  "id": "lucas2009",
+  "authors": "Lucas N, Macaskill P, Irwig L et al.",
+  "year": 2009,
+  "title": "Reliability of physical examination for diagnosis of myofascial trigger points: a systematic review of the literature",
+  "venue": "Clin J Pain 25:80-9",
+  "url": "https://doi.org/10.1097/AJP.0b013e31817e13b6",
+  "pmid": "19158550",
+  "kind": "paper",
+  "tags": [
+   "trigger-points",
+   "critique"
+  ],
+  "note": "Nine studies of physical examination for trigger points, none meeting all quality criteria: reliability varied widely, and was higher for tenderness (kappa 0.22–1.0) and pain reproduction than for the taut band (kappa −0.08–0.75)."
+ },
+ {
   "id": "lundberg1994",
   "authors": "Lundberg U, Kadefors R, Melin B et al.",
   "year": 1994,
@@ -1634,6 +1757,22 @@
   "note": "Dissection of meridians: tracks in the extracellular matrix, but vessel–nerve bundles at only a few points."
  },
  {
+  "id": "mayer2020",
+  "authors": "Mayer I, Hoppe MW, Freiwald J et al.",
+  "year": 2020,
+  "title": "Different Effects of Foam Rolling on Passive Tissue Stiffness in Experienced and Nonexperienced Athletes",
+  "venue": "J Sport Rehabil 29:926-933",
+  "url": "https://doi.org/10.1123/jsr.2019-0172",
+  "pmid": "31775121",
+  "kind": "paper",
+  "tags": [
+   "rolling",
+   "fascia",
+   "imaging"
+  ],
+  "note": "Foam rolling lowered the stiffness of the iliotibial band by 13.2% in athletes experienced in rolling and not in the inexperienced, and changed muscle stiffness in neither: its effects depend on experience."
+ },
+ {
   "id": "mayrovitz2026",
   "authors": "Mayrovitz HN",
   "year": 2026,
@@ -1647,6 +1786,21 @@
    "vascular"
   ],
   "note": "The inspiratory gasp reflex reviewed: the skin's vessels in the hands and feet constrict 3.6–3.8 s after a gasp, most deeply at 4.6–5.2 s; capillary flow returns to normal some 5–15 s after the gasp, and the review's own trace recovers in about 34 s."
+ },
+ {
+  "id": "mazza2021",
+  "authors": "Mazza DF, Boutin RD, Chaudhari AJ",
+  "year": 2021,
+  "title": "Assessment of Myofascial Trigger Points via Imaging: A Systematic Review",
+  "venue": "Am J Phys Med Rehabil 100:1003-1014",
+  "url": "https://doi.org/10.1097/PHM.0000000000001789",
+  "pmid": "33990485",
+  "kind": "paper",
+  "tags": [
+   "trigger-points",
+   "imaging"
+  ],
+  "note": "A systematic review of imaging of trigger points, 33 studies: the biomechanical properties and blood flow of active and latent trigger points were quantifiably distinct from healthy tissue, but diagnostic accuracy and reproducibility remain to be tested."
  },
  {
   "id": "mchale1990",
@@ -1739,6 +1893,21 @@
    "models"
   ],
   "note": "Critical closing pressure read as a binary threshold: arterioles snap shut when smooth-muscle tension exceeds intraluminal pressure, and reopen only when tone falls, external pressure is relieved or inflow pressure rises."
+ },
+ {
+  "id": "minasny2009",
+  "authors": "Minasny B",
+  "year": 2009,
+  "title": "Understanding the process of fascial unwinding",
+  "venue": "Int J Ther Massage Bodywork 2:10-7",
+  "url": "https://doi.org/10.3822/ijtmb.v2i3.43",
+  "pmid": "21589734",
+  "kind": "paper",
+  "tags": [
+   "fascia",
+   "mind"
+  ],
+  "note": "Fascial unwinding, in which a client moves spontaneously under a therapist's touch, is popular in massage therapy and unexplained; a hypothetical model puts it down to ideomotor action."
  },
  {
   "id": "minerbi2018",
@@ -2107,6 +2276,22 @@
   "note": "Pressure release held on a latent trigger point for 60 or 90 s raised its pressure-pain threshold more than 30 s did."
  },
  {
+  "id": "portier2025",
+  "authors": "Portier K, Schiesari C, Gauthier L et al.",
+  "year": 2025,
+  "title": "Comparison of the Prevalence and Location of Trigger Points in Dressage and Show-Jumping Horses",
+  "venue": "Animals (Basel) 15",
+  "url": "https://doi.org/10.3390/ani15111558",
+  "pmid": "40509024",
+  "kind": "paper",
+  "tags": [
+   "trigger-points",
+   "animals",
+   "imaging"
+  ],
+  "note": "Trigger points were found in every dressage and show-jumping horse examined, most often in the back; on thermography the skin over them was warmer than at control points."
+ },
+ {
   "id": "pratusevich1995",
   "authors": "Pratusevich VR, Seow CY, Ford LE",
   "year": 1995,
@@ -2194,6 +2379,21 @@
    "trigger-points"
   ],
   "note": "Review of trigger-point neurophysiology, including the rabbit work in which the alpha-blocker phentolamine reduces spontaneous activity."
+ },
+ {
+  "id": "roberts2026",
+  "authors": "Roberts BT, Montalbano C, Duerr FM et al.",
+  "year": 2026,
+  "title": "Evaluation of the inter-examiner reliability of myofascial trigger point identification in dogs",
+  "venue": "Front Vet Sci 13:1782274",
+  "url": "https://doi.org/10.3389/fvets.2026.1782274",
+  "pmid": "41877919",
+  "kind": "paper",
+  "tags": [
+   "trigger-points",
+   "animals"
+  ],
+  "note": "Two veterinarians, blind to each other's marks, examined the hind limbs of 24 sled dogs: they agreed on whether a muscle group held trigger points 81.4% of the time, but their marks for the same point lay 10.6 ± 5.1 mm apart, and the more experienced examiner found more."
  },
  {
   "id": "roustit2010",
@@ -3034,5 +3234,19 @@
    "animals"
   ],
   "note": "Small arteries of about 240 µm develop a maximal active wall tension of 3.4 mN/mm: the strength with which a vessel can close itself."
+ },
+ {
+  "id": "zuilescobar2016",
+  "authors": "Zuil-Escobar JC, Martínez-Cepa CB, Martín-Urrialde JA et al.",
+  "year": 2016,
+  "title": "The Prevalence of Latent Trigger Points in Lower Limb Muscles in Asymptomatic Subjects",
+  "venue": "PM R 8:1055-1064",
+  "url": "https://doi.org/10.1016/j.pmrj.2016.03.005",
+  "pmid": "26994884",
+  "kind": "paper",
+  "tags": [
+   "trigger-points"
+  ],
+  "note": "Latent trigger points were prevalent in the lower limb muscles of people without symptoms, more in women than in men, with no difference between sides; a taut band and a tender spot were the commonest and most reliable signs."
  }
 ]
