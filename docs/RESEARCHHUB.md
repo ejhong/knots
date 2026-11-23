@@ -1,25 +1,31 @@
 # The ResearchHub call (draft)
 
 The text for the call on ResearchHub: a request for letters of intent. First drafted on 14 November 2026; rewritten on
-19 November as a short call that points to the Research page for the studies, at the author's request. Everything
-below the second line is the post; it is written without "I" or "we".
+19 November as a short call that points to the Research page for the studies, at the author's request; on 22 November
+the study that describes runaway release was brought in. Everything below the second line is the post; it is written
+without "I" or "we".
 
 What must stay in step with the site (`src/pages/research.astro`):
 
 - **The list of studies:** their numbers, titles, kinds and order (the `STUDIES` and `STAGES` lists; each card has its
-  own anchor, `#study-1` to `#study-15`). Their full text is on the site only. The call lists the thirteen on knots,
-  which are the page's 1 to 13; the page's last two, 14 and 15, are on runaway release and are left out.
-- **The ask:** what is asked, how letters are weighed and what happens next (`#respond` on the page).
+  own anchor, `#study-1` to `#study-15`). Their full text is on the site only. The call lists all fifteen: the
+  thirteen on knots (the page's 1 to 13) under "The studies", and the two on runaway release (14 and 15) in the
+  section after, beside the caution and the help lines.
+- **The ask:** what is asked, how letters are weighed and what happens next (`#respond` on the page), and the likely
+  place to start (the page's "What would help most").
 - **Which knots are meant:** known by a release the person feels, often with a rush of feeling, "a mark to know them
   by, not something to seek" (the page's open questions and the sentence that opens its list of studies).
-- **The care rule** on breathing, pressure and runaway release.
+- **The care rule** on breathing, pressure and runaway release, and on interviews about it.
 
-Settled by the author on 19 November: the first call is on knots only; letters are public, there is no cost ceiling
-and no deadline, and an invited full proposal is paid for. Runaway release appears in the call as a short caution placed
-below the studies, and the page's two studies on it (14 and 15, in its last group) are left out: they wait on fuller
-accounts, and the page says so. Carried over that day from the call the author gave as an example (ResearchHub RFP 32943,
-"Epothilone B and anesthetic sensitivity"), and still to be confirmed for this one: who may apply, awards made as gifts
-to institutions, and open plans and reports as hopes that weigh in selection.
+Settled by the author on 19 November: letters are public, there is no cost ceiling and no deadline, and an invited
+full proposal is paid for. That day the call was on knots only. Changed by the author on 22 November: the call also
+asks for the study that describes runaway release (14: a search of what is already recorded, and interviews), named
+with study 1 as a likely place to start. One or two people who know it at first hand can be introduced, with their
+agreement; they are never identified, and introductions are made privately once a letter is taken up. Examining
+people in it (15) is limited to those one or two, and no one is recruited for it. Cheetah House is named only as a
+place to find help, never as a place to recruit. Carried over on 19 November from the call the author gave as an
+example (ResearchHub RFP 32943, "Epothilone B and anesthetic sensitivity"), and still to be confirmed for this one:
+who may apply, awards made as gifts to institutions, and open plans and reports as hopes that weigh in selection.
 
 The site gives the same ask but names ResearchHub only once the call is live and can be linked. The references are
 from the project's verified records (`src/data/papers.json`, `src/data/references.ts`). Runaway release follows the
@@ -38,13 +44,16 @@ Please set up a ResearchHub RFP from the text below. It asks for letters of inte
 - The studies live on the project's own page, https://ejhong.github.io/knots/research/. Please keep the list here as
   short titles with their links, and don't expand them. They are quickly assessed possibilities, not recommendations:
   please keep that framing, and the request that researchers judge for themselves what would really be useful.
-- Please keep the wording of "What is asked", "How letters are weighed" and "Care", and the help lines, as written.
+- Please keep the wording of "What is asked", "How letters are weighed", "Runaway release: a second question" and
+  "Care", and the help lines, as written.
 - No cost ceiling and no deadline are set. If you add cost estimates to the studies, mark them as rough guides, not
   limits.
 - "Who may apply, and how awards are made" is adapted from the Epothilone B call (RFP 32943). Please make it match how
   this call's awards will really be made.
-- This call is on knots only. Runaway release appears as a short caution with help lines: please keep it short, and
-  don't add how it is set off or present anything here as a practice to try.
+- The call has a second, smaller part on runaway release, in its own section near the end, with two studies (14 and
+  15). Please keep that section short, with its caution and help lines beside it. Don't add how runaway release is
+  set off, don't present anything here as a practice to try, and don't add anything about the people who can be
+  introduced.
 
 ---
 
@@ -62,8 +71,11 @@ the commonest things people report in their bodies and among the least explained
 and, as far as is known, nothing has been recorded at the moment one lets go.
 
 This call invites short letters of intent for studies that might help. A useful result may be positive, negative or
-inconclusive. Thirteen ideas for studies are set out on the project's Research page, each with what it might show and
+inconclusive. Fifteen ideas for studies are set out on the project's Research page, each with what it might show and
 what it likely needs: https://ejhong.github.io/knots/research/
+
+Thirteen are on knots. Two are on a second, smaller question, what runaway release is: a rarer and dangerous process,
+described near the end of this call.
 
 ### The knots meant here
 
@@ -111,6 +123,12 @@ judgements would help more than any one idea there:
   alone or with others?
 
 Or propose something better: the study you think would actually decide the question matters more than any listed.
+
+One likely place to start, though you may judge otherwise, is with what people report. Two studies begin there, with
+surveys and interviews that need no instruments and could start now: who can feel a knot (study 1), among people who
+foam-roll and bodyworkers, and a description of runaway release (study 14), from people who know it at first hand. One
+team might do both. Neither need be large: their use is to tell the studies that measure whom to recruit, and where
+and when to look.
 
 ### What is asked: a letter of intent
 
@@ -160,11 +178,11 @@ fit.
 
 ### The studies
 
-Thirteen ideas, grouped by what each needs and listed in the order they build on one another, not by importance. They
+Fifteen ideas, grouped by what each needs and listed in the order they build on one another, not by importance. They
 are possibilities, assessed only quickly, and some may not be worth doing: your own assessment counts for more. After
 each title is the kind of study it would be. The Research page sets each out in full, with what it might show and what
-it likely needs: https://ejhong.github.io/knots/research/#studies. The numbers are the page's; its last two, 14
-and 15, concern runaway release and are not part of this call.
+it likely needs: https://ejhong.github.io/knots/research/#studies. The thirteen on knots are listed here; the two on
+runaway release follow in the next section.
 
 Throughout, a knot means the kind described above, known by a release its owner feels. A study that marks or counts
 knots should say how it would know that they are of this kind; a bump or a tender spot is not enough. People who
@@ -195,18 +213,28 @@ studied doing only what they already do. Bodyworkers, who feel knots in others, 
 
 Or one not listed: anything that might help tell what a knot is.
 
-### A caution: runaway release
+### Runaway release: a second question
 
 Two informal reports describe a rarer process that can follow forceful, long work at clearing knots, in contemplative
 practice or in somatic work. Past some point, releases come in chains and the process can no longer be set down; it
 runs on over months or years. It is arduous and can be dangerous, above all for someone facing it alone (the position
 paper, Section 5). This is why the studies here ask no one to press, breathe or work harder or longer than they
-usually do (Care, below). Studies of runaway release itself are not part of this call: they wait on fuller accounts of
-it.
+usually do (Care, below).
 
 Anyone struggling with it should seek medical advice; Cheetah House (https://www.cheetahhouse.org), which supports
 meditators in distress, is one further resource. Anyone thinking about suicide should reach out now: in the US, call or
 text 988; elsewhere, find a line at https://findahelpline.com.
+
+No study of it as such is known, so describing it comes first, and that could begin now: it only listens to people who
+already know the process. One or two can be introduced, with their agreement, once a letter is taken up. Others might
+be found in what is already recorded, and through teachers, clinicians and support services. It may be recorded under
+other names: studies of meditation-related difficulty describe currents of energy and involuntary movement (Lindahl
+2017) and energy-like somatic experiences (Cooper 2021), and researchers with that experience are best placed.
+Examining people in it is limited for now to those one or two, if they are willing: no one is recruited for it, and a
+laboratory already measuring knots (studies 2 and 3) could add it.
+
+14. Characterise runaway release. *Phenomenology and natural history: a search of what is already recorded, semi-structured interviews and a case series.* https://ejhong.github.io/knots/research/#study-14
+15. Examine someone in runaway release. *Observational: case studies with repeated imaging, then a prospective case series.* https://ejhong.github.io/knots/research/#study-15
 
 ### Care
 
@@ -214,7 +242,12 @@ Any study with people needs ethics review, comfortable pressure and a plan for r
 human tissue needs the approvals its institution requires, all before work begins. Breathing should be ordinary or,
 for people who already use a breath to release their knots, that breath as they already use it; no one should be
 taught a breath, or asked to press, breathe or work harder or longer, or to release more knots, than they usually do.
-Nothing here is a practice or a protocol. No one should be asked to begin or seek runaway release (the caution above).
+Nothing here is a practice or a protocol.
+
+No one should be asked to begin or seek runaway release. People interviewed about it should be heard by researchers
+who know meditation-related difficulty, with support at hand, and should not be identifiable in anything published.
+What came before it matters for knowing who is at risk: it should be reported for that purpose, and not in a form that
+could serve as a method.
 
 ### References
 
@@ -223,3 +256,8 @@ Nothing here is a practice or a protocol. No one should be asked to begin or see
 - Johnson ME. Principles of Vasocomputation: A Unification of Buddhist Phenomenology, Active Inference, and Physical
   Reflex (Part I). opentheory.net (2023).
   https://opentheory.net/2023/07/principles-of-vasocomputation-a-unification-of-buddhist-phenomenology-active-inference-and-physical-reflex-part-i/
+- Lindahl JR, Fisher NE, Cooper DJ et al. The varieties of contemplative experience: A mixed-methods study of
+  meditation-related challenges in Western Buddhists. PLoS One 12:e0176239 (2017).
+  https://doi.org/10.1371/journal.pone.0176239
+- Cooper DJ, Lindahl JR, Palitsky R, Britton WB. "Like a Vibration Cascading through the Body": Energy-Like Somatic
+  Experiences Reported by Western Buddhist Meditators. Religions 12:1042 (2021). https://doi.org/10.3390/rel12121042

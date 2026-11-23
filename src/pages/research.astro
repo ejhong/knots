@@ -21,6 +21,9 @@ const ALIAS: Record<string, string> = { 'Acupoints on perforators': 'points' };
 // be. docs/RESEARCHHUB.md (the draft call on ResearchHub) lists the studies by number, title and kind, in this order,
 // and points here for their text; it repeats the ask for letters of intent (#respond: what a letter holds, how letters
 // are weighed, what happens next) and the care rule. Keep the two in step.
+// Runaway release (the author, 22 Nov 2026): letters are asked for on study 14, which describes it and can begin with
+// one or two people who can be introduced, with their agreement; study 15 is limited to those one or two, and no one
+// is recruited for it. Studies 1 and 14, which begin with what people report, are named as a likely place to start.
 const STUDIES: { stage: string; prong: string; title: string; design: string; what: string; show: string; needs: string }[] = [
   {
     stage: 'finding-knots',
@@ -32,8 +35,9 @@ const STUDIES: { stage: string; prong: string; title: string; design: string; wh
       own knots might be surveyed and interviewed: whether they can isolate a single knot, felt as a distinct bump, or
       feel only broad, dull masses; whether a bump is there when they first press, or stands out only as they attend
       to it and breathe; how firmly they must press to find one; whether they can release them; what a release feels
-      like and what follows it, from nothing to relief, well-being, tears or euphoria, how often, and whether many
-      knots ever let go at once; how they learned; and what part the breath plays, in finding knots as well as in
+      like and what follows it, from nothing to relief, well-being, tears or euphoria, how often, whether many
+      knots ever let go at once, and whether releases have ever run on in chains that could not be set down (study
+      14); how they learned; and what part the breath plays, in finding knots as well as in
       releasing them. Bodyworkers might be asked the same about the knots they feel in others. Then, in the same
       people, each might mark the knots they feel, blind to the other marks: the person their own, twice, an hour
       apart, and two examiners by touch. Which knots does each find, and do they agree? And as a person lets a knot go
@@ -43,7 +47,8 @@ const STUDIES: { stage: string; prong: string; title: string; design: string; wh
       inside. Someone pressing their own knot feels it twice over, with the finger and in the place pressed, and
       cannot easily tell the two apart; an examiner's finger has only the first. How common a felt release is among
       people who roll, and the feeling that can follow it, is not known; the survey would give a first estimate, and
-      would find the people who have the knots meant here. If feeling knots is a skill, studies that locate or release knots would
+      would find the people who have the knots meant here. Asked of everyone, the question on chains would say how
+      common they are among people who roll, and might find people for study 14. If feeling knots is a skill, studies that locate or release knots would
       need to recruit those who have the skill they rely on; and if bumps stand out only with a trained breath, an
       examiner might find none in a body at rest.`,
     needs: `a survey and interview researcher · many people who foam-roll, and bodyworkers · simple blind tests`,
@@ -255,32 +260,45 @@ const STUDIES: { stage: string; prong: string; title: string; design: string; wh
     stage: 'runaway-release',
     prong: 'runaway release',
     title: 'Characterise runaway release',
-    design: `Phenomenology and natural history: semi-structured interviews and a case series`,
-    what: `The case histories that fit its profile could be gathered, from published case reports, the record of
-      meditation-related difficulty, teachers, clinicians and support services, and people who have been through it,
-      or are in it now, interviewed with one set of questions: how it began and ran, its stages and regions, how long
-      each took, what helped and what made it worse.`,
+    design: `Phenomenology and natural history: a search of what is already recorded, semi-structured interviews and a
+      case series`,
+    what: `It might begin with interviews: one or two people who know runaway release at first hand can be introduced,
+      with their agreement. Others might be found in what is already recorded: published case reports, and the
+      interviews gathered in studies of meditation-related difficulty, which could be read again with this in mind;
+      and through teachers, clinicians and support services. No one else calls it runaway release, so the search
+      needs other names: those studies describe currents of energy and involuntary movement
+      (${cite('lindahl2017')}) and energy-like somatic experiences (${cite('cooper2021')}), and some of what they
+      describe may be this process. The net might be cast wider than the two reports' profile, for any long bodily
+      process of release that could not be set down, since a search for the profile alone would find only what it
+      looks for. Each person might be asked, with the researchers' own questions: how it began and ran, its stages
+      and regions, how long each took, what could be seen, what helped and what made it worse.`,
     show: `It rests so far on two informal reports, and no study of it as such is known. A careful description might show
-      whether others describe it too; whether it is a syndrome, one recognisable
+      whether others describe it too, and under what names; whether it is a syndrome, one recognisable
       pattern that a case definition could capture, or several things; how common it is, who is at risk and what
-      helps; and it might find the participants for study 15.`,
-    needs: `a qualitative or clinical researcher, best with experience of meditation-related difficulty
-      (${cite('lindahl2017')}; ${cite('cooper2021')}) · ethics review · support at hand for participants`,
+      helps. Accounts taken by researchers, with their own questions, would also be independent of this project,
+      whose perforator view grew from the two reports. And it might say where and when to look, and find the
+      participants, for study 15.`,
+    needs: `a qualitative or clinical researcher, best with experience of meditation-related difficulty · ethics review
+      · support at hand for participants`,
   },
   {
     stage: 'runaway-release',
     prong: 'runaway release',
     title: 'Examine someone in runaway release',
-    design: `Observational: a prospective case series with repeated imaging`,
+    design: `Observational: case studies with repeated imaging, then a prospective case series`,
     what: `People already in runaway release might be examined while it runs and again as it settles: ultrasound of the
       fascial layers and their glide where change is felt and at matched places, colour Doppler of the perforators,
       skin-flow imaging, photographs of any skin that weeps or crusts, and the blood tests a physician would order. No one would be asked to begin or seek it, and
-      their care would come first.`,
+      their care would come first. For now it is limited to the one or two people who can be introduced (study 14),
+      if they are willing: no one is recruited for it. A laboratory already measuring knots (studies 2 and 3) has
+      the instruments and could add it.`,
     show: `If the tissue is changing, the glide might differ at the reported places and settle on the clock the reports
       give; if only perception is changing, the tissue would likely look as it did. Skin that weeps where knots let go,
-      and not where it was rubbed, would show a change in the tissue itself.`,
-    needs: `a clinician-researcher with imaging who knows meditation-related difficulty · a route to participants · a plan
-      for referral · ethics review`,
+      and not where it was rubbed, would show a change in the tissue itself. The process runs its course, so a
+      record can be made only while it runs: dated images, taken where change is felt and at matched places, would
+      keep what could not be gathered later, even before anyone knows how to read them.`,
+    needs: `ultrasound with colour Doppler, and skin-flow imaging · a clinician who knows meditation-related
+      difficulty · one or two people, by introduction · a plan for referral · ethics review`,
   },
 ];
 const STAGES: { id: string; title: string; intro: string }[] = [
@@ -309,10 +327,12 @@ const STAGES: { id: string; title: string; intro: string }[] = [
   },
   {
     id: 'runaway-release',
-    title: 'Later: runaway release',
-    intro: `These two wait: runaway release is known so far from two informal reports, and letters are not yet asked for
-      on it. They are set out for when fuller accounts are in hand. Characterising it would come first: no study of it
-      as such is known, and that study might find the participants for the second.`,
+    title: 'Runaway release',
+    intro: `Runaway release is known so far from two informal reports, and no study of it as such is known, so
+      describing it comes first (study 14). That could begin now: it only listens to people who already know the
+      process, and one or two can be introduced, with their agreement, once a letter is taken up. Examining people
+      in it (study 15) is limited for now to those one or two, if they are willing; more waits on the description,
+      which might say where and when to look, and find the participants.`,
   },
 ];
 
@@ -369,7 +389,8 @@ const index = [
       clearing knots. Releases come in chains that cannot be set down. The process does not come and go but runs on, over months
       or years, through phases: knots releasing, and the fascia felt to peel, hollow and fill in again over days to weeks (<a href={`${base}/research/perforator-hypothesis/#fascia`}
         >the position paper, Section 5</a>). Where many knots let go together, the skin over them can grow wet, then crust
-      and flake away; unlike the rest, that can be seen and photographed. No study of it as such is known.
+      and flake away; unlike the rest, that can be seen and photographed. No study of it as such is known, so describing
+      it comes first (<a href="#study-14">study 14</a>).
     </p>
     <p class="caution">
       Runaway release can be prolonged and dangerous (<a href={`${base}/about/#moderation`}>Moderation</a>; the position paper,
@@ -399,12 +420,20 @@ const index = [
       Or propose something better: a study that would decide a question matters more than any listed here. A reading
       of the list helps even without an offer to take any of it on.
     </p>
+    <p class="sub">
+      One likely place to start, though you may judge otherwise, is with what people report. Two studies begin there,
+      with surveys and interviews that need no instruments and could start now: who can feel a knot (<a href="#study-1">study 1</a>),
+      among people who foam-roll and bodyworkers, and a description of runaway release (<a href="#study-14">study 14</a>),
+      from people who know it at first hand. One team might do both. Neither need be large: their use is to tell the
+      studies that measure whom to recruit, and where and when to look.
+    </p>
 
     <h3 class="ask-h" id="respond">How to respond: a letter of intent</h3>
     <p class="sub">
       This work depends on your expertise, and a short letter is enough to give it: a page or less, which should not
-      take long to write. For now, letters are asked for on the first question, what a knot is; the two studies on
-      runaway release wait on fuller accounts of it.
+      take long to write. Letters are asked for on both questions. On runaway release, the study to begin with is the
+      one that describes it (study 14); examining people in it (study 15) is limited for now to one or two who can be
+      introduced.
     </p>
     <ul class="ask">
       <li><strong>Your reading of the list.</strong> Which studies are the lowest-hanging fruit, and which should be
@@ -487,7 +516,10 @@ const index = [
       <a href={`${base}/about/#moderation`}>About</a>), with comfortable pressure and a plan for referral. Breathing
       should be ordinary or, for people who already use a breath to release their knots, that breath as they already use
       it; no one should be taught a breath, or asked to press, breathe or work harder or longer, or to release more knots,
-      than they usually do. None of this is a practice or a protocol.
+      than they usually do. No one should be asked to begin or seek runaway release. People interviewed about it should
+      be heard by researchers who know meditation-related difficulty, with support at hand, and should not be
+      identifiable in anything published. What came before it matters for knowing who is at risk: it should be reported
+      for that purpose, and not in a form that could serve as a method. None of this is a practice or a protocol.
     </p>
   </section>
 
