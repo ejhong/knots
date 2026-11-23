@@ -146,8 +146,8 @@ function panel(x0: number, state: State, labels: boolean): string {
     note(vx + 52, Y.skinBot + 23, 'is underfed');
   }
   if (state === 'release') {
-    note(vx + 18, Y.deep + 16, 'tone falls below', C.release);
-    note(vx + 18, Y.deep + 25, 'the band: it opens', C.release);
+    note(vx + 18, Y.deep + 16, 'its tone falls', C.release);
+    note(vx + 18, Y.deep + 25, 'far enough: it opens', C.release);
     note(vx + 16, Y.sup + 13, 'blood floods');
     note(vx + 16, Y.sup + 22, 'the patch');
     note(vx + 52, Y.skinBot + 14, 'its nerve fires:');

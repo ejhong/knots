@@ -1,71 +1,15 @@
 ---
 import Doc from '../../layouts/Doc.astro';
-import data from '../../data/sim/vessel.json';
-import adaptData from '../../data/sim/adapt.json';
-import acu from '../../data/sim/acupoints.json';
 import { refById } from '../../data/references';
-import { switchChart, type Switch } from '../../sim/guide/switch';
-import { calibrate, curve, type Params } from '../../sim/vessel';
 import { perforatorFigure } from '../../sim/perforatorFigure';
 import { clocksFigure } from '../../sim/clocksFigure';
 
-// The position paper: the perforator hypothesis argued from established physiology. The few numbers from the project's
-// own calculations are read from src/data/sim/ (the wall's switch, the physics checks, the acupoint comparison); the
-// field guide's tallies of reports against models are deliberately not used as evidence here.
+// The position paper: the perforator hypothesis argued from published physiology and from what is reported. Since
+// draft 5 (22 Nov 2026) nothing here is read from the project's own models or calculations (src/data/sim/): they were
+// an exercise in using AI, and the paper does not rest on them.
 const base = import.meta.env.BASE_URL.replace(/\/$/, '');
 const repo = 'https://github.com/ejhong/knots';
 const site = 'https://ejhong.github.io/knots';
-const p = data.params.values as unknown as Params;
-const s = calibrate(p);
-const rob = data.robustness;
-const col = data.checks.collar;
-const cool = data.checks.cooling;
-const f2 = (x: number) => x.toFixed(2);
-const pct = (x: number) => `${Math.round(100 * x)}%`;
-// Where a set knot lets go: the tone, as a share of resting tone, below which a fully adapted vessel reopens, for the
-// healthy, hypertensive and remodelled walls of the project's adaptation study.
-const adapted = adaptData as unknown as Record<string, { adapted_aopen_over_rest: number }>;
-const setLets = ['healthy', 'hypertensive', 'remodel'].map((k) => adapted[k].adapted_aopen_over_rest);
-// Pressure around the vessel (Section 3.7), from the same model: the tone a shut vessel needs to stay shut with 20 and
-// 30 mmHg outside its wall, and the outside pressure at which it would stay shut at resting tone.
-const ring20 = calibrate(p, 20);
-const ring30 = calibrate(p, 30);
-const ringRest = (() => {
-  let lo = 0;
-  let hi = p.P;
-  for (let i = 0; i < 40; i++) {
-    const mid = (lo + hi) / 2;
-    if (calibrate(p, mid).Aopen <= s.urest) hi = mid;
-    else lo = mid;
-  }
-  return hi;
-})();
-
-// Figure 2: the wall's switch, drawn from the same model and measured parameters as the numbers in Section 3.2. Across,
-// the tone of the wall; up, how far shut the vessel is, from its relaxed radius (0) to shut (1).
-const wall: Switch = (() => {
-  const cv = curve(p, 600);
-  const shut = (x: number) => 1 - (x - p.xc) / (s.xp - p.xc);
-  const open: [number, number][] = [];
-  const unstable: [number, number][] = [];
-  cv.x.forEach((x, i) => {
-    if (x <= s.xp) (x >= s.xfold ? open : unstable).push([cv.A[i], shut(x)]);
-  });
-  unstable.push(open[0]);
-  return {
-    x_label: 'the tone of its wall (share of maximal)',
-    y_label: 'shut',
-    x_max: 1,
-    branches: [
-      { pts: open, stable: true },
-      { pts: unstable, stable: false },
-      { pts: [[s.Aopen, 1], [1, 1]], stable: true, held: true },
-    ],
-    band: [s.Aopen, s.Afold],
-    marks: [{ x: s.urest, label: 'rest' }],
-    note: '',
-  };
-})();
 
 // Citations, numbered in order of first use; the list at the end is built from the same order.
 const order: string[] = [];
@@ -95,9 +39,9 @@ const abstract = `People who use a foam roller often find them: small bumps in t
 that persist for years yet can let go within seconds, sometimes with a tingle across a patch of skin and often with a rush of feeling. No mechanism for them is established, and no
 release has been recorded as it happens. We propose one. A knot is a cutaneous perforator, a small artery travelling with
 its veins and a nerve through an opening in the fascia, held shut by the smooth muscle of its own wall. Most of its parts rest on
-measured physiology. A toned small artery can snap shut and stay shut until its tone falls well below the level that shut
-it; held shut for hours, it relaxes only slowly and incompletely; the breath moves the skin's sympathetic drive within
-seconds; a squeeze and release widen a small artery; a nerve deprived of blood fires when blood returns; and a vessel held
+measured physiology. A toned small artery can snap shut, and once shut should need less tone to stay shut than it took to
+shut it; held shut for hours, it relaxes only slowly and incompletely; the breath moves the skin's sympathetic drive within
+seconds; a squeeze widens a small artery; a nerve deprived of blood fires when blood returns; and a vessel held
 shut holds shut the branches it feeds. What makes the bump a finger finds is the least established part: a sleeve of
 sliding tissue that may stiffen around a vessel long shut, or, with more against it, a small pocket of blood dammed where
 the bundle's veins are pinched. A knot, then, is a memory with an anatomy: the held vascular contraction of Johnson's
@@ -106,7 +50,8 @@ latch of his account, and read by the perforator's own nerve. We argue that it i
 explains more of what is reported, with less that is new, than six alternatives in their strongest forms. We state what it
 does not explain, which includes the feeling a release can bring, weigh the claim that acupuncture points sit on perforators, describe runaway release, a little-known and
 dangerous process described in two reports after forceful efforts to clear knots, with the slower changes in the fascia that come with it, and
-give the measurements that would refute it.`;
+give the measurements that would refute it. Much is unsettled: no knot has been mapped against a perforator or recorded as
+it lets go, and how one forms, how it holds, and whether it lets go while pressed or as the pressure eases are open.`;
 
 const intro1 = [
   `People who use a foam roller often find them: small, discrete bumps in the soft tissue, from very small to about the size
@@ -134,7 +79,7 @@ const box1 = [
   `They persist until released, for years if left alone, yet any of them can let go quickly. Some are more stubborn than
   others; freeing those takes more skill, above all with the breath, and the skill takes training. The toughest may take a
   skilled practitioner a whole session, never months.`,
-  `They let go within seconds, not days: under a hand, often as it lifts; under a roller; with the breath.`,
+  `They let go within seconds, not days: under a hand, under a roller, with the breath.`,
   `The breath that goes with a release is, by the accounts we have, not a single deep breath but a trained pattern, joined to fine
   attention to the body: small in- and out-breaths woven together, by one account beginning with a small in-breath, with the
   release itself probably coming on an out-breath, which can be fairly strong, as an athlete's is. Under a roller's pain the
@@ -142,7 +87,7 @@ const box1 = [
   own (Section 3.6), and the cautions of Section 9 apply. Some find that these breaths also help them find knots.`,
   `Deeper ones let go to focused attention, sometimes without touch.`,
   `Warmth helps: a hot shower softens many at once. Some find that a drink of water eases releases within about ten
-  minutes, though on the account below it should not (Section 3.5).`,
+  minutes, which the account below does not expect (Section 3.5).`,
   `A release can come with a small pop, or a tingle across a patch of skin.`,
   `A release is felt, and a rush of feeling often follows it: relief or well-being, at times tears or euphoria. The
   feeling is strongest when a whole cluster of knots lets go together. This felt release is what marks out the knots
@@ -188,18 +133,17 @@ arteries inside muscle. Runaway release then set a further condition: whatever t
 layers of fascia can part. Asked to account for those reports, and so to name what in the body has smooth muscle that answers the breath within
 seconds and pins those layers until it lets go, an AI model (Claude, Anthropic) proposed the perforators, the bundles that carry an artery, its
 veins and a nerve through the fascia to the skin. The second essay ${c('jhong2026')} moved the store to them, and supposed
-that a collar of gelled hyaluronan around each held it; a longer preprint of the same month set out that version at length ${c('knotsmemories')}. Checked against physics,
-the collar failed. At its most viscous, hyaluronan around a vessel pushes back about ${Math.round(col.pressure_over_drag)}
-times more weakly than the blood pressure holding the vessel open ${c('nicholls2018', 'fede2018', 'knotsrepo')}, and on its
-own, in physiological conditions, it stays a liquid rather than gelling ${c('krause2001')}. If anything holds a perforator shut, it
-is the wall. That is the form argued here; where the earlier versions differ, this one replaces them. It remains a case of
+that a collar of gelled hyaluronan around each held it; a longer preprint of the same month set out that version at length ${c('knotsmemories')}. The collar did not
+stand up. Hyaluronan is a liquid, and a liquid resists motion, not position: even healthy synovial fluid, far richer in
+hyaluronan than fascia ${c('nicholls2018', 'fede2018')}, flows, and on its own, in physiological conditions, hyaluronan
+stays a liquid rather than gelling ${c('krause2001')}. If anything holds a perforator shut, it is more likely the wall. That is the form argued here; where the earlier versions differ, this one replaces them. It remains a case of
 vasocomputation's idea, not a rival to it. Johnson proposes that a held vascular contraction stores a state, that the state
 is a prediction, and that the contraction clamps the neural circuit around it. The hypothesis takes the first proposal and
 places it in one class of vessel; it needs neither of the others, and contradicts neither. Where it departs from Johnson is
 in what makes the state last: in his account the latch, holding a contraction cheaply for as long as its prediction stands;
 here the wall's own mechanics, which keep a vessel shut after the drive that shut it has eased and, once it has set, at rest
-(Sections 3.2, 3.3 and 4). The project's site sets out seven candidate mechanisms evenly, each at its strongest, with
-models of them ${c('knotshyp')}; this paper argues for one.`;
+(Sections 3.2, 3.3 and 4). The project's site sets out seven candidate mechanisms evenly, each at its strongest
+${c('knotshyp')}; this paper argues for one.`;
 
 const statement = `A knot is a cutaneous perforator, a small artery travelling with its veins and a nerve through
 an opening in a fascia, held shut by the smooth muscle of its own wall. It lets go when the wall's tone falls, or the wall is
@@ -208,13 +152,13 @@ moved, enough for the vessel to reopen; blood returning to the patch the vessel 
 const claims: [string, string, string][] = [
   ['Place', `Knots sit where perforators pass through the deep fascia (the larger ones) or the superficial fascia (the smaller
   ones), at fixed sites.`, 'new'],
-  ['Hold', `A small artery with tone in its wall can close and stay closed until its tone falls well below the level that
-  closed it.`, 'established'],
+  ['Hold', `A small artery with tone in its wall can snap shut, and once shut should need less tone to stay shut than it
+  took to close it.`, 'closure established; how much less it takes to stay shut, not measured'],
   ['Set', `Held shut for hours, the wall's muscle adapts to its shortened length and relaxes only slowly and incompletely;
   over days the artery remodels inward. The vessel could then stay shut nearer to resting tone.`, 'established in small arteries; in knots, new'],
   ['Drive', `What carries a vessel shut is the sympathetic drive to the skin's vessels, raised by stress and moved within
-  seconds by the breath. What lets it go is that drive falling, warmth, or the wall being moved: shaken, or squeezed and
-  released.`, 'established physiology; its role in knots, new'],
+  seconds by the breath. What lets it go is that drive falling, warmth, or the wall being moved: shaken or
+  squeezed.`, 'established physiology; its role in knots, new'],
   ['Nerve', `While the vessel is shut, the patch it feeds is underfed and its nerve perhaps sensitised: quiet at rest, sore
   when the bundle is pressed hard against the fascia beneath. When blood returns, the nerve that went without it fires: the
   tingle of a release.`, 'the tingle established; the soreness, hypothesis'],
@@ -228,13 +172,19 @@ const claims: [string, string, string][] = [
   it; a child that opens cannot open its parent.`, 'hydraulics; in knots, new'],
 ];
 
+const unknown = `Much of this is unsettled, and what follows should be read with that in mind. No knot has been mapped against
+a perforator, and no release has been recorded. How much tone it takes to shut a small artery or to keep it shut, whether
+a healthy one could stay shut at rest, how a knot forms, and whether one lets go while it is pressed or as the pressure
+eases are all open. Earlier drafts gave numbers from the project's own models for some of these; this draft gives none.
+The models were an exercise in using AI, and the case does not rest on them (Section 4).`;
+
 const memory = `Read as a whole, the hypothesis describes a memory with an anatomy. In Johnson's account a held vascular
 contraction acts as a medium-term memory ${c('johnson2023')}, and the essay that brought the idea to the perforators asked
 what would write, store and read such a state ${c('jhong2026')}. Here the answer is concrete. The sympathetic drive writes:
-stress raises it, and a perforator it carries shut stays shut as the drive eases, so long as its tone does not fall below
-the band; only adaptation and remodelling let it hold at rest. The writing is local. Vessels differ in the thickness of
-their walls, the pressure that feeds them and the load at their openings, so a rising drive carries a few of them across
-the band at a time, not all at once. The wall keeps: its switch holds
+stress raises it, and a perforator it carries shut may stay shut as the drive eases; adaptation and remodelling may then
+let it hold nearer to rest. The writing is local. Vessels differ in the thickness of
+their walls, the pressure that feeds them and the load at their openings, so a rising drive would carry a few of them
+shut at a time, not all at once. The wall keeps: it holds
 the state, and adaptation and remodelling make it durable. The perforator's own nerve reads: as soreness under hard pressure
 while the vessel holds, and as a tingle when it lets go. It reads through the blood the vessel withholds and returns, one of the ways Johnson
 expects a contraction to act on the neurons nearby ${c('johnson2023')}. Each perforator is a site that can be set or cleared, and a body has hundreds of
@@ -270,34 +220,27 @@ const hold = [
   shut. Burton showed that with active tension in the wall the balance has no stable open state below a critical pressure:
   the vessel snaps shut ${c('burton1951')}. Whole vascular beds stop flowing at such a critical closing pressure
   ${c('nichol1951')}, and failing skin flaps show it ${c('cutting1982')}. Because a muscle is weak when it is very short
-  ${c('mulvany1979')}, a vessel that has closed needs far less tone to stay closed than it took to close it. Over a band of
-  tone, open and shut are both stable, and a shut vessel reopens only when its tone falls below the band, when outside
-  pressure is relieved, or when the pressure feeding it rises ${c('miller2026')}. In living tissue, nerves hold some small
+  ${c('mulvany1979')}, a vessel that has closed should need less tone to stay closed than it took to close it: over some
+  band of tone, open and shut would both be stable, and a shut vessel would reopen when its tone falls below the band, when
+  outside pressure is relieved, or when the pressure feeding it rises ${c('miller2026')}. How wide that band is in a small
+  artery of the skin has not been measured. In living tissue, nerves hold some small
   arterioles fully closed at rest: in the muscle of anaesthetised rats, cutting them opened 22% more ${c('bohlen1979')}.
   Perforators are seen to clamp down. Watched by video-capillaroscopy as flaps were raised in one small series, 20 of 25
   perforators under a millimetre across went into spasm or their pulse weakened; seven recovered within five minutes
   unaided, and the other thirteen within fifteen, with papaverine and hot water ${c('mohammad2022')}.`,
-  `With the measured strength and wall thickness of human small arteries ${c('mulvany1979', 'schiffrin1995')}, the
-  project's model of the wall finds that band between ${f2(s.Aopen)} and ${f2(s.Afold)} of maximal tone, with rest at about
-  ${f2(s.urest)} (Figure 2). Across ${rob.samples.toLocaleString('en-GB')} plausible parameter sets, about half
-  (${pct(rob.share_bistable)}) give the switch, and only ${pct(rob.share_holds_at_rest)} hold shut at resting tone
-  ${c('knotsrepo')}. The hold is possible but demanding: a healthy vessel holds itself shut only while its tone stays well
-  above rest. Thicker walls, as in hypertension ${c('schiffrin1995')}, make it easier, and so would pressure around the
-  vessel (Section 3.7).`,
+  `Whether a healthy small artery could hold itself shut at its resting tone is not known, and it is the most demanding
+  thing the hypothesis asks. A thicker wall for its lumen, as in hypertension ${c('schiffrin1995')}, would make the hold
+  easier, and so would pressure around the vessel (Section 3.7).`,
 ];
 
-const gaspNone = rob.share_gasp_shuts_at_rest === 0;
-const forms = `How a knot forms follows from the band. Shutting a vessel takes a surge: in the project's model, with measured
-parameters, the tone that snaps it shut is about ${Math.round(s.Afold / s.urest)} times its resting tone, and a deep breath at
-rest, sized to the fall in fingertip flow it causes (Section 3.4), shuts no vessel in
-${gaspNone ? 'any' : `${pct(1 - rob.share_gasp_shuts_at_rest)}`} of the
-${rob.samples.toLocaleString('en-GB')} plausible parameter sets ${c('knotsrepo')}. A fright, pain, cold or a squeeze might:
+const forms = `How a knot forms is not known. Shutting a vessel probably takes more than a passing rise in tone: a deep
+breath narrows the skin's vessels for seconds, and they reopen (Section 3.4). A fright, pain, cold or a squeeze might do it:
 pain narrows the skin's vessels by reflex, at least in the fingertip ${c('gronroos1994')}, local cooling all but stops the skin's flow
 ${c('charkoudian2003')}, and pressure from outside lowers the tone it takes
 ${c('miller2026')}. Staying shut takes less, but the stress must last: a constriction of five minutes leaves no trace
-${c('hill2003', 'martinezlemus2004')}, while one of hours begins to set. A knot, on this account, is the trace of a coincidence, a surge and a
-stress that outlasted it; a brief stress leaves none. That may be why knots gather where stress is held for long, and why
-children have few.`;
+${c('hill2003', 'martinezlemus2004')}, while one of hours begins to set. A knot, on this account, would be the trace of a
+coincidence, a surge and a stress that outlasted it; a brief stress would leave none. That may be why knots gather where
+stress is held for long, and why children have few.`;
 
 const set = `Smooth muscle adapts to the length at which it is held. Arterioles constricted for five minutes relax fully when
 the drive is removed; after four hours they relax slowly ${c('hill2003')} and incompletely, their cells repositioned to hold
@@ -305,13 +248,12 @@ the smaller diameter ${c('martinezlemus2004')}, though the hold still needs calc
 ${c('hill2003')}. Smooth muscle held short regains much of the force it lost there ${c('syyong2008', 'bednarek2011')}, and
 resistance arteries kept constricted for three days remodel inward, their relaxed lumen 10–16% smaller ${c('bakker2002')}. A
 vessel held shut long enough might then hold nearer to rest: the knot would set, and the setting would deepen with time,
-while still answering to whatever lowers the wall's calcium. A set knot would be more stubborn: holding at rest, it lets go
-only when the drive falls well below rest, in the model when the wall's tone falls to between ${pct(Math.min(...setLets))} and
-${pct(Math.max(...setLets))} of its resting level ${c('knotsrepo')}, and the slower relaxation of arterioles held for hours
+while still answering to whatever lowers the wall's calcium. A set knot would be more stubborn: holding at rest, it would
+let go only when the drive falls below rest, and the slower relaxation of arterioles held for hours
 suggests it may also take longer to go. The latch, by which smooth muscle holds force at less cost ${c('murphy2005')}, may be
 at work in the wall as well, but it would make the hold cheaper, not longer: relaxation is paced by the fall of calcium, not
 by the latch ${c('rembold1991')}. Practitioners describe knots that differ in how stubborn they are, any of which a
-trained breath can free within a session; on this account, that asks the breath to take the drive, or the wall's calcium, well below
+trained breath can free within a session; on this account, that asks the breath to take the drive, or the wall's calcium, below
 rest (Section 8). The setting also predicts something an isolated vessel can show (Section 7).`;
 
 const breath = `The skin's small arteries are governed by sympathetic nerves: skin blood flow runs from almost nothing under
@@ -331,25 +273,27 @@ cycles a second, far faster than a breath, and whether the slow stretch of breat
 matters, and which part of the trained breath serves it, the subtle weave or the out-breath that completes it (Box 1),
 is open; the hypothesis requires only that a releasing breath lower the drive more than it raises it, or move the wall.`;
 
-const hands = `A vessel pressed shut from outside cannot reopen while the pressure lasts; it can reopen as the pressure
-lifts ${c('miller2026')}. A knot under a hand should therefore let go as the hand lifts or eases, not while it presses.
-Squeezed and released, the feed arteries of rat muscle widen within seconds, and several brief squeezes widen them more
-than one long one ${c('clifford2006')}: a roller's passes are a series of brief squeezes, and it shears the tissue around the vessel as well.
+const hands = `A hand or a roller squeezes the bundle against the firm fascia beneath it (Section 3.1). Squeezed and
+released, the feed arteries of rat muscle widen within seconds, and several brief squeezes widen them more than one long
+one ${c('clifford2006')}: a roller's passes are a series of brief squeezes, and it shears the tissue around the vessel as
+well. A shut vessel reopens when its tone falls, when pressure outside it is relieved, or when the pressure feeding it
+rises ${c('miller2026')}. A press hard enough to flatten a vessel keeps blood out until it eases; but the wall may let go
+under the press itself, with the blood returning then or a moment later, and whether a knot is felt to go while it is
+pressed or as the pressure eases is not known. Under a roller the two are a moment apart.
 The pain of a hard roller pulls the other way, since pain narrows the skin's vessels by reflex, as measured in the
 fingertip ${c('gronroos1994')}; what frees a knot under it may be the squeezes, the movement of the hard out-breaths that
 come with the pain (Box 1), or the fall in drive as the roller passes. On this account pain may hold vessels
 shut rather than free them. Heat acts more slowly and more widely. Local warming raises the skin's flow most of the way to its maximum
-${c('minson2001')}, but a patch of skin warms with a time constant of about ${Math.round(cool.tau_s_at_max_flow)} s even
-at maximal flow ${c('knotsrepo')}: too slow to free a knot within a breath, fast enough over the minutes of a hot shower,
+${c('minson2001')}: probably too slow to free a knot within a breath, but fast enough over the minutes of a hot shower,
 and everywhere the water touches.`;
 
-const water = `Some also find that a drink of water eases releases within about ten minutes (Box 1). On this account it
-should not. Drinking water raises the sympathetic drive: in healthy people the nerves to muscle fire more, most at half an
+const water = `Some also find that a drink of water eases releases within about ten minutes (Box 1). This account does
+not expect it. Drinking water raises the sympathetic drive: in healthy people the nerves to muscle fire more, most at half an
 hour, and the calf's vessels narrow ${c('scott2001')}, and in young men half a litre lowers the skin's flow in the palm at
-twenty-five minutes ${c('lu2012')}. Systolic pressure, which would help a shut vessel open (Section 3.2), rises by about
-11 mmHg in older people and not in the young ${c('jordan2000')}. A narrower vessel in the skin is a harder knot to free, so
-in the young, whose pressure does not rise, the report counts against the hypothesis, unless the drinker was short of
-water: after exercise that dehydrates, resting blood pressure is lower, and fluid given by vein lowers the drive to muscle
+twenty-five minutes ${c('lu2012')}; a narrower vessel in the skin is a harder knot to free. The report is therefore not
+explained, and may count against the hypothesis, unless the drink raised the drinker's blood pressure, as it does by about
+11 mmHg in older people and not in the young ${c('jordan2000')}, or the drinker was short of water: after exercise that
+dehydrates, resting blood pressure is lower, and fluid given by vein lowers the drive to muscle
 ${c('charkoudian2003b')}; whether a drink does the same is not measured. A recording would tell (Section 7). Nor is water
 harmless in quantity: more than five litres drunk within a few hours has diluted the blood's sodium enough to swell the
 brain, and has killed ${c('gardner2002')}.`;
@@ -361,7 +305,7 @@ surgeon's delay, done in dogs by tying a source artery, the reduced-calibre vess
 rabbit skin most between 48 and 72 hours, and were still wide up to a year later ${c('dhar1999')}. An old knot among
 open neighbours may therefore be fed largely by them, and the skin over it need not be short of blood; where many
 neighbouring perforators are shut together there is less to borrow (Section 5). A perforator that reopens still brings
-new flow to the skin above it, but a nerve that has not gone without has less to wake to: the tingle should be weaker at
+new flow to the skin above it, but a nerve that has not gone without has less to wake to: the tingle might be weaker at
 old knots that stand alone than at recent ones. At active trigger points, the ones that hurt unprompted, the tissue is acidic and rich in the
 substances that sensitise pain nerves; at latent ones, which hurt only when pressed, the same small study found no such
 rise ${c('shah2005')}. Whether an underfed patch of skin and fascia builds a milder form of that chemistry, enough to hurt
@@ -399,17 +343,14 @@ under graded compression, 20 to 30 mmHg slowed the blood leaving it, where the b
 ${c('rydevik1981')}. If the opening were tight, its fascia drawn taut or its contents swollen, the veins would be pinched
 while blood still reached them from the skin, which a shut perforator's neighbours go on feeding (Section 3.6). Blood
 would dam above the opening, a small swelling that could empty within seconds if the opening eased. The same tightness
-would press on the artery and help it hold. In the project's model, 20 to 30 mmHg around a shut vessel lowers the tone
-it needs to stay shut from ${f2(s.Aopen)} of maximal to between ${f2(ring30.Aopen)} and ${f2(ring20.Aopen)}, against a
-resting tone of ${f2(s.urest)}; about ${Math.round(ringRest)} mmHg, of the ${p.P} inside, would hold it at rest
-${c('knotsrepo')}. Much stands against the pocket. Nothing is known to tighten the opening, or to ease it at the moment
+would press on the artery and help it hold; by how much is not known. Much stands against the pocket. Nothing is known to tighten the opening, or to ease it at the moment
 of release: an artery reopening within it would take up more room, not less. Dammed blood can hold no more pressure than
 the pinch that dams it, some 20 to 30 mmHg on these figures, so the pocket would be a soft swelling that a hard press
 should flatten, where knots are found by pressing and persist under the hand. The skin's veins have many ways round: in
 cadavers, their valved territories are joined by valveless veins that let flow and pressure even out
 ${c('taylor1990')}, so dammed blood may simply leave by another route. The veins of so small a bundle hold little, where
-the largest bumps are a centimetre or two across. And at the pressure that would let resting tone hold, the opening and
-not the wall would be doing much of the holding: that is an entrapment, the mechanism of the nerve account, which a
+the largest bumps are a centimetre or two across. And if the opening pressed hard enough to hold a vessel shut at rest, the
+opening and not the wall would be doing the holding: that is an entrapment, the mechanism of the nerve account, which a
 tight opening would serve as well (Section 4). Ultrasound could tell the two candidates apart, and both from a nodule in
 muscle (Section 7).`;
 
@@ -440,7 +381,7 @@ in families: freeing a large knot frees small ones around it, and freeing a smal
 Trigger-point practice describes a similar order: dry needling a key trigger point raised the pressure-pain threshold of
 satellite points in its zone of referred pain ${c('hsieh2007')}, though a spinal mechanism has been proposed for it.
 A whole cluster is also said to let go at once (Box 1). On this account that would be a parent opening, or the drive
-falling far enough over a region to take many vessels below their bands together.`;
+falling far enough over a region to let many vessels go together.`;
 
 const age = `Small mesenteric arteries from organ donors over sixty-five contract more strongly to adrenergic stimulation
 ${c('elassar2022')}, and resting sympathetic activity to muscle rises with age ${c('ng1993')}; older skin reaches a lower
@@ -449,12 +390,10 @@ skin's reflex vasoconstriction is blunted with age ${c('holowatz2010')}, so whet
 is not settled. The hypothesis predicts that the number of knots tracks the loss of the skin's microvascular reactivity,
 place by place, and that children have few.`;
 
-const clocksCap = `Figure 3. The clocks. How fast knots are reported to change (terracotta; rough, from Box 1), beside how
+const clocksCap = `Figure 2. The clocks. How fast knots are reported to change (terracotta; rough, from Box 1), beside how
 fast the physiology the hypothesis names is measured to change (slate). A deep breath narrows the skin's vessels from 3.6 s,
 most at about 5 s, recovering over the following ten to thirty seconds ${c('mayrovitz2026')}; a reopened vessel's flow peaks
-about 11 s after release ${c('alexandrou2021')}; a patch of skin warms with a time constant of
-${Math.round(cool.tau_s_at_max_flow)} s at maximal flow and ${Math.round(cool.tau_s_at_tenth_flow)} s at a tenth of it
-${c('knotsrepo')}; arterioles constricted for five minutes keep no trace of it, and after four hours relax only slowly and
+about 11 s after release ${c('alexandrou2021')}; arterioles constricted for five minutes keep no trace of it, and after four hours relax only slowly and
 incompletely ${c('martinezlemus2004', 'hill2003')}; arteries constricted for three days remodel inward ${c('bakker2002')}.
 The slower changes in the fascia (Section 5) are reported over days to weeks. The shaded band is a breath.`;
 
@@ -463,11 +402,11 @@ const T1: [string, string, string, string][] = [
   ['Discrete bumps in the same regions in everyone', 'Perforator exits: fixed sites, shared clusters; the bump a stiffened sleeve where the layers are pinned, or a pocket of blood dammed at the opening', c('taylor1987', 'martin2013', 'weum2016', 'rydevik1981'), 'Identity untested; the bump, hypothesis in two forms'],
   ['Painless unless pressed hard', "An underfed nerve, perhaps sensitised, sore when the bundle is pressed against the firm fascia beneath", c('shah2005'), 'Hypothesis; in the one small study, points that hurt only when pressed showed none of the chemistry of those that hurt unprompted'],
   ['They persist until released; some are stubborn', 'A wall that holds itself shut; muscle that adapts; an artery that remodels', c('burton1951', 'martinezlemus2004', 'bakker2002'), 'Each measured; together untested'],
-  ['They let go within seconds', 'A shut vessel reopens as soon as its tone falls below the band', c('burton1951', 'nichol1951', 'miller2026'), 'Established mechanism'],
+  ['They let go within seconds', 'A shut vessel reopens once its tone falls far enough', c('burton1951', 'nichol1951', 'miller2026'), 'Mechanism established; not shown in knots'],
   ['With a trained breath', 'A deep breath raises the drive for seconds; slow breathing lowers it; the breath may also move the wall', c('mayrovitz2026', 'adler2019', 'ljung1975'), 'Measured for a deep breath and for slow breathing, in fingers and in nerves to muscle; the wall moved only by fast vibration, in isolated vessels; for the breath reported, and in knots, untested'],
-  ['As a hand lifts; under a roller', 'A pressed vessel reopens only on release; brief squeezes widen it', c('clifford2006'), 'Measured in feed arteries of rat muscle'],
+  ['Under a hand; under a roller', 'A squeeze widens a small artery; blood returns as the pressure eases', c('clifford2006'), 'Measured in feed arteries of rat muscle; whether a knot goes under the press or as it eases is not known'],
   ['A hot shower frees many', "Local warming lowers the tone of the skin's vessels", c('minson2001'), 'Established'],
-  ['Water eases releases (some)', "Drinking narrows the skin's vessels; it could help only someone short of water, or whose pressure it raises", c('scott2001', 'lu2012', 'charkoudian2003b'), 'Against, unless short of water'],
+  ['Water eases releases (some)', "Drinking narrows the skin's vessels; it could help only someone short of water, or whose pressure it raises", c('scott2001', 'lu2012', 'charkoudian2003b'), 'Not explained; perhaps against, unless short of water'],
   ['A tingle over a patch', 'A nerve that went without blood fires when it returns; reactive hyperaemia', c('ochoa1980', 'lorenzo2007'), 'Established'],
   ['A release is felt, often with a rush of feeling; most when a cluster goes together', 'None for the feeling; many going together would be a parent opening, or the drive falling over a region', '', 'Not explained; under a roller, relief may be a plainer source of the feeling (Section 4)'],
   ['A dull block to stretch', 'A dry sleeve jams in the gliding layer', c('guimberteau2005', 'cowman2015', 'coussot2002'), 'Hypothesis'],
@@ -549,18 +488,21 @@ const altAfter = [
   A knot would be a stretch of such a vessel, full of lymph it has not passed on. That would give a bump of fluid, a knot
   that travels, always toward the groin or the armpit, and one that comes back to the same place. But nothing in it keeps
   the lymph in. The valves open forward and pressure from outside moves lymph on ${c('scallan2016', 'aldrich2017')}, so
-  the press that finds a knot should empty it, and it would go while pressed, not as the pressure lifts (Section 3.5).
+  the press that finds a knot should empty it at once, where knots are found by pressing and persist under the hand
+  (Section 3.7).
   Stimulating the nerves of lymph vessels quickened them in cattle and sheep ${c('mchale1990')}, so stress should free such
   knots, not make them;
   and it has no tingle. Few lymph vessels pass through the fascia at all. In the limbs the superficial collectors are
   almost unconnected with the deep ${c('hidden1990')}, and none were found to cross in fourteen arms from ten cadavers
   ${c('suami2007')}, though in the loin and buttock of dogs some pass through the abdominal wall in the company of blood
-  vessels ${c('suami2008')}. Knots found to let go under steady pressure, or to travel only toward the groin and the
+  vessels ${c('suami2008')}. Knots found to empty at the first firm press, or to travel only toward the groin and the
   armpit, would bring the variant back.`,
-  `The project's site writes all seven mechanisms as models from their own physiology and runs them through the same scenes
-  ${c('knotshyp')}. We give its comparisons little weight here: most numbers specific to knots are guesses there, the
-  formalisations of three of the seven are the project's own and have not been checked by those who hold them, and a shared
-  calibration gives every model knots by construction. What the case rests on is the physiology above.`,
+  `The project's site also writes all seven mechanisms as models and runs them through the same scenes
+  ${c('knotshyp')}. That was an exercise in using AI, and this paper takes nothing from it: no knot has been measured to set
+  the models by, most numbers specific to knots are guesses there, the formalisations of three of the seven are the
+  project's own and have not been checked by those who hold them, and a shared calibration gives every model knots by
+  construction. Earlier drafts gave numbers from the project's model of the vessel wall; this one gives none (Versions).
+  What the case rests on is the physiology above.`,
 ];
 
 const fascia = [
@@ -584,8 +526,8 @@ const fascia = [
   of suicide, above all someone facing it alone, exhausted, or without the experience, guidance and support to get through it.
   We describe it because people are beginning to work forcefully at clearing knots, and a risk that is known can be avoided,
   recognised and met with help.`,
-  `Why releases would come in chains is clearest in a network. Each knot is a switch that holds until its drive falls
-  below a band, and knots hold one another up: a shut parent holds its branches shut (Section 3.8), and an underfed, sensitised
+  `Why releases would come in chains is clearest in a network. Each knot holds until its drive falls
+  far enough, and knots hold one another up: a shut parent holds its branches shut (Section 3.8), and an underfed, sensitised
   patch may add to the drive that keeps others shut. Clearing enough of them can lower the drive that holds the rest, so that
   each release makes the next easier, and past a threshold the network tips: releases run on until few are left. A postural
   or nervous-system set held up by its own inputs would tip in the same way (Section 4), so the tipping does not decide what
@@ -597,7 +539,7 @@ const fascia = [
   through it, each in its sleeve. If a shut perforator's sleeve jams (Section 3.7), each knot is also a point where the
   layers are pinned. Were many to let go across a region, and the returning flood to wet the gliding plane, the layers could
   part along the lines between the remaining tethers, and close again as the fluid is taken up and the sleeves hold once
-  more. This is a hypothesis built on a hypothesis, and it is not yet modelled. The hypothesis was chosen to fit this order, the
+  more. This is a hypothesis built on a hypothesis. The hypothesis was chosen to fit this order, the
   knots first and the layers after (Section 1.3), so the fit is no evidence for it.`,
   `The hypothesis offers a second reading of the slower phase, in the vessels themselves. When the flow through small arteries
   rises and stays up, they remodel outward: in rats, an enzyme that breaks down the wall's matrix is more active by the fourth
@@ -641,11 +583,9 @@ const points = [
   a measure of chance where perforators cluster, and none of these studies asked how often a point placed at random would land
   as near a vessel. Both maps are also fuzzy: 71 doctors' marks for one point spread over as much as 41 cm²
   ${c('molsberger2012')}, and perforator clusters spread by centimetres between people ${c('martin2013')}.`,
-  `A first look against chance used five limb lines where a measured perforator cluster and a run of WHO points share an
-  intermuscular septum ${c('knotspoints')}. The perforator density at the ${acu.points} points was about
-  ${acu.ratio.median.toFixed(2)} times that at random points on the same lines, not reliably above chance (p
-  ${acu.p.min.toFixed(2)}–${acu.p.max.toFixed(2)} across ${acu.variants} variants of the unstated details), where a map placed
-  on the clusters would score ${acu.perfect.min.toFixed(1)}–${acu.perfect.max.toFixed(1)} times. Some points sit on clusters,
+  `A first, rough look against chance, the project's own, used five limb lines where a measured perforator cluster and a
+  run of WHO points share an intermuscular septum ${c('knotspoints')}. The points lay only a little nearer to perforators
+  than random points on the same lines, not reliably above chance. Some points sit on clusters,
   SP6 near the lowest posterior tibial perforator ${c('bulla2015')} and LU6 and LU7 near the radial artery's two clusters
   ${c('saintcyr2010')}; others do not. The correspondence is therefore not shown, and not excluded, and the hypothesis does not
   depend on it. Its nearest kin in the traditions is the <em>ashi</em> point, found where pressing hurts, though a knot is found as a bump.`,
@@ -656,14 +596,13 @@ const T3: [string, string, string][] = [
   ['A held knot is silent, and its perforator appears when it lets go', "Knots marked blind, by examiners or by people who can find their own; perforators mapped blind by Doppler or thermal camera before the marked knots are released, by their owners' usual means, and again once the flush has settled, with matched spots pressed alike", 'After release, new perforators appear at the marked spots no more often than at the matched ones'],
   ['A person has fixed stations', "One person's knots marked over months against a map of their perforators built up over the visits", 'New knots at arbitrary places, or continuous drift'],
   ['No flow through the opening while a knot holds', 'Colour Doppler ultrasound beneath a knot, while it holds and after it lets go, with any flow traced to an opening in the fascia', 'Flow through an opening beneath held knots as often and as strong as after their release'],
-  ['A flood at release', 'Laser speckle or a thermal camera at each felt release, with a pressed sham beside it', 'Release with no local rise, or a rise no larger than at a pressed sham'],
-  ['Release as pressure lifts', 'The same, with calibrated pressure', 'Releases under steady pressure, with flow rising while compressed'],
+  ['A flood at release', 'Laser speckle or a thermal camera at each felt release, with the pressure recorded and a pressed sham beside it', 'Release with no local rise, or a rise no larger than at a pressed sham'],
   ['An order: flood, tingle, then sliding', 'Laser speckle, a button at the felt release, ultrasound of the layers sliding', 'Sliding returns before the flood'],
   ['Families', 'Freeing an upstream site against a downstream one', 'Small frees large as often as large frees small'],
   ['Setting', 'Isolated small arteries carried shut for four hours against five minutes, then returned to resting tone', 'Those held for hours reopen at rest as fully as those held for minutes'],
   ['Age', "A census of knots, with the skin's microvascular reactivity at the same sites, across ages", 'No relation; children as knotted as adults'],
   ['The fascia follows the knots', 'Ultrasound of the glide between fascial layers in people who report the slower changes, at the reported sites and matched sites, over days', 'No difference from matched sites'],
-  ['Water does not help', 'Felt releases, laser speckle over knots and blood pressure for half an hour after half a litre of water against a sip, in people not short of water', "Releases come more easily after the larger drink while the skin's flow falls and the pressure holds"],
+  ['Water is not expected to help', 'Felt releases, laser speckle over knots and blood pressure for half an hour after half a litre of water against a sip, in people not short of water', "Releases come more easily after the larger drink while the skin's flow falls and the pressure holds"],
   ['The bump lies at the opening in the fascia', "An examiner's finger, and ultrasound with colour Doppler, compression and elastography, at a knot before and after it lets go", 'No fluid, swollen veins or stiffening at the opening, or the bump within the muscle beneath'],
 ];
 
@@ -689,7 +628,9 @@ third prediction is the careful form of the first: colour Doppler ultrasound, wh
 through the fascia ${c('weum2016')}, asks whether blood passes the opening beneath a knot while it holds. Flow in the
 skin over a held knot is a weaker guide, since its neighbours may feed the patch (Section 3.6). The fourth is the most
 direct: a flood of skin flow, time-locked to a felt release and absent at a pressed sham; laser speckle imaging of skin
-flow is reproducible from week to week ${c('roustit2010')}. The last asks what the bump is (Section 3.7): a pocket of
+flow is reproducible from week to week ${c('roustit2010')}. With the pressure recorded as well, it would show whether knots
+are felt to go under the press or as it eases, which the hypothesis does not predict (Section 3.5). The last asks what
+the bump is (Section 3.7): a pocket of
 dammed blood would show as fluid or swollen veins at the opening that flatten when pressed and are gone within seconds of
 the release; a stiffened sleeve as a firm place without fluid, where the layers do not
 glide; and if neither an examiner's finger nor ultrasound finds anything there, the bump is felt only from within. Because each alternative predicts a different trace at the moment of
@@ -710,11 +651,9 @@ const limits = [
   counted by the surgeon, almost none of that size, there, was shut. The condition may fail: the scan might fill a vessel
   as far as a closure at its opening, and a vessel clamped shut might measure less than the millimetre the series
   required. The plainer reading is that knots, if they are perforators, are for the most part smaller vessels than
-  surgeons map, or lie elsewhere. That may be what the wall allows. The hold of Section 3.2 was reckoned for small
-  arteries about ${(2000 * p.r100).toFixed(2)} mm across, and in the project's model a larger vessel can shut itself only
-  if its wall is stronger in proportion: with the same wall, one half as large again could not, even at full tone
-  ${c('knotsrepo')}. Whether perforators over a millimetre across have walls to match is not known here. The largest
-  bumps, which the account would put at the largest perforators, are then the hardest for it to place.`,
+  surgeons map, or lie elsewhere. A wider vessel is also harder for its own wall to shut, since the same pressure pulls
+  harder on a wider wall. The largest bumps, which the account would put at the largest perforators, are then the hardest
+  for it to place.`,
   `A Doppler and a thermal camera find a perforator by its flow, and on this account a knot has little or none while it
   holds. A map made once cannot show knots on perforators; it takes a map made before the knots are released and again
   after (Section 7).`,
@@ -726,12 +665,13 @@ const limits = [
   or a pocket of dammed blood (Section 3.7), the least established part of the hypothesis, and the pocket has much
   against it; a nodule within muscle would belong to muscle, and that knot would not be (only) a perforator. Nor is it
   certain that a finger feels a lump at all, and not the pressed place itself.`,
-  `The hold is demanding in healthy vessels. That old knots hold at rest leans on adaptation and remodelling measured over
+  `The hold is demanding. Whether a healthy small artery could stay shut at its resting tone is not known, and that old
+  knots hold at rest leans on adaptation and remodelling measured over
   hours and days in isolated small arteries, which relax incompletely rather than not at all. Pressure around the vessel
   would lower the tone the hold needs (Section 3.7), but nothing is known to supply it. That a trained breath frees
-  even stubborn knots within a session asks it to take the drive well below rest, or to move the wall, and no one has measured either.`,
-  `Water, which some find eases releases, narrows the skin's vessels in healthy people; on this account it should not help,
-  except someone short of water or whose blood pressure it raises (Section 3.5).`,
+  even stubborn knots within a session asks it to take the drive below rest, or to move the wall, and no one has measured either.`,
+  `Water, which some find eases releases, narrows the skin's vessels in healthy people; this account does not expect it to
+  help, except someone short of water or whose blood pressure it raises (Section 3.5).`,
   `The evidence on age points both ways. The breath's effects are measured in the skin of the fingers and toes and in the
   nerves to muscle, not at the trunk's perforators, and which of its routes matters is unknown.`,
   `Releases to attention alone are not explained, nor why a trained breath might be needed to feel an area's knots as
@@ -743,8 +683,13 @@ const limits = [
   unknown.`,
   `Runaway release and the slower changes in the fascia (Section 5) rest on two informal reports, the hardest to check, and are
   the most speculative part of the paper.`,
-  `The text was written by AI (below). Every reference was taken from its own record, and the numbers from the cited sources
-  and the project's data, but errors of emphasis or reading are possible, and corrections are welcome.`,
+  `Whether a knot lets go while it is pressed or as the pressure eases is not reliably reported, and the hypothesis does
+  not predict it (Section 3.5). Earlier drafts said that a knot should go only as the pressure lifts; that went beyond what
+  is known.`,
+  `Earlier drafts took some numbers from the project's own models of the vessel wall. Those models were an exercise in
+  using AI and have been checked against no measurement of a knot; this draft takes nothing from them (Versions).`,
+  `The text was written by AI (below). Every reference was taken from its own record, and the numbers from the cited sources,
+  but errors of emphasis or reading are possible, and corrections are welcome.`,
 ];
 
 const safety = [
@@ -775,9 +720,9 @@ const safety = [
   sending it to the brain ${c('davies2013')}. The pressure and the breathing that Box 1 describes under a roller go beyond
   what the teachers of foam rolling advise.`,
   `Nothing in this paper is a practice, a protocol or a recommendation, and nothing in it is a reason to seek these
-  experiences: the hypothesis concerns what happens, not what anyone should do. Anyone in difficulty can find support from
+  experiences: the hypothesis concerns what happens, not what anyone should do. Anyone in difficulty should seek medical advice;
   Cheetah House ${c('cheetah')}, whose team includes the researchers of the Varieties of Contemplative Experience project
-  ${c('britton')}, and should also see a physician. Any study with people belongs under ethics review, with comfortable
+  ${c('britton')}, is one further resource. Any study with people belongs under ethics review, with comfortable
   pressure and a plan for referral. Breathing should be ordinary or, for people who already use a breath to release
   their knots, that breath as they already use it; no one should be taught a breath, or asked to press, breathe or work
   harder or longer, or to release more knots, than they usually do.`,
@@ -806,6 +751,7 @@ const open = [
   `What is the bump: a stiffened sleeve, a pocket of dammed blood, or something in the muscle beneath?`,
   `Does the skin flood at the moment a knot lets go, and does the flood come before the tingle, and the tingle before the
   layers slide?`,
+  `Does a knot let go while it is pressed, or as the pressure eases?`,
   `Can a small human artery held shut for hours stay shut at resting tone?`,
   `What carries a release to attention alone? And, in those who already breathe this way, which part of the trained breath
   frees a knot?`,
@@ -823,12 +769,13 @@ the practitioner observations that motivate it. The text was drafted by Claude O
 (Anthropic) from those essays, the site, the project's models and the cited literature. A draft was then refereed by a
 second model, Claude Fable 5.1 (Anthropic), and the changes of draft 4 by Claude Fable 5.2, which checked each claim
 against its source's record, abstract or excerpt; their corrections were checked again against the sources before they
-were made. The additions of 18 and 19 November 2026 (Versions) were AI-assisted in the same way. Every reference was taken from its
+were made. The additions of 18 and 19 November 2026 and the changes of draft 5 (Versions) were AI-assisted in the same way. Every reference was taken from its
 own record, PubMed's for papers indexed there and the publisher's or Crossref's for the rest, rather than from a model's
-memory, and every number from the cited sources or the project's data. The author is responsible for the content.`;
+memory, and every number from the cited sources. The author is responsible for the content.`;
 
 // Fix the order of the closing citations before the list is built.
 const dataRefs = c('knotsrepo');
+const hypRef = c('knotshyp');
 const index = [
   { id: 'introduction', label: 'introduction' },
   { id: 'hypothesis', label: 'the hypothesis' },
@@ -846,11 +793,11 @@ const index = [
   current="research"
   glyph="結"
   index={index}
-  citation={{ authors: ['Jhong, Eugene'], date: '2026/11/19', doi, pdf: '/research/perforator-hypothesis.pdf' }}
+  citation={{ authors: ['Jhong, Eugene'], date: '2026/11/22', doi, pdf: '/research/perforator-hypothesis.pdf' }}
   description="A position paper: knots as cutaneous perforators held shut by their own walls. The case from established physiology, the alternatives in their strongest forms, runaway release and the fascia, the acupuncture points, the dangers, and the measurements that would refute it."
 >
   <div class="paper">
-    <p class="byline">Eugene Jhong · Knots of Existence, independent · <span class="mono">19 November 2026 · draft 4 · <a href={`https://doi.org/${doi}`}>doi.org/{doi}</a></span></p>
+    <p class="byline">Eugene Jhong · Knots of Existence, independent · <span class="mono">22 November 2026 · draft 5 · <a href={`https://doi.org/${doi}`}>doi.org/{doi}</a></span></p>
     <p class="byline disclose">Written by AI (Claude Opus 5.5, Anthropic) under the author's direction, and refereed by a second model (Claude Fable 5.1; for draft 4, Claude Fable 5.2). See <a href="#authorship">Authorship and AI use</a>.</p>
     <p class="byline mono">Correspondence and objections: <a href={`${repo}/issues`}>github.com/ejhong/knots/issues</a> · <a href={`${base}/research/perforator-hypothesis.pdf`}>PDF</a> · <a href={`${base}/research/#studies`}>studies that might help</a></p>
 
@@ -863,7 +810,8 @@ const index = [
       <p><strong>A caution.</strong> One process discussed here, runaway release (Section 5), can be prolonged and dangerous,
         and we think it can bring a person to the point of suicide (Sections 5 and 9). This paper describes; it does not prescribe.
         Nothing in it is a practice or a protocol, and no one should try to bring these experiences on. Anyone in difficulty
-        can find support from <a href="https://www.cheetahhouse.org">Cheetah House</a>; anyone thinking about suicide should
+        should seek medical advice; <a href="https://www.cheetahhouse.org">Cheetah House</a>, which supports meditators in distress,
+        is one further resource. Anyone thinking about suicide should
         reach out now: in the US, call or text 988; elsewhere, find a line at <a href="https://findahelpline.com">findahelpline.com</a>.</p>
     </aside>
 
@@ -888,14 +836,15 @@ const index = [
       <figure class="fig plate" set:html={perforatorFigure()} />
       <p class="figcap">Figure 1. One perforator in section. (a) Open: a small artery and its nerve rise through an opening in the
         deep fascia, cross the gliding layer in a sleeve of sliding tissue, and branch in the skin. (b) Held shut by its own wall at
-        the opening: a knot. Its sleeve dries and can jam; the patch it feeds is underfed. (c) Letting go: tone falls below the band
-        that held it, blood floods the patch, and the nerve fires.</p>
+        the opening: a knot. Its sleeve dries and can jam; the patch it feeds is underfed. (c) Letting go: tone falls far
+        enough, blood floods the patch, and the nerve fires.</p>
       <p>In parts, each of which can be checked on its own:</p>
       <ol class="claims">
         {claims.map(([h, t, tag]) => (
           <li><strong>{h}.</strong> <Fragment set:html={t} /> <span class="tag">{tag}</span></li>
         ))}
       </ol>
+      <p set:html={unknown} />
       <h3>A memory with an anatomy</h3>
       <p set:html={memory} />
     </section>
@@ -907,12 +856,6 @@ const index = [
       {where.map((t) => <p set:html={t} />)}
       <h3>3.2 What holds them</h3>
       {hold.map((t) => <p set:html={t} />)}
-      <div class="sw-wrap">
-        <figure class="sw" set:html={switchChart(wall)} />
-        <p class="figcap">Figure 2. The switch in a small artery's wall, from the project's model with measured parameters: how
-          far shut the vessel is (up, from relaxed to shut) against the tone of its muscle (across). Over the shaded band, open and shut are both stable.
-          Tone rising past the band snaps the vessel shut; once shut, it reopens only when tone falls below the band.</p>
-      </div>
       <h3>3.3 How knots form, and why old ones persist</h3>
       <p set:html={forms} />
       <p set:html={set} />
@@ -941,7 +884,7 @@ const index = [
           ))}
         </tbody>
       </table>
-      <figure class="fig clocks" set:html={clocksFigure({ warmFast: cool.tau_s_at_max_flow, warmSlow: cool.tau_s_at_tenth_flow })} />
+      <figure class="fig clocks" set:html={clocksFigure()} />
       <p class="figcap" set:html={clocksCap} />
     </section>
 
@@ -1008,9 +951,9 @@ const index = [
       <h2>Authorship and AI use</h2>
       <p set:html={authorship} />
       <h2>Data and code</h2>
-      <p>The models, every parameter with its source, and the code behind each number on this page are open <Fragment set:html={dataRefs} />.
-        The few numbers from the project's own calculations (the wall's switch, the hyaluronan and warming checks, the comparison
-        with acupoints) are read from its data when the page is built.</p>
+      <p>No number in this paper is taken from the project's own models or calculations. The project's site holds models of
+        the seven mechanisms, built with AI as an exercise <Fragment set:html={hypRef} />; the paper does not rest on them. Their
+        code and data are open <Fragment set:html={dataRefs} />.</p>
       <h2>Competing interests and funding</h2>
       <p>None.</p>
       <h2>Versions</h2>
@@ -1061,6 +1004,19 @@ const index = [
         knots use it as they do, with no one taught a breath or asked for more than they usually do (Sections 7 and 9).
         These changes were AI-assisted and checked against their sources' records and abstracts, and for safe
         messaging.</p>
+      <p>Draft 5 (22 November 2026) takes out what rested on the project's own models. Earlier drafts gave the width of
+        the wall's switch, how often it would hold at rest, how large a surge shuts a vessel, how far tone must fall for
+        a set knot to let go, what pressure around a vessel would do, how fast a patch of skin warms, how large a vessel
+        could shut itself and how weakly hyaluronan pushes back, all from the project's own models and calculations, with
+        a figure of the switch and a comparison of acupoints with chance given in numbers. The models were an exercise in
+        using AI and have been checked against no measurement of a knot, so those numbers and that figure are gone, and
+        the paper says so (the abstract, Sections 1.3, 2, 3.2, 3.3, 3.5, 3.7, 4, 6 and 8, Figure 2 and the statement on
+        data and code). It withdraws the statement that a knot lets go as a hand lifts and not while it presses: that
+        was not a report, and it does not follow from the hypothesis, which allows either (Box 1, Sections 2, 3.5, 4, 7
+        and 8, Tables 1 and 3, and Box 2). It says early what is not known (the abstract and Section 2), no longer says
+        that water should not help, only that the account does not expect it to (Box 1, Sections 3.5 and 8, and Tables 1
+        and 3), and puts medical advice first among the places to find help (the caution and Section 9). These changes
+        were AI-assisted and checked against their sources' records, and for safe messaging.</p>
     </section>
 
     <section class="refs">

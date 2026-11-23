@@ -1,8 +1,8 @@
 /**
  * The clocks, for the position paper (/research/perforator-hypothesis/): how fast knots are reported to change, beside
  * how fast the physiology the hypothesis names is measured to change, on one logarithmic axis from a second to a year.
- * The measured spans come from the cited papers and the project's warming check (passed in); the reported spans are
- * rough, from practitioners' accounts. Where only two moments were measured (arterioles held five minutes and four hours), the
+ * The measured spans come from the cited papers; the reported spans are rough, from practitioners' accounts. (The
+ * project's own estimate of how fast skin warms can be passed in; the paper has left it out since draft 5.) Where only two moments were measured (arterioles held five minutes and four hours), the
  * row shows two dots joined by a dashed line rather than a span. Static, on paper, so it prints. Colours as in perforatorFigure.ts: knots are
  * terracotta and nothing else; the vessel's physiology is the perforator's neutral slate.
  */
@@ -27,9 +27,10 @@ const MONTH = 30.4 * DAY;
 const YEAR = 365 * DAY;
 
 export interface ClockInputs {
-  /** The warming check: a patch of skin's time constant at maximal flow, and at a tenth of it (s). */
-  warmFast: number;
-  warmSlow: number;
+  /** The project's rough warming estimate: a patch of skin's time constant at maximal flow, and at a tenth of it (s).
+   *  The row is drawn only when both are given. */
+  warmFast?: number;
+  warmSlow?: number;
 }
 
 type Row = {
@@ -43,7 +44,7 @@ type Row = {
   pair?: boolean;
 };
 
-export function clocksFigure({ warmFast, warmSlow }: ClockInputs): string {
+export function clocksFigure({ warmFast, warmSlow }: ClockInputs = {}): string {
   const W = 680;
   const x0 = 236; // the axis starts here; labels sit to its left
   const x1 = W - 22;
@@ -55,7 +56,9 @@ export function clocksFigure({ warmFast, warmSlow }: ClockInputs): string {
   const measured: Row[] = [
     { label: 'a deep breath narrows the skin’s vessels', from: 3.6, to: 34, kind: 'measured', dot: 5 },
     { label: 'a reopened vessel’s flow peaks', from: 1, to: 11, kind: 'measured', dot: 11 },
-    { label: 'a patch of skin warms', from: warmFast, to: warmSlow, kind: 'measured' },
+    ...(warmFast !== undefined && warmSlow !== undefined
+      ? [{ label: 'a patch of skin warms', from: warmFast, to: warmSlow, kind: 'measured' as const }]
+      : []),
     { label: 'a constricted arteriole’s muscle adapts', from: 5 * MIN, to: 4 * HOUR, kind: 'measured', ends: ['no trace', 'incomplete'], pair: true },
     { label: 'a constricted artery remodels inward', from: 3 * DAY, to: 3 * DAY, kind: 'measured', dot: 3 * DAY },
   ];
