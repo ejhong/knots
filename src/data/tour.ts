@@ -58,11 +58,11 @@ export const CHAPTERS: Chapter[] = [
 <li><b>Feel.</b> A knot is felt as a bump, from very small to about the size of a penny. It seldom hurts unless pressed hard, as under a foam roller. Single knots do not always stand out: an area with many is felt more as a dull block, and a trained breath may be needed to feel its knots as distinct bumps.</li>
 <li><b>Breath.</b> Knots seem to answer to the breath, possibly a complex breath woven together with fine proprioception. A single relaxing breath — the kind that comes on its own in a hot shower — can soften many small knots at once. Some knots seem to come and go with breath and mood, and some may even be held from moment to moment; deeper, persistent knots let go only to focused attention and breath.</li>
 <li><b>Attention.</b> Pressure and focused attention — a foam roller, a patient hand — release knots one place at a time.</li>
-<li><b>Water.</b> Drinking water seems to ease release, and to speed it.</li>
+<li><b>Water.</b> Some report that drinking water seems to ease release, and to speed it.</li>
 <li><b>Stress.</b> Knots seem to worsen under stress, and gather where it is held: neck and shoulders, jaw, belly, low back.</li>
 <li><b>Stiffness.</b> As knots gather they seem to limit movement. A stretch is felt as a clear, sharp pull in the muscle, but it meets the knots as dull, deep blocks it cannot reach.</li>
 <li><b>Sparks.</b> A knot goes with a small pop, sometimes a star of tingling across a patch of skin.</li>
-<li><b>Euphoria.</b> A release can bring a wave of well-being — at times a euphoria some compare to MDMA. A felt release, with the feeling that can follow it, is the plainest mark of the knots meant here.</li>
+<li><b>Release.</b> A release is felt, and a rush of feeling often follows it — relief or well-being, at times tears or euphoria, most of all when a whole cluster lets go together. That felt release is the plainest mark of the knots meant here.</li>
 <li><b>Migration.</b> When one knot lets go, others move in to fill the gap and settle into new places, as if the body were evening itself out.</li>
 <li><b>Mirroring.</b> Working the knots on one side can ease the other side as well. Foam-rolling studies measure something like it — the crossover effect: rolling one leg adds range of motion to the other, untouched one.</li>
 <li><b>Peeling.</b> Two reports describe layers of the fascia beneath the skin peeling apart along lines, leaving places that feel hollow. It is rare and little understood — one reason for <a href="#moderation">the caution at the end</a>.</li>
@@ -90,9 +90,9 @@ export const CHAPTERS: Chapter[] = [
     glyph: '根',
     title: 'Trees, and knots that move',
     seconds: 24,
-    html: `<p>A perforator stays in place, but each belongs to a tree of vessels, and each tree has a root: a source artery feeding a whole territory of skin. Small arteries <em>conduct</em>. A dilation that starts at one branch travels along the vessel wall toward the vessel that feeds it, at millimetres to centimetres a second.</p>
-<p>This may be why knots seem to move. When one branch opens, flow and pressure shift across its tree, and the neighbouring vessels adjust — some relaxing, some tightening — until the territory settles into a new balance. Felt from the inside, that would be knots moving into the gap and finding new places: the evening-out people describe. In the model, freeing a parent frees most of its children, but freeing a child does not free its parent: release runs down a tree, not up. Here a release sends light down its tree to the knots it frees.</p>`,
-    refs: ['segal1986', 'saintcyr2009'],
+    html: `<p>A perforator stays in place, but each belongs to a tree of vessels, and each tree has a root: a source artery feeding a whole territory of skin. The link between parent and branches is hydraulic: pressure comes from the source. A shut parent holds its children shut, and when it opens, pressure returns down the tree and those not held by their own walls can open with it; a child that opens cannot open a shut parent. (Signals travelling along an arteriole wall fade over millimetres, too short to bridge centimetres between perforators.)</p>
+<p>This may be why knots come in families and seem to shift. When a parent or branch opens, flow and pressure redistribute across its territory, and neighbouring vessels settle into a new balance — freeing a large knot can free smaller ones around it, never the reverse. Here a release sends light down its tree to the knots it frees.</p>`,
+    refs: ['taylor1987', 'saintcyr2009', 'segal1989'],
     scene: { pose: { p: [-0.5, 0.76, -1.1], t: [0.0, 0.68, -0.03] }, age: 50, demo: 'release', trees: 1.6 },
   },
   {

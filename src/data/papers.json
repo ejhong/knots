@@ -1,5 +1,19 @@
 [
  {
+  "id": "aalkjaer2011",
+  "authors": "Aalkjær C, Boedtkjer D, Matchkov V",
+  "year": 2011,
+  "title": "Vasomotion - what is currently thought?",
+  "venue": "Acta Physiol (Oxf) 202:253-69",
+  "url": "https://doi.org/10.1111/j.1748-1716.2011.02320.x",
+  "pmid": "21518271",
+  "kind": "paper",
+  "tags": [
+   "vascular"
+  ],
+  "note": "A review of vasomotion — coordinated oscillations in vascular smooth muscle tone producing flowmotion — its cellular mechanisms, endothelium and calcium handling, and physiological role."
+ },
+ {
   "id": "aboodarda2015",
   "authors": "Aboodarda SJ, Spence AJ, Button DC",
   "year": 2015,
@@ -536,6 +550,22 @@
   "note": "Taut bands identified and quantified with magnetic resonance elastography."
  },
  {
+  "id": "chowdhury2023",
+  "authors": "Chowdhury A, van Lutterveld R, Laukkonen RE et al.",
+  "year": 2023,
+  "title": "Investigation of advanced mindfulness meditation \"cessation\" experiences using EEG spectral analysis in an intensively sampled case study",
+  "venue": "Neuropsychologia 190:108694",
+  "url": "https://doi.org/10.1016/j.neuropsychologia.2023.108694",
+  "pmid": "37777153",
+  "kind": "paper",
+  "tags": [
+   "contemplative",
+   "mind",
+   "imaging"
+  ],
+  "note": "An intensively sampled EEG case study of 37 meditative cessation events in one experienced practitioner: large-scale alpha power fell starting about 40 s before onset and reached its lowest point immediately after."
+ },
+ {
   "id": "christ1997",
   "authors": "Christ F, Dellian M, Goetz AE et al.",
   "year": 1997,
@@ -592,6 +622,21 @@
    "fascia"
   ],
   "note": "Hyaluronan's viscosity in the body: crowding and immobility raise it, warmth lowers it gradually (two- to threefold from 25 to 65 °C), and in inflammation it can bind proteins into aggregates."
+ },
+ {
+  "id": "craig2002",
+  "authors": "Craig AD",
+  "year": 2002,
+  "title": "How do you feel? Interoception: the sense of the physiological condition of the body",
+  "venue": "Nat Rev Neurosci 3:655-66",
+  "url": "https://doi.org/10.1038/nrn894",
+  "pmid": "12154366",
+  "kind": "paper",
+  "tags": [
+   "mind",
+   "nerve"
+  ],
+  "note": "An afferent neural system in primates and humans represents the physiological condition of the whole body, forming a substrate for subjective feelings, emotion and well-being."
  },
  {
   "id": "crettaz2013",
@@ -1520,6 +1565,21 @@
   "note": "A deep inspiratory gasp cuts fingertip skin blood flow by 59–71%, graded with the depth of the breath."
  },
  {
+  "id": "laukkonen2023",
+  "authors": "Laukkonen RE, Sacchet MD, Barendregt H et al.",
+  "year": 2023,
+  "title": "Cessations of consciousness in meditation: Advancing a scientific understanding of nirodha samāpatti",
+  "venue": "Prog Brain Res 280:61-87",
+  "url": "https://doi.org/10.1016/bs.pbr.2022.12.007",
+  "pmid": "37714573",
+  "kind": "paper",
+  "tags": [
+   "contemplative",
+   "mind"
+  ],
+  "note": "A review and research agenda for cessations of consciousness in advanced meditation (nirodha samāpatti), presenting preliminary data from two laboratories and framing them in cognitive-neurocomputational and active inference terms."
+ },
+ {
   "id": "leknes2011",
   "authors": "Leknes S, Lee M, Berna C et al.",
   "year": 2011,
@@ -2245,6 +2305,21 @@
    "imaging"
   ],
   "note": "The largest internal mammary perforator, in 121 sides: first intercostal space 37.4%, second 39.7%, third 17.6%; the same space on both sides in 49%."
+ },
+ {
+  "id": "olausson2010",
+  "authors": "Olausson H, Wessberg J, Morrison I et al.",
+  "year": 2010,
+  "title": "The neurophysiology of unmyelinated tactile afferents",
+  "venue": "Neurosci Biobehav Rev 34:185-91",
+  "url": "https://doi.org/10.1016/j.neubiorev.2008.09.011",
+  "pmid": "18952123",
+  "kind": "paper",
+  "tags": [
+   "nerve",
+   "mind"
+  ],
+  "note": "Unmyelinated C-tactile low-threshold mechanoreceptors in hairy skin project to the insular cortex, encode gentle touch and pleasantness, and may take part in pain inhibition."
  },
  {
   "id": "oneda2010",

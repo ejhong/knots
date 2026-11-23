@@ -168,6 +168,15 @@ const pct = (a: number) => ((a - 1) / 89) * 100;
 </Base>
 
 <style>
+  [data-hint] {
+    padding: 3px 8px;
+    border-radius: 4px;
+    background: rgba(23, 28, 31, 0.72);
+    backdrop-filter: blur(4px);
+  }
+  :global(.paper) [data-hint] {
+    background: rgba(250, 247, 242, 0.84);
+  }
   /* Shown once, on a first visit: how to release knots. */
   .first-hint {
     position: absolute;

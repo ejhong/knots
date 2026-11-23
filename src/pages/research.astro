@@ -281,6 +281,11 @@ const STUDIES: { stage: string; prong: string; title: string; design: string; wh
       each cessation marked as it is reported.`,
     show: `Whether the vessels follow the deepest meditative states, as the account predicts; a rhythm unchanged through
       cessations would count against it. Recorded over a knot too, it might show whether the vessels there take part.`,
+    prior: `Meditative cessations (<em>nirodha samāpatti</em>) have recently been framed for neuroscientific study
+      (${cite('laukkonen2023')}) and recorded with first-person event marking by EEG, showing large-scale alpha power
+      falling before and after onset (${cite('chowdhury2023')}). Vasomotion — coordinated oscillations in smooth-muscle
+      tone producing flowmotion — is well characterised in small vessels (${cite('aalkjaer2011')}), but has not been
+      measured through meditative cessations.`,
     needs: `a meditation research laboratory · meditators who report cessations · fNIRS or fMRI, and laser Doppler`,
   },
   {
@@ -378,6 +383,13 @@ const STAGES: { id: string; title: string; intro: string }[] = [
   },
 ];
 
+const STAGE_READY: Record<string, string> = {
+  'finding-knots': 'start now',
+  'with-knots-found': 'needs 1–2',
+  elsewhere: 'start now · existing data / tissue',
+  'any-time': 'start now · standalone',
+  'runaway-release': 'start now (12) · conditional (13)',
+};
 const index = [
   { id: 'questions', label: 'two open questions' },
   { id: 'help', label: 'what would help most' },
@@ -396,6 +408,15 @@ const index = [
   index={index}
   wide
 >
+  <div class="call-strip" role="region" aria-label="Quick links for researchers">
+    <span class="call-meta mono">Open call · 1-page letters of intent · rolling review · paid invited full proposals · universities, hospitals &amp; 501(c)(3)s</span>
+    <span class="call-acts">
+      <a class="btn primary" href="#respond">how to respond →</a>
+      <a class="btn" href="#studies">13 study ideas</a>
+      <a class="btn" href={`${base}/research/perforator-hypothesis/`}>position paper →</a>
+    </span>
+  </div>
+
   <section id="questions" class="sec full" data-glyph="問">
     <h2>Two open questions</h2>
     <p class="sub">
@@ -446,10 +467,9 @@ const index = [
   <section id="help" class="sec full" data-glyph="助">
     <h2>What would help most</h2>
     <p class="sub">
-      The studies below are ideas from a non-expert working with AI, meant to show the kind of thing that might help.
-      They were assessed only quickly, and some may prove not useful, or not worth doing now. Those who know the methods
-      are better placed to judge: please make your own assessment of what would really be useful. Three judgements would
-      help more than any one idea here:
+      The studies below are starting points drafted by an independent author with AI assistance, meant to map out tractable
+      ways in. Those who know the methods are best placed to judge: please make your own assessment of what would move the
+      question most. Three judgements would help more than any single item on the list:
     </p>
     <ul class="ask">
       <li><strong>The lowest-hanging fruit.</strong> Which could be done soon and cheaply, and still tell something?</li>
@@ -467,7 +487,8 @@ const index = [
       with surveys and interviews that need no instruments and could start now: what people who foam-roll feel (<a href="#study-1">study 1</a>),
       asked of them and of bodyworkers, and a description of runaway release (<a href="#study-12">study 12</a>),
       from people who know it at first hand. One team might do both. Neither need be large: their use is to tell the
-      studies that measure whom to recruit, and where and when to look.
+      studies that measure whom to recruit, and where and when to look. Existing imaging and surgical records (<a href="#study-7">study 7</a>)
+      also offer a fast entry point with no new recruitment.
     </p>
 
     <h3 class="ask-h" id="respond">How to respond: a letter of intent</h3>
@@ -506,7 +527,9 @@ const index = [
     <p class="sub">
       Every letter will be read, and promising ones followed up with questions. A small study may be funded on its
       letter and a conversation. Where a full proposal is needed, it will be asked for, and the time it takes to write
-      will be paid for, whether or not the study is then funded.
+      will be paid for, whether or not the study is then funded. Researchers and clinicians at accredited universities,
+      colleges, academically affiliated research hospitals, and qualified 501(c)(3) non-profit research organizations
+      may apply.
     </p>
     <p class="sub">
       It is hoped that funded work will register its plan in public before data are collected, report whatever the
@@ -519,11 +542,11 @@ const index = [
     <span class="alias" id="experiments" />
     <h2>Studies that might help</h2>
     <p class="sub">
-      Thirteen ideas, grouped by where each looks and listed in the order they build on one another, not by importance. They
-      are possibilities, assessed only quickly, and some may not be worth doing: your own assessment counts for more. Some
+      Thirteen ideas, grouped by where each looks and listed in the order they build on one another, not by importance. Treat
+      them as starting points to weigh or replace: your own judgement of what is feasible and decisive counts for more. Some
       are laboratory experiments; others are surveys, interviews, or new readings of tissue and records. Under each title is
-      the kind of study it would be. Under each is also the closest existing work we know of. All of it is in the{' '}
-      <a href={`${base}/library/`}>Library</a>, where every source is checked against its own record.
+      the kind of study it would be, and the closest existing work we know of — all in the{' '}
+      <a href={`${base}/library/`}>Library</a>, where every source is verified against its own record.
     </p>
     <p class="sub">
       Throughout, a knot means the kind described above, known by a release its owner feels. A study that marks or counts
@@ -531,6 +554,23 @@ const index = [
       foam-roll regularly are a likely group to begin with: many may know this release in themselves, and they can be
       studied doing only what they already do. Bodyworkers, who feel knots in others, are another.
     </p>
+    <div class="map-wrap">
+      <table class="study-map">
+        <thead>
+          <tr><th>#</th><th>Study</th><th>Method</th><th>Entry</th></tr>
+        </thead>
+        <tbody>
+          {STUDIES.map((x, i) => (
+            <tr>
+              <td class="mono num">{i + 1}</td>
+              <td><a href={`#study-${i + 1}`}>{x.title}</a></td>
+              <td class="method">{x.design}</td>
+              <td class="mono ready">{i === 11 ? 'start now' : i === 12 ? 'conditional on 12' : STAGE_READY[x.stage]}</td>
+            </tr>
+          ))}
+        </tbody>
+      </table>
+    </div>
     {STAGES.map((st) => (
       <div class="stage" id={st.id}>
         <h3 class="stage-h">{st.title}</h3>
@@ -578,10 +618,10 @@ const index = [
       </a>
     </div>
     <p class="sub">
-      The paper is a preprint, written by AI under the author's direction and not peer-reviewed, and the author will not take
-      it to a journal. If, having weighed the alternatives, you think the perforator hypothesis is the best fit, take it up:
-      test it, rework it, publish it (the paper is CC BY 4.0). If you think a rival theory fits better, the models, data and
-      code are open to you too.
+      The paper is a preprint, drafted with AI under the author's direction, verified against PubMed records, and not
+      peer-reviewed; the author will not take it to a journal. If, having weighed the alternatives, you think the
+      perforator hypothesis is the best fit, take it up: test it, rework it, publish it (the paper is CC BY 4.0). If
+      you think a rival theory fits better, the models, data and code are open to you too.
     </p>
     <p class="links mono"><a href={`${base}/research/perforator-hypothesis.pdf`}>position paper (PDF)</a><a href="https://doi.org/10.5281/zenodo.23901648">position paper (DOI)</a></p>
     <p class="contact">To take part, or to object: <a href="https://github.com/ejhong/knots/issues">issues</a> on the project's
@@ -590,6 +630,88 @@ const index = [
 </Doc>
 
 <style>
+  .call-strip {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px 16px;
+    padding: 11px 14px;
+    margin: 18px 0 4px;
+    background: var(--frame-bg);
+    border: 1px solid var(--border);
+    border-left: 3px solid var(--seal);
+    border-radius: 0 8px 8px 0;
+  }
+  .call-meta {
+    font-size: 9.5px;
+    color: var(--accent-dark);
+    letter-spacing: 0.2px;
+  }
+  .call-acts {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+  }
+  .call-acts .btn {
+    font-size: 11px;
+    padding: 4px 10px;
+  }
+  .map-wrap {
+    overflow-x: auto;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    margin: 12px 0 6px;
+    max-width: 980px;
+  }
+  .study-map {
+    border-collapse: collapse;
+    width: 100%;
+    font-size: 11.5px;
+    line-height: 1.45;
+  }
+  .study-map th,
+  .study-map td {
+    text-align: left;
+    vertical-align: top;
+    padding: 6px 10px;
+    border-bottom: 1px solid var(--border);
+  }
+  .study-map thead th {
+    font-family: var(--font-mono);
+    font-size: 9px;
+    font-weight: 400;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+    color: var(--muted);
+    background: var(--frame-bg);
+  }
+  .study-map tbody tr:last-child td {
+    border-bottom: 0;
+  }
+  .study-map td.num {
+    font-size: 10px;
+    color: var(--muted);
+    width: 28px;
+  }
+  .study-map td a {
+    font-family: var(--font-sans);
+    font-weight: 600;
+    text-decoration: none;
+  }
+  .study-map td a:hover {
+    text-decoration: underline;
+  }
+  .study-map td.method {
+    font-family: var(--font-serif);
+    font-style: italic;
+    color: var(--muted);
+  }
+  .study-map td.ready {
+    font-size: 9.5px;
+    color: var(--seal);
+    white-space: nowrap;
+  }
   .sub {
     max-width: 720px;
     margin: 4px 0 14px;
@@ -649,9 +771,9 @@ const index = [
   }
   .exps {
     display: grid;
-    grid-template-columns: repeat(3, minmax(0, 1fr));
+    grid-template-columns: repeat(2, minmax(0, 1fr));
     gap: 14px;
-    max-width: 1100px;
+    max-width: 980px;
     margin: 6px 0 10px;
   }
   .exp {
